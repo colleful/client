@@ -10,7 +10,7 @@ import HomeScreen from './HomeScreen/HomeScreen';
 import MyPageScreen from './MyPageScreen/MyPageScreen';
 import MessageScreen from './MyPageScreen/MessageScreen';
 
-export default function MainNavigator() {
+export default MainNavigator = () => {
   const MyPageStack = createStackNavigator();
 
   const MyPageStackScreen = () => {
