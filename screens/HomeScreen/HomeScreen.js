@@ -1,11 +1,23 @@
-import React,{useState} from 'react';
+import React,{useState,useCallback} from 'react';
 import {
   View,
   ScrollView,
+  RefreshControl,
 } from 'react-native';
 import TeamList from '../../components/TeamList';
 
+const wait = (timeout) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, timeout);
+  });
+};
 const HomeScreen = () => {
+  const [refreshing, setRefreshing] = useState(false);
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
+
   const [team, setTeam] = useState([
     {
       thumbnail: '',
@@ -54,7 +66,10 @@ const HomeScreen = () => {
       <View style={{borderColor: '#D8D8D8', borderBottomWidth: 0.5, flex: 0.4}}></View>
       <View style={{borderColor: '#D8D8D8', borderBottomWidth: 0.5, flex: 0.1}}></View>
       <View style={{flex: 1}}>
-        <ScrollView>
+        <ScrollView
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }>
           <TeamList team={team} />
         </ScrollView>
       </View>
