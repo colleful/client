@@ -31,6 +31,10 @@ export default MainNavigator = () => {
         tabBarOptions={{
           activeTintColor: '#e91e63',
           inactiveTintColor: 'gray',
+          keyboardHidesTabBar: true,
+          style: {
+            position: 'absolute', //input 창에 글쓸때 keypad 위에 tabbar가 남아있는 현상 고치기 위한 솔루션
+          },
         }}
         screenOptions={({route}) => ({
           tabBarIcon: ({focused, color, size}) => {
@@ -56,6 +60,6 @@ export default MainNavigator = () => {
       </Tab.Navigator>
     </NavigationContainer>
   );
-}
+};
 
 const styles = StyleSheet.create({});
