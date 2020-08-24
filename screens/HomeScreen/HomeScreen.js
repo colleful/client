@@ -8,14 +8,10 @@ import {
   TextInput,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
-import {Picker} from '@react-native-community/picker';
-
-import Modal from 'react-native-modal';
 import TeamList from '../../components/TeamList';
 import ModalFilter from './ModalFilter';
 import axios from 'axios';
-import Config from "react-native-config";
+import {Config} from './Config';
 
 const wait = (timeout) => {
   return new Promise((resolve) => {
@@ -26,27 +22,26 @@ const HomeScreen = () => {
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    wait(2000).then(() => setRefreshing(false));
+    wait(2000).then(() => setRefreshing(false), getTeamInfo());
   }, []);
 
-  const [team, setTeam] = useState([])
+  const [team, setTeam] = useState([]);
 
   const getTeamInfo = async () => {
     try {
-      const response = await axios.get('http://3.34.47.186:8080/api/team');
-      // console.log("응답: ",response.data);
+    const response = await axios.get(Config.apiUrl);
       setTeam(response.data);
       setImmutableTeam(response.data);
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   useEffect(() => {
     getTeamInfo();
-  },[])
+  }, []);
 
-  console.log("team:", team);
+  console.log('team:', team);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectItem, setSelectItem] = useState({
@@ -81,9 +76,9 @@ const HomeScreen = () => {
   const [newTeam, setNewTeam] = useState([]);
 
   useEffect(() => {
-    setNewTeam(team.filter( t => t.teamName.indexOf(keyword) > -1 ));
-  },[team, keyword])
-  console.log(keyword)
+    setNewTeam(team.filter((t) => t.teamName.indexOf(keyword) > -1));
+  }, [team, keyword]);
+  console.log(keyword);
 
   return (
     <View style={{flex: 1}}>
@@ -91,10 +86,16 @@ const HomeScreen = () => {
         style={{
           borderColor: '#D8D8D8',
           borderBottomWidth: 0.5,
-          height: 115
+          height: 115,
         }}></View>
-      <View style={{borderColor: '#D8D8D8', borderBottomWidth: 0.5, height: 35}}>
-        <TextInput style={{marginLeft:20, height: 40}} placeholder="검색 할 팀이름 입력" onChangeText={text => setKeyword(text)} value={keyword} />
+      <View
+        style={{borderColor: '#D8D8D8', borderBottomWidth: 0.5, height: 35}}>
+        <TextInput
+          style={{marginLeft: 20, height: 40}}
+          placeholder="검색 할 팀이름 입력"
+          onChangeText={(text) => setKeyword(text)}
+          value={keyword}
+        />
       </View>
       <View
         style={{
@@ -122,7 +123,11 @@ const HomeScreen = () => {
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }>
-            {keyword === '' ? <TeamList team={team} /> : <TeamList team={newTeam} />}
+          {keyword === '' ? (
+            <TeamList team={team} />
+          ) : (
+            <TeamList team={newTeam} />
+          )}
         </ScrollView>
       </View>
     </View>
