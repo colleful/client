@@ -5,7 +5,7 @@ const TeamList = ({team}) => {
   return (
     <>
       {team.map((teams) => (
-        <TeamListItem key={teams.name} teams={teams} />
+        <TeamListItem key={teams.id} teams={teams} />
       ))}
     </>
   );
