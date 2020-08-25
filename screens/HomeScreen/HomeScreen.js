@@ -11,7 +11,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import TeamList from '../../components/TeamList';
 import ModalFilter from './ModalFilter';
 import axios from 'axios';
-import {Config} from './Config';
+import {Config} from '../../Config';
 
 const wait = (timeout) => {
   return new Promise((resolve) => {
@@ -29,7 +29,7 @@ const HomeScreen = () => {
 
   const getTeamInfo = async () => {
     try {
-    const response = await axios.get(Config.apiUrl);
+    const response = await axios.get(`${Config.baseUrl}/api/team`);
       setTeam(response.data);
       setImmutableTeam(response.data);
     } catch (error) {
