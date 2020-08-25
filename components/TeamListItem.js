@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, Text, Image} from 'react-native';
+import { BorderlessButton } from 'react-native-gesture-handler';
 
 const TeamListItem = ({teams}) => {
 
@@ -18,20 +19,22 @@ const TeamListItem = ({teams}) => {
       style={{
         flexDirection: 'row',
         alignItems: 'center',
-        borderColor: 'black',
-        borderBottomWidth: 0.5,
-        borderColor: '#D8D8D8',
+        backgroundColor: "white",
         flex: 1,
         height: 100,
-        marginHorizontal: 25
+        marginHorizontal: 12,
+        marginTop: 12,
+        borderRadius: 10,
+        borderColor: "#f0f0f0",
+        borderBottomWidth: 2
       }}>
-      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+      <View style={{flexDirection: 'row', alignItems: 'center', marginLeft: 20}}>
         <View
           style={{
             width: 50,
             height: 50
           }}>
-          <Image source={require('../images/1.png')} style={{borderRadius: 40}} />
+          <Image source={require('../images/1.png')} style={{borderRadius: 10}} />
         </View>
         <View style={{flexDirection: 'column'}}>
           <Text style={{fontSize: 15, marginLeft: 25}}>
