@@ -1,6 +1,7 @@
 import React from 'react';
 import {View, Text, Image} from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+
+import MyPageNavList from './MyPageNavList';
 
 const MyPageScreen = ({navigation}) => {
   return (
@@ -27,43 +28,7 @@ const MyPageScreen = ({navigation}) => {
           </View>
         </View>
       </View>
-      <View style={{marginVertical: 10, paddingVertical:10, paddingHorizontal:20, backgroundColor: "white", borderBottomColor: "#f0f0f0", borderBottomWidth: 1}}>
-        <View style={{flexDirection: "row",padding: 5, paddingVertical:10, width: 100}}>
-          <Ionicons name="person-circle-outline" size={22} />
-          <Text style={{paddingLeft: 10, fontSize: 15}} onPress={() => navigation.navigate('계정')}>계정</Text>
-        </View>
-        <View style={{flexDirection: "row",padding: 5, paddingVertical:10, width: 100}}>
-          <Ionicons name="mail-outline" size={22} />
-          <Text style={{paddingLeft: 10, fontSize: 15}} onPress={() => navigation.navigate('쪽지함')}>쪽지함</Text>
-        </View>
-        <View style={{flexDirection: "row",padding: 5, paddingVertical:10, width: 100}}>
-          <Ionicons name="person-outline" size={22} />
-          <Text style={{paddingLeft: 10, fontSize: 15}} onPress={() => navigation.navigate('친구목록')}>친구목록</Text>
-        </View>
-        <View style={{flexDirection: "row",padding: 5, paddingVertical:10, width: 100}}>
-          <Ionicons name="people-outline" size={22} />
-          <Text style={{paddingLeft: 10, fontSize: 15}} onPress={() => navigation.navigate('팀목록')}>팀목록</Text>
-        </View>
-      </View>
-      <View style={{paddingVertical:10, paddingHorizontal:20, backgroundColor: "white", borderBottomColor: "#f0f0f0", borderBottomWidth: 1}}>
-        <View style={{flexDirection: "row",padding: 5, paddingVertical:10, width: 150}}>
-          <Ionicons name="megaphone-outline" size={22} />
-          <Text style={{paddingLeft: 10, fontSize: 15}} onPress={() => navigation.navigate('공지사항')}>공지사항</Text>
-        </View>
-        <View style={{flexDirection: "row",padding: 5, paddingVertical:10, width: 150}}>
-          <Ionicons name="chatbubble-ellipses-outline" size={22} />
-          <Text style={{paddingLeft: 10, fontSize: 15}} onPress={() => navigation.navigate('건의사항')}>건의사항</Text>
-        </View>
-        <View style={{flexDirection: "row",padding: 5, paddingVertical:10, width: 150}}>
-          <Ionicons name="git-branch-outline" size={22} />
-          <Text style={{paddingLeft: 10, fontSize: 15}}>앱 공유</Text>
-          {/* 앱 공유는 추후에 공유방식 생각 해 볼 예정 */}
-        </View>
-        <View style={{flexDirection: "row",padding: 5, paddingVertical:10, width: 150}}>
-          <Ionicons name="cog-outline" size={22} />
-          <Text style={{paddingLeft: 10, fontSize: 15}} onPress={() => navigation.navigate('설정')}>앱 설정</Text>
-        </View>
-      </View>
+      <MyPageNavList navigation={navigation} />
     </View>
   );
 };
