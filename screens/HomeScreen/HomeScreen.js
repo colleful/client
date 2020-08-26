@@ -81,7 +81,7 @@ const HomeScreen = () => {
   console.log(keyword);
 
   return (
-    <View style={{flex: 1}}>
+    <View style={{flex: 1, backgroundColor: "#fafafa"}}>
       <View
         style={{
           borderColor: '#D8D8D8',

@@ -68,7 +68,6 @@ const ModalFilter = ({
               // picker가 너무 구리면 react-native-picker-select를 다운그레이드해서 사용할 예정
               selectedValue={selectItem.selectedFilter}
               onValueChange={(value) => setSelectItem({selectedFilter: value})}
-              //style={{height: 50, width: 250}}
               mode="dialog">
               {filterList.map((filterLists, index) => {
                 return (
