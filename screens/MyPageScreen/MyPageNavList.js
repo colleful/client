@@ -38,15 +38,11 @@ const MyPageNavList = ({navigation}) => {
       },
     ],
   ]);
-  return (
-    <>
-      {navInfo.map((navinfos, index) => (
-        <View style={[index === 0 && {marginTop: 10}, styles.item]} key={index}>
-          <MyPageNavListItem navigation={navigation} navInfo={navinfos} />
-        </View>
-      ))}
-    </>
-  );
+  return navInfo.map((navinfos, index) => (
+    <View style={[index === 0 && {marginTop: 10}, styles.item]} key={index}>
+      <MyPageNavListItem navigation={navigation} navInfo={navinfos} />
+    </View>
+  ));
 };
 
 export default MyPageNavList;

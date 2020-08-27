@@ -29,7 +29,7 @@ const HomeScreen = () => {
 
   const getTeamInfo = async () => {
     try {
-    const response = await axios.get(`${Config.baseUrl}/api/team`);
+      const response = await axios.get(`${Config.baseUrl}/api/team`);
       setTeam(response.data);
       setImmutableTeam(response.data);
     } catch (error) {
@@ -40,8 +40,6 @@ const HomeScreen = () => {
   useEffect(() => {
     getTeamInfo();
   }, []);
-
-  console.log('team:', team);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectItem, setSelectItem] = useState({
@@ -78,10 +76,9 @@ const HomeScreen = () => {
   useEffect(() => {
     setNewTeam(team.filter((t) => t.teamName.indexOf(keyword) > -1));
   }, [team, keyword]);
-  console.log(keyword);
 
   return (
-    <View style={{flex: 1, backgroundColor: "#fafafa"}}>
+    <View style={{flex: 1, backgroundColor: '#fafafa'}}>
       <View
         style={{
           borderColor: '#D8D8D8',
