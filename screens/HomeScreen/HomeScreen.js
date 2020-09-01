@@ -9,8 +9,9 @@ import {
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import TeamList from '../../components/TeamList';
+import TeamContainer from '../../container/TeamContainer';
 import ModalFilter from './ModalFilter';
-import axios from 'axios';
+// import axios from 'axios';
 import {Config} from '../../Config';
 
 const wait = (timeout) => {
@@ -18,7 +19,7 @@ const wait = (timeout) => {
     setTimeout(resolve, timeout);
   });
 };
-const HomeScreen = () => {
+const HomeScreen = ({}) => {
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -27,19 +28,19 @@ const HomeScreen = () => {
 
   const [team, setTeam] = useState([]);
 
-  const getTeamInfo = async () => {
-    try {
-      const response = await axios.get(`${Config.baseUrl}/api/team`);
-      setTeam(response.data);
-      setImmutableTeam(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const getTeamInfo = async () => {
+  //   try {
+  //     const response = await axios.get(`${Config.baseUrl}/api/team`);
+  //     setTeam(response.data);
+  //     setImmutableTeam(response.data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
-  useEffect(() => {
-    getTeamInfo();
-  }, []);
+  // useEffect(() => {
+  //   getTeamInfo();
+  // }, []);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectItem, setSelectItem] = useState({
@@ -120,11 +121,12 @@ const HomeScreen = () => {
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }>
-          {keyword === '' ? (
+          {/* {keyword === '' ? (
             <TeamList team={team} />
           ) : (
             <TeamList team={newTeam} />
-          )}
+          )} */}
+          <TeamContainer />
         </ScrollView>
       </View>
     </View>

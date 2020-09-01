@@ -6,9 +6,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import ChatScreen from './ChatScreen/ChatScreen';
 import HomeScreen from './HomeScreen/HomeScreen';
-
 import MyPageScreen from './MyPageScreen/MyPageScreen';
-
 import MessageScreen from './MyPageScreen/MyPageStackScreen/MessageScreen';
 import TeamListScreen from './MyPageScreen/MyPageStackScreen/TeamListScreen';
 import FriendsListScreen from './MyPageScreen/MyPageStackScreen/FriendsListScreen';
@@ -41,8 +39,6 @@ export default MainNavigator = () => {
     );
   };
 
-  const Tab = createBottomTabNavigator();
-
   const getTabBarVisibility = (route) => {
     const routeName = route.state
       ? route.state.routes[route.state.index].name
@@ -60,6 +56,8 @@ export default MainNavigator = () => {
     }
     return true;
   };
+
+  const Tab = createBottomTabNavigator();
 
   return (
     <NavigationContainer>
