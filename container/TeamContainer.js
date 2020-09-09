@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react';
-// import {useSelector, useDispatch} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {connect} from 'react-redux';
 import {getTeam} from '../modules/team';
 import Team from '../components/Team';
 
-const TeamContainer = ({getTeam, teams, lodingTeams}) => {
+const TeamContainer = ({getTeam, teams, loadingTeams}) => {
   useEffect(() => {
     getTeam();
   }, [getTeam]);
 
-  return <Team teams={teams} lodingTeams={lodingTeams} />;
+  return <Team teams={teams} loadingTeams={loadingTeams} />
 };
 
 export default connect(

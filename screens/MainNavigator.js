@@ -1,19 +1,19 @@
 import React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
+// import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import ChatScreen from './ChatScreen/ChatScreen';
-import HomeScreen from './HomeScreen/HomeScreen';
-import MyPageScreen from './MyPageScreen/MyPageScreen';
-import MessageScreen from './MyPageScreen/MyPageStackScreen/MessageScreen';
-import TeamListScreen from './MyPageScreen/MyPageStackScreen/TeamListScreen';
-import FriendsListScreen from './MyPageScreen/MyPageStackScreen/FriendsListScreen';
-import AccountScreen from './MyPageScreen/MyPageStackScreen/AccountScreen';
-import SuggestionScreen from './MyPageScreen/MyPageStackScreen/SuggestionScreen';
-import NoticeScreen from './MyPageScreen/MyPageStackScreen/NoticeScreen';
-import SettingScreen from './MyPageScreen/MyPageStackScreen/SettingScreen';
+import ChatScreen from './Chat/ChatScreen';
+import HomeScreen from './Home/HomeScreen';
+import MyPageScreen from './MyPage/MyPageScreen';
+import MessageScreen from './MyPage/MyPageStack/MessageScreen';
+import TeamListScreen from './MyPage/MyPageStack/TeamListScreen';
+import FriendsListScreen from './MyPage/MyPageStack/FriendsListScreen';
+import AccountScreen from './MyPage/MyPageStack/AccountScreen';
+import SuggestionScreen from './MyPage/MyPageStack/SuggestionScreen';
+import NoticeScreen from './MyPage/MyPageStack/NoticeScreen';
+import SettingScreen from './MyPage/MyPageStack/SettingScreen';
 
 export default MainNavigator = () => {
   const MyPageStack = createStackNavigator();
@@ -60,44 +60,42 @@ export default MainNavigator = () => {
   const Tab = createBottomTabNavigator();
 
   return (
-    <NavigationContainer>
-      <Tab.Navigator
-        initialRouteName="홈"
-        tabBarOptions={{
-          activeTintColor: '#e91e63',
-          inactiveTintColor: 'gray',
-          keyboardHidesTabBar: true,
-          style: {
-            position: 'absolute', //input 창에 글쓸때 keypad 위에 tabbar가 남아있는 현상 고치기 위한 솔루션
-          },
-        }}
-        screenOptions={({route}) => ({
-          tabBarIcon: ({focused, color, size}) => {
-            let iconName;
-            if (route.name === '홈') {
-              iconName = focused ? 'home' : 'home-outline';
-            } else if (route.name === '마이페이지') {
-              iconName = focused ? 'person-circle' : 'person-circle-outline';
-            } else if (route.name === '채팅목록') {
-              iconName = focused ? 'chatbubbles' : 'chatbubbles-outline';
-            }
-            return <Ionicons name={iconName} size={size} color={color} />;
-          },
-        })}>
-        <Tab.Screen
-          name="채팅목록"
-          component={ChatScreen}
-          options={{tabBarBadge: 3}}
-        />
-        <Tab.Screen name="홈" component={HomeScreen} />
-        <Tab.Screen
-          name="마이페이지"
-          component={MyPageStackScreen}
-          options={({route}) => ({
-            tabBarVisible: getTabBarVisibility(route),
-          })}
-        />
-      </Tab.Navigator>
-    </NavigationContainer>
+    <Tab.Navigator
+      initialRouteName="홈"
+      tabBarOptions={{
+        activeTintColor: '#e91e63',
+        inactiveTintColor: 'gray',
+        keyboardHidesTabBar: true,
+        style: {
+          position: 'absolute', //input 창에 글쓸때 keypad 위에 tabbar가 남아있는 현상 고치기 위한 솔루션
+        },
+      }}
+      screenOptions={({route}) => ({
+        tabBarIcon: ({focused, color, size}) => {
+          let iconName;
+          if (route.name === '홈') {
+            iconName = focused ? 'home' : 'home-outline';
+          } else if (route.name === '마이페이지') {
+            iconName = focused ? 'person-circle' : 'person-circle-outline';
+          } else if (route.name === '채팅목록') {
+            iconName = focused ? 'chatbubbles' : 'chatbubbles-outline';
+          }
+          return <Ionicons name={iconName} size={size} color={color} />;
+        },
+      })}>
+      <Tab.Screen
+        name="채팅목록"
+        component={ChatScreen}
+        options={{tabBarBadge: 3}}
+      />
+      <Tab.Screen name="홈" component={HomeScreen} />
+      <Tab.Screen
+        name="마이페이지"
+        component={MyPageStackScreen}
+        options={({route}) => ({
+          tabBarVisible: getTabBarVisibility(route),
+        })}
+      />
+    </Tab.Navigator>
   );
 };
