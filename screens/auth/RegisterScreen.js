@@ -8,14 +8,12 @@ import {Config} from '../../Config';
 //여긴 가독성이 너무 심하게 떨어져서 prettier 일단 적용 안했음. 어차피 디자인 바뀌면 inline-style 다 바꿀 예정이라
 
 const RegisterScreen = ({navigation,form,getDepartmentId,getGender,getBirthYear,onSendAuthEmail, onCreateAddress, onChangeEmail, onChangePassword, onChangePasswordConfirm, onChangeNickname, onChangeBirthYear, onChangeGender, onChangeDepartmentId, onChangeSelfIntroduction,onChangeCode,onConfirmAuthEmail, onSubmitRegister, error}) => {
-
   let today = new Date().getFullYear();
   let yearData = [];
   let collegeList = [];
   for(var i=today-20; i>=today-30; i--){
     yearData.push(String(i));
   }
-
   const [visible, setVisible] = useState(true);
   const [selectedDid, setSelectedDid] = useState({ //Did => DepartmentId
     item: ''
@@ -48,8 +46,8 @@ const RegisterScreen = ({navigation,form,getDepartmentId,getGender,getBirthYear,
     setVisible(!visible);
   }
   const addToBehindText = (e) => {
-    // onCreateAddress(`${e.nativeEvent.text}@jbnu.ac.kr`)
-    onCreateAddress(e.nativeEvent.text)
+    onCreateAddress(`${e.nativeEvent.text}@jbnu.ac.kr`)
+    // onCreateAddress(e.nativeEvent.text) 
   }
   useEffect(() => {
     getDepartments();

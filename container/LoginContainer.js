@@ -16,6 +16,16 @@ const LoginContainer = ({navigation}) => {
 
   const dispatch = useDispatch();
 
+  const onCreateAddress = (text) => {
+    dispatch(
+      changeField({
+        form: 'login',
+        key: 'email',
+        value: (text.includes('@jbnu.ac.kr@jbnu.ac.kr') ? text.slice(0,-11) : text) === '@jbnu.ac.kr' ? '' : text
+      })
+    );
+  };
+
   const onChangeLoginEmail = (e) => {
     const {text} = e.nativeEvent;
     dispatch(
@@ -93,6 +103,7 @@ const LoginContainer = ({navigation}) => {
     <LoginScreen
       navigation={navigation}
       form={form}
+      onCreateAddress={onCreateAddress}
       onChangeLoginEmail={onChangeLoginEmail}
       onChangeLoginPassword={onChangeLoginPassword}
       onSubmitLogin={onSubmitLogin}
