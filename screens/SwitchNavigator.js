@@ -1,73 +1,39 @@
 import React, {useState, useEffect} from 'react';
-import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import SplashScreen from './SplashScreen';
-import LoginScreen from './auth/LoginScreen';
-import RegisterScreen from './auth/RegisterScreen';
+import LoginContainer from '../container/LoginContainer';
+import RegisterContainer from '../container/RegisterContainer';
 import MainNavigator from './MainNavigator';
+import SplashScreen from './SplashScreen';
 
-const SwitchNavigator = ({
-  onCreateAddress,
-  form,
-  getDepartmentId,
-  getGender,
-  getBirthYear,
-  onSendAuthEmail,
-  onChangeEmail,
-  onChangePassword,
-  onChangePasswordConfirm,
-  onChangeNickname,
-  onChangeBirthYear,
-  onChangeGender,
-  onChangeDepartmentId,
-  onChangeSelfIntroduction,
-  onChangeCode,
-  onConfirmAuthEmail,
-  onSubmit,
-  error,
-}) => {
+import {useSelector, useDispatch} from 'react-redux';
+const SwitchNavigator = () => {
+  // if (isLoading) {
+  //   // 아직 로그인 토큰 확인이 끝나지 않았을때 스플래시 스크린 띄우기
+  //   return <SplashScreen />;
+  // }
   const SwitchNavStack = createStackNavigator();
-  const [isLoggedIn, setLoggedIn] = useState(false);
+
+  const {isLoggedIn} = useSelector(({auth}) => ({
+    isLoggedIn: auth.isLoggedIn,
+  }));
+  
   return (
-    <NavigationContainer>
+    <SwitchNavStack.Navigator screenOptions={{headerShown: false}}>
       {isLoggedIn ? (
-        <MainNavigator />
+        <SwitchNavStack.Screen name="MainNavigator" component={MainNavigator} />
       ) : (
-        <SwitchNavStack.Navigator screenOptions={{headerShown: false}}>
-          {/* <SwitchNavStack.Screen name="SplashScreen" component={SplashScreen} /> */}
-
-          <SwitchNavStack.Screen name="LoginScreen">
-            {(props) => <LoginScreen {...props} />}
-          </SwitchNavStack.Screen>
-
-          <SwitchNavStack.Screen name="RegisterScreen">
-            {(props) => (
-              <RegisterScreen
-                {...props}
-                form={form}
-                getDepartmentId={getDepartmentId}
-                getGender={getGender}
-                getBirthYear={getBirthYear}
-                onSendAuthEmail={onSendAuthEmail}
-                onCreateAddress={onCreateAddress}
-                onChangeEmail={onChangeEmail}
-                onChangePassword={onChangePassword}
-                onChangePasswordConfirm={onChangePasswordConfirm}
-                onChangeNickname={onChangeNickname}
-                onChangeBirthYear={onChangeBirthYear}
-                onChangeGender={onChangeGender}
-                onChangeDepartmentId={onChangeDepartmentId}
-                onChangeSelfIntroduction={onChangeSelfIntroduction}
-                onChangeCode={onChangeCode}
-                onConfirmAuthEmail={onConfirmAuthEmail}
-                onSubmit={onSubmit}
-                error={error}
-              />
-            )}
-          </SwitchNavStack.Screen>
-        </SwitchNavStack.Navigator>
+        <>
+          <SwitchNavStack.Screen
+            name="LoginContainer"
+            component={LoginContainer}
+          />
+          <SwitchNavStack.Screen
+            name="RegisterContainer"
+            component={RegisterContainer}
+          />
+        </>
       )}
-    </NavigationContainer>
+    </SwitchNavStack.Navigator>
   );
 };
 

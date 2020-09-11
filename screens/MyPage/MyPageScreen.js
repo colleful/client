@@ -1,9 +1,19 @@
 import React from 'react';
-import {View, Text, Image} from 'react-native';
-
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  AsyncStorage,
+  Alert,
+} from 'react-native';
 import MyPageNavList from './MyPageNavList';
+import {useDispatch} from 'react-redux';
+import {setLoginState, initializeForm} from '../../modules/auth';
 
 const MyPageScreen = ({navigation}) => {
+  const dispatch = useDispatch();
+
   return (
     <View style={{flex: 1, backgroundColor: '#fafafa'}}>
       <View
@@ -32,7 +42,7 @@ const MyPageScreen = ({navigation}) => {
               남 {'/'} 25 공과대학
             </Text>
           </View>
-          <View
+          <TouchableOpacity
             style={{
               justifyContent: 'center',
               paddingHorizontal: 13,
@@ -42,9 +52,21 @@ const MyPageScreen = ({navigation}) => {
               borderWidth: 1,
               opacity: 0.4,
               backgroundColor: 'gray',
+            }}
+            onPress={() => {
+              Alert.alert('LOGOUT', '로그아웃 하시겠습니까?', [
+                {
+                  text: '확인',
+                  onPress: () => {
+                    console.log('클릭됨');
+                    AsyncStorage.removeItem('token');
+                    dispatch(setLoginState(false)); // dispatch로 token값 변경하면 구독한 listener(SwitchNavigator)에 가서 바뀐 token값을 변경
+                  },
+                },
+              ]);
             }}>
-            <Text onPress={() => navigation.navigate('계정')}>정보수정</Text>
-          </View>
+            <Text>로그아웃</Text>
+          </TouchableOpacity>
         </View>
       </View>
       <MyPageNavList navigation={navigation} />

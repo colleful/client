@@ -1,29 +1,16 @@
-import React, {useState} from 'react';
-import {useSelector, useDispatch} from 'react-redux';
-import {View, Text, TouchableOpacity, TextInput, Alert} from 'react-native';
-import auth from '../../modules/auth';
+import React from 'react';
+import {View, Text, TouchableOpacity, TextInput} from 'react-native';
 
-const LoginScreen = ({navigation, isLoggedIn, LoginSuccess }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  const dispatch = useDispatch();
-
+const LoginScreen = ({navigation, form, onChangeLoginEmail, onChangeLoginPassword, onSubmitLogin}) => {
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       <View style={{flexDirection: 'row',justifyContent: "center", alignItems: "center", marginTop: 20}}>
         <TextInput
           placeholder=" 학교 웹메일"
           placeholderTextColor="black"
-          style={{ backgroundColor:"#ccc", borderBottomLeftRadius:5, borderTopLeftRadius:5, opacity:0.5, paddingLeft:10, width: 150, marginLeft: 10}}
-          value={email}
-          onChangeText={(text) => setEmail(text)}
-        />
-        <TextInput
-          editable={false}
-          placeholder=" @jbnu.ac.kr"
-          placeholderTextColor="black"
-          style={{ backgroundColor:"#ccc", borderTopRightRadius:5, borderBottomRightRadius:5, opacity:0.5, width: 100}}
+          style={{ backgroundColor:"#ccc", borderBottomLeftRadius:5, borderTopLeftRadius:5, opacity:0.5, paddingLeft:10, width: 250, marginLeft: 10}}
+          value={form.email}
+          onChange={onChangeLoginEmail}
         />
       </View>
 
@@ -31,16 +18,16 @@ const LoginScreen = ({navigation, isLoggedIn, LoginSuccess }) => {
         <TextInput
           placeholder=" 비밀번호"
           placeholderTextColor="black"
-          style={{ backgroundColor:"#ccc", borderRadius:5, opacity:0.5, width: 250, paddingLeft:10,marginLeft: 10}}
-          value={password}
+          style={{ backgroundColor:"#ccc", borderRadius:5, opacity:0.5, width: 250, paddingLeft:10, marginLeft: 10}}
           secureTextEntry
-          onChangeText={(text) => setPassword(text)}
+          value={form.password}
+          onChange={onChangeLoginPassword}
         />
       </View>
 
       <View style={{flexDirection: 'row', marginTop: 10}}>
         <TouchableOpacity
-          onPress={() => dispatch(LoginSuccess())} //여기서 api 비동기통신으로 받고 dispatch({type:LOGIN_SUCCESS , isSignedIn: true}) 해주면 될거같지않음?
+          onPress={onSubmitLogin} //login용 onSubmitLogin
           style={{
             marginTop:20,
             marginRight:20,
@@ -54,7 +41,7 @@ const LoginScreen = ({navigation, isLoggedIn, LoginSuccess }) => {
           <Text>로그인</Text>
         </TouchableOpacity>
          <TouchableOpacity
-          onPress={() => navigation.navigate('RegisterScreen')}
+          onPress={() => navigation.navigate('RegisterContainer')}
           style={{
             marginTop:20,
             backgroundColor: '#cdc',

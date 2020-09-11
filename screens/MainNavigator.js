@@ -27,7 +27,7 @@ export default MainNavigator = () => {
             position: 'absolute', //input 창에 글쓸때 keypad 위에 tabbar가 남아있는 현상 고치기 위한 솔루션
           },
         }}>
-        <MyPageStack.Screen name="마이페이지" component={MyPageScreen} />
+        <MyPageStack.Screen name="마이페이지" component={MyPageScreen} options={{ headerShown: false }}/>
         <MyPageStack.Screen name="쪽지함" component={MessageScreen} />
         <MyPageStack.Screen name="팀목록" component={TeamListScreen} />
         <MyPageStack.Screen name="친구목록" component={FriendsListScreen} />

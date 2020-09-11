@@ -5,7 +5,9 @@ import {Picker} from '@react-native-community/picker';
 import axios from 'axios';
 import {Config} from '../../Config';
 
-const RegisterScreen = ({navigation,form,getDepartmentId,getGender,getBirthYear,onSendAuthEmail, onCreateAddress, onChangeEmail, onChangePassword, onChangePasswordConfirm, onChangeNickname, onChangeBirthYear, onChangeGender, onChangeDepartmentId, onChangeSelfIntroduction,onChangeCode,onConfirmAuthEmail, onSubmit, error}) => {
+//여긴 가독성이 너무 심하게 떨어져서 prettier 일단 적용 안했음. 어차피 디자인 바뀌면 inline-style 다 바꿀 예정이라
+
+const RegisterScreen = ({navigation,form,getDepartmentId,getGender,getBirthYear,onSendAuthEmail, onCreateAddress, onChangeEmail, onChangePassword, onChangePasswordConfirm, onChangeNickname, onChangeBirthYear, onChangeGender, onChangeDepartmentId, onChangeSelfIntroduction,onChangeCode,onConfirmAuthEmail, onSubmitRegister, error}) => {
 
   let today = new Date().getFullYear();
   let yearData = [];
@@ -233,7 +235,7 @@ const RegisterScreen = ({navigation,form,getDepartmentId,getGender,getBirthYear,
       </View>
       <View style={{flexDirection: 'row',justifyContent: "center", alignItems: "center", marginTop: 10}}>
         <TouchableOpacity
-          onPress={onSubmit}
+          onPress={onSubmitRegister}
           style={{
             marginVertical:15,
             backgroundColor: '#cdc',

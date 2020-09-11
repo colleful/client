@@ -1,11 +1,10 @@
 import React, { useState,useEffect } from 'react';
 import {Alert} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {changeField, initializeForm, register,login,sendAuthEmail,confirmAuthEmail,authEmailInitialize,confirmAuthEmailInitialize, emailValidstatus} from '../modules/auth';
-import SwitchNavigator from '../screens/SwitchNavigator';
-import LoginScreen from '../screens/auth/LoginScreen';
+import {changeField, initializeForm, register, sendAuthEmail, confirmAuthEmail, authEmailInitialize, confirmAuthEmailInitialize, emailValidstatus} from '../modules/auth';
+import RegisterScreen from '../screens/auth/RegisterScreen';
 
-const AuthContainer = () => {
+const RegisterContainer = ({navigation}) => {
   const [error, setError] = useState(null);
   const dispatch = useDispatch();
   const { isEmailvalided, form, auth, authError, emailAuth, emailAuthError, confirmEmail, confirmEmailError } = useSelector(({ auth }) => ({
@@ -87,6 +86,7 @@ const AuthContainer = () => {
       })
     );
   };
+
   const onChangePasswordConfirm = e => {
     const { text } = e.nativeEvent;
     dispatch(
@@ -158,7 +158,7 @@ const AuthContainer = () => {
     dispatch(confirmAuthEmail({ email,code }));
   }
 
-  const onSubmit = () => {
+  const onSubmitRegister = () => {
     const { email, password, nickname, birthYear, gender, departmentId, selfIntroduction, passwordConfirm } = form;
     // 하나라도 비어있다면
     if ([email, password, nickname, birthYear, gender, departmentId, selfIntroduction, passwordConfirm].includes('')) {
@@ -211,8 +211,8 @@ const AuthContainer = () => {
     if(auth) {
       console.log('회원가입 성공');
       console.log(auth);
-      Alert.alert('회원가입 완료', '이제 로그인 해주세요', [
-        { text: '확인', onPress:() => console.log('완료 버튼 클릭됨')}, //클릭시 네비게이션으로 loginScreen으로 가도록 구현하기
+      Alert.alert('회원가입 완료', '축하합니다! 회원가입이 완료되었습니다', [
+        { text: '확인', onPress:() => navigation.navigate('LoginContainer')},
       ])
     }
     if(emailAuthError) {
@@ -257,7 +257,7 @@ const AuthContainer = () => {
   }, [auth, authError, emailAuthError, emailAuth, confirmEmailError, confirmEmail]);
 
   return (
-    <SwitchNavigator
+    <RegisterScreen
       form={form}
       getDepartmentId={getDepartmentId}
       getGender={getGender}
@@ -274,10 +274,10 @@ const AuthContainer = () => {
       onChangeSelfIntroduction={onChangeSelfIntroduction}
       onChangeCode={onChangeCode}
       onConfirmAuthEmail={onConfirmAuthEmail}
-      onSubmit={onSubmit}
+      onSubmitRegister={onSubmitRegister}
       error={error}
     />
   );
 };
 
-export default AuthContainer;
+export default RegisterContainer;
