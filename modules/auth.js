@@ -1,4 +1,4 @@
-import {createAction, handleActions} from 'redux-actions';
+import {createAction, createActions, handleActions} from 'redux-actions';
 import produce from 'immer';
 import {takeLatest} from 'redux-saga/effects';
 import createRequestSaga, {
@@ -10,6 +10,14 @@ import * as authAPI from '../lib/api';
 const SET_LOGIN_STATE = 'auth/SET_LOGIN_STATE';
 const INITIALIZE_FORM = 'auth/INITIALIZE_FORM';
 const CHANGE_FIELD = 'auth/CHANGE_FIELD';
+
+const AUTH_EMAIL_INITIALIZE = 'auth/AUTH_EMAIL_INITIALIZE';
+const CONFIRM_AUTH_EMAIL_INITIALIZE = 'auth/CONFIRM_AUTH_EMAIL_INITIALIZE';
+const PASSWORD_EMAIL_AUTH_INITIALIZE = 'auth/PASSWORD_EMAIL_AUTH_INITIALIZE';
+const PASSWORD_CHANGE_INITIALIZE = 'auth/PASSWORD_CHANGE_INITIALIZE';
+const EMAIL_VALID_STATUS = 'auth/EMAIL_VALID_STATUS';
+
+//API액션
 const [REGISTER, REGISTER_SUCCESS, REGISTER_FAILURE] = createRequestActionTypes(
   'auth/REGISTER',
 );
@@ -22,13 +30,20 @@ const [
   SEND_AUTH_EMAIL_FAILURE,
 ] = createRequestActionTypes('auth/SEND_AUTH_EMAIL');
 const [
+  SEND_AUTH_EMAIL_FOR_PASSWORD_CHANGE,
+  SEND_AUTH_EMAIL_FOR_PASSWORD_CHANGE_SUCCESS,
+  SEND_AUTH_EMAIL_FOR_PASSWORD_CHANGE_FAILURE,
+] = createRequestActionTypes('auth/SEND_AUTH_EMAIL_FOR_PASSWORD_CHANGE');
+const [
+  CHANGE_PASSWORD,
+  CHANGE_PASSWORD_SUCCESS,
+  CHANGE_PASSWORD_FAILURE,
+] = createRequestActionTypes('auth/CHANGE_PASSWORD');
+const [
   CONFIRM_AUTH_EMAIL,
   CONFIRM_AUTH_EMAIL_SUCCESS,
   CONFIRM_AUTH_EMAIL_FAILURE,
 ] = createRequestActionTypes('auth/CONFIRM_AUTH_EMAIL');
-const AUTH_EMAIL_INITIALIZE = 'auth/AUTH_EMAIL_INITIALIZE';
-const CONFIRM_AUTH_EMAIL_INITIALIZE = 'auth/CONFIRM_AUTH_EMAIL_INITIALIZE';
-const EMAIL_VALID_STATUS = 'auth/EMAIL_VALID_STATUS';
 
 //액션 함수 생성
 export const setLoginState = createAction(
@@ -41,6 +56,19 @@ export const changeField = createAction(CHANGE_FIELD, ({form, key, value}) => ({
   value, // 실제 바꾸려는 값
 }));
 export const initializeForm = createAction(INITIALIZE_FORM, (form) => form);
+export const authEmailInitialize = createAction(AUTH_EMAIL_INITIALIZE);
+export const confirmAuthEmailInitialize = createAction(
+  CONFIRM_AUTH_EMAIL_INITIALIZE,
+);
+export const passwordChangeInitialize = createAction(
+  PASSWORD_CHANGE_INITIALIZE,
+);
+export const emailValidstatus = createAction(EMAIL_VALID_STATUS);
+export const passwordEmailAuthInitialize = createAction(
+  PASSWORD_EMAIL_AUTH_INITIALIZE,
+);
+
+//API 액션 함수
 export const register = createAction(
   REGISTER,
   ({
@@ -75,11 +103,19 @@ export const confirmAuthEmail = createAction(
     code,
   }),
 );
-export const authEmailInitialize = createAction(AUTH_EMAIL_INITIALIZE);
-export const confirmAuthEmailInitialize = createAction(
-  CONFIRM_AUTH_EMAIL_INITIALIZE,
+export const sendAuthEmailForPasswordChange = createAction(
+  SEND_AUTH_EMAIL_FOR_PASSWORD_CHANGE,
+  ({email}) => ({
+    email,
+  }),
 );
-export const emailValidstatus = createAction(EMAIL_VALID_STATUS);
+export const changePassword = createAction(
+  CHANGE_PASSWORD,
+  ({email, password}) => ({
+    email,
+    password,
+  }),
+);
 
 const registerSaga = createRequestSaga(REGISTER, authAPI.register);
 const loginSaga = createRequestSaga(LOGIN, authAPI.login);
@@ -91,12 +127,25 @@ const confirmAuthEmailSaga = createRequestSaga(
   CONFIRM_AUTH_EMAIL,
   authAPI.confirmAuthEmail,
 );
+const sendAuthEmailForPasswordChangeSaga = createRequestSaga(
+  SEND_AUTH_EMAIL_FOR_PASSWORD_CHANGE,
+  authAPI.sendAuthEmailForPasswordChange,
+);
+const changePasswordSaga = createRequestSaga(
+  CHANGE_PASSWORD,
+  authAPI.changePassword,
+);
 
 export function* authSaga() {
   yield takeLatest(REGISTER, registerSaga);
   yield takeLatest(LOGIN, loginSaga);
   yield takeLatest(SEND_AUTH_EMAIL, sendAuthEmailSaga);
   yield takeLatest(CONFIRM_AUTH_EMAIL, confirmAuthEmailSaga);
+  yield takeLatest(
+    SEND_AUTH_EMAIL_FOR_PASSWORD_CHANGE,
+    sendAuthEmailForPasswordChangeSaga,
+  );
+  yield takeLatest(CHANGE_PASSWORD, changePasswordSaga);
 }
 
 const initialState = {
@@ -117,6 +166,12 @@ const initialState = {
     email: '',
     password: '',
   },
+  forgetPassword: {
+    email: '',
+    password: '',
+    passwordConfirm: '',
+    code: '',
+  },
   auth: null,
   authError: null,
 
@@ -125,6 +180,12 @@ const initialState = {
 
   confirmEmail: null,
   confirmEmailError: null,
+
+  passwordEmailAuth: null,
+  passwordEmailAuthError: null,
+
+  passwordChange: null,
+  passwordChangeError: null,
 
   isEmailvalided: false,
 };
@@ -197,10 +258,49 @@ const auth = handleActions(
       ...state,
       confirmEmailError: error,
     }),
+    // 비밀번호 찾기 모달에서 이메일 인증하기 성공
+    [SEND_AUTH_EMAIL_FOR_PASSWORD_CHANGE_SUCCESS]: (
+      state,
+      {payload: passwordEmailAuth},
+    ) => ({
+      ...state,
+      passwordEmailAuthError: null,
+      passwordEmailAuth,
+    }),
+    // 비밀번호 찾기 모달에서 이메일 인증하기 실패
+    [SEND_AUTH_EMAIL_FOR_PASSWORD_CHANGE_FAILURE]: (
+      state,
+      {payload: error},
+    ) => ({
+      ...state,
+      passwordEmailAuthError: error,
+    }),
+    // 비밀번호 변경 성공
+    [CHANGE_PASSWORD_SUCCESS]: (state, {payload: passwordChange}) => ({
+      ...state,
+      passwordChangeError: null,
+      passwordChange,
+    }),
+    // 비밀번호 변경 실패
+    [CHANGE_PASSWORD_FAILURE]: (state, {payload: error}) => ({
+      ...state,
+      passwordChangeError: error,
+    }),
+    [PASSWORD_EMAIL_AUTH_INITIALIZE]: (
+      state,
+      {payload: passwordEmailAuth},
+    ) => ({
+      ...state,
+      passwordEmailAuth,
+    }),
     // 이메일인증 보내기 완료후 confirmEmail이 ''이 되고 성공했다는 Alert후 다시 null로 초기화 하려고
     [CONFIRM_AUTH_EMAIL_INITIALIZE]: (state, {payload: confirmEmail}) => ({
       ...state,
       confirmEmail,
+    }),
+    [PASSWORD_CHANGE_INITIALIZE]: (state, {payload: passwordChange}) => ({
+      ...state,
+      passwordChange,
     }),
     [EMAIL_VALID_STATUS]: (state, {payload: {form, value}}) =>
       produce(state, (draft) => {

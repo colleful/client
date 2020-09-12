@@ -147,7 +147,6 @@ const RegisterContainer = ({navigation}) => {
       })
     );
   };
-
   const onSendAuthEmail = () => {
     const { email } = form;
     dispatch(sendAuthEmail({ email }));
@@ -194,11 +193,10 @@ const RegisterContainer = ({navigation}) => {
     dispatch(initializeForm('register'));
   }, [dispatch]);
 
-
   useEffect(() => {
     if(authError) {
       if(authError.response.status === 500) {
-        Alert.alert('회원가입 실패', '이미 회원가입을 했거나 이미 존재하는 닉네임입니다', [
+        Alert.alert('회원가입 실패', `${authError.response.data.message}`, [
           { text: '확인', onPress:() => console.log('확인 버튼 클릭됨')},
         ])
         // setError('이미 존재하는 계정명입니다.');
@@ -211,14 +209,14 @@ const RegisterContainer = ({navigation}) => {
     if(auth) {
       console.log('회원가입 성공');
       console.log(auth);
-      Alert.alert('회원가입 완료', '축하합니다! 회원가입이 완료되었습니다', [
+      Alert.alert('회원가입 완료', '회원가입을 완료했습니다', [
         { text: '확인', onPress:() => navigation.navigate('LoginContainer')},
       ])
     }
     if(emailAuthError) {
-      if(emailAuthError.response.status === 500) {
-        Alert.alert('이메일 인증 보내기 실패', '이메일 인증 발송오류', [
-          { text: '확인', onPress:() => console.log('완료 버튼 클릭됨')},
+      if(emailAuthError.response.status === 409) {
+        Alert.alert('이메일 인증 보내기 실패', `${emailAuthError.response.data.message}`, [
+          { text: '확인', onPress:() => console.log(emailAuthError.response.data.message)},
         ])
         return;
       }
@@ -228,7 +226,7 @@ const RegisterContainer = ({navigation}) => {
     }
     if(emailAuth === '') {
       console.log('이메일인증 보내기 성공');
-      Alert.alert('이메일 인증 보내기 성공', '메일함을 확인하시고 해당 인증번호를 적어주세요', [
+      Alert.alert('이메일 인증 보내기 성공', '인증번호를 전송 했습니다. 메일함을 확인하고 인증번호를 입력해주세요', [
         { text: '확인', onPress:() => console.log('완료 버튼 클릭됨')},
       ])
       dispatch(authEmailInitialize(null));
@@ -236,7 +234,7 @@ const RegisterContainer = ({navigation}) => {
     }
     if(confirmEmailError) {
       if(confirmEmailError.response.status === 500) {
-        Alert.alert('이메일 인증 실패', '인증번호를 다시 입력해주세요', [
+        Alert.alert('이메일 인증 실패', `${confirmEmailError.response.data.message}`, [
           { text: '확인', onPress:() => console.log('완료 버튼 클릭됨')},
         ])
         return;
@@ -247,7 +245,7 @@ const RegisterContainer = ({navigation}) => {
     }
     if(confirmEmail === '') {
       console.log('이메일 인증 성공');
-      Alert.alert('이메일 인증 성공', '이메일 인증에 성공하셨습니다! 이어서 작성해주세요~', [
+      Alert.alert('이메일 인증 성공', '이메일 인증에 성공했습니다', [
         { text: '확인', onPress:() => console.log('완료 버튼 클릭됨')},
       ])
       dispatch(emailValidstatus({form: 'isEmailvalided', value: true}));

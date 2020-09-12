@@ -7,7 +7,7 @@ import {Config} from '../../Config';
 
 //여긴 가독성이 너무 심하게 떨어져서 prettier 일단 적용 안했음. 어차피 디자인 바뀌면 inline-style 다 바꿀 예정이라
 
-const RegisterScreen = ({navigation,form,getDepartmentId,getGender,getBirthYear,onSendAuthEmail, onCreateAddress, onChangeEmail, onChangePassword, onChangePasswordConfirm, onChangeNickname, onChangeBirthYear, onChangeGender, onChangeDepartmentId, onChangeSelfIntroduction,onChangeCode,onConfirmAuthEmail, onSubmitRegister, error}) => {
+const RegisterScreen = ({form,getDepartmentId,getGender,getBirthYear,onSendAuthEmail, onCreateAddress, onChangeEmail, onChangePassword, onChangePasswordConfirm, onChangeNickname, onChangeBirthYear, onChangeGender, onChangeDepartmentId, onChangeSelfIntroduction,onChangeCode,onConfirmAuthEmail, onSubmitRegister, error}) => {
   let today = new Date().getFullYear();
   let yearData = [];
   let collegeList = [];

@@ -79,7 +79,7 @@ const ModalFilter = ({
                 );
               })}
             </Picker>
-            <View style={{alignItems:"center", }}>
+            <View style={{alignItems:"center"}}>
               <View style={{width: 60 }}>
                 <Button title="적용" onPress={onToggleModal} color="#00C831" />
               </View>
