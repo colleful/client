@@ -26,11 +26,12 @@ const LoginContainer = ({navigation}) => {
       changeField({
         form: 'login',
         key: 'email',
-        value: text
-        // (text.includes('@jbnu.ac.kr@jbnu.ac.kr') ? text.slice(0,-11) : text) === '@jbnu.ac.kr' ? '' : text    // TODO
+        value: text === '@jbnu.ac.kr' ? '' : text
       })
     );
   };
+
+  //비밀번호 찾기에서도 하려면 form: 'forgetPassword'
 
   const onChangeLoginEmail = (e) => {
     const {text} = e.nativeEvent;
@@ -179,7 +180,13 @@ const LoginContainer = ({navigation}) => {
           { text: '확인', onPress:() => console.log('완료 버튼 클릭됨')},
         ])
         return;
+      } else if(passwordEmailAuthError.response.status === 404) {
+        Alert.alert('이메일 인증 보내기 실패','학교 웹메일만 인증 가능합니다', [
+          { text: '확인', onPress:() => console.log('완료 버튼 클릭됨')},
+        ])
+        return;
       }
+
       console.log('이메일인증 보내기 실패');
       console.log(passwordEmailAuthError);
       return;

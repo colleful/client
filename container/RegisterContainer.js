@@ -23,7 +23,7 @@ const RegisterContainer = ({navigation}) => {
       changeField({
         form: 'register',
         key: 'email',
-        value: text.includes('@jbnu.ac.kr@jbnu.ac.kr') ? text.slice(0,-11) : text 
+        value: text === '@jbnu.ac.kr' ? '' : text
       })
     );
   };
