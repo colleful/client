@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
 const SplashScreen = ({navigation}) => {
+  const [loading, setLoading] = useState(true);
   return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: "green"}}>
+    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       <TouchableOpacity
         style={{
           flexDirection: 'row',
