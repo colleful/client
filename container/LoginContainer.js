@@ -1,19 +1,19 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
-import {changeField, initializeForm, login, setLoginState, sendAuthEmailForPasswordChange, emailValidstatus, changePassword, confirmAuthEmail, confirmAuthEmailInitialize, passwordEmailAuthInitialize, passwordChangeInitialize} from '../modules/auth';
+import {changeField, initializeForm, login, setLoginState, sendAuthEmailForPasswordChange, emailValidstatus, changePassword, confirmPasswordAuthEmail, confirmPasswordAuthEmailInitialize, passwordEmailAuthInitialize, passwordChangeInitialize} from '../modules/auth';
 import LoginScreen from '../screens/auth/LoginScreen';
 import {Alert, AsyncStorage} from 'react-native';
 // import AsyncStorage from '@react-native-community/async-storage';
 // import * as Keychain from 'react-native-keychain';   오토링크문제 해결되면 추후에 적용 할 예정
 
 const LoginContainer = ({navigation}) => {
-  const { form, forgetPassword, auth, authError, confirmEmail, confirmEmailError, passwordEmailAuth, passwordEmailAuthError, passwordChange, passwordChangeError} = useSelector(({auth}) => ({
+  const { form, forgetPassword, auth, authError, passwordConfirmEmail, passwordConfirmEmailError, passwordEmailAuth, passwordEmailAuthError, passwordChange, passwordChangeError} = useSelector(({auth}) => ({
     form: auth.login,
     forgetPassword: auth.forgetPassword,
     auth: auth.auth,
     authError: auth.authError,
-    confirmEmail: auth.confirmEmail,
-    confirmEmailError: auth.confirmEmailError,
+    passwordConfirmEmail: auth.passwordConfirmEmail,
+    passwordConfirmEmailError: auth.passwordConfirmEmailError,
     passwordEmailAuth: auth.passwordEmailAuth,
     passwordEmailAuthError: auth.passwordEmailAuthError,
     passwordChange: auth.passwordChange,
@@ -30,7 +30,6 @@ const LoginContainer = ({navigation}) => {
       })
     );
   };
-
   //비밀번호 찾기에서도 하려면 form: 'forgetPassword'
 
   const onChangeLoginEmail = (e) => {
@@ -102,38 +101,38 @@ const LoginContainer = ({navigation}) => {
 
   const onConfirmAuthEmail = () => {
     const { email,code } = forgetPassword;
-    dispatch(confirmAuthEmail({ email,code }));
+    dispatch(confirmPasswordAuthEmail({ email,code }));
   }
 
   const onSubmitLogin = () => {
     const {email, password} = form;
     if ([email].includes('')) {
       Alert.alert('로그인 실패', '아이디를 입력해주세요', [
-        {text: '확인', onPress: () => console.log('확인버튼 클릭됨')},
+        {text: '확인', onPress: () => console.log('로그인 실패')},
       ]);
       return;
     }
     if ([password].includes('')) {
       Alert.alert('로그인 실패', '비밀번호를 입력해주세요', [
-        {text: '확인', onPress: () => console.log('확인버튼 클릭됨')},
+        {text: '확인', onPress: () => console.log('로그인 실패')},
       ]);
       return;
     }
     dispatch(login({email, password}));
-    dispatch(emailValidstatus({form: 'isEmailvalided', value: false}));
+    dispatch(emailValidstatus({form: 'isEmailvalidedAtPasswordFind', value: false}));
   };
 
   const onSubmitChangePassword = () => {
     const {email, password, passwordConfirm} = forgetPassword;
     if([password].includes('')) {
       Alert.alert('비밀번호 변경 실패', '비밀번호를 입력해주세요', [
-        {text: '확인', onPress: () => console.log('확인버튼 클릭됨')},
+        {text: '확인', onPress: () => console.log('비밀번호 변경 실패')},
       ]);
       return;
     }
     if (password !== passwordConfirm) {
       Alert.alert('비밀번호 변경 실패', '비밀번호가 일치하지 않습니다. 다시 입력해주세요.', [
-        { text: '확인', onPress:() => console.log('확인 버튼 클릭됨')},
+        { text: '확인', onPress:() => console.log('비밀번호 불일치')},
       ])
       dispatch(changeField({ form: 'forgetPassword', key: 'password', value: '' }));
       dispatch(changeField({ form: 'forgetPassword', key: 'passwordConfirm', value: '' }));
@@ -149,16 +148,22 @@ const LoginContainer = ({navigation}) => {
     }
   };
 
-  // 컴포넌트가 처음 렌더링 될 때 form 을 초기화함
   useEffect(() => {
+    // AsyncStorage.clear();
     dispatch(initializeForm('login'));
     dispatch(initializeForm('forgetPassword'));
   }, [dispatch]);
 
   useEffect(() => {
     if (authError) {
-      if (authError.response.status === 500) {
-        //아이디 및 비밀번호가 틀렸을때
+      if (authError.response.status === 409) {
+        //비밀번호가 틀렸을때
+        Alert.alert('로그인 오류', `${authError.response.data.message}`, [
+          {text: '확인', onPress: console.log('아이디 비밀번호 입력오류')},
+        ]);
+        return;
+      } else if(authError.response.status === 404) {
+        //아이디가 틀렸을때
         Alert.alert('로그인 오류', `${authError.response.data.message}`, [
           {text: '확인', onPress: console.log('아이디 비밀번호 입력오류')},
         ]);
@@ -168,25 +173,26 @@ const LoginContainer = ({navigation}) => {
       console.log(authError);
       return;
     }
-    if (auth) {
-      console.log('로그인 성공');
-      storeData(auth.token); // auth === response.data
-      dispatch(setLoginState(true));
-      dispatch(initializeForm('auth'));
+    if(auth){
+      if (auth.hasOwnProperty('token')) { // auth.hasOwnProperty('token') 해준이유 : auth를 공용자원으로 사용중, 회원가입하면 login의 auth까지 사용돼서 여기에 씀. 위 if문에 && 연산자로 같이 쓰면 이미 hasOwnProperty는 null이 되기떄문에 안됨 
+        console.log('로그인 성공');
+        storeData(auth.token); // auth === response.data
+        dispatch(setLoginState(true));
+        dispatch(initializeForm('auth'));
+      }
     }
     if(passwordEmailAuthError) {
       if(passwordEmailAuthError.response.status === 409) {
         Alert.alert('이메일 인증 보내기 실패',`${passwordEmailAuthError.message}`, [
-          { text: '확인', onPress:() => console.log('완료 버튼 클릭됨')},
+          { text: '확인', onPress:() => console.log('이메일 인증 보내기 실패')},
         ])
         return;
       } else if(passwordEmailAuthError.response.status === 404) {
-        Alert.alert('이메일 인증 보내기 실패','학교 웹메일만 인증 가능합니다', [
-          { text: '확인', onPress:() => console.log('완료 버튼 클릭됨')},
+        Alert.alert('이메일 인증 보내기 실패',`${passwordEmailAuthError.message}`, [
+          { text: '확인', onPress:() => console.log('이메일 인증 보내기 실패(학교 웹메일만 인증 가능)')},
         ])
         return;
       }
-
       console.log('이메일인증 보내기 실패');
       console.log(passwordEmailAuthError);
       return;
@@ -199,29 +205,34 @@ const LoginContainer = ({navigation}) => {
       ])
       return;
     }
-    if(confirmEmailError) {
-      if(confirmEmailError.response.status === 409) {
-        Alert.alert('이메일 인증 실패', `${confirmEmailError.response.data.message}`, [
-          { text: '확인', onPress:() => console.log('완료 버튼 클릭됨')},
+    if(passwordConfirmEmailError) {
+      if(passwordConfirmEmailError.response.status === 409) {
+        Alert.alert('이메일 인증 실패', `${passwordConfirmEmailError.response.data.message}`, [
+          { text: '확인', onPress:() => console.log('비밀번호 찾기 이메일 인증 확인 실패')},
         ])
         return;
       }
-      console.log('이메일인증 실패');
-      console.log(confirmEmailError);
+      console.log('비밀번호 찾기 이메일 인증 확인 실패');
+      console.log(passwordConfirmEmailError);
       return;
     }
-    if(confirmEmail === '') {
+    if(passwordConfirmEmail === '') {
       console.log('이메일 인증 성공');
       Alert.alert('이메일 인증 성공', '이메일 인증에 성공했습니다. 변경할 비밀번호를 입력해주세요', [
-        { text: '확인', onPress:() => dispatch(emailValidstatus({form: 'isEmailvalided', value: true}))},
+        { text: '확인', onPress:() => dispatch(emailValidstatus({form: 'isEmailvalidedAtPasswordFind', value: true}))},
       ])
-      dispatch(confirmAuthEmailInitialize(null));
+      dispatch(confirmPasswordAuthEmailInitialize(null));
       return;
     }
     if(passwordChangeError) {
-      if(passwordChangeError.response.status === 500 || passwordChangeError.response.status === 401) {
+      if(passwordChangeError.response.status === 500) {
         Alert.alert('비밀번호 변경 실패', `${passwordChangeError.response.data.message}`, [
-          { text: '확인', onPress:() => console.log('완료 버튼 클릭됨')},
+          { text: '확인', onPress:() => console.log('비밀번호 변경 실패')},
+        ])
+        return;
+      } else if(passwordChangeError.response.status === 401) {
+        Alert.alert('비밀번호 변경 실패', `${passwordChangeError.response.data.message}`, [
+          { text: '확인', onPress:() => console.log('비밀번호 변경 실패')},
         ])
         return;
       }
@@ -233,12 +244,12 @@ const LoginContainer = ({navigation}) => {
     if(passwordChange === '') {
       console.log('비밀번호 변경 성공');
       Alert.alert('비밀번호 변경 성공', '비밀번호가 정상적으로 변경되었습니다', [
-        { text: '확인', onPress:() => console.log("비밀번호 변경")}, // TODO : 로그인창으로 가게끔 구현 
+        { text: '확인', onPress:() => console.log("비밀번호 변경 성공")},
       ])
       dispatch(passwordChangeInitialize(null));
     }
 
-  }, [auth, authError, confirmEmail, confirmEmailError, passwordEmailAuth, passwordEmailAuthError, passwordChange, passwordChangeError, dispatch]);
+  }, [auth, authError, passwordConfirmEmail, passwordConfirmEmailError, passwordEmailAuth, passwordEmailAuthError, passwordChange, passwordChangeError, dispatch]);
 
   return (
     <LoginScreen

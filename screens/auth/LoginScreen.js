@@ -1,5 +1,12 @@
 import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, TextInput, Button, ActivityIndicator} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  TextInput,
+  Button,
+  ActivityIndicator,
+} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modal';
 import {useSelector} from 'react-redux';
@@ -27,7 +34,7 @@ const LoginScreen = ({
     isEmailvalided: auth.isEmailvalided,
   }));
   const {isLoading} = useSelector(({loading}) => ({
-    isLoading: loading.isLoading
+    isLoading: loading.isLoading,
   }));
 
   const visibleText = () => {
@@ -103,7 +110,7 @@ const LoginScreen = ({
               borderRadius: 5,
               opacity: 0.5,
               width: 220,
-              paddingLeft: 10,
+              paddingLeft: 15,
               marginHorizontal: 10,
             }}
             secureTextEntry
@@ -225,7 +232,10 @@ const LoginScreen = ({
                   />
                   <Button
                     title="변경하기"
-                    onPress={onSubmitChangePassword}
+                    onPress={() => {
+                      onSubmitChangePassword;
+                      toggleModal; //변경하기후에 나가지지 않으면 지우기
+                    }}
                     color="#00C831"
                   />
                 </View>

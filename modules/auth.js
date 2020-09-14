@@ -1,4 +1,4 @@
-import {createAction, createActions, handleActions} from 'redux-actions';
+import {createAction, handleActions} from 'redux-actions';
 import produce from 'immer';
 import {takeLatest} from 'redux-saga/effects';
 import createRequestSaga, {
@@ -13,6 +13,8 @@ const CHANGE_FIELD = 'auth/CHANGE_FIELD';
 
 const AUTH_EMAIL_INITIALIZE = 'auth/AUTH_EMAIL_INITIALIZE';
 const CONFIRM_AUTH_EMAIL_INITIALIZE = 'auth/CONFIRM_AUTH_EMAIL_INITIALIZE';
+const CONFIRM_PASSWORD_AUTH_EMAIL_INITIALIZE =
+  'auth/CONFIRM_PASSWORD_AUTH_EMAIL_INITIALIZE';
 const PASSWORD_EMAIL_AUTH_INITIALIZE = 'auth/PASSWORD_EMAIL_AUTH_INITIALIZE';
 const PASSWORD_CHANGE_INITIALIZE = 'auth/PASSWORD_CHANGE_INITIALIZE';
 const EMAIL_VALID_STATUS = 'auth/EMAIL_VALID_STATUS';
@@ -44,6 +46,11 @@ const [
   CONFIRM_AUTH_EMAIL_SUCCESS,
   CONFIRM_AUTH_EMAIL_FAILURE,
 ] = createRequestActionTypes('auth/CONFIRM_AUTH_EMAIL');
+const [
+  CONFIRM_PASSWORD_AUTH_EMAIL,
+  CONFIRM_PASSWORD_AUTH_EMAIL_SUCCESS,
+  CONFIRM_PASSWORD_AUTH_EMAIL_FAILURE,
+] = createRequestActionTypes('auth/CONFIRM_PASSWORD_AUTH_EMAIL');
 
 //액션 함수 생성
 export const setLoginState = createAction(
@@ -59,6 +66,9 @@ export const initializeForm = createAction(INITIALIZE_FORM, (form) => form);
 export const authEmailInitialize = createAction(AUTH_EMAIL_INITIALIZE);
 export const confirmAuthEmailInitialize = createAction(
   CONFIRM_AUTH_EMAIL_INITIALIZE,
+);
+export const confirmPasswordAuthEmailInitialize = createAction(
+  CONFIRM_PASSWORD_AUTH_EMAIL_INITIALIZE,
 );
 export const passwordChangeInitialize = createAction(
   PASSWORD_CHANGE_INITIALIZE,
@@ -103,6 +113,13 @@ export const confirmAuthEmail = createAction(
     code,
   }),
 );
+export const confirmPasswordAuthEmail = createAction(
+  CONFIRM_PASSWORD_AUTH_EMAIL,
+  ({email, code}) => ({
+    email,
+    code,
+  }),
+);
 export const sendAuthEmailForPasswordChange = createAction(
   SEND_AUTH_EMAIL_FOR_PASSWORD_CHANGE,
   ({email}) => ({
@@ -127,6 +144,11 @@ const confirmAuthEmailSaga = createRequestSaga(
   CONFIRM_AUTH_EMAIL,
   authAPI.confirmAuthEmail,
 );
+const confirmPasswordAuthEmailSaga = createRequestSaga(
+  CONFIRM_PASSWORD_AUTH_EMAIL,
+  authAPI.confirmAuthEmail,
+);
+
 const sendAuthEmailForPasswordChangeSaga = createRequestSaga(
   SEND_AUTH_EMAIL_FOR_PASSWORD_CHANGE,
   authAPI.sendAuthEmailForPasswordChange,
@@ -141,6 +163,7 @@ export function* authSaga() {
   yield takeLatest(LOGIN, loginSaga);
   yield takeLatest(SEND_AUTH_EMAIL, sendAuthEmailSaga);
   yield takeLatest(CONFIRM_AUTH_EMAIL, confirmAuthEmailSaga);
+  yield takeLatest(CONFIRM_PASSWORD_AUTH_EMAIL, confirmPasswordAuthEmailSaga);
   yield takeLatest(
     SEND_AUTH_EMAIL_FOR_PASSWORD_CHANGE,
     sendAuthEmailForPasswordChangeSaga,
@@ -163,7 +186,7 @@ const initialState = {
     code: '',
   },
   login: {
-    email: '',
+    email: 'tkdqja4164@naver.com',
     password: '',
   },
   forgetPassword: {
@@ -175,19 +198,23 @@ const initialState = {
   auth: null,
   authError: null,
 
-  emailAuth: null,
+  emailAuth: null, // 회원가입용 이메일 인증 보내기 api 데이터
   emailAuthError: null,
 
-  confirmEmail: null,
+  confirmEmail: null, // 회원가입용 이메일 인증 확인 api 데이터
   confirmEmailError: null,
 
-  passwordEmailAuth: null,
+  passwordEmailAuth: null, // 비밀번호 찾기 이메일 인증 보내기 api 데이터
   passwordEmailAuthError: null,
 
-  passwordChange: null,
+  passwordConfirmEmail: null, // 비밀번호 찾기 이메일 인증 확인 api 데이터
+  passwordConfirmEmailError: null,
+
+  passwordChange: null, // 비밀번호 변경 api 데이터
   passwordChangeError: null,
 
-  isEmailvalided: false,
+  isEmailvalided: false, // 회원가입용 이메일 인증 했는지 (view mode)
+  isEmailvalidedAtPasswordFind: false, // 비밀번호 찾기 이메일 인증 했는지 (view mode) 
 };
 
 //리듀서
@@ -258,7 +285,21 @@ const auth = handleActions(
       ...state,
       confirmEmailError: error,
     }),
-    // 비밀번호 찾기 모달에서 이메일 인증하기 성공
+    // 비밀번호 찾기 이메일 인증하기 성공
+    [CONFIRM_PASSWORD_AUTH_EMAIL_SUCCESS]: (
+      state,
+      {payload: passwordConfirmEmail},
+    ) => ({
+      ...state,
+      passwordConfirmEmailError: null,
+      passwordConfirmEmail,
+    }),
+    // 비밀번호 찾기 이메일 인증하기 실패
+    [CONFIRM_PASSWORD_AUTH_EMAIL_FAILURE]: (state, {payload: error}) => ({
+      ...state,
+      passwordConfirmEmailError: error,
+    }),
+    // 비밀번호 찾기 이메일 인증번호 보내기 성공
     [SEND_AUTH_EMAIL_FOR_PASSWORD_CHANGE_SUCCESS]: (
       state,
       {payload: passwordEmailAuth},
@@ -267,7 +308,7 @@ const auth = handleActions(
       passwordEmailAuthError: null,
       passwordEmailAuth,
     }),
-    // 비밀번호 찾기 모달에서 이메일 인증하기 실패
+    // 비밀번호 찾기 이메일 인증번호 보내기 실패
     [SEND_AUTH_EMAIL_FOR_PASSWORD_CHANGE_FAILURE]: (
       state,
       {payload: error},
@@ -297,6 +338,13 @@ const auth = handleActions(
     [CONFIRM_AUTH_EMAIL_INITIALIZE]: (state, {payload: confirmEmail}) => ({
       ...state,
       confirmEmail,
+    }),
+    [CONFIRM_PASSWORD_AUTH_EMAIL_INITIALIZE]: (
+      state,
+      {payload: passwordConfirmEmail},
+    ) => ({
+      ...state,
+      passwordConfirmEmail,
     }),
     [PASSWORD_CHANGE_INITIALIZE]: (state, {payload: passwordChange}) => ({
       ...state,
