@@ -9,7 +9,8 @@ import {
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modal';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
+import {emailValidstatus} from '../../modules/auth';
 
 const LoginScreen = ({
   navigation,
@@ -30,8 +31,8 @@ const LoginScreen = ({
   const [isPasswordVisible, setPasswordVisible] = useState(true);
   const [isModalVisible, setModalVisible] = useState(false);
 
-  const {isEmailvalided} = useSelector(({auth}) => ({
-    isEmailvalided: auth.isEmailvalided,
+  const {isEmailvalidedAtPasswordFind} = useSelector(({auth}) => ({
+    isEmailvalidedAtPasswordFind: auth.isEmailvalidedAtPasswordFind,
   }));
   const {isLoading} = useSelector(({loading}) => ({
     isLoading: loading.isLoading,
@@ -50,6 +51,7 @@ const LoginScreen = ({
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
+  const dispatch = useDispatch();
   return (
     <>
       {isLoading && (
@@ -171,7 +173,7 @@ const LoginScreen = ({
                   borderBottomWidth: 0.5,
                   borderColor: 'gray',
                 }}>
-                {isEmailvalided ? (
+                {isEmailvalidedAtPasswordFind ? (
                   <Text style={{fontSize: 18}}>비밀번호 변경</Text>
                 ) : (
                   <>
@@ -181,7 +183,15 @@ const LoginScreen = ({
                 )}
               </View>
               <TouchableOpacity
-                onPress={toggleModal}
+                onPress={() => {
+                  toggleModal();
+                  dispatch(
+                    emailValidstatus({
+                      form: 'isEmailvalidedAtPasswordFind',
+                      value: false,
+                    }),
+                  );
+                }}
                 style={{
                   position: 'absolute',
                   bottom: 0,
@@ -191,7 +201,7 @@ const LoginScreen = ({
                 }}>
                 <Text>나가기</Text>
               </TouchableOpacity>
-              {isEmailvalided ? (
+              {isEmailvalidedAtPasswordFind ? (
                 <View
                   style={{
                     alignItems: 'center',
@@ -233,8 +243,8 @@ const LoginScreen = ({
                   <Button
                     title="변경하기"
                     onPress={() => {
-                      onSubmitChangePassword;
-                      toggleModal; //변경하기후에 나가지지 않으면 지우기
+                      onSubmitChangePassword();
+                      toggleModal(); //변경하기후에 나가지지 않으면 지우기
                     }}
                     color="#00C831"
                   />
