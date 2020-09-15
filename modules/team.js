@@ -1,5 +1,5 @@
 import {createAction, handleActions} from 'redux-actions';
-import * as api from '../lib/api';
+import * as authAPI from '../lib/api';
 
 //액션 타입 정의
 const GET_TEAM_PENDING = 'team/GET_TEAM_PENDING';
@@ -11,7 +11,7 @@ export const getTeam = () => async (dispatch) => {
   // 먼저, 요청이 시작했다는것을 알립니다
   dispatch({type: GET_TEAM_PENDING});
   try {
-    const response = await api.getTeam();
+    const response = await authAPI.getTeam();
     dispatch({
       type: GET_TEAM_SUCCESS,
       payload: response.data,

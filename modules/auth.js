@@ -186,7 +186,7 @@ const initialState = {
     code: '',
   },
   login: {
-    email: 'tkdqja4164@naver.com',
+    email: '',
     password: '',
   },
   forgetPassword: {

@@ -106,15 +106,21 @@ const LoginContainer = ({navigation}) => {
 
   const onSubmitLogin = () => {
     const {email, password} = form;
-    if ([email].includes('')) {
+    if (email.includes('')) {
       Alert.alert('로그인 실패', '아이디를 입력해주세요', [
-        {text: '확인', onPress: () => console.log('로그인 실패')},
+        {text: '확인', onPress: () => console.log('아이디 입력하지않음')},
       ]);
       return;
     }
-    if ([password].includes('')) {
+    if (!email.includes('@jbnu.ac.kr')) {
+      Alert.alert('로그인 실패', '올바르지 않은 주소입니다', [
+        {text: '확인', onPress: () => console.log('주소가 @jbnu.ac.kr이 아님')},
+      ]);
+      return;
+    }
+    if (password.includes('')) {
       Alert.alert('로그인 실패', '비밀번호를 입력해주세요', [
-        {text: '확인', onPress: () => console.log('로그인 실패')},
+        {text: '확인', onPress: () => console.log('비밀번호 입력하지않음')},
       ]);
       return;
     }
@@ -124,7 +130,7 @@ const LoginContainer = ({navigation}) => {
 
   const onSubmitChangePassword = () => {
     const {email, password, passwordConfirm} = forgetPassword;
-    if([password].includes('')) {
+    if(password.includes('')) {
       Alert.alert('비밀번호 변경 실패', '비밀번호를 입력해주세요', [
         {text: '확인', onPress: () => console.log('비밀번호 변경 실패')},
       ]);
@@ -149,7 +155,6 @@ const LoginContainer = ({navigation}) => {
   };
 
   useEffect(() => {
-    // AsyncStorage.clear();
     dispatch(initializeForm('login'));
     dispatch(initializeForm('forgetPassword'));
   }, [dispatch]);
@@ -159,13 +164,13 @@ const LoginContainer = ({navigation}) => {
       if (authError.response.status === 409) {
         //비밀번호가 틀렸을때
         Alert.alert('로그인 오류', `${authError.response.data.message}`, [
-          {text: '확인', onPress: console.log('아이디 비밀번호 입력오류')},
+          {text: '확인', onPress: console.log('비밀번호 불일치 오류')},
         ]);
         return;
       } else if(authError.response.status === 404) {
-        //아이디가 틀렸을때
+        //가입되지 않은 유저
         Alert.alert('로그인 오류', `${authError.response.data.message}`, [
-          {text: '확인', onPress: console.log('아이디 비밀번호 입력오류')},
+          {text: '확인', onPress: console.log('가입되지 않은 유저')},
         ]);
         return;
       }
