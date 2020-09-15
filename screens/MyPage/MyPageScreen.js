@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -9,21 +9,19 @@ import {
 } from 'react-native';
 import MyPageNavList from './MyPageNavList';
 import {useDispatch} from 'react-redux';
-import {setLoginState, initializeForm} from '../../modules/auth';
-import axios from 'axios';
-import {Config} from '../../Config';
+import {setLoginState} from '../../modules/auth';
+import * as authAPI from '../../lib/api';
 
 const MyPageScreen = ({navigation}) => {
   const dispatch = useDispatch();
-
   const DeleteUser = async () => {
     try {
-      const response = await axios.delete(`${Config.baseUrl}/api/users`, {
+      const response = await authAPI.deleteUser({
         headers: {
           'Access-Token': await AsyncStorage.getItem('token'),
         },
       });
-      Alert.alert('계정 삭제', '회원 탈퇴를 정상적으로 처리했습니다.', [
+      Alert.alert('회원 탈퇴', '회원 탈퇴를 정상적으로 처리했습니다.', [
         {
           text: '확인',
         },
@@ -33,7 +31,6 @@ const MyPageScreen = ({navigation}) => {
       console.log(error);
     }
   };
-
   return (
     <View style={{flex: 1, backgroundColor: '#fafafa'}}>
       <View
@@ -78,7 +75,11 @@ const MyPageScreen = ({navigation}) => {
                 {
                   text: '확인',
                   onPress: () => {
-                    AsyncStorage.removeItem('token');
+                    console.log('회원 탈퇴');
+                    DeleteUser();
+                    setTimeout(() => {
+                      AsyncStorage.removeItem('token');
+                    }, 2000);
                     dispatch(setLoginState(false)); // dispatch로 token값 변경하면 구독한 listener(SwitchNavigator)에 가서 바뀐 token값을 변경
                   },
                 },
@@ -102,7 +103,6 @@ const MyPageScreen = ({navigation}) => {
                 {
                   text: '확인',
                   onPress: () => {
-                    console.log('회원 탈퇴');
                     DeleteUser();
                     setTimeout(() => {
                       AsyncStorage.removeItem('token');
