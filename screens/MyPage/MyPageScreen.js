@@ -1,19 +1,20 @@
-import React from 'react';
-import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  AsyncStorage,
-  Alert,
-} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View, Text, Image, TouchableOpacity, Alert} from 'react-native';
 import MyPageNavList from './MyPageNavList';
 import {useDispatch} from 'react-redux';
 import {setLoginState} from '../../modules/auth';
+import MyPageInfo from './MyPageInfo';
+import AsyncStorage from '@react-native-community/async-storage';
 import * as authAPI from '../../lib/api';
 
-const MyPageScreen = ({navigation}) => {
+const MyPageScreen = ({navigation, myInfoData}) => {
   const dispatch = useDispatch();
+  const [myInfo, setMyInfo] = useState();
+
+  useEffect(() => {
+    setMyInfo(myInfoData);
+  }, []);
+
   const DeleteUser = async () => {
     try {
       const response = await authAPI.deleteUser({
@@ -31,6 +32,7 @@ const MyPageScreen = ({navigation}) => {
       console.log(error);
     }
   };
+
   return (
     <View style={{flex: 1, backgroundColor: '#fafafa'}}>
       <View
@@ -53,12 +55,8 @@ const MyPageScreen = ({navigation}) => {
             justifyContent: 'space-between',
             flexDirection: 'row',
           }}>
-          <View>
-            <Text style={{fontSize: 18, marginBottom: 5}}>박상범</Text>
-            <Text style={{fontSize: 14, color: 'gray', opacity: 0.7}}>
-              남 {'/'} 25 공과대학
-            </Text>
-          </View>
+          <MyPageInfo myInfo={myInfoData} />
+
           <TouchableOpacity
             style={{
               justifyContent: 'center',
@@ -75,11 +73,7 @@ const MyPageScreen = ({navigation}) => {
                 {
                   text: '확인',
                   onPress: () => {
-                    console.log('회원 탈퇴');
-                    DeleteUser();
-                    setTimeout(() => {
-                      AsyncStorage.removeItem('token');
-                    }, 2000);
+                    AsyncStorage.removeItem('token');
                     dispatch(setLoginState(false)); // dispatch로 token값 변경하면 구독한 listener(SwitchNavigator)에 가서 바뀐 token값을 변경
                   },
                 },
@@ -107,7 +101,7 @@ const MyPageScreen = ({navigation}) => {
                     setTimeout(() => {
                       AsyncStorage.removeItem('token');
                     }, 2000);
-                    dispatch(setLoginState(false)); // dispatch로 token값 변경하면 구독한 listener(SwitchNavigator)에 가서 바뀐 token값을 변경
+                    dispatch(setLoginState(false));
                   },
                 },
               ]);

@@ -242,8 +242,8 @@ const RegisterScreen = ({form,getDepartmentId,getGender,getBirthYear,onSendAuthE
             mode="dropdown"
             >
             <Picker.Item label="성별" />
-            <Picker.Item label="남자" value="FEMALE" />
-            <Picker.Item label="여자" value="MALE" />
+            <Picker.Item label="남자" value="MALE" />
+            <Picker.Item label="여자" value="FEMALE" />
           </Picker>
         </View>
 
