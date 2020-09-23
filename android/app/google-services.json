@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "986987109129",
+    "firebase_url": "https://colleful.firebaseio.com",
+    "project_id": "colleful",
+    "storage_bucket": "colleful.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:986987109129:android:23e0d06368a4c189f111d8",
+        "android_client_info": {
+          "package_name": "com.client"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "986987109129-jq8jgfai8d5nai9igbra2sq9u1nkh8nb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1yVLsd25gY7RnGD-VkA3ftGnZ4xosvds"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "986987109129-jq8jgfai8d5nai9igbra2sq9u1nkh8nb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
