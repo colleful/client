@@ -1,13 +1,36 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, TouchableOpacity, Alert} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import * as authAPI from '../../../lib/api';
 
-const TeamListItemScreen = ({teamInfo,setUpdate,update}) => {
-  return teamInfo.map((team,index) => <TeamListItem teamInfo={team} update={update} setUpdate={setUpdate} key={index} />);
+const TeamListItemScreen = ({
+  navigation,
+  teamInfo,
+  userId,
+  setUpdate,
+  update,
+}) => {
+  return teamInfo.map((team, index) => (
+    <TeamListItem
+      navigation={navigation}
+      teamInfo={team}
+      userId={userId}
+      update={update}
+      setUpdate={setUpdate}
+      key={index}
+    />
+  ));
 };
 
-const TeamListItem = ({teamInfo,setUpdate,update}) => {
+const TeamListItem = ({navigation, teamInfo, userId, setUpdate, update}) => {
+  const [isLeader, setLeader] = useState(false);
+
+  useEffect(() => {
+    if (userId === teamInfo.leaderId) {
+      setLeader(true);
+    }
+  }, []);
+
   const onDeleteTeam = async () => {
     try {
       const response = await authAPI.deleteTeam(teamInfo.id, {
@@ -37,25 +60,48 @@ const TeamListItem = ({teamInfo,setUpdate,update}) => {
           alignItems: 'center',
         }}>
         <Text style={{fontSize: 20}}>{teamInfo.teamName}</Text>
-        <TouchableOpacity
-          onPress={() => {
-            Alert.alert(
-              '팀 나가기',`정말 ${teamInfo.teamName} 팀을 나가시겠습니까?`,
-              [
-                {text: '취소', onPress: () => console.log('취소')},
-                {text: '확인', onPress: () => onDeleteTeam()},
-              ],
-            );
-          }}
-          style={{
-            backgroundColor: '#5e5e5e',
-            borderRadius: 5,
-            padding: 15,
-            paddingVertical: 10,
-            width: 80,
-          }}>
-          <Text style={{color: '#fff', fontWeight: '500'}}>팀 나가기</Text>
-        </TouchableOpacity>
+        <View style={{flexDirection: 'row'}}>
+          {isLeader ? (
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('팀초대', {
+                  teamId: teamInfo.id,
+                });
+              }}
+              style={{
+                backgroundColor: '#5e5e5e',
+                borderRadius: 5,
+                padding: 15,
+                paddingVertical: 10,
+                width: 70,
+                marginRight: 10,
+              }}>
+              <Text style={{color: '#fff', fontWeight: '500'}}>팀 초대</Text>
+            </TouchableOpacity>
+          ) : (
+            <></>
+          )}
+          <TouchableOpacity
+            onPress={() => {
+              Alert.alert(
+                '팀 나가기',
+                `정말 ${teamInfo.teamName} 팀을 나가시겠습니까?`,
+                [
+                  {text: '취소', onPress: () => console.log('취소')},
+                  {text: '확인', onPress: () => onDeleteTeam()},
+                ],
+              );
+            }}
+            style={{
+              backgroundColor: '#5e5e5e',
+              borderRadius: 5,
+              padding: 15,
+              paddingVertical: 10,
+              width: 80,
+            }}>
+            <Text style={{color: '#fff', fontWeight: '500'}}>팀 나가기</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </>
   );

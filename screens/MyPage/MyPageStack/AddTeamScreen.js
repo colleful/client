@@ -3,14 +3,15 @@ import {View, Text, TextInput, TouchableOpacity, Alert} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import * as authAPI from '../../../lib/api';
 
-const AddTeamScreen = ({navigation,setUpdate,update}) => {
+const AddTeamScreen = ({navigation, setUpdate, update}) => {
   const [teamName, setTeamName] = useState('');
   const [teamInfo, setTeamInfo] = useState('');
   const [teamInfoError, setTeamInfoError] = useState('');
 
   const onCreateTeam = async () => {
     try {
-      const response = await authAPI.createTeam({teamName: teamName},
+      const response = await authAPI.createTeam(
+        {teamName: teamName},
         {
           headers: {
             'Access-Token': await AsyncStorage.getItem('token'),
@@ -26,16 +27,31 @@ const AddTeamScreen = ({navigation,setUpdate,update}) => {
 
   useEffect(() => {
     if (teamInfo) {
-      Alert.alert('팀생성', '팀 생성을 완료하였습니다.', [
-        {text: '확인', onPress: () => {navigation.navigate('팀초대'); setUpdate(!update);}},
+      Alert.alert('완료', '팀 생성이 완료되었습니다. 이어서 팀 초대를 하시겠습니까? ( 나중에 팀목록 -> 팀초대로 팀을 초대할 수 있습니다 )', [
+        {
+          text: '팀 초대',
+          onPress: () => {
+            setUpdate(!update);
+            navigation.navigate('팀초대',{
+              teamId: teamInfo.id
+            });
+          },
+        },
+        {
+          text: '나가기',
+          onPress: () => {
+            setUpdate(!update);
+            navigation.goBack();
+          },
+        },
       ]);
     }
     if (teamInfoError) {
-      Alert.alert('팀생성 오류', `${teamInfoError.response.data.message}`, [
+      Alert.alert('팀생성 오류', '이미 존재하는 팀명입니다.', [
         {text: '확인', onPress: console.log('팀생성 오류')},
       ]);
     }
-  },[teamInfo,teamInfoError]);
+  }, [teamInfo, teamInfoError]);
 
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>

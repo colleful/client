@@ -10,6 +10,7 @@ import NoticeScreen from './MyPageStack/NoticeScreen';
 import SettingScreen from './MyPageStack/SettingScreen';
 import AddTeamScreen from './MyPageStack/AddTeamScreen';
 import InvitationScreen from './MyPageStack/InvitationScreen';
+import InvitationListScreen from './MyPageStack/InvitationListScreen';
 
 import AsyncStorage from '@react-native-community/async-storage';
 import * as authAPI from '../../lib/api';
@@ -57,6 +58,9 @@ const MypageNavigator = ({navigation}) => {
       <MyPageStack.Screen name="팀초대" component={InvitationScreen} />
       <MyPageStack.Screen name="팀목록">
         {(props) => <TeamListScreen {...props} navigation={navigation} myInfoData={myInfo} update={update} setUpdate={setUpdate} />}
+      </MyPageStack.Screen>
+      <MyPageStack.Screen name="받은초대목록">
+        {(props) => <InvitationListScreen {...props} navigation={navigation} />}
       </MyPageStack.Screen>
       <MyPageStack.Screen name="친구목록" component={FriendsListScreen} />
       <MyPageStack.Screen name="공지사항" component={NoticeScreen} />

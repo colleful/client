@@ -1,5 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, Image, TouchableOpacity, Alert} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  Alert,
+  ScrollView,
+} from 'react-native';
 import MyPageNavList from './MyPageNavList';
 import {useDispatch} from 'react-redux';
 import {setLoginState} from '../../modules/auth';
@@ -71,6 +78,12 @@ const MyPageScreen = ({navigation, myInfoData}) => {
             onPress={() => {
               Alert.alert('LOGOUT', '로그아웃 하시겠습니까?', [
                 {
+                  text: '취소',
+                  onPress: () => {
+                    console.log('취소');
+                  },
+                },
+                {
                   text: '확인',
                   onPress: () => {
                     AsyncStorage.removeItem('token');
@@ -95,6 +108,12 @@ const MyPageScreen = ({navigation, myInfoData}) => {
             onPress={() => {
               Alert.alert('회원 탈퇴', '정말 회원 탈퇴를 하시겠습니까?', [
                 {
+                  text: '취소',
+                  onPress: () => {
+                    console.log('취소');
+                  },
+                },
+                {
                   text: '확인',
                   onPress: () => {
                     DeleteUser();
@@ -110,7 +129,10 @@ const MyPageScreen = ({navigation, myInfoData}) => {
           </TouchableOpacity>
         </View>
       </View>
-      <MyPageNavList navigation={navigation} />
+      <ScrollView style={{maxHeight: 475}} showsVerticalScrollIndicator={false} > 
+      {/* maxHeight 대신 기기들마다 크기가 다르니까 tabbar의 크기를 변수화 시켜서 (폰의 높이 - tabbar의 크기) 로 바꾸기 */}
+        <MyPageNavList navigation={navigation} />
+      </ScrollView>
     </View>
   );
 };

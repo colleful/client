@@ -1,18 +1,29 @@
-import React, {useState} from 'react';
-import {View, Text, TextInput, TouchableOpacity} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Text, TextInput, TouchableOpacity, Alert} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import * as authAPI from '../../../lib/api';
 
-const InvitationScreen = () => {
+const InvitationScreen = ({route}) => {
+  const [userId, setUserId] = useState(); //id로 검색하기 (유저 이메일이나 닉네임으로 검색하기 api가 없어서 임시방편)
+  const [teamId, setTeamIds] = useState();
   const [userInfo, setUserInfo] = useState({
     nickname: '',
     age: '',
     gender: '',
   });
 
+  useEffect(() => {
+    setTeamIds(JSON.stringify(route.params.teamId));
+  }, []);
+
+  useEffect(() => {
+    console.log(userId);
+    console.log(teamId);
+  }, [userId, teamId]);
+
   const onGetUserInfo = async () => {
     try {
-      const response = await authAPI.getUserInfo(13, {
+      const response = await authAPI.getUserInfo(userId, {
         headers: {
           'Access-Token': await AsyncStorage.getItem('token'),
         },
@@ -23,13 +34,34 @@ const InvitationScreen = () => {
     }
   };
 
-  return (
-    <View style={{flex: 1, paddingHorizontal: 20}}>
-      <View style={{marginBottom: 40, marginTop: 20}}>
-        <Text style={{fontSize: 20}}>※ 맴버초대는 팀의 리더만 가능합니다</Text>
-        <Text style={{fontSize: 20}}>※ 팀 생성한 사람이 리더 입니다</Text>
-      </View>
+  const onInviteTeam = async () => {
+    try {
+      const res = await authAPI.inviteTeam(teamId, userId, {
+        headers: {
+          'Access-Token': await AsyncStorage.getItem('token'),
+        },
+      });
+      if (res.status === 200) {
+        Alert.alert(
+          '완료',
+          `${userInfo.nickname}님께 팀 초대 메세지를 보냈습니다`,
+          [
+            {
+              text: '확인',
+            },
+          ],
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
+  return (
+    <View style={{flex: 1, paddingTop: 100, paddingHorizontal: 20}}>
+      <View style={{marginBottom: 30}}>
+        <Text style={{fontSize: 32}}> 멤버 초대하기</Text>
+      </View>
       <View
         style={{
           flexDirection: 'row',
@@ -38,6 +70,7 @@ const InvitationScreen = () => {
         }}>
         <TextInput
           placeholder="초대할 멤버의 닉네임 입력"
+          onChangeText={(text) => setUserId(text)}
           style={{
             marginRight: 15,
             paddingLeft: 15,
@@ -68,6 +101,7 @@ const InvitationScreen = () => {
         <View
           style={{
             flexDirection: 'row',
+            justifyContent: 'space-between',
             alignItems: 'center',
             borderRadius: 10,
             marginBottom: 5,
@@ -80,6 +114,7 @@ const InvitationScreen = () => {
             {userInfo.gender === 'MALE' ? '남' : '여'}
           </Text>
           <TouchableOpacity
+            onPress={() => onInviteTeam()}
             style={{
               backgroundColor: '#5e5e5e',
               borderRadius: 5,
