@@ -53,7 +53,16 @@ const InvitationScreen = ({route}) => {
         );
       }
     } catch (error) {
-      console.log(error);
+      Alert.alert(
+        '에러발생',
+        `${error.response.data.message}`,
+        [
+          {
+            text: '확인',
+          },
+        ],
+      );
+      console.log({error});
     }
   };
 
@@ -133,3 +142,4 @@ const InvitationScreen = ({route}) => {
 };
 
 export default InvitationScreen;
+
