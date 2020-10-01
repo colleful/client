@@ -13,7 +13,8 @@ const CHANGE_FIELD = 'auth/CHANGE_FIELD';
 
 const AUTH_EMAIL_INITIALIZE = 'auth/AUTH_EMAIL_INITIALIZE';
 const CONFIRM_AUTH_EMAIL_INITIALIZE = 'auth/CONFIRM_AUTH_EMAIL_INITIALIZE';
-const CONFIRM_PASSWORD_AUTH_EMAIL_INITIALIZE = 'auth/CONFIRM_PASSWORD_AUTH_EMAIL_INITIALIZE';
+const CONFIRM_PASSWORD_AUTH_EMAIL_INITIALIZE =
+  'auth/CONFIRM_PASSWORD_AUTH_EMAIL_INITIALIZE';
 const PASSWORD_EMAIL_AUTH_INITIALIZE = 'auth/PASSWORD_EMAIL_AUTH_INITIALIZE';
 const PASSWORD_CHANGE_INITIALIZE = 'auth/PASSWORD_CHANGE_INITIALIZE';
 const EMAIL_VALID_STATUS = 'auth/EMAIL_VALID_STATUS';
@@ -213,7 +214,7 @@ const initialState = {
   passwordChangeError: null,
 
   isEmailvalided: false, // 회원가입용 이메일 인증 했는지 (view mode)
-  isEmailvalidedAtPasswordFind: false, // 비밀번호 찾기 이메일 인증 했는지 (view mode) 
+  isEmailvalidedAtPasswordFind: false, // 비밀번호 찾기 이메일 인증 했는지 (view mode)
 };
 
 //리듀서
@@ -225,9 +226,7 @@ const auth = handleActions(
     }),
     [CHANGE_FIELD]: (state, {payload: {form, key, value}}) =>
       produce(state, (draft) => {
-        key === 'birthYear' || key === 'departmentId' || key === 'code'
-          ? (draft[form][key] = parseInt(value, 10) || '')
-          : (draft[form][key] = value); // draft[form][key] = value  ==>  state.register.email = ''
+        draft[form][key] = value;
       }),
     [INITIALIZE_FORM]: (state, {payload: form}) => ({
       ...state,
