@@ -51,7 +51,7 @@ const MypageNavigator = ({navigation}) => {
         {(props) => <MyPageScreen {...props} navigation={navigation} myInfoData={myInfo} />}
       </MyPageStack.Screen>
       <MyPageStack.Screen name="계정">
-        {(props) => <AccountScreen {...props} navigation={navigation} myInfoData={myInfo} />}
+        {(props) => <AccountScreen {...props} navigation={navigation} myInfoData={myInfo} update={update} setUpdate={setUpdate} />}
       </MyPageStack.Screen>
       <MyPageStack.Screen name="쪽지함" component={MessageScreen} />
       <MyPageStack.Screen name="팀생성">

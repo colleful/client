@@ -6,7 +6,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import {Picker} from '@react-native-community/picker';
 import * as authAPI from '../../../lib/api';
 
-const AccountScreen = ({navigation, myInfoData}) => {
+const AccountScreen = ({navigation, myInfoData, update, setUpdate}) => {
   const dispatch = useDispatch();
   const [isSuccessIdentification, setSuccessIdentification] = useState(true);
   const [passwordForAuth, setPasswordForAuth] = useState();
@@ -17,6 +17,7 @@ const AccountScreen = ({navigation, myInfoData}) => {
     item: ''
   });
   const [departmentData,setDepartmentData] = useState([]);
+  const [sortedDepartmentName, setSortedDepartmentName] = useState([]);
   const [nicknameForChange, setNicknameForChange] = useState('');
   const [selfIntroductionForChange, setSelfIntroductionForChange] = useState('');
 
@@ -26,7 +27,8 @@ const AccountScreen = ({navigation, myInfoData}) => {
   const getDepartments = async () => {
     try {
       const response = await authAPI.getDepartment();
-      setDepartmentData(response.data.map(datas => datas.departmentName).sort())
+      setDepartmentData(response.data);
+      setSortedDepartmentName(response.data.map(datas => datas.departmentName).sort());
     } catch (error) {
       console.log(error);
     }
@@ -106,27 +108,26 @@ const AccountScreen = ({navigation, myInfoData}) => {
   };
 
   const userData = () => {
-    let changeData = {}
+    let changeData = {};
     if(nicknameForChange !== myInfoData.nickname && nicknameForChange !== ''){
-      var pair = {nickname: nicknameForChange};
+      let pair = {nickname: nicknameForChange};
       changeData = {...changeData, ...pair};
     }
     if(selfIntroductionForChange !== myInfoData.selfIntroduction && selfIntroductionForChange !== ''){
-      var pair = {selfIntroduction: selfIntroductionForChange};
+      let pair = {selfIntroduction: selfIntroductionForChange};
       changeData = {...changeData, ...pair};
     }
     if(selectedDepartment.item !== myInfoData.department){
-      var pair = {department: selectedDepartment.item};
+      let pair = {departmentId: departmentData.find(data => data.departmentName === selectedDepartment.item).id};
       changeData = {...changeData, ...pair};
     }
-    console.log(changeData);
     return changeData;
   }
 
   const onChangeUserInfo = async () => {
     try {
       await authAPI.changeUserInfo(
-        userData,
+        userData(),
         {
           headers: {
             'Access-Token': await AsyncStorage.getItem('token'),
@@ -141,6 +142,7 @@ const AccountScreen = ({navigation, myInfoData}) => {
           },
         },
       ]);
+      setUpdate(!update);
     } catch (error) {
       console.log({error});
     }
@@ -191,7 +193,7 @@ const AccountScreen = ({navigation, myInfoData}) => {
                   itemStyle={{fontSize:15}} //ios만 지원됨 ㅋㅋ 
                   >
                   <Picker.Item label={myInfoData.department} value={myInfoData.department} />
-                  {departmentData.map((datas) => {
+                  {sortedDepartmentName.map((datas) => {
                     return (
                       <Picker.Item
                         label={datas}
