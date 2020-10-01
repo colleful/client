@@ -8,7 +8,7 @@ import * as authAPI from '../../../lib/api';
 
 const AccountScreen = ({navigation, myInfoData, update, setUpdate}) => {
   const dispatch = useDispatch();
-  const [isSuccessIdentification, setSuccessIdentification] = useState(true);
+  const [isSuccessIdentification, setSuccessIdentification] = useState(false);
   const [passwordForAuth, setPasswordForAuth] = useState();
   const [passwordForChange, setPasswordForChange] = useState();
   const [passwordForConfirm, setPasswordForConfirm] = useState();
