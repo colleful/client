@@ -15,12 +15,20 @@ const MyPageNavList = ({navigation}) => {
         navName: '쪽지함',
       },
       {
-        iconName: 'person-outline',
-        navName: '친구목록',
+        iconName: 'add-outline',
+        navName: '팀생성',
+      },
+      {
+        iconName: 'list-outline',
+        navName: '팀목록',
+      },
+      {
+        iconName: 'albums-outline',
+        navName: '받은초대목록',
       },
       {
         iconName: 'people-outline',
-        navName: '팀목록',
+        navName: '친구목록',
       },
     ],
     [

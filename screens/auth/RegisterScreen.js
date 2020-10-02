@@ -4,8 +4,7 @@ import {useSelector} from 'react-redux';
 import loading from "../../modules/loading";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Picker} from '@react-native-community/picker';
-import axios from 'axios';
-import {Config} from '../../Config';
+import * as authAPI from '../../lib/api';
 
 //여긴 가독성이 너무 심하게 떨어져서 prettier 일단 적용 안했음. 어차피 디자인 바뀌면 inline-style 다 바꿀 예정이라
 const RegisterScreen = ({form,getDepartmentId,getGender,getBirthYear,onSendAuthEmail, onCreateAddress, onChangeEmail, onChangePassword, onChangePasswordConfirm, onChangeNickname, onChangeBirthYear, onChangeGender, onChangeDepartmentId, onChangeSelfIntroduction,onChangeCode,onConfirmAuthEmail, onSubmitRegister, error}) => {
@@ -35,7 +34,7 @@ const RegisterScreen = ({form,getDepartmentId,getGender,getBirthYear,onSendAuthE
   
   const getDepartments = async () => {
     try {
-      const response = await axios.get(`${Config.baseUrl}/api/departments`);
+      const response = await authAPI.getDepartment();
       setDepartmentData(response.data);
       collegeList = [...new Set(response.data.map(datas => datas.collegeName))];
       setCollegeData(collegeList);
@@ -242,8 +241,8 @@ const RegisterScreen = ({form,getDepartmentId,getGender,getBirthYear,onSendAuthE
             mode="dropdown"
             >
             <Picker.Item label="성별" />
-            <Picker.Item label="남자" value="FEMALE" />
-            <Picker.Item label="여자" value="MALE" />
+            <Picker.Item label="남자" value="MALE" />
+            <Picker.Item label="여자" value="FEMALE" />
           </Picker>
         </View>
 

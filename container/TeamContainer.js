@@ -1,23 +1,20 @@
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
-import {connect} from 'react-redux';
-import {getTeam} from '../modules/team';
+import {getMyInfo} from '../modules/team';
 import Team from '../components/Team';
 
-const TeamContainer = ({getTeam, teams, loadingTeams}) => {
-  useEffect(() => {
-    getTeam();
-  }, [getTeam]);
+const TeamContainer = () => {
 
-  return <Team teams={teams} loadingTeams={loadingTeams} />
+  const dispatch = useDispatch();
+  const {loadingTeams} = useSelector(({team}) => ({
+    lodingTeams: team.loading.GET_TEAM_PENDING,
+  }));
+
+  useEffect(() => {
+    dispatch(getMyInfo());
+  }, []);
+
+  return <Team getMyInfo={getMyInfo} loadingTeams={loadingTeams} />;
 };
 
-export default connect(
-  ({team}) => ({
-    teams: team.teams,
-    lodingTeams: team.loading.GET_TEAM_PENDING,
-  }),
-  {
-    getTeam,
-  },
-)(TeamContainer);
+export default TeamContainer;

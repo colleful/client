@@ -1,36 +1,19 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
-  Text,
   Image,
-  TouchableOpacity,
-  AsyncStorage,
-  Alert,
+  ScrollView,
 } from 'react-native';
 import MyPageNavList from './MyPageNavList';
-import {useDispatch} from 'react-redux';
-import {setLoginState} from '../../modules/auth';
-import * as authAPI from '../../lib/api';
+import MyPageInfo from './MyPageInfo';
 
-const MyPageScreen = ({navigation}) => {
-  const dispatch = useDispatch();
-  const DeleteUser = async () => {
-    try {
-      const response = await authAPI.deleteUser({
-        headers: {
-          'Access-Token': await AsyncStorage.getItem('token'),
-        },
-      });
-      Alert.alert('회원 탈퇴', '회원 탈퇴를 정상적으로 처리했습니다.', [
-        {
-          text: '확인',
-        },
-      ]);
-      return response;
-    } catch (error) {
-      console.log(error);
-    }
-  };
+const MyPageScreen = ({navigation, myInfoData}) => {
+  const [myInfo, setMyInfo] = useState();
+
+  useEffect(() => {
+    setMyInfo(myInfoData);
+  }, []);
+
   return (
     <View style={{flex: 1, backgroundColor: '#fafafa'}}>
       <View
@@ -53,70 +36,13 @@ const MyPageScreen = ({navigation}) => {
             justifyContent: 'space-between',
             flexDirection: 'row',
           }}>
-          <View>
-            <Text style={{fontSize: 18, marginBottom: 5}}>박상범</Text>
-            <Text style={{fontSize: 14, color: 'gray', opacity: 0.7}}>
-              남 {'/'} 25 공과대학
-            </Text>
-          </View>
-          <TouchableOpacity
-            style={{
-              justifyContent: 'center',
-              paddingHorizontal: 13,
-              paddingVertical: 5,
-              borderRadius: 5,
-              borderColor: 'gray',
-              borderWidth: 1,
-              opacity: 0.4,
-              backgroundColor: 'gray',
-            }}
-            onPress={() => {
-              Alert.alert('LOGOUT', '로그아웃 하시겠습니까?', [
-                {
-                  text: '확인',
-                  onPress: () => {
-                    console.log('회원 탈퇴');
-                    DeleteUser();
-                    setTimeout(() => {
-                      AsyncStorage.removeItem('token');
-                    }, 2000);
-                    dispatch(setLoginState(false)); // dispatch로 token값 변경하면 구독한 listener(SwitchNavigator)에 가서 바뀐 token값을 변경
-                  },
-                },
-              ]);
-            }}>
-            <Text>로그아웃</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              justifyContent: 'center',
-              paddingHorizontal: 13,
-              paddingVertical: 5,
-              borderRadius: 5,
-              borderColor: 'gray',
-              borderWidth: 1,
-              opacity: 0.4,
-              backgroundColor: 'gray',
-            }}
-            onPress={() => {
-              Alert.alert('회원 탈퇴', '정말 회원 탈퇴를 하시겠습니까?', [
-                {
-                  text: '확인',
-                  onPress: () => {
-                    DeleteUser();
-                    setTimeout(() => {
-                      AsyncStorage.removeItem('token');
-                    }, 2000);
-                    dispatch(setLoginState(false)); // dispatch로 token값 변경하면 구독한 listener(SwitchNavigator)에 가서 바뀐 token값을 변경
-                  },
-                },
-              ]);
-            }}>
-            <Text>회원 탈퇴</Text>
-          </TouchableOpacity>
+          <MyPageInfo myInfo={myInfoData} />
         </View>
       </View>
-      <MyPageNavList navigation={navigation} />
+      <ScrollView style={{maxHeight: 475}} showsVerticalScrollIndicator={false} > 
+      {/* maxHeight 대신 기기들마다 크기가 다르니까 tabbar의 크기를 변수화 시켜서 (폰의 높이 - tabbar의 크기) 로 바꾸기 */}
+        <MyPageNavList navigation={navigation} />
+      </ScrollView>
     </View>
   );
 };

@@ -192,8 +192,9 @@ const RegisterContainer = ({navigation}) => {
         Alert.alert('회원가입 실패', `${authError.response.data.message}`, [
           { text: '확인', onPress:() => console.log('확인 버튼 클릭됨')},
         ])
+        dispatch(initializeForm('authError'));
         return;
-      }
+      } 
       console.log('회원가입 실패');
       console.log(authError);
       return;

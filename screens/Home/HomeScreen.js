@@ -6,13 +6,17 @@ import {
   RefreshControl,
   Button,
   TextInput,
+  Alert,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import TeamList from '../../components/TeamList';
 import TeamContainer from '../../container/TeamContainer';
+import UserContainer from '../../container/UserContainer';
 import ModalFilter from './ModalFilter';
 // import axios from 'axios';
 import {Config} from '../../Config';
+//import messaging from '@react-native-firebase/messaging';
+
 
 const wait = (timeout) => {
   return new Promise((resolve) => {
@@ -23,7 +27,10 @@ const HomeScreen = ({}) => {
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    wait(2000).then(() => setRefreshing(false), getTeamInfo());
+    wait(2000).then(() => {
+      setRefreshing(false);
+      // 여기에 api 호출해서 refresh 시킴 
+    });
   }, []);
 
   const [team, setTeam] = useState([]);
@@ -41,6 +48,14 @@ const HomeScreen = ({}) => {
   // useEffect(() => {
   //   getTeamInfo();
   // }, []);
+
+//  useEffect(() => {
+//    const unsubscribe = messaging().onMessage(async remoteMessage => {
+//      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+//    });
+//
+//    return unsubscribe;
+//  }, []);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectItem, setSelectItem] = useState({
@@ -121,12 +136,14 @@ const HomeScreen = ({}) => {
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }>
+
           {/* {keyword === '' ? (
             <TeamList team={team} />
           ) : (
             <TeamList team={newTeam} />
           )} */}
-          <TeamContainer />
+
+          {/* <TeamContainer /> */}
         </ScrollView>
       </View>
     </View>

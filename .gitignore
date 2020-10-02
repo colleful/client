@@ -1,4 +1,6 @@
+# API baseURL
 Config.js
+
 # OSX
 #
 .DS_Store
@@ -29,6 +31,7 @@ build/
 .gradle
 local.properties
 *.iml
+google-services.json
 
 # node.js
 #

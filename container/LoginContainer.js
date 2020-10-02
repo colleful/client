@@ -2,13 +2,14 @@ import React, {useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {changeField, initializeForm, login, setLoginState, sendAuthEmailForPasswordChange, emailValidstatus, changePassword, confirmPasswordAuthEmail, confirmPasswordAuthEmailInitialize, passwordEmailAuthInitialize, passwordChangeInitialize} from '../modules/auth';
 import LoginScreen from '../screens/auth/LoginScreen';
-import {Alert, AsyncStorage} from 'react-native';
-// import AsyncStorage from '@react-native-community/async-storage';
-// import * as Keychain from 'react-native-keychain';   오토링크문제 해결되면 추후에 적용 할 예정
-
+import {Alert} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
+// import * as Keychain from 'react-native-keychain'; AsyncStorage은 안전하지않음, keychain 적용해야 안전
+// 계정페이지에서 본인인증을 하기위해 또 다시 패스워드를 칠때 password를 asyncstorage에 저장했는데,, 문제될거같음 
 const LoginContainer = ({navigation}) => {
-  const { form, forgetPassword, auth, authError, passwordConfirmEmail, passwordConfirmEmailError, passwordEmailAuth, passwordEmailAuthError, passwordChange, passwordChangeError} = useSelector(({auth}) => ({
+  const { form, password, forgetPassword, auth, authError, passwordConfirmEmail, passwordConfirmEmailError, passwordEmailAuth, passwordEmailAuthError, passwordChange, passwordChangeError} = useSelector(({auth}) => ({
     form: auth.login,
+    password: auth.login.password,
     forgetPassword: auth.forgetPassword,
     auth: auth.auth,
     authError: auth.authError,
@@ -17,7 +18,7 @@ const LoginContainer = ({navigation}) => {
     passwordEmailAuth: auth.passwordEmailAuth,
     passwordEmailAuthError: auth.passwordEmailAuthError,
     passwordChange: auth.passwordChange,
-    passwordChangeError: auth.passwordChangeError
+    passwordChangeError: auth.passwordChangeError,
   }));
 
   const dispatch = useDispatch();
@@ -97,28 +98,32 @@ const LoginContainer = ({navigation}) => {
   const onSendAuthEmailForPasswordChange = () => {
     const { email } = forgetPassword;
     dispatch(sendAuthEmailForPasswordChange({ email }));
-  }
+  };
 
   const onConfirmAuthEmail = () => {
     const { email,code } = forgetPassword;
     dispatch(confirmPasswordAuthEmail({ email,code }));
-  }
+  };
 
   const onSubmitLogin = () => {
     const {email, password} = form;
-    if (email.includes('')) {
+    if ([email].includes('')) {
       Alert.alert('로그인 실패', '아이디를 입력해주세요', [
         {text: '확인', onPress: () => console.log('아이디 입력하지않음')},
       ]);
       return;
     }
-    if (!email.includes('@jbnu.ac.kr')) {
-      Alert.alert('로그인 실패', '올바르지 않은 주소입니다', [
-        {text: '확인', onPress: () => console.log('주소가 @jbnu.ac.kr이 아님')},
-      ]);
-      return;
-    }
-    if (password.includes('')) {
+    
+    // 최종 배포할땐 아래 주석 없애기
+
+    // if (!email.includes('@jbnu.ac.kr')) {
+    //   Alert.alert('로그인 실패', '올바르지 않은 주소입니다', [
+    //     {text: '확인', onPress: () => console.log('주소가 @jbnu.ac.kr이 아님')},
+    //   ]);
+    //   return;
+    // }
+    
+    if ([password].includes('')) {
       Alert.alert('로그인 실패', '비밀번호를 입력해주세요', [
         {text: '확인', onPress: () => console.log('비밀번호 입력하지않음')},
       ]);
@@ -130,7 +135,7 @@ const LoginContainer = ({navigation}) => {
 
   const onSubmitChangePassword = () => {
     const {email, password, passwordConfirm} = forgetPassword;
-    if(password.includes('')) {
+    if([password].includes('')) {
       Alert.alert('비밀번호 변경 실패', '비밀번호를 입력해주세요', [
         {text: '확인', onPress: () => console.log('비밀번호 변경 실패')},
       ]);
@@ -145,10 +150,19 @@ const LoginContainer = ({navigation}) => {
       return;
     }
     dispatch(changePassword({email, password}));
-  }
-  const storeData = async (value) => {
+  };
+
+  const storeToken = async (value) => {
     try {
       await AsyncStorage.setItem('token', value);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const storePassword = async (value) => {
+    try {
+      await AsyncStorage.setItem('userPassword', value);
     } catch (error) {
       console.log(error);
     }
@@ -166,12 +180,14 @@ const LoginContainer = ({navigation}) => {
         Alert.alert('로그인 오류', `${authError.response.data.message}`, [
           {text: '확인', onPress: console.log('비밀번호 불일치 오류')},
         ]);
+        dispatch(initializeForm('authError'));
         return;
       } else if(authError.response.status === 404) {
         //가입되지 않은 유저
         Alert.alert('로그인 오류', `${authError.response.data.message}`, [
           {text: '확인', onPress: console.log('가입되지 않은 유저')},
         ]);
+        dispatch(initializeForm('authError'));
         return;
       }
       console.log('오류 발생');
@@ -181,7 +197,8 @@ const LoginContainer = ({navigation}) => {
     if(auth){
       if (auth.hasOwnProperty('token')) { // auth.hasOwnProperty('token') 해준이유 : auth를 공용자원으로 사용중, 회원가입하면 login의 auth까지 사용돼서 여기에 씀. 위 if문에 && 연산자로 같이 쓰면 이미 hasOwnProperty는 null이 되기떄문에 안됨 
         console.log('로그인 성공');
-        storeData(auth.token); // auth === response.data
+        storeToken(auth.token); // auth === response.data
+        storePassword(password);
         dispatch(setLoginState(true));
         dispatch(initializeForm('auth'));
       }

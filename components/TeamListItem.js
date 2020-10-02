@@ -35,9 +35,6 @@ const TeamListItem = ({teams}) => {
             {'\n'}
             {teams.college}
             {'  '}
-            {teams.status === 'ready' ? (
-              <Text style={{color: '#3390FF'}}>{'매칭전'}</Text>
-            ) : null}
           </Text>
         </View>
       </View>

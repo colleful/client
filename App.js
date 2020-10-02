@@ -1,6 +1,7 @@
 import 'react-native-gesture-handler';
-import React, {useState, useEffect} from 'react';
-import {AsyncStorage} from 'react-native';
+import React from 'react';
+//import {AsyncStorage} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import SwitchNavigator from './screens/SwitchNavigator';
 import {createStore, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';

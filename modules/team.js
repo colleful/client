@@ -1,3 +1,5 @@
+import React from 'react';
+import {AsyncStorage} from 'react-native';
 import {createAction, handleActions} from 'redux-actions';
 import * as authAPI from '../lib/api';
 
@@ -7,11 +9,15 @@ const GET_TEAM_SUCCESS = 'team/GET_TEAM_SUCCESS';
 const GET_TEAM_FAILURE = 'team/GET_TEAM_FAILURE';
 
 //액션 함수 생성
-export const getTeam = () => async (dispatch) => {
+export const getMyInfo = () => async (dispatch) => {
   // 먼저, 요청이 시작했다는것을 알립니다
   dispatch({type: GET_TEAM_PENDING});
   try {
-    const response = await authAPI.getTeam();
+    const response = await authAPI.getMyInfo({
+      headers: {
+        'Access-Token': await AsyncStorage.getItem('token'),
+      },
+    });
     dispatch({
       type: GET_TEAM_SUCCESS,
       payload: response.data,
@@ -30,7 +36,9 @@ const initialState = {
   loading: {
     GET_TEAM_PENDING: false,
   },
-  teams: null,
+  myInfo: {
+    
+  }
 };
 //리듀서
 export default handleActions(
