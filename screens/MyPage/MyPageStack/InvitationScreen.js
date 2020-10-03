@@ -4,7 +4,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 import * as authAPI from '../../../lib/api';
 
 const InvitationScreen = ({route}) => {
-  const [userId, setUserId] = useState(); //id로 검색하기 (유저 이메일이나 닉네임으로 검색하기 api가 없어서 임시방편)
+  const [userNickname, setUserNickname] = useState();
+  const [userId, setUserId] = useState();
   const [teamId, setTeamIds] = useState();
   const [userInfo, setUserInfo] = useState({
     nickname: '',
@@ -16,21 +17,24 @@ const InvitationScreen = ({route}) => {
     setTeamIds(JSON.stringify(route.params.teamId));
   }, []);
 
-  useEffect(() => {
-    console.log(userId);
-    console.log(teamId);
-  }, [userId, teamId]);
-
-  const onGetUserInfo = async () => {
+  const onSearchUserByNickname = async () => {
     try {
-      const response = await authAPI.getUserInfo(userId, {
+      const response = await authAPI.searchUserByNickname(userNickname, {
         headers: {
           'Access-Token': await AsyncStorage.getItem('token'),
         },
       });
       setUserInfo(response.data);
+      setUserId(response.data.id);
     } catch (error) {
-      console.log(error);
+      if (error.response.status === 404) {
+        Alert.alert('검색결과', `${error.response.data.message}`, [
+          {
+            text: '확인',
+          },
+        ]);
+      }
+      console.log({error});
     }
   };
 
@@ -53,15 +57,11 @@ const InvitationScreen = ({route}) => {
         );
       }
     } catch (error) {
-      Alert.alert(
-        '에러발생',
-        `${error.response.data.message}`,
-        [
-          {
-            text: '확인',
-          },
-        ],
-      );
+      Alert.alert('에러발생', `${error.response.data.message}`, [
+        {
+          text: '확인',
+        },
+      ]);
       console.log({error});
     }
   };
@@ -79,7 +79,7 @@ const InvitationScreen = ({route}) => {
         }}>
         <TextInput
           placeholder="초대할 멤버의 닉네임 입력"
-          onChangeText={(text) => setUserId(text)}
+          onChangeText={(text) => setUserNickname(text)}
           style={{
             marginRight: 15,
             paddingLeft: 15,
@@ -91,7 +91,7 @@ const InvitationScreen = ({route}) => {
           }}
         />
         <TouchableOpacity
-          onPress={() => onGetUserInfo()}
+          onPress={() => onSearchUserByNickname()}
           style={{
             backgroundColor: '#3498db',
             borderRadius: 5,
@@ -142,4 +142,3 @@ const InvitationScreen = ({route}) => {
 };
 
 export default InvitationScreen;
-
