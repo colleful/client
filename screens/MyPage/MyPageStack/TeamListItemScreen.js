@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {View, Text, TouchableOpacity, Alert} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import * as authAPI from '../../../lib/api';
+import MemberInfo from './MemberInfo';
 
 const TeamListItemScreen = ({
   navigation,
@@ -70,14 +71,24 @@ const TeamListItem = ({navigation, teamInfo, userId, setUpdate, update}) => {
   return (
     <>
       <View style={{borderBottomWidth: 1, marginVertical: 15}} />
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}>
-        <Text style={{fontSize: 20}}>{teamInfo.teamName}</Text>
-        <View style={{flexDirection: 'row'}}>
+      <View>
+        <Text style={{fontSize: 19, lineHeight: 30}}>
+          팀명 : {teamInfo.teamName}
+          {'\n'}
+          평균나이 : {teamInfo.averageAge}
+          {'\n'}
+          팀인원 : {teamInfo.headcount}명{'\n'}
+          멤버 :{' '}
+          {teamInfo.members.map((member, index) => (
+            <MemberInfo memberInfo={member} key={index} />
+          ))}
+        </Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            marginTop: 20,
+          }}>
           {isLeader ? (
             <>
               <TouchableOpacity
@@ -92,7 +103,7 @@ const TeamListItem = ({navigation, teamInfo, userId, setUpdate, update}) => {
                   padding: 15,
                   paddingVertical: 10,
                   width: 70,
-                  marginRight: 10,
+                  marginRight: 20,
                 }}>
                 <Text style={{color: '#fff', fontWeight: '500'}}>팀 초대</Text>
               </TouchableOpacity>

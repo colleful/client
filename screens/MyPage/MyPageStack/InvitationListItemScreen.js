@@ -2,6 +2,7 @@ import React from 'react';
 import {View, Text, TouchableOpacity,Alert} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import * as authAPI from '../../../lib/api';
+import MemberInfo from './MemberInfo';
 
 const InvitationListItemScreen = ({invitationList,update,setUpdate}) => {
   return invitationList.map((list, index) => (
@@ -86,7 +87,7 @@ const InvitationListItem = ({invitationList,update,setUpdate}) => {
         }{' '}
         {'\n'}팀 멤버 :
         {invitationList.team.members.map((member, index) => (
-          <InvitationListMemberInfo memberInfo={member} key={index} />
+          <MemberInfo memberInfo={member} key={index} />
         ))}
       </Text>
       <View
@@ -124,22 +125,6 @@ const InvitationListItem = ({invitationList,update,setUpdate}) => {
         </TouchableOpacity>
       </View>
       <View style={{borderBottomWidth: 1, marginVertical: 20}} />
-    </>
-  );
-};
-
-const InvitationListMemberInfo = ({memberInfo}) => {
-  return (
-    <>
-      {' '}
-      {memberInfo.nickname}
-      {' ( '}
-      {memberInfo.gender === 'MALE' ? '남' : '여'}
-      {', '}
-      {memberInfo.age}
-      {', '}
-      {memberInfo.department}
-      {' )'}
     </>
   );
 };
