@@ -41,7 +41,7 @@ const AddTeamScreen = ({navigation, setUpdate, update}) => {
           text: '나가기',
           onPress: () => {
             setUpdate(!update);
-            navigation.goBack();
+            navigation.navigate('유저정보');
           },
         },
       ]);

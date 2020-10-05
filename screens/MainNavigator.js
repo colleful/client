@@ -13,6 +13,7 @@ export default MainNavigator = () => {
       ? route.state.routes[route.state.index].name
       : '';
     if (
+      routeName === '프로필' ||
       routeName === '쪽지함' ||
       routeName === '팀생성' ||
       routeName === '팀초대' ||

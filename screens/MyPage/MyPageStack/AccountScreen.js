@@ -86,7 +86,7 @@ const AccountScreen = ({navigation, myInfoData, update, setUpdate}) => {
         {
           text: '확인',
           onPress: () => {
-            navigation.navigate("마이페이지");
+            navigation.navigate('유저정보');
           },
         },
       ]);
@@ -138,7 +138,7 @@ const AccountScreen = ({navigation, myInfoData, update, setUpdate}) => {
         {
           text: '확인',
           onPress: () => {
-            navigation.navigate("마이페이지");
+            navigation.navigate('유저정보');
           },
         },
       ]);

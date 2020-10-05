@@ -11,7 +11,7 @@ const TeamListScreen = ({navigation, myInfoData, setUpdate, update}) => {
   }, []);
 
   return (
-    <View style={{flex: 1, marginVertical: 50, paddingHorizontal: 40}}>
+    <View style={{flex: 1, paddingVertical: 50, paddingHorizontal: 40, backgroundColor:'#fff'}}>
       <View style={{marginBottom: 30}}>
         <Text style={{fontSize: 19, color: '#2E89DE'}}>
           ※ 멤버초대 버튼은 팀의 리더에게만{'\n'} 보여집니다
