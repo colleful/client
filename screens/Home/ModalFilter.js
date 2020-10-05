@@ -1,42 +1,63 @@
 import React, {useState, useCallback} from 'react';
-import {
-  View,
-  Text,
-  Button,
-} from 'react-native';
-
+import {View, Text, TouchableOpacity} from 'react-native';
 import {Picker} from '@react-native-community/picker';
-
 import Modal from 'react-native-modal';
 
 const ModalFilter = ({
-  team,
-  onToggleModal,
+  setTeam,
   isModalVisible,
-  selectItem,
-  setSelectItem,
+  setModalVisible,
+  immutableTeam,
 }) => {
-  const [filterList, setfilterList] = useState([
+  const [filterList] = useState([
     {
       label: '모두보기',
-      value: 'all',
+      value: 'ALL',
     },
     {
       label: '남자만',
-      value: 'male',
+      value: 'MALE',
     },
     {
       label: '여자만',
-      value: 'female',
+      value: 'FEMALE',
     },
     {
       label: '매칭 가능한 팀만',
-      value: 'matchable',
+      value: 'MATCHABLE',
     },
   ]);
+  const [selectItem, setSelectItem] = useState({
+    selectedFilter: '',
+  });
+
+  const setFilter = useCallback(() => {
+    // 컴포넌트가 리렌더링 되고 selectItem.selectedFilter 가 바뀌었을 때만 함수 생성하도록 하기위해
+    if (
+      selectItem.selectedFilter === 'MALE' ||
+      selectItem.selectedFilter === 'FEMALE'
+    ) {
+      setTeam(
+        immutableTeam.filter(
+          (teams) => teams.gender === selectItem.selectedFilter,
+        ),
+      );
+    } else if (selectItem.selectedFilter === 'ALL') {
+      setTeam(immutableTeam);
+    } else if (selectItem.selectedFilter === 'MATCHABLE') {
+      // 내 팀 선택하는 기능? 이있어야 비교가능할듯
+    }
+  }, [selectItem.selectedFilter]);
+
+  const onToggleModal = () => {
+    setModalVisible(!isModalVisible);
+    setFilter();
+  };
 
   return (
-    <Modal isVisible={isModalVisible}>
+    <Modal
+      isVisible={isModalVisible}
+      onBackButtonPress={() => setModalVisible(!isModalVisible)}>
       <View
         style={{
           flex: 1,
@@ -61,11 +82,13 @@ const ModalFilter = ({
             }}>
             <Text style={{fontSize: 18}}>필터 설정</Text>
           </View>
-          <View style={{flex:1, justifyContent: "space-between", paddingBottom:20}}>
-            <Picker 
-              // react-native-community/picker 말고 react-native-picker-select를 사용하려했는데 최근에 릴리즈된 8.0.0버전부터
-              // react-native-community/picker를 사용하라고 공홈에서 공지했다 (select가 더 nice하지만 까라면 까야지)
-              // picker가 너무 구리면 react-native-picker-select를 다운그레이드해서 사용할 예정
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'space-between',
+              paddingBottom: 20,
+            }}>
+            <Picker
               selectedValue={selectItem.selectedFilter}
               onValueChange={(value) => setSelectItem({selectedFilter: value})}
               mode="dialog">
@@ -79,10 +102,18 @@ const ModalFilter = ({
                 );
               })}
             </Picker>
-            <View style={{alignItems:"center"}}>
-              <View style={{width: 60 }}>
-                <Button title="적용" onPress={onToggleModal} color="#00C831" />
-              </View>
+            <View style={{alignItems: 'center'}}>
+              <TouchableOpacity
+                onPress={onToggleModal}
+                style={{
+                  backgroundColor: '#5e5e5e',
+                  borderRadius: 5,
+                  padding: 16,
+                  paddingVertical: 10,
+                  width: 56,
+                }}>
+                <Text style={{color: '#fff'}}>적용</Text>
+              </TouchableOpacity>
             </View>
           </View>
         </View>
