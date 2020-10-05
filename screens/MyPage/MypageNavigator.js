@@ -11,6 +11,7 @@ import SettingScreen from './MyPageStack/SettingScreen';
 import AddTeamScreen from './MyPageStack/AddTeamScreen';
 import InvitationScreen from './MyPageStack/InvitationScreen';
 import InvitationListScreen from './MyPageStack/InvitationListScreen';
+import ProfileScreen from './MyPageStack/ProfileScreen';
 
 import AsyncStorage from '@react-native-community/async-storage';
 import * as authAPI from '../../lib/api';
@@ -47,8 +48,11 @@ const MypageNavigator = ({navigation}) => {
           position: 'absolute',
         },
       }}>
-      <MyPageStack.Screen name="마이페이지">
+      <MyPageStack.Screen name="유저정보">
         {(props) => <MyPageScreen {...props} navigation={navigation} myInfoData={myInfo} />}
+      </MyPageStack.Screen>
+      <MyPageStack.Screen name="프로필">
+        {(props) => <ProfileScreen {...props} navigation={navigation} myInfoData={myInfo} />}
       </MyPageStack.Screen>
       <MyPageStack.Screen name="계정">
         {(props) => <AccountScreen {...props} navigation={navigation} myInfoData={myInfo} update={update} setUpdate={setUpdate} />}
