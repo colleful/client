@@ -1,11 +1,17 @@
 import React, {useState, useCallback, useEffect} from 'react';
-import {View, Text, ScrollView, RefreshControl, TextInput} from 'react-native';
+import {
+  View,
+  Text,
+  FlatList,
+  RefreshControl,
+  TextInput,
+  StyleSheet,
+} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-community/async-storage';
 import * as authAPI from '../../lib/api';
 import ModalFilter from './ModalFilter';
-import TeamList from '../../components/TeamList';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import TeamListItem from '../../components/TeamListItem';
 
 const wait = (timeout) => {
   return new Promise((resolve) => {
@@ -20,12 +26,15 @@ const HomeScreen = ({}) => {
   const [keyword, setKeyword] = useState('');
   const [isModalVisible, setModalVisible] = useState(false);
   const [immutableTeam, setImmutableTeam] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [pageNumber,setPageNumber] = useState(0);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     wait(2000).then(() => {
       setRefreshing(false);
       onGetReadyTeam();
+      setPageNumber(0);
     });
   }, []);
 
@@ -39,15 +48,31 @@ const HomeScreen = ({}) => {
 
   const onGetReadyTeam = async () => {
     try {
-      const response = await authAPI.getReadyTeam({
+      setLoading(true);
+      const response = await authAPI.getReadyTeam(pageNumber, {
         headers: {
           'Access-Token': await AsyncStorage.getItem('token'),
         },
       });
-      setTeam(response.data.content);
-      setImmutableTeam(response.data.content);
+      if (response.data.content === []) {
+        setPageNumber(pageNumber);
+      } else {
+        setPageNumber(pageNumber + 1);
+      }
+      setTeam(team.concat(response.data.content));
+      setImmutableTeam(team.concat(response.data.content));
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       console.log({error});
+    }
+  };
+
+  const onEndReachedHandler = () => {
+    if (loading) {
+      return;
+    } else {
+      onGetReadyTeam();
     }
   };
 
@@ -89,6 +114,12 @@ const HomeScreen = ({}) => {
             size={20}
             onPress={() => setModalVisible(!isModalVisible)}
           />
+          <ModalFilter
+          setTeam={setTeam}
+          isModalVisible={isModalVisible}
+          setModalVisible={setModalVisible}
+          immutableTeam={immutableTeam}
+        />
         </View>
       </View>
 
@@ -104,29 +135,41 @@ const HomeScreen = ({}) => {
         <Text style={{fontFamily: 'AntDesign'}}>
           {keyword === '' ? team.length : newTeam.length}개의 결과
         </Text>
-
-        <ModalFilter
-          setTeam={setTeam}
-          isModalVisible={isModalVisible}
-          setModalVisible={setModalVisible}
-          immutableTeam={immutableTeam}
-        />
       </View>
       <View style={{backgroundColor: '#fafafa'}}>
-        <ScrollView
-          style={{ height: 400}}
+        <FlatList
+          style={{height: 400}}
+          keyExtractor={(item, index) => index.toString()}
+          data={keyword === '' ? team : newTeam}
+          renderItem={({item, index}) => (
+            <View style={[index === 0 && {marginTop: 12}, styles.item]} key={index}>
+              <TeamListItem team={item} />
+            </View>
+          )}
+          onEndReached={onEndReachedHandler}
+          onEndReachedThreshold={0.3}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }>
-          {keyword === '' ? (
-            <TeamList team={team} />
-          ) : (
-            <TeamList team={newTeam} />
-          )}
-        </ScrollView>
+        </FlatList>
       </View>
     </View>
   );
 };
 
 export default HomeScreen;
+
+const styles = StyleSheet.create({
+  item: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    flex: 1,
+    height: 100,
+    marginHorizontal: 12,
+    marginBottom: 12,
+    borderRadius: 10,
+    borderColor: '#f0f0f0',
+    borderBottomWidth: 2,
+  },
+});
