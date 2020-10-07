@@ -13,8 +13,8 @@ const TeamListScreen = ({navigation, myInfoData, setUpdate, update}) => {
   return (
     <View style={{flex: 1, paddingVertical: 50, paddingHorizontal: 40, backgroundColor:'#fff'}}>
       <View style={{marginBottom: 30}}>
-        <Text style={{fontSize: 19, color: '#2E89DE'}}>
-          ※ 멤버초대 버튼은 팀의 리더에게만{'\n'} 보여집니다
+        <Text style={{fontSize: 19, color: '#2E89DE', lineHeight: 26 ,marginBottom:5}}>
+          ※ 멤버초대 및 팀 상태변경은{'\n\t\t\t\t\t'}팀의 리더만 할수있습니다
         </Text>
         <Text style={{fontSize: 19, color: '#2E89DE'}}>
           ※ 팀 생성한 사람이 리더 입니다

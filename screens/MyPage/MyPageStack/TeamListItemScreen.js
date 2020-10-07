@@ -1,8 +1,15 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, TouchableOpacity, Alert} from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
-import * as authAPI from '../../../lib/api';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  Alert,
+} from 'react-native';
 import MemberInfo from './MemberInfo';
+import AsyncStorage from '@react-native-community/async-storage';
+import Modal from 'react-native-modal';
+import * as authAPI from '../../../lib/api';
 
 const TeamListItemScreen = ({
   navigation,
@@ -25,12 +32,53 @@ const TeamListItemScreen = ({
 
 const TeamListItem = ({navigation, teamInfo, userId, setUpdate, update}) => {
   const [isLeader, setLeader] = useState(false);
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [prevTeamStatus, setPrevTeamStatus] = useState();
 
   useEffect(() => {
     if (userId === teamInfo.leaderId) {
       setLeader(true);
     }
   }, []);
+
+  const onChangeTeamStatus = async (teamStatus) => {
+    if (teamStatus === prevTeamStatus) {
+      Alert.alert('에러', '현재 팀 상태와 동일합니다.', [
+        {
+          text: '확인',
+        },
+      ]);
+      return;
+    }
+    try {
+      await authAPI.changeTeamStatus(
+        teamInfo.id,
+        {status: teamStatus},
+        {
+          headers: {
+            'Access-Token': await AsyncStorage.getItem('token'),
+          },
+        },
+      );
+      Alert.alert(
+        '팀 상태변경',
+        `팀 상태를 ${
+          teamStatus === `PENDING` ? `멤버 구성중 ` : `준비 완료 `
+        }(으)로 변경했습니다`,
+        [
+          {
+            text: '확인',
+            onPress: () => {
+              setModalVisible(!isModalVisible);
+              setPrevTeamStatus(teamStatus);
+            },
+          },
+        ],
+      );
+    } catch (error) {
+      console.log({error});
+    }
+  };
 
   const onDeleteTeam = async () => {
     try {
@@ -108,6 +156,20 @@ const TeamListItem = ({navigation, teamInfo, userId, setUpdate, update}) => {
                 <Text style={{color: '#fff', fontWeight: '500'}}>팀 초대</Text>
               </TouchableOpacity>
               <TouchableOpacity
+                onPress={() => setModalVisible(!isModalVisible)}
+                style={{
+                  backgroundColor: '#5e5e5e',
+                  borderRadius: 5,
+                  padding: 15,
+                  paddingVertical: 10,
+                  width: 95,
+                  marginRight: 20,
+                }}>
+                <Text style={{color: '#fff', fontWeight: '500'}}>
+                  팀 상태 변경
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
                 onPress={() => {
                   Alert.alert(
                     '경고',
@@ -152,6 +214,62 @@ const TeamListItem = ({navigation, teamInfo, userId, setUpdate, update}) => {
           )}
         </View>
       </View>
+      <Modal
+        style={{justifyContent: 'flex-end', margin: 0}}
+        isVisible={isModalVisible}
+        onBackButtonPress={() => setModalVisible(!isModalVisible)}
+        onSwipeComplete={() => setModalVisible(!isModalVisible)}
+        swipeDirection={['up', 'down']}>
+        <TouchableWithoutFeedback
+          onPress={() => setModalVisible(!isModalVisible)}>
+          <View style={{flex: 1}} />
+        </TouchableWithoutFeedback>
+        <View
+          style={{
+            backgroundColor: 'white',
+          }}>
+          <View
+            style={{
+              height: 100,
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderBottomWidth: 0.5,
+              borderColor: 'gray',
+            }}>
+            <TouchableOpacity
+              onPress={() => onChangeTeamStatus('PENDING')}
+              style={{
+                flex: 1,
+                width: '100%',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Text style={{fontSize: 16, fontFamily: 'AntDesign'}}>
+                멤버 구성중
+              </Text>
+            </TouchableOpacity>
+            <View
+              style={{
+                width: '100%',
+                borderBottomWidth: 1,
+                borderBottomColor: '#cccccc',
+              }}
+            />
+            <TouchableOpacity
+              onPress={() => onChangeTeamStatus('READY')}
+              style={{
+                flex: 1,
+                width: '100%',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Text style={{fontSize: 16, fontFamily: 'AntDesign'}}>
+                준비 완료
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </>
   );
 };

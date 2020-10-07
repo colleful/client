@@ -50,6 +50,7 @@ const AddTeamScreen = ({navigation, setUpdate, update}) => {
       Alert.alert('팀생성 오류', '이미 존재하는 팀명입니다.', [
         {text: '확인', onPress: console.log('팀생성 오류')},
       ]);
+      setTeamInfoError('');
     }
   }, [teamInfo, teamInfoError]);
 
