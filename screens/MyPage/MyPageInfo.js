@@ -1,14 +1,13 @@
 import React from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
+import {View, Text} from 'react-native';
 
-const MyPageInfo = ({myInfo}) => {
+const MyPageInfo = ({myInfoData}) => {
   return (
     <View>
-      <Text style={{fontSize: 18, marginBottom: 5}}>{myInfo.nickname}</Text>
+      <Text style={{fontSize: 18, marginBottom: 5}}>{myInfoData.nickname}</Text>
       <Text style={{fontSize: 14, color: 'gray', opacity: 0.7}}>
-        {myInfo.gender === 'MALE' ? '남' : '여'} {'/'} {myInfo.age}{' '}
-        {myInfo.department}
+        {myInfoData.gender === 'MALE' ? '남' : '여'} {'/'} {myInfoData.age}{' '}
+        {myInfoData.department}
       </Text>
     </View>
   );

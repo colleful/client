@@ -27,7 +27,7 @@ const HomeScreen = ({}) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [immutableTeam, setImmutableTeam] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [pageNumber,setPageNumber] = useState(0);
+  const [pageNumber, setPageNumber] = useState(0);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -115,11 +115,11 @@ const HomeScreen = ({}) => {
             onPress={() => setModalVisible(!isModalVisible)}
           />
           <ModalFilter
-          setTeam={setTeam}
-          isModalVisible={isModalVisible}
-          setModalVisible={setModalVisible}
-          immutableTeam={immutableTeam}
-        />
+            setTeam={setTeam}
+            isModalVisible={isModalVisible}
+            setModalVisible={setModalVisible}
+            immutableTeam={immutableTeam}
+          />
         </View>
       </View>
 
@@ -142,7 +142,9 @@ const HomeScreen = ({}) => {
           keyExtractor={(item, index) => index.toString()}
           data={keyword === '' ? team : newTeam}
           renderItem={({item, index}) => (
-            <View style={[index === 0 && {marginTop: 12}, styles.item]} key={index}>
+            <View
+              style={[index === 0 && {marginTop: 12}, styles.item]}
+              key={index}>
               <TeamListItem team={item} />
             </View>
           )}
@@ -150,8 +152,7 @@ const HomeScreen = ({}) => {
           onEndReachedThreshold={0.3}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }>
-        </FlatList>
+          }></FlatList>
       </View>
     </View>
   );

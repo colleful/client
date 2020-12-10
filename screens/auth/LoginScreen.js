@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useCallback, useRef} from 'react';
 import {
   View,
   Text,
@@ -52,6 +52,10 @@ const LoginScreen = ({
     setModalVisible(!isModalVisible);
   };
   const dispatch = useDispatch();
+
+  const renderCount = useRef(0);
+  console.log('LoginScreen Render', ++renderCount.current);
+
   return (
     <>
       {isLoading && (
@@ -115,7 +119,6 @@ const LoginScreen = ({
               paddingLeft: 15,
               marginHorizontal: 10,
             }}
-            secureTextEntry
             value={form.password}
             onChange={onChangeLoginPassword}
             secureTextEntry={isPasswordVisible}

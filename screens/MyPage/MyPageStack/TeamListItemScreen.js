@@ -10,27 +10,24 @@ import MemberInfo from './MemberInfo';
 import AsyncStorage from '@react-native-community/async-storage';
 import Modal from 'react-native-modal';
 import * as authAPI from '../../../lib/api';
+import { trigger } from 'swr';
 
 const TeamListItemScreen = ({
   navigation,
   teamInfo,
   userId,
-  setUpdate,
-  update,
 }) => {
   return teamInfo.map((team, index) => (
     <TeamListItem
       navigation={navigation}
       teamInfo={team}
       userId={userId}
-      update={update}
-      setUpdate={setUpdate}
       key={index}
     />
   ));
 };
 
-const TeamListItem = ({navigation, teamInfo, userId, setUpdate, update}) => {
+const TeamListItem = ({navigation, teamInfo, userId}) => {
   const [isLeader, setLeader] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
   const [prevTeamStatus, setPrevTeamStatus] = useState();
@@ -43,7 +40,7 @@ const TeamListItem = ({navigation, teamInfo, userId, setUpdate, update}) => {
 
   const onChangeTeamStatus = async (teamStatus) => {
     if (teamStatus === prevTeamStatus) {
-      Alert.alert('에러', '현재 팀 상태와 동일합니다.', [
+      Alert.alert('오류', '현재 팀 상태와 동일합니다.', [
         {
           text: '확인',
         },
@@ -92,7 +89,7 @@ const TeamListItem = ({navigation, teamInfo, userId, setUpdate, update}) => {
           text: '확인',
         },
       ]);
-      setUpdate(!update);
+      trigger(`${Config.baseUrl}/api/users`);
     } catch (error) {
       console.log(error);
     }
@@ -110,7 +107,7 @@ const TeamListItem = ({navigation, teamInfo, userId, setUpdate, update}) => {
           text: '확인',
         },
       ]);
-      setUpdate(!update);
+      trigger(`${Config.baseUrl}/api/users`);
     } catch (error) {
       console.log({error});
     }

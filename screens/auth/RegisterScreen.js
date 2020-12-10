@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react';
+import React,{useState, useEffect, useCallback, useRef} from 'react';
 import {View, ScrollView, Text, TextInput, TouchableOpacity, ActivityIndicator} from 'react-native';
 import {useSelector} from 'react-redux';
 import loading from "../../modules/loading";
@@ -8,12 +8,6 @@ import * as authAPI from '../../lib/api';
 
 //여긴 가독성이 너무 심하게 떨어져서 prettier 일단 적용 안했음. 어차피 디자인 바뀌면 inline-style 다 바꿀 예정이라
 const RegisterScreen = ({form,getDepartmentId,getGender,getBirthYear,onSendAuthEmail, onCreateAddress, onChangeEmail, onChangePassword, onChangePasswordConfirm, onChangeNickname, onChangeBirthYear, onChangeGender, onChangeDepartmentId, onChangeSelfIntroduction,onChangeCode,onConfirmAuthEmail, onSubmitRegister, error}) => {
-  let today = new Date().getFullYear();
-  let yearData = [];
-  let collegeList = [];
-  for(var i=today-20; i>=today-30; i--){
-    yearData.push(String(i));
-  }
   const [visible, setVisible] = useState(true);
   const [selectedDid, setSelectedDid] = useState({ //Did => DepartmentId
     item: ''
@@ -30,13 +24,14 @@ const RegisterScreen = ({form,getDepartmentId,getGender,getBirthYear,onSendAuthE
   const [collegeData, setCollegeData] = useState([]);
   const [departmentData, setDepartmentData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
-  const [birthYearData, setBirthYearData] = useState(yearData)
+  const [birthYearData, setBirthYearData] = useState([]);
   
   const getDepartments = async () => {
     try {
       const response = await authAPI.getDepartment();
       setDepartmentData(response.data);
-      collegeList = [...new Set(response.data.map(datas => datas.collegeName))];
+      let collegeList = [...new Set(response.data.map(datas => datas.collegeName))];
+      console.log(collegeList);
       setCollegeData(collegeList);
     } catch (error) {
       console.log(error);
@@ -55,11 +50,24 @@ const RegisterScreen = ({form,getDepartmentId,getGender,getBirthYear,onSendAuthE
   }
   useEffect(() => {
     getDepartments();
+    setYearData();
+  },[])
+  
+  const setYearData = useCallback(() => {
+    let today = new Date().getFullYear();
+    let yearData = [];
+    for(let i=today-20; i>=today-30; i--){
+      yearData.push(String(i));
+    }
+    setBirthYearData(yearData);
   },[])
 
   const {isLoading} = useSelector(({loading}) => ({
     isLoading: loading.isLoading
   }));
+
+  const renderCount = useRef(0);
+  console.log('RegisterScreen Render', ++renderCount.current);
 
   return (
     <>
@@ -190,7 +198,7 @@ const RegisterScreen = ({form,getDepartmentId,getGender,getBirthYear,onSendAuthE
             style={{ height: 50, width: 250}}
             onValueChange={(itemValue, itemIndex) => { 
               setSelectedCollege({item: itemValue}); 
-              setFilteredData(departmentData.filter(datas => datas.collegeName === selectedCollege.item)) 
+              setFilteredData(departmentData.filter(datas => datas.collegeName === selectedCollege.item));
             }}
             mode="dropdown"
             >
@@ -213,7 +221,7 @@ const RegisterScreen = ({form,getDepartmentId,getGender,getBirthYear,onSendAuthE
             style={{ height: 50, width: 250}}
             onValueChange={(itemValue, itemIndex) => { 
               setSelectedDid({item: itemValue}); 
-              getDepartmentId(selectedDid.item); 
+              getDepartmentId(selectedDid.item);
             }}
             mode="dropdown"
             >

@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {View, Text, ScrollView} from 'react-native';
 import TeamListItemScreen from './TeamListItemScreen';
 
-const TeamListScreen = ({navigation, myInfoData, setUpdate, update}) => {
+const TeamListScreen = ({navigation, myInfoData}) => {
   const [teamInfo, setTeamInfo] = useState([]);
   const [userId, setUserId] = useState();
   useEffect(() => {
@@ -34,8 +34,6 @@ const TeamListScreen = ({navigation, myInfoData, setUpdate, update}) => {
             navigation={navigation}
             teamInfo={teamInfo}
             userId={userId}
-            update={update}
-            setUpdate={setUpdate}
           />
         )}
       </ScrollView>

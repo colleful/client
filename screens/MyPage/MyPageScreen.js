@@ -1,15 +1,9 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {View, Text, Image, ScrollView, TouchableOpacity} from 'react-native';
 import MyPageNavList from './MyPageNavList';
 import MyPageInfo from './MyPageInfo';
 
 const MyPageScreen = ({navigation, myInfoData}) => {
-  const [myInfo, setMyInfo] = useState();
-
-  useEffect(() => {
-    setMyInfo(myInfoData);
-  }, []);
-
   return (
     <View style={{flex: 1, backgroundColor: '#fafafa'}}>
       <View
@@ -32,7 +26,7 @@ const MyPageScreen = ({navigation, myInfoData}) => {
             justifyContent: 'space-between',
             flexDirection: 'row',
           }}>
-          <MyPageInfo myInfo={myInfoData} />
+          <MyPageInfo myInfoData={myInfoData} />
         </View>
         <View style={{justifyContent: 'center'}}>
           <TouchableOpacity

@@ -6,7 +6,10 @@ import AsyncStorage from '@react-native-community/async-storage';
 import {Picker} from '@react-native-community/picker';
 import * as authAPI from '../../../lib/api';
 
-const AccountScreen = ({navigation, myInfoData, update, setUpdate}) => {
+import {trigger} from 'swr';
+import {Config} from '../../../Config';
+
+const AccountScreen = ({navigation, myInfoData}) => {
   const dispatch = useDispatch();
   const [isSuccessIdentification, setSuccessIdentification] = useState(false);
   const [passwordForAuth, setPasswordForAuth] = useState();
@@ -24,6 +27,7 @@ const AccountScreen = ({navigation, myInfoData, update, setUpdate}) => {
   useEffect(()=>{
     getDepartments();
   },[]);
+
   const getDepartments = async () => {
     try {
       const response = await authAPI.getDepartment();
@@ -142,7 +146,7 @@ const AccountScreen = ({navigation, myInfoData, update, setUpdate}) => {
           },
         },
       ]);
-      setUpdate(!update);
+      trigger(`${Config.baseUrl}/api/users`);
     } catch (error) {
       console.log({error});
     }

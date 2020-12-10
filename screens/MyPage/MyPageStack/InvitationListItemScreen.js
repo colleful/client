@@ -3,14 +3,15 @@ import {View, Text, TouchableOpacity,Alert} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import * as authAPI from '../../../lib/api';
 import MemberInfo from './MemberInfo';
+import { trigger } from 'swr';
 
-const InvitationListItemScreen = ({invitationList,update,setUpdate}) => {
+const InvitationListItemScreen = ({invitationList}) => {
   return invitationList.map((list, index) => (
-    <InvitationListItem invitationList={list} key={index} update={update} setUpdate={setUpdate} />
+    <InvitationListItem invitationList={list} key={index} />
   ));
 };
 
-const InvitationListItem = ({invitationList,update,setUpdate}) => {
+const InvitationListItem = ({invitationList}) => {
   const onAcceptInvitation = async () => {
     try {
       const response = await authAPI.acceptInvitation(invitationList.id, {
@@ -29,7 +30,7 @@ const InvitationListItem = ({invitationList,update,setUpdate}) => {
           ],
         );
       }
-      setUpdate(!update);
+      trigger(`${Config.baseUrl}/api/users`);
     } catch (error) {
       Alert.alert(
         '에러발생',

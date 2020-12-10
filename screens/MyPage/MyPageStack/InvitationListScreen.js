@@ -1,10 +1,10 @@
 import React,{useState,useEffect} from 'react';
-import {View, Text, TouchableOpacity, ScrollView} from 'react-native';
+import {View, Text, ScrollView} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import * as authAPI from '../../../lib/api';
 import InvitationListItemScreen from './InvitationListItemScreen';
 
-const InvitationListScreen = ({update,setUpdate}) => {
+const InvitationListScreen = () => {
   const [invitationList, setInvitationList] = useState([]);
 
   useEffect(()=>{
@@ -35,7 +35,7 @@ const InvitationListScreen = ({update,setUpdate}) => {
       <View style={{borderBottomWidth: 1, marginBottom: 20}} />
         {( invitationList != null && typeof invitationList == "object" && !Object.keys(invitationList).length )
         ? <Text>받은 초대가 없습니다</Text> 
-        : <InvitationListItemScreen invitationList={invitationList} update={update} setUpdate={setUpdate} /> }
+        : <InvitationListItemScreen invitationList={invitationList} /> }
       </ScrollView>
     </View>
   );
