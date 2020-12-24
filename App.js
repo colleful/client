@@ -1,6 +1,5 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-//import {AsyncStorage} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import SwitchNavigator from './screens/SwitchNavigator';
 import {createStore, applyMiddleware} from 'redux';
@@ -11,6 +10,9 @@ import ReduxThunk from 'redux-thunk';
 import {composeWithDevTools} from 'redux-devtools-extension';
 import {NavigationContainer} from '@react-navigation/native';
 import {setLoginState} from './modules/auth';
+import {
+  setCustomText,
+} from 'react-native-global-props';
 
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(
@@ -31,6 +33,13 @@ const loadToken = async () => {
 
 sagaMiddleware.run(rootSaga);
 loadToken();
+
+const customTextProps = {
+  style: {
+    fontFamily: 'AntDesign'
+  }
+};
+setCustomText(customTextProps);
 
 export default App = () => {
   return (
