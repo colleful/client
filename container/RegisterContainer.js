@@ -219,7 +219,6 @@ const RegisterContainer = ({navigation}) => {
       return;
     }
     if(emailAuth === '') {
-      console.log('회원가입용 이메일 인증 보내기 성공');
       Alert.alert('이메일 인증 보내기 성공', '인증번호를 전송 했습니다. 메일함을 확인하고 인증번호를 입력해주세요', [
         { text: '확인', onPress:() => console.log('회원가입용 이메일 인증 보내기 성공')},
       ])
@@ -238,7 +237,6 @@ const RegisterContainer = ({navigation}) => {
       return;
     }
     if(confirmEmail === '') {
-      console.log('이메일 인증 성공');
       Alert.alert('이메일 인증 성공', '이메일 인증에 성공했습니다', [
         { text: '확인', onPress:() => console.log('회원가입용 이메일 인증 확인 성공')},
       ])

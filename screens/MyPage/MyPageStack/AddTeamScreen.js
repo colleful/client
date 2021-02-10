@@ -14,7 +14,7 @@ const AddTeamScreen = ({navigation}) => {
   //   const response = await axios.post(url, {teamName: teamName},
   //     {
   //       headers: {
-  //         'Access-Token': await AsyncStorage.getItem('token'),
+  //         'Authorization': await AsyncStorage.getItem('authorization'),
   //       },
   //     });
   //   setTeamInfo(response.data);
@@ -61,7 +61,7 @@ const AddTeamScreen = ({navigation}) => {
         {teamName: teamName},
         {
           headers: {
-            'Access-Token': await AsyncStorage.getItem('token'),
+            'Authorization': await AsyncStorage.getItem('authorization'),
           },
         },
       );
@@ -73,6 +73,7 @@ const AddTeamScreen = ({navigation}) => {
   };
 
   useEffect(() => {
+    console.log(teamInfo);
     if (teamInfo) {
       Alert.alert('완료', '팀 생성이 완료되었습니다. 이어서 팀 초대를 하시겠습니까? ( 나중에 팀목록 -> 팀초대로 팀을 초대할 수 있습니다 )', [
         {
@@ -125,7 +126,7 @@ const AddTeamScreen = ({navigation}) => {
           borderRadius: 5,
           padding: 18,
           paddingVertical: 10,
-          width: 60,
+          width: 61,
         }}>
         <Text>생성</Text>
       </TouchableOpacity>

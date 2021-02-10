@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useEffect} from 'react';
+import React, {useState, useCallback, useEffect, useMemo} from 'react';
 import {
   View,
   Text,
@@ -12,6 +12,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import * as authAPI from '../../lib/api';
 import ModalFilter from './ModalFilter';
 import TeamListItem from '../../components/TeamListItem';
+import {useDispatch} from 'react-redux';
 
 const wait = (timeout) => {
   return new Promise((resolve) => {
@@ -29,6 +30,8 @@ const HomeScreen = ({}) => {
   const [loading, setLoading] = useState(false);
   const [pageNumber, setPageNumber] = useState(0);
 
+  const dispatch = useDispatch();
+
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     wait(2000).then(() => {
@@ -43,7 +46,7 @@ const HomeScreen = ({}) => {
   }, []);
 
   useEffect(() => {
-    setNewTeam(team.filter((t) => t.teamName.indexOf(keyword) > -1));
+    setNewTeam(team.filter((teams) => teams.teamName.indexOf(keyword) > -1));
   }, [team, keyword]);
 
   const onGetReadyTeam = async () => {
@@ -51,7 +54,7 @@ const HomeScreen = ({}) => {
       setLoading(true);
       const response = await authAPI.getReadyTeam(pageNumber, {
         headers: {
-          'Access-Token': await AsyncStorage.getItem('token'),
+          'Authorization': await AsyncStorage.getItem('authorization'),
         },
       });
       if (response.data.content === []) {
@@ -64,7 +67,12 @@ const HomeScreen = ({}) => {
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      console.log({error});
+      if(error.response.data.status === 403){ // 토큰 유효기간 지났을때
+        console.log("토큰 유효기간 지남");
+        AsyncStorage.removeItem('authorization');
+        AsyncStorage.removeItem('userPassword');
+        dispatch(setLoginState(false));
+      }
     }
   };
 
@@ -132,12 +140,13 @@ const HomeScreen = ({}) => {
           justifyContent: 'space-between',
           paddingHorizontal: 25,
         }}>
-        <Text style={{fontFamily: 'AntDesign'}}>
+        <Text>
           {keyword === '' ? team.length : newTeam.length}개의 결과
         </Text>
       </View>
       <View style={{backgroundColor: '#fafafa'}}>
         <FlatList
+          disableVirtualization={false} //비정상적인 스크롤 동작을 방지하려고
           style={{height: 400}}
           keyExtractor={(item, index) => index.toString()}
           data={keyword === '' ? team : newTeam}
@@ -158,7 +167,7 @@ const HomeScreen = ({}) => {
   );
 };
 
-export default HomeScreen;
+export default React.memo(HomeScreen);
 
 const styles = StyleSheet.create({
   item: {

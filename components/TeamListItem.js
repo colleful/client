@@ -1,7 +1,9 @@
-import React from 'react';
+import React,{ useRef } from 'react';
 import {View, Text, Image} from 'react-native';
 
 const TeamListItem = ({team}) => {
+  // const count = useRef(0);
+  // console.log(`렌더링 ${count.current++}`);
   return (
     <View style={{flexDirection: 'row', alignItems: 'center', marginLeft: 20}}>
       <View
@@ -26,4 +28,4 @@ const TeamListItem = ({team}) => {
   );
 };
 
-export default TeamListItem;
+export default React.memo(TeamListItem);

@@ -22,7 +22,7 @@ const store = createStore(
 
 const loadToken = async () => {
   try {
-    const user = await AsyncStorage.getItem('token');
+    const user = await AsyncStorage.getItem('authorization');
     if (!user) return; //로그인 상태아니면 아무것도 안하도록
 
     store.dispatch(setLoginState(true));
@@ -40,6 +40,7 @@ const customTextProps = {
   }
 };
 setCustomText(customTextProps);
+
 
 export default App = () => {
   return (

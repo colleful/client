@@ -12,8 +12,6 @@ const rootReducer = combineReducers({
   loading,
 });
 
-// export const SECURITY_LEVEL = Object.freeze({ ANY: RNKeychainManager && RNKeychainManager.SECURITY_LEVEL_ANY, SECURE_SOFTWARE: RNKeychainManager && RNKeychainManager.SECURITY_LEVEL_SECURE_SOFTWARE, SECURE_HARDWARE: RNKeychainManager && RNKeychainManager.SECURITY_LEVEL_SECURE_HARDWARE, });
-
 export function* rootSaga() {
   yield all([authSaga(), userSaga()]);
 }

@@ -24,7 +24,7 @@ const MypageNavigator = ({navigation}) => {
   const fetcher = async (url) => {
     const response = await axios.get(url, {
       headers: {
-        'Access-Token': await AsyncStorage.getItem('token'),
+        'Authorization': await AsyncStorage.getItem('authorization'),
       },
     });
     return response.data;

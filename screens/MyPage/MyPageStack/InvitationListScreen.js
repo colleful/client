@@ -15,7 +15,7 @@ const InvitationListScreen = () => {
     try {
       const response = await authAPI.getInvitationList({
         headers: {
-          'Access-Token': await AsyncStorage.getItem('token'),
+          'Authorization': await AsyncStorage.getItem('authorization'),
         },
       });
       setInvitationList(response.data);
@@ -27,7 +27,7 @@ const InvitationListScreen = () => {
   return (
     <View style={{flex: 1, paddingTop: 100, paddingHorizontal: 25}}>
       <View style={{marginBottom: 30}}>
-        <Text style={{fontSize: 36, fontFamily: 'AntDesign'}}>
+        <Text style={{fontSize: 36}}>
           받은 초대목록
         </Text>
       </View>

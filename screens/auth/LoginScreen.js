@@ -55,10 +55,8 @@ const LoginScreen = ({
   };
   const dispatch = useDispatch();
 
-  const {control, handleSubmit, trigger, watch, errors} = useForm({
-    mode: 'onChange',
-  }); // useForm({ mode: "onChange"});
-  const onSubmit = (data) => console.log(data);
+  const {control, handleSubmit, trigger, watch, errors} = useForm({ mode: 'onChange' });
+  // const onSubmit = (data) => console.log(data);
 
   return (
     <>

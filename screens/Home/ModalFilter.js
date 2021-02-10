@@ -110,7 +110,7 @@ const ModalFilter = ({
                   borderRadius: 5,
                   padding: 16,
                   paddingVertical: 10,
-                  width: 56,
+                  width: 58,
                 }}>
                 <Text style={{color: '#fff'}}>적용</Text>
               </TouchableOpacity>

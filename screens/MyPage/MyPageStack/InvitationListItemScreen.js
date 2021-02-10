@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import * as authAPI from '../../../lib/api';
 import MemberInfo from './MemberInfo';
 import { trigger } from 'swr';
+import {Config} from '../../../Config';
 
 const InvitationListItemScreen = ({invitationList}) => {
   return invitationList.map((list, index) => (
@@ -16,7 +17,7 @@ const InvitationListItem = ({invitationList}) => {
     try {
       const response = await authAPI.acceptInvitation(invitationList.id, {
         headers: {
-          'Access-Token': await AsyncStorage.getItem('token'),
+          'Authorization': await AsyncStorage.getItem('authorization'),
         },
       });
       if (response.status === 200) {
@@ -49,7 +50,7 @@ const InvitationListItem = ({invitationList}) => {
     try {
       const response = await authAPI.refusalInvitation(invitationList.id, {
         headers: {
-          'Access-Token': await AsyncStorage.getItem('token'),
+          'Authorization': await AsyncStorage.getItem('authorization'),
         },
       });
       if (response.status === 200) {
@@ -107,7 +108,7 @@ const InvitationListItem = ({invitationList}) => {
             marginRight: 20,
             padding: 18,
             paddingVertical: 10,
-            width: 60,
+            width: 61,
           }}>
           <Text style={{color: '#fff', fontWeight: '500'}}>수락</Text>
         </TouchableOpacity>
@@ -120,7 +121,7 @@ const InvitationListItem = ({invitationList}) => {
             borderRadius: 5,
             padding: 18,
             paddingVertical: 10,
-            width: 60,
+            width: 61,
           }}>
           <Text style={{color: '#fff', fontWeight: '500'}}>거절</Text>
         </TouchableOpacity>

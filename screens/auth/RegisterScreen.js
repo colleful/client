@@ -67,7 +67,7 @@ const RegisterScreen = ({form,getDepartmentId,getGender,getBirthYear,onSendAuthE
     isLoading: loading.isLoading
   }));
 
-  const { control, handleSubmit, watch, trigger, errors } = useForm(); // useForm({ mode: "onChange"});
+  const { control, handleSubmit, watch, trigger, errors } = useForm({ mode: "onChange"}); // useForm({ mode: "onChange"});
   const onSubmit = data => console.log(data);
 
   const password = useRef();

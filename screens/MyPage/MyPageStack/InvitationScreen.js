@@ -21,7 +21,7 @@ const InvitationScreen = ({route}) => {
     try {
       const response = await authAPI.searchUserByNickname(userNickname, {
         headers: {
-          'Access-Token': await AsyncStorage.getItem('token'),
+          'Authorization': await AsyncStorage.getItem('authorization'),
         },
       });
       setUserInfo(response.data);
@@ -42,7 +42,7 @@ const InvitationScreen = ({route}) => {
     try {
       const res = await authAPI.inviteTeam(teamId, userId, {
         headers: {
-          'Access-Token': await AsyncStorage.getItem('token'),
+          'Authorization': await AsyncStorage.getItem('authorization'),
         },
       });
       if (res.status === 200) {
@@ -96,8 +96,8 @@ const InvitationScreen = ({route}) => {
             backgroundColor: '#3498db',
             borderRadius: 5,
             padding: 18,
-            paddingVertical: 10,
-            width: 60,
+            paddingVertical: 11,
+            width: 61,
           }}>
           <Text style={{color: '#fff', fontWeight: '500'}}>검색</Text>
         </TouchableOpacity>
@@ -129,7 +129,7 @@ const InvitationScreen = ({route}) => {
               borderRadius: 5,
               padding: 18,
               paddingVertical: 10,
-              width: 60,
+              width: 61,
             }}>
             <Text style={{color: '#fff', fontWeight: '500'}}>초대</Text>
           </TouchableOpacity>
