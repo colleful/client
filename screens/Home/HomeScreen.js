@@ -13,6 +13,7 @@ import * as authAPI from '../../lib/api';
 import ModalFilter from './ModalFilter';
 import TeamListItem from '../../components/TeamListItem';
 import {useDispatch} from 'react-redux';
+import {setLoginState} from '../../modules/auth';
 
 const wait = (timeout) => {
   return new Promise((resolve) => {
@@ -43,6 +44,9 @@ const HomeScreen = ({}) => {
 
   useEffect(() => {
     onGetReadyTeam();
+    // AsyncStorage.removeItem('authorization');
+    //   AsyncStorage.removeItem('userPassword');
+    //   dispatch(setLoginState(false));
   }, []);
 
   useEffect(() => {

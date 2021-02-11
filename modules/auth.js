@@ -4,6 +4,7 @@ import {takeLatest} from 'redux-saga/effects';
 import createRequestSaga, {
   createRequestActionTypes,
 } from '../lib/createRequestSaga';
+import createRequestAuthSaga from '../lib/createRequestAuthSaga';
 import * as authAPI from '../lib/api';
 
 //액션 타입 정의
@@ -134,8 +135,8 @@ export const changePassword = createAction(
   }),
 );
 
-const registerSaga = createRequestSaga(REGISTER, authAPI.register);
-const loginSaga = createRequestSaga(LOGIN, authAPI.login);
+const registerSaga = createRequestAuthSaga(REGISTER, authAPI.register);
+const loginSaga = createRequestAuthSaga(LOGIN, authAPI.login);
 const sendAuthEmailSaga = createRequestSaga(
   SEND_AUTH_EMAIL,
   authAPI.sendAuthEmail,

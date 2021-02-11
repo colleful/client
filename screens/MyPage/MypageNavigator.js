@@ -72,7 +72,8 @@ const MypageNavigator = ({navigation}) => {
           <TeamListScreen
             {...props}
             navigation={navigation}
-            myInfoData={data}
+            teamId={data.teamId}
+            userId={data.id}
           />
         )}
       </MyPageStack.Screen>
