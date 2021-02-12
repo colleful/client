@@ -2,11 +2,58 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, TextInput, TouchableOpacity, Alert} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import * as authAPI from '../../../lib/api';
+import useSWR, {trigger} from 'swr';
+import {Config} from '../../../Config';
 
-const AddTeamScreen = ({navigation, setUpdate, update}) => {
+const AddTeamScreen = ({navigation}) => {
   const [teamName, setTeamName] = useState('');
   const [teamInfo, setTeamInfo] = useState('');
   const [teamInfoError, setTeamInfoError] = useState('');
+
+  // const fetcher = async (url) => {
+  //   const response = await axios.post(url, {teamName: teamName},
+  //     {
+  //       headers: {
+  //         'Authorization': await AsyncStorage.getItem('authorization'),
+  //       },
+  //     });
+  //   setTeamInfo(response.data);
+  //   return response.data;
+  // };
+
+  // const {data = [], error} = useSWR(`${Config.baseUrl}/api/teams`, fetcher);
+  // if(!data) return <div style={{backgroundColor:'green'}}>asd</div>
+  // if(error) {
+  //   Alert.alert('팀생성 오류', '이미 존재하는 팀명입니다.', [
+  //     {text: '확인', onPress: console.log('팀생성 오류')},
+  //   ]);
+  // }
+
+  // useEffect(()=>{
+  //   if(teamInfo) { 
+  //     Alert.alert('완료', '팀 생성이 완료되었습니다. 이어서 팀 초대를 하시겠습니까? ( 나중에 팀목록 -> 팀초대로 팀을 초대할 수 있습니다 )', [
+  //       {
+  //         text: '팀 초대',
+  //         onPress: () => {
+  //           // setUpdate(!update);
+  //           trigger(`${Config.baseUrl}/api/users`);
+  //           navigation.navigate('팀초대',{
+  //             teamId: teamInfo.id
+  //           });
+  //         },
+  //       },
+  //       {
+  //         text: '나가기',
+  //         onPress: () => {
+  //           // setUpdate(!update);
+  //           trigger(`${Config.baseUrl}/api/users`);
+  //           navigation.navigate('유저정보');
+  //         },
+  //       },
+  //     ]);
+  //   }
+  // },[teamInfo])
+
 
   const onCreateTeam = async () => {
     try {
@@ -14,7 +61,7 @@ const AddTeamScreen = ({navigation, setUpdate, update}) => {
         {teamName: teamName},
         {
           headers: {
-            'Access-Token': await AsyncStorage.getItem('token'),
+            'Authorization': await AsyncStorage.getItem('authorization'),
           },
         },
       );
@@ -26,12 +73,13 @@ const AddTeamScreen = ({navigation, setUpdate, update}) => {
   };
 
   useEffect(() => {
+    console.log(teamInfo);
     if (teamInfo) {
       Alert.alert('완료', '팀 생성이 완료되었습니다. 이어서 팀 초대를 하시겠습니까? ( 나중에 팀목록 -> 팀초대로 팀을 초대할 수 있습니다 )', [
         {
           text: '팀 초대',
           onPress: () => {
-            setUpdate(!update);
+            trigger(`${Config.baseUrl}/api/users`);
             navigation.navigate('팀초대',{
               teamId: teamInfo.id
             });
@@ -40,7 +88,7 @@ const AddTeamScreen = ({navigation, setUpdate, update}) => {
         {
           text: '나가기',
           onPress: () => {
-            setUpdate(!update);
+            trigger(`${Config.baseUrl}/api/users`);
             navigation.navigate('유저정보');
           },
         },
@@ -70,7 +118,7 @@ const AddTeamScreen = ({navigation, setUpdate, update}) => {
         onChangeText={(text) => setTeamName(text)}
       />
       <TouchableOpacity
-        onPress={() => onCreateTeam()} //만약, 팀이름이 중복되면 이동되지 못하게 고치기
+        onPress={() => onCreateTeam()}
         style={{
           marginVertical: 15,
           backgroundColor: '#d4d4d4',
@@ -78,7 +126,7 @@ const AddTeamScreen = ({navigation, setUpdate, update}) => {
           borderRadius: 5,
           padding: 18,
           paddingVertical: 10,
-          width: 60,
+          width: 61,
         }}>
         <Text>생성</Text>
       </TouchableOpacity>

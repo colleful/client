@@ -154,7 +154,7 @@ const LoginContainer = ({navigation}) => {
 
   const storeToken = async (value) => {
     try {
-      await AsyncStorage.setItem('token', value);
+      await AsyncStorage.setItem('authorization', value);
     } catch (error) {
       console.log(error);
     }
@@ -195,9 +195,9 @@ const LoginContainer = ({navigation}) => {
       return;
     }
     if(auth){
-      if (auth.hasOwnProperty('token')) { // auth.hasOwnProperty('token') 해준이유 : auth를 공용자원으로 사용중, 회원가입하면 login의 auth까지 사용돼서 여기에 씀. 위 if문에 && 연산자로 같이 쓰면 이미 hasOwnProperty는 null이 되기떄문에 안됨 
+      if (auth.hasOwnProperty('authorization')) { // auth.hasOwnProperty('token') 해준이유 : auth를 공용자원으로 사용중, 회원가입하면 login의 auth까지 사용돼서 여기에 씀. 위 if문에 && 연산자로 같이 쓰면 이미 hasOwnProperty는 null이 되기떄문에 안됨 
         console.log('로그인 성공');
-        storeToken(auth.token); // auth === response.data
+        storeToken(auth.authorization); // auth === response.data
         storePassword(password);
         dispatch(setLoginState(true));
         dispatch(initializeForm('auth'));

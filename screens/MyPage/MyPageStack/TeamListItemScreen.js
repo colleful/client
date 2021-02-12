@@ -10,30 +10,16 @@ import MemberInfo from './MemberInfo';
 import AsyncStorage from '@react-native-community/async-storage';
 import Modal from 'react-native-modal';
 import * as authAPI from '../../../lib/api';
+import {trigger} from 'swr';
+import {Config} from '../../../Config';
+import useSWR from 'swr';
+import axios from 'axios';
 
-const TeamListItemScreen = ({
-  navigation,
-  teamInfo,
-  userId,
-  setUpdate,
-  update,
-}) => {
-  return teamInfo.map((team, index) => (
-    <TeamListItem
-      navigation={navigation}
-      teamInfo={team}
-      userId={userId}
-      update={update}
-      setUpdate={setUpdate}
-      key={index}
-    />
-  ));
-};
-
-const TeamListItem = ({navigation, teamInfo, userId, setUpdate, update}) => {
+const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
   const [isLeader, setLeader] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
   const [prevTeamStatus, setPrevTeamStatus] = useState();
+  const [teamMember, setTeamMember] = useState();
 
   useEffect(() => {
     if (userId === teamInfo.leaderId) {
@@ -41,9 +27,24 @@ const TeamListItem = ({navigation, teamInfo, userId, setUpdate, update}) => {
     }
   }, []);
 
+  const fetcher = async (url) => {
+    const response = await axios.get(url, {
+      headers: {
+        Authorization: await AsyncStorage.getItem('authorization'),
+      },
+    });
+    setTeamMember(response.data);
+    return response.data;
+  };
+
+  const {data = [], error} = useSWR(
+    `${Config.baseUrl}/api/teams/${teamId}/members`,
+    fetcher,
+  );
+  if (error) return console.log(error);
   const onChangeTeamStatus = async (teamStatus) => {
     if (teamStatus === prevTeamStatus) {
-      Alert.alert('에러', '현재 팀 상태와 동일합니다.', [
+      Alert.alert('오류', '현재 팀 상태와 동일합니다.', [
         {
           text: '확인',
         },
@@ -56,7 +57,7 @@ const TeamListItem = ({navigation, teamInfo, userId, setUpdate, update}) => {
         {status: teamStatus},
         {
           headers: {
-            'Access-Token': await AsyncStorage.getItem('token'),
+            Authorization: await AsyncStorage.getItem('authorization'),
           },
         },
       );
@@ -75,6 +76,7 @@ const TeamListItem = ({navigation, teamInfo, userId, setUpdate, update}) => {
           },
         ],
       );
+      // trigger(`${Config.baseUrl}/api/teams?page=0`);
     } catch (error) {
       console.log({error});
     }
@@ -82,9 +84,9 @@ const TeamListItem = ({navigation, teamInfo, userId, setUpdate, update}) => {
 
   const onDeleteTeam = async () => {
     try {
-      await authAPI.deleteTeam(teamInfo.id, {
+      await authAPI.deleteTeam({
         headers: {
-          'Access-Token': await AsyncStorage.getItem('token'),
+          Authorization: await AsyncStorage.getItem('authorization'),
         },
       });
       Alert.alert('팀 삭제', '팀 삭제를 완료했습니다.', [
@@ -92,7 +94,7 @@ const TeamListItem = ({navigation, teamInfo, userId, setUpdate, update}) => {
           text: '확인',
         },
       ]);
-      setUpdate(!update);
+      trigger(`${Config.baseUrl}/api/teams/${teamId}/members`);
     } catch (error) {
       console.log(error);
     }
@@ -100,9 +102,9 @@ const TeamListItem = ({navigation, teamInfo, userId, setUpdate, update}) => {
 
   const onExitTeam = async () => {
     try {
-      await authAPI.exitTeam(teamInfo.id, {
+      await authAPI.exitTeam(teamInfo.teamName, {
         headers: {
-          'Access-Token': await AsyncStorage.getItem('token'),
+          Authorization: await AsyncStorage.getItem('authorization'),
         },
       });
       Alert.alert('팀 탈퇴', '팀 나가기를 완료했습니다.', [
@@ -110,7 +112,7 @@ const TeamListItem = ({navigation, teamInfo, userId, setUpdate, update}) => {
           text: '확인',
         },
       ]);
-      setUpdate(!update);
+      trigger(`${Config.baseUrl}/api/teams/${teamId}/members`);
     } catch (error) {
       console.log({error});
     }
@@ -123,13 +125,12 @@ const TeamListItem = ({navigation, teamInfo, userId, setUpdate, update}) => {
         <Text style={{fontSize: 19, lineHeight: 30}}>
           팀명 : {teamInfo.teamName}
           {'\n'}
-          평균나이 : {teamInfo.averageAge}
-          {'\n'}
           팀인원 : {teamInfo.headcount}명{'\n'}
           멤버 :{' '}
-          {teamInfo.members.map((member, index) => (
-            <MemberInfo memberInfo={member} key={index} />
-          ))}
+          {teamMember &&
+            teamMember.map((member, index) => (
+              <MemberInfo memberInfo={member} key={index} />
+            ))}
         </Text>
         <View
           style={{
@@ -148,9 +149,9 @@ const TeamListItem = ({navigation, teamInfo, userId, setUpdate, update}) => {
                 style={{
                   backgroundColor: '#5e5e5e',
                   borderRadius: 5,
-                  padding: 15,
-                  paddingVertical: 10,
-                  width: 70,
+                  padding: 10,
+                  paddingTop: 15,
+                  width: 61,
                   marginRight: 20,
                 }}>
                 <Text style={{color: '#fff', fontWeight: '500'}}>팀 초대</Text>
@@ -161,8 +162,7 @@ const TeamListItem = ({navigation, teamInfo, userId, setUpdate, update}) => {
                   backgroundColor: '#5e5e5e',
                   borderRadius: 5,
                   padding: 15,
-                  paddingVertical: 10,
-                  width: 95,
+                  width: 100,
                   marginRight: 20,
                 }}>
                 <Text style={{color: '#fff', fontWeight: '500'}}>
@@ -183,11 +183,18 @@ const TeamListItem = ({navigation, teamInfo, userId, setUpdate, update}) => {
                 style={{
                   backgroundColor: '#5e5e5e',
                   borderRadius: 5,
-                  padding: 15,
-                  paddingVertical: 10,
-                  width: 70,
+                  padding: 10,
+                  paddingTop: 15,
+                  width: 61,
                 }}>
-                <Text style={{color: '#fff', fontWeight: '500'}}>팀 삭제</Text>
+                <Text
+                  style={{
+                    color: '#fff',
+                    fontWeight: '500',
+                    textAlign: 'center',
+                  }}>
+                  팀 삭제
+                </Text>
               </TouchableOpacity>
             </>
           ) : (
@@ -205,9 +212,8 @@ const TeamListItem = ({navigation, teamInfo, userId, setUpdate, update}) => {
               style={{
                 backgroundColor: '#5e5e5e',
                 borderRadius: 5,
-                padding: 15,
-                paddingVertical: 10,
-                width: 80,
+                padding: 10,
+                width: 74,
               }}>
               <Text style={{color: '#fff', fontWeight: '500'}}>팀 나가기</Text>
             </TouchableOpacity>
@@ -274,4 +280,4 @@ const TeamListItem = ({navigation, teamInfo, userId, setUpdate, update}) => {
   );
 };
 
-export default TeamListItemScreen;
+export default React.memo(TeamListItemScreen);

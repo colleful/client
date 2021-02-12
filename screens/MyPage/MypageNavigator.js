@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import MyPageScreen from './MyPageScreen';
 import MessageScreen from './MyPageStack/MessageScreen';
@@ -14,30 +14,24 @@ import InvitationListScreen from './MyPageStack/InvitationListScreen';
 import ProfileScreen from './MyPageStack/ProfileScreen';
 
 import AsyncStorage from '@react-native-community/async-storage';
-import * as authAPI from '../../lib/api';
+import useSWR from 'swr';
+import axios from 'axios';
+import {Config} from '../../Config';
 
 const MypageNavigator = ({navigation}) => {
   const MyPageStack = createStackNavigator();
-  const [myInfo, setMyInfo] = useState([]);
-  const [update, setUpdate] = useState();
 
-  const onGetMyInfo = async () => {
-    try {
-      const response = await authAPI.getMyInfo({
-        headers: {
-          'Access-Token': await AsyncStorage.getItem('token'),
-        },
-      });
-      setMyInfo(response.data);
-    } catch (error) {
-      console.log(error);
-    }
+  const fetcher = async (url) => {
+    const response = await axios.get(url, {
+      headers: {
+        'Authorization': await AsyncStorage.getItem('authorization'),
+      },
+    });
+    return response.data;
   };
 
-  useEffect(() => {
-    setUpdate(false);
-    onGetMyInfo();
-  }, [update]);
+  const {data = [], error} = useSWR(`${Config.baseUrl}/api/users`, fetcher);
+  if(error) return console.log(error);
 
   return (
     <MyPageStack.Navigator
@@ -49,24 +43,47 @@ const MypageNavigator = ({navigation}) => {
         },
       }}>
       <MyPageStack.Screen name="유저정보">
-        {(props) => <MyPageScreen {...props} navigation={navigation} myInfoData={myInfo} />}
+        {(props) => (
+          <MyPageScreen {...props} navigation={navigation} myInfoData={data} />
+        )}
       </MyPageStack.Screen>
       <MyPageStack.Screen name="프로필">
-        {(props) => <ProfileScreen {...props} navigation={navigation} myInfoData={myInfo} />}
+        {(props) => (
+          <ProfileScreen {...props} navigation={navigation} myInfoData={data} />
+        )}
       </MyPageStack.Screen>
       <MyPageStack.Screen name="계정">
-        {(props) => <AccountScreen {...props} navigation={navigation} myInfoData={myInfo} update={update} setUpdate={setUpdate} />}
+        {(props) => (
+          <AccountScreen {...props} navigation={navigation} myInfoData={data} />
+        )}
       </MyPageStack.Screen>
       <MyPageStack.Screen name="쪽지함" component={MessageScreen} />
       <MyPageStack.Screen name="팀생성">
-        {(props) => <AddTeamScreen {...props} navigation={navigation} update={update} setUpdate={setUpdate} />}
+        {(props) => (
+          <AddTeamScreen
+            {...props}
+            navigation={navigation}
+          />
+        )}
       </MyPageStack.Screen>
       <MyPageStack.Screen name="팀초대" component={InvitationScreen} />
       <MyPageStack.Screen name="팀목록">
-        {(props) => <TeamListScreen {...props} navigation={navigation} myInfoData={myInfo} update={update} setUpdate={setUpdate} />}
+        {(props) => (
+          <TeamListScreen
+            {...props}
+            navigation={navigation}
+            teamId={data.teamId}
+            userId={data.id}
+          />
+        )}
       </MyPageStack.Screen>
       <MyPageStack.Screen name="받은초대목록">
-        {(props) => <InvitationListScreen {...props} navigation={navigation} update={update} setUpdate={setUpdate} />}
+        {(props) => (
+          <InvitationListScreen
+            {...props}
+            navigation={navigation}
+          />
+        )}
       </MyPageStack.Screen>
       <MyPageStack.Screen name="친구목록" component={FriendsListScreen} />
       <MyPageStack.Screen name="공지사항" component={NoticeScreen} />

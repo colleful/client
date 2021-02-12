@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useEffect} from 'react';
+import React, {useState, useCallback, useEffect, useMemo} from 'react';
 import {
   View,
   Text,
@@ -12,6 +12,9 @@ import AsyncStorage from '@react-native-community/async-storage';
 import * as authAPI from '../../lib/api';
 import ModalFilter from './ModalFilter';
 import TeamListItem from '../../components/TeamListItem';
+import {useDispatch} from 'react-redux';
+import {setLoginState} from '../../modules/auth';
+import { css } from '@emotion/native';
 
 const wait = (timeout) => {
   return new Promise((resolve) => {
@@ -27,7 +30,9 @@ const HomeScreen = ({}) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [immutableTeam, setImmutableTeam] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [pageNumber,setPageNumber] = useState(0);
+  const [pageNumber, setPageNumber] = useState(0);
+
+  const dispatch = useDispatch();
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -43,7 +48,7 @@ const HomeScreen = ({}) => {
   }, []);
 
   useEffect(() => {
-    setNewTeam(team.filter((t) => t.teamName.indexOf(keyword) > -1));
+    setNewTeam(team.filter((teams) => teams.teamName.indexOf(keyword) > -1));
   }, [team, keyword]);
 
   const onGetReadyTeam = async () => {
@@ -51,7 +56,7 @@ const HomeScreen = ({}) => {
       setLoading(true);
       const response = await authAPI.getReadyTeam(pageNumber, {
         headers: {
-          'Access-Token': await AsyncStorage.getItem('token'),
+          'Authorization': await AsyncStorage.getItem('authorization'),
         },
       });
       if (response.data.content === []) {
@@ -64,7 +69,12 @@ const HomeScreen = ({}) => {
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      console.log({error});
+      if(error.response.data.status === 403){ // 토큰 유효기간 지났을때
+        console.log("토큰 유효기간 지남");
+        AsyncStorage.removeItem('authorization');
+        AsyncStorage.removeItem('userPassword');
+        dispatch(setLoginState(false));
+      }
     }
   };
 
@@ -79,34 +89,34 @@ const HomeScreen = ({}) => {
   return (
     <View style={{flex: 1}}>
       <View
-        style={{
-          margin: 20,
-          paddingBottom: 20,
-          paddingHorizontal: 20,
-          backgroundColor: '#fff',
-          borderRadius: 10,
-          elevation: 4, //android
-          shadowColor: '#000', //ios
-          shadowOpacity: 0.3,
-          shadowOffset: {width: 2, height: 2},
-        }}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        style={css`
+          margin: 20;
+          paddingB-bttom: 20px;
+          padding-horizontal: 20px;
+          background-color: '#fff';
+          border-radius: 10px;
+          elevation: 4; //android
+          // shadow-color: '#000'; //ios
+          // shadow-opacity: 0.3;
+          // shadow-offset: {width: 2px, height: 2px};
+        `}>
+        <View style={css`flex-direction: row; align-items: center`}>
           <Ionicons name="search-outline" size={18} />
           <TextInput
-            style={{
-              width: '100%',
-              height: 40,
-            }}
+            style={css`
+              width: 100%;
+              height: 40px;
+            `}
             placeholder="팀 검색"
             onChangeText={(text) => setKeyword(text)}
             value={keyword}
           />
         </View>
         <View
-          style={{
-            borderBottomWidth: 0.5,
-            borderBottomColor: '#cccccc',
-          }}
+          style={css`
+            border-bottom-width: 0.5px;
+            border-bottom-color: #cccccc;
+          `}
         />
         <View style={{marginTop: 10}}>
           <Ionicons
@@ -115,34 +125,37 @@ const HomeScreen = ({}) => {
             onPress={() => setModalVisible(!isModalVisible)}
           />
           <ModalFilter
-          setTeam={setTeam}
-          isModalVisible={isModalVisible}
-          setModalVisible={setModalVisible}
-          immutableTeam={immutableTeam}
-        />
+            setTeam={setTeam}
+            isModalVisible={isModalVisible}
+            setModalVisible={setModalVisible}
+            immutableTeam={immutableTeam}
+          />
         </View>
       </View>
 
       <View
-        style={{
-          borderColor: '#D8D8D8',
-          height: 35,
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          paddingHorizontal: 25,
-        }}>
-        <Text style={{fontFamily: 'AntDesign'}}>
+        style={css`
+          border-color: #D8D8D8;
+          height: 35px;
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
+          paddin-horizontal: 25px;
+        `}>
+        <Text>
           {keyword === '' ? team.length : newTeam.length}개의 결과
         </Text>
       </View>
       <View style={{backgroundColor: '#fafafa'}}>
         <FlatList
-          style={{height: 400}}
+          disableVirtualization={false} //비정상적인 스크롤 동작을 방지하려고
+          style={css`height: 400px`}
           keyExtractor={(item, index) => index.toString()}
           data={keyword === '' ? team : newTeam}
           renderItem={({item, index}) => (
-            <View style={[index === 0 && {marginTop: 12}, styles.item]} key={index}>
+            <View
+              style={[index === 0 && css`margin-top: 12px`, styles.item]}
+              key={index}>
               <TeamListItem team={item} />
             </View>
           )}
@@ -150,14 +163,13 @@ const HomeScreen = ({}) => {
           onEndReachedThreshold={0.3}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }>
-        </FlatList>
+          }></FlatList>
       </View>
     </View>
   );
 };
 
-export default HomeScreen;
+export default React.memo(HomeScreen);
 
 const styles = StyleSheet.create({
   item: {

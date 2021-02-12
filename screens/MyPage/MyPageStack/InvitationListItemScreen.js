@@ -3,19 +3,21 @@ import {View, Text, TouchableOpacity,Alert} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import * as authAPI from '../../../lib/api';
 import MemberInfo from './MemberInfo';
+import { trigger } from 'swr';
+import {Config} from '../../../Config';
 
-const InvitationListItemScreen = ({invitationList,update,setUpdate}) => {
+const InvitationListItemScreen = ({invitationList}) => {
   return invitationList.map((list, index) => (
-    <InvitationListItem invitationList={list} key={index} update={update} setUpdate={setUpdate} />
+    <InvitationListItem invitationList={list} key={index} />
   ));
 };
 
-const InvitationListItem = ({invitationList,update,setUpdate}) => {
+const InvitationListItem = ({invitationList}) => {
   const onAcceptInvitation = async () => {
     try {
       const response = await authAPI.acceptInvitation(invitationList.id, {
         headers: {
-          'Access-Token': await AsyncStorage.getItem('token'),
+          'Authorization': await AsyncStorage.getItem('authorization'),
         },
       });
       if (response.status === 200) {
@@ -29,7 +31,7 @@ const InvitationListItem = ({invitationList,update,setUpdate}) => {
           ],
         );
       }
-      setUpdate(!update);
+      trigger(`${Config.baseUrl}/api/users`);
     } catch (error) {
       Alert.alert(
         '에러발생',
@@ -48,7 +50,7 @@ const InvitationListItem = ({invitationList,update,setUpdate}) => {
     try {
       const response = await authAPI.refusalInvitation(invitationList.id, {
         headers: {
-          'Access-Token': await AsyncStorage.getItem('token'),
+          'Authorization': await AsyncStorage.getItem('authorization'),
         },
       });
       if (response.status === 200) {
@@ -106,7 +108,7 @@ const InvitationListItem = ({invitationList,update,setUpdate}) => {
             marginRight: 20,
             padding: 18,
             paddingVertical: 10,
-            width: 60,
+            width: 61,
           }}>
           <Text style={{color: '#fff', fontWeight: '500'}}>수락</Text>
         </TouchableOpacity>
@@ -119,7 +121,7 @@ const InvitationListItem = ({invitationList,update,setUpdate}) => {
             borderRadius: 5,
             padding: 18,
             paddingVertical: 10,
-            width: 60,
+            width: 61,
           }}>
           <Text style={{color: '#fff', fontWeight: '500'}}>거절</Text>
         </TouchableOpacity>

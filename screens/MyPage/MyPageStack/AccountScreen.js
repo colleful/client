@@ -6,7 +6,10 @@ import AsyncStorage from '@react-native-community/async-storage';
 import {Picker} from '@react-native-community/picker';
 import * as authAPI from '../../../lib/api';
 
-const AccountScreen = ({navigation, myInfoData, update, setUpdate}) => {
+import {trigger} from 'swr';
+import {Config} from '../../../Config';
+
+const AccountScreen = ({navigation, myInfoData}) => {
   const dispatch = useDispatch();
   const [isSuccessIdentification, setSuccessIdentification] = useState(false);
   const [passwordForAuth, setPasswordForAuth] = useState();
@@ -24,6 +27,7 @@ const AccountScreen = ({navigation, myInfoData, update, setUpdate}) => {
   useEffect(()=>{
     getDepartments();
   },[]);
+
   const getDepartments = async () => {
     try {
       const response = await authAPI.getDepartment();
@@ -38,7 +42,7 @@ const AccountScreen = ({navigation, myInfoData, update, setUpdate}) => {
     try {
       const response = await authAPI.deleteUser({
         headers: {
-          'Access-Token': await AsyncStorage.getItem('token'),
+          'Authorization': await AsyncStorage.getItem('authorization'),
         },
       });
       Alert.alert('회원 탈퇴', '회원 탈퇴를 정상적으로 처리했습니다.', [
@@ -78,7 +82,7 @@ const AccountScreen = ({navigation, myInfoData, update, setUpdate}) => {
         {password: passwordForChange},
         {
           headers: {
-            'Access-Token': await AsyncStorage.getItem('token'),
+            'Authorization': await AsyncStorage.getItem('authorization'),
           },
         },
       );
@@ -130,7 +134,7 @@ const AccountScreen = ({navigation, myInfoData, update, setUpdate}) => {
         userData(),
         {
           headers: {
-            'Access-Token': await AsyncStorage.getItem('token'),
+            'Authorization': await AsyncStorage.getItem('authorization'),
           },
         },
       );
@@ -142,7 +146,7 @@ const AccountScreen = ({navigation, myInfoData, update, setUpdate}) => {
           },
         },
       ]);
-      setUpdate(!update);
+      trigger(`${Config.baseUrl}/api/users`);
     } catch (error) {
       console.log({error});
     }
@@ -152,11 +156,11 @@ const AccountScreen = ({navigation, myInfoData, update, setUpdate}) => {
     <>
       {isSuccessIdentification ? (
         <ScrollView style={{marginTop: 40, paddingHorizontal: 30}}>
-          <Text style={{fontSize: 32,fontFamily: 'AntDesign'}}>내 계정</Text>
+          <Text style={{fontSize: 32, }}>내 계정</Text>
           <View style={{marginTop: 30, alignItems:'center'}}>
             <View
               style={{flexDirection: 'row', alignItems: 'center', marginTop: 10}}>
-              <Text style={{fontSize: 18, marginRight: 20, fontFamily: 'AntDesign'}}>    닉네임</Text>
+              <Text style={{fontSize: 18, marginRight: 20,  }}>    닉네임</Text>
               <TextInput
                 onChangeText={text => setNicknameForChange(text)}
                 defaultValue={myInfoData.nickname}
@@ -173,7 +177,7 @@ const AccountScreen = ({navigation, myInfoData, update, setUpdate}) => {
             </View>
             <View
               style={{flexDirection: 'row', alignItems: 'center', marginTop: 15}}>
-              <Text style={{fontSize: 18, marginRight: 20, fontFamily: 'AntDesign'}}>단과대학</Text>
+              <Text style={{fontSize: 18, marginRight: 20,  }}>단과대학</Text>
               <TouchableOpacity
                 style={{
                   marginRight: 20,
@@ -207,7 +211,7 @@ const AccountScreen = ({navigation, myInfoData, update, setUpdate}) => {
             </View>
             <View
               style={{flexDirection: 'row', alignItems: 'center', marginTop: 15}}>
-              <Text style={{fontSize: 18, marginRight: 20, fontFamily: 'AntDesign'}}>자기소개</Text>
+              <Text style={{fontSize: 18, marginRight: 20,  }}>자기소개</Text>
               <TextInput
                 onChangeText={text => setSelfIntroductionForChange(text)}
                 defaultValue={myInfoData.selfIntroduction}
@@ -241,7 +245,7 @@ const AccountScreen = ({navigation, myInfoData, update, setUpdate}) => {
           <View style={{marginTop: 10, alignItems:'center'}}>
             <View
               style={{flexDirection: 'row', alignItems: 'center', marginTop: 15}}>
-              <Text style={{fontSize: 18, marginRight: 20, fontFamily: 'AntDesign'}}>비밀번호 변경</Text>
+              <Text style={{fontSize: 18, marginRight: 20,  }}>비밀번호 변경</Text>
               <TextInput
                 placeholder="비밀번호"
                 onChangeText={text => setPasswordForChange(text)}
@@ -259,7 +263,7 @@ const AccountScreen = ({navigation, myInfoData, update, setUpdate}) => {
             </View>
             <View
               style={{flexDirection: 'row', alignItems: 'center', marginTop: 15}}>
-              <Text style={{fontSize: 18, marginRight: 20, fontFamily: 'AntDesign'}}>비밀번호 확인</Text>
+              <Text style={{fontSize: 18, marginRight: 20,  }}>비밀번호 확인</Text>
               <TextInput
                 placeholder="비밀번호"
                 onChangeText={text => setPasswordForConfirm(text)}
@@ -313,7 +317,7 @@ const AccountScreen = ({navigation, myInfoData, update, setUpdate}) => {
                   {
                     text: '확인',
                     onPress: () => {
-                      AsyncStorage.removeItem('token');
+                      AsyncStorage.removeItem('authorization');
                       AsyncStorage.removeItem('userPassword');
                       dispatch(setLoginState(false)); // dispatch로 token값 변경하면 구독한 listener(SwitchNavigator)에 가서 바뀐 token값을 변경
                     },
@@ -324,7 +328,7 @@ const AccountScreen = ({navigation, myInfoData, update, setUpdate}) => {
             </TouchableOpacity>
             <TouchableOpacity
               style={{
-                width: 80,
+                width: 81,
                 justifyContent: 'center',
                 paddingHorizontal: 13,
                 paddingVertical: 7,
@@ -347,7 +351,7 @@ const AccountScreen = ({navigation, myInfoData, update, setUpdate}) => {
                     onPress: () => {
                       DeleteUser();
                       setTimeout(() => {
-                        AsyncStorage.removeItem('token');
+                        AsyncStorage.removeItem('authorization');
                       }, 2000);
                       dispatch(setLoginState(false));
                     },
@@ -360,7 +364,7 @@ const AccountScreen = ({navigation, myInfoData, update, setUpdate}) => {
         </ScrollView>
       ) : (
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-          <Text style={{fontSize: 36, fontFamily: 'AntDesign'}}>
+          <Text style={{fontSize: 36}}>
             비밀번호 입력
           </Text>
           <View style={{flexDirection: 'row', marginTop: 30}}>
@@ -385,7 +389,7 @@ const AccountScreen = ({navigation, myInfoData, update, setUpdate}) => {
                 borderRadius: 5,
                 padding: 18,
                 paddingVertical: 10,
-                width: 60,
+                width: 61,
               }}>
               <Text style={{color: '#404040'}}>확인</Text>
             </TouchableOpacity>
