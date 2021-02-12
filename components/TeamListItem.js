@@ -1,27 +1,41 @@
-import React,{ useRef } from 'react';
+import React from 'react';
 import {View, Text, Image} from 'react-native';
+import {css} from '@emotion/native';
 
 const TeamListItem = ({team}) => {
-  // const count = useRef(0);
-  // console.log(`렌더링 ${count.current++}`);
   return (
-    <View style={{flexDirection: 'row', alignItems: 'center', marginLeft: 20}}>
+    <View
+      style={css`
+        flex-direction: row;
+        align-items: center;
+        margin-left: 20px;
+      `}>
       <View
-        style={{
-          width: 50,
-          height: 50,
-        }}>
-        <Image source={require('../images/1.png')} style={{borderRadius: 10}} />
+        style={css`
+          width: 50px;
+          height: 50px;
+        `}>
+        <Image
+          source={require('../images/1.png')}
+          style={css`
+            border-radius: 10px;
+          `}
+        />
       </View>
-      <View style={{flexDirection: 'column'}}>
-        <Text style={{fontSize: 15, marginLeft: 25, lineHeight: 21}}>
+      <View
+        style={css`
+          flex-direction: column;
+        `}>
+        <Text
+          style={css`
+            font-size: 15px;
+            margin-left: 25px;
+            line-height: 21px;
+          `}>
           팀이름 : {team.teamName}
           {'\n'}
           팀인원 : {team.headcount}명{'  '}
           {team.gender === 'MALE' ? `💪` : `👗`}
-          {'\n'}
-          {team.college}
-          평균나이 : {team.averageAge}
         </Text>
       </View>
     </View>

@@ -14,6 +14,7 @@ import ModalFilter from './ModalFilter';
 import TeamListItem from '../../components/TeamListItem';
 import {useDispatch} from 'react-redux';
 import {setLoginState} from '../../modules/auth';
+import { css } from '@emotion/native';
 
 const wait = (timeout) => {
   return new Promise((resolve) => {
@@ -44,9 +45,6 @@ const HomeScreen = ({}) => {
 
   useEffect(() => {
     onGetReadyTeam();
-    // AsyncStorage.removeItem('authorization');
-    //   AsyncStorage.removeItem('userPassword');
-    //   dispatch(setLoginState(false));
   }, []);
 
   useEffect(() => {
@@ -91,34 +89,34 @@ const HomeScreen = ({}) => {
   return (
     <View style={{flex: 1}}>
       <View
-        style={{
-          margin: 20,
-          paddingBottom: 20,
-          paddingHorizontal: 20,
-          backgroundColor: '#fff',
-          borderRadius: 10,
-          elevation: 4, //android
-          shadowColor: '#000', //ios
-          shadowOpacity: 0.3,
-          shadowOffset: {width: 2, height: 2},
-        }}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        style={css`
+          margin: 20;
+          paddingB-bttom: 20px;
+          padding-horizontal: 20px;
+          background-color: '#fff';
+          border-radius: 10px;
+          elevation: 4; //android
+          // shadow-color: '#000'; //ios
+          // shadow-opacity: 0.3;
+          // shadow-offset: {width: 2px, height: 2px};
+        `}>
+        <View style={css`flex-direction: row; align-items: center`}>
           <Ionicons name="search-outline" size={18} />
           <TextInput
-            style={{
-              width: '100%',
-              height: 40,
-            }}
+            style={css`
+              width: 100%;
+              height: 40px;
+            `}
             placeholder="팀 검색"
             onChangeText={(text) => setKeyword(text)}
             value={keyword}
           />
         </View>
         <View
-          style={{
-            borderBottomWidth: 0.5,
-            borderBottomColor: '#cccccc',
-          }}
+          style={css`
+            border-bottom-width: 0.5px;
+            border-bottom-color: #cccccc;
+          `}
         />
         <View style={{marginTop: 10}}>
           <Ionicons
@@ -136,14 +134,14 @@ const HomeScreen = ({}) => {
       </View>
 
       <View
-        style={{
-          borderColor: '#D8D8D8',
-          height: 35,
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          paddingHorizontal: 25,
-        }}>
+        style={css`
+          border-color: #D8D8D8;
+          height: 35px;
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
+          paddin-horizontal: 25px;
+        `}>
         <Text>
           {keyword === '' ? team.length : newTeam.length}개의 결과
         </Text>
@@ -151,12 +149,12 @@ const HomeScreen = ({}) => {
       <View style={{backgroundColor: '#fafafa'}}>
         <FlatList
           disableVirtualization={false} //비정상적인 스크롤 동작을 방지하려고
-          style={{height: 400}}
+          style={css`height: 400px`}
           keyExtractor={(item, index) => index.toString()}
           data={keyword === '' ? team : newTeam}
           renderItem={({item, index}) => (
             <View
-              style={[index === 0 && {marginTop: 12}, styles.item]}
+              style={[index === 0 && css`margin-top: 12px`, styles.item]}
               key={index}>
               <TeamListItem team={item} />
             </View>

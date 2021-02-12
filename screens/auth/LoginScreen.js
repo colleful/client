@@ -5,14 +5,15 @@ import {
   TouchableOpacity,
   TextInput,
   Button,
-  ActivityIndicator,
   StyleSheet,
+  ActivityIndicator,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modal';
 import {useSelector, useDispatch} from 'react-redux';
 import {emailValidstatus} from '../../modules/auth';
 import {useForm, Controller} from 'react-hook-form';
+import styled, { css } from '@emotion/native';
 
 const LoginScreen = ({
   navigation,
@@ -62,24 +63,24 @@ const LoginScreen = ({
     <>
       {isLoading && (
         <View
-          style={{
-            position: 'absolute',
-            left: 0,
-            right: 0,
-            top: 0,
-            bottom: 0,
-            opacity: 0.5,
-            backgroundColor: 'gray',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 999,
-          }}>
+          style={css`
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            opacity: 0.5;
+            background-color: gray;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+          `}>
           <ActivityIndicator size="large" color="#0000ff" />
         </View>
       )}
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <View style={{alignItems: 'center', marginBottom: 15}}>
-          <Text style={{alignSelf: 'flex-start', marginBottom: 5}}>
+      <View style={css`flex: 1; justify-content: center; align-items: center`}>
+        <View style={css`align-items: center; margin-bottom: 15px`}>
+          <Text style={css`align-self: flex-start; margin-bottom: 5px`}>
             학교 웹메일
           </Text>
           <Controller
@@ -101,36 +102,36 @@ const LoginScreen = ({
           />
           {errors.email && errors.email.type === 'required' && (
             <Text
-              style={{
-                color: '#f54260',
-                alignSelf: 'flex-start',
-                marginBottom: 10,
-              }}>
+              style={css`
+                color: #f54260;
+                align-self: flex-start;
+                margin-bottom: 10px;
+              `}>
               이메일을 입력해 주세요
             </Text>
           )}
           {errors.email && errors.email.type === 'pattern' && (
             <Text
-              style={{
-                color: '#f54260',
-                alignSelf: 'flex-start',
-                marginBottom: 10,
-              }}>
+              style={css`
+                color: #f54260;
+                align-self: flex-start;
+                margin-bottom: 10px;
+              `}>
               이메일 형식에 맞게 작성 해주세요
             </Text>
           )}
 
-          <Text style={{alignSelf: 'flex-start', marginBottom: 5}}>
+          <Text style={css`align-self: flex-start; margin-bottom: 5px`}>
             비밀번호
           </Text>
 
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <View style={css`flex-direction: row; align-items: center`}>
             <Controller
               control={control}
               render={({value, onBlur, onChange}) => (
                 <TextInput
                   name="password"
-                  style={[styles.input, {marginLeft: -10}]}
+                  style={[styles.input, css`margin-left: -10px`]}
                   onBlur={onBlur}
                   onChangeText={(value) => onChange(value)}
                   value={(form.password, value)}
@@ -142,7 +143,7 @@ const LoginScreen = ({
               rules={{required: true}}
               defaultValue=""
             />
-            <View style={{marginRight: -30}} />
+            <View style={css`margin-right: -30px`} />
             {isPasswordVisible ? (
               <Ionicons
                 name="eye-off-outline"
@@ -155,11 +156,11 @@ const LoginScreen = ({
           </View>
           {errors.password && (
             <Text
-              style={{
-                color: '#f54260',
-                alignSelf: 'flex-start',
-                marginBottom: 10,
-              }}>
+              style={css`
+                color: #f54260;
+                align-self: flex-start;
+                margin-bottom: 10px;
+              `}>
               비밀번호를 입력해 주세요
             </Text>
           )}
@@ -167,50 +168,50 @@ const LoginScreen = ({
 
         <Modal isVisible={isModalVisible}>
           <View
-            style={{
-              flex: 1,
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
+            style={css`
+              flex: 1;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+            `}>
             <View
-              style={{
-                backgroundColor: 'white',
-                width: 250,
-                height: 250,
-                borderRadius: 5,
-              }}>
+              style={css`
+                background-color: white;
+                width: 250px;
+                height: 250px;
+                borderRadius: 5px;
+              `}>
               {isLoading && (
                 <View
-                  style={{
-                    position: 'absolute',
-                    left: 0,
-                    right: 0,
-                    top: 0,
-                    bottom: 0,
-                    opacity: 0.5,
-                    backgroundColor: 'gray',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    zIndex: 999,
-                  }}>
+                style={css`
+                  position: absolute;
+                  left: 0;
+                  right: 0;
+                  top: 0;
+                  bottom: 0;
+                  opacity: 0.5;
+                  background-color: gray;
+                  align-items: center;
+                  justify-content: center;
+                  z-index: 999;
+                `}>
                   <ActivityIndicator size="large" color="#0000ff" />
                 </View>
               )}
               <View
-                style={{
-                  height: 50,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  borderBottomWidth: 0.5,
-                  borderColor: 'gray',
-                }}>
+                style={css`
+                  height: 50px;
+                  justify-content: center;
+                  align-items: center;
+                  border-bottom-width: 0.5px;
+                  border-color: gray;
+                `}>
                 {isEmailvalidedAtPasswordFind ? (
-                  <Text style={{fontSize: 18}}>비밀번호 변경</Text>
+                  <Text style={css`font-size: 18px`}>비밀번호 변경</Text>
                 ) : (
                   <>
-                    <Text style={{fontSize: 12}}>이메일 인증을 통한</Text>
-                    <Text style={{fontSize: 18}}>비밀번호 찾기</Text>
+                    <Text style={css`font-size: 12px`}>이메일 인증을 통한</Text>
+                    <Text style={css`font-size: 18px`}>비밀번호 찾기</Text>
                   </>
                 )}
               </View>
@@ -224,33 +225,33 @@ const LoginScreen = ({
                     }),
                   );
                 }}
-                style={{
-                  position: 'absolute',
-                  bottom: 0,
-                  right: 0,
-                  marginBottom: 10,
-                  marginRight: 15,
-                }}>
+                style={css`
+                  position: absolute;
+                  bottom: 0;
+                  right: 0;
+                  margin-bottom: 10px;
+                  margin-right: 15px;
+                `}>
                 <Text>나가기</Text>
               </TouchableOpacity>
               {isEmailvalidedAtPasswordFind ? (
                 <View
-                  style={{
-                    alignItems: 'center',
-                    marginTop: 10,
-                  }}>
+                  style={css`
+                    align-items: center;
+                    margin-top: 10px;
+                  `}>
                   <TextInput
                     placeholder="변경할 비밀번호 입력"
                     placeholderTextColor="black"
-                    style={{
-                      borderBottomWidth: 1,
-                      borderColor: 'gray',
-                      opacity: 0.5,
-                      width: 150,
-                      height: 45,
-                      paddingLeft: 10,
-                      marginRight: 10,
-                    }}
+                    style={css`
+                      border-bottom-width: 1px;
+                      border-color: gray;
+                      opacity: 0.5;
+                      width: 150px;
+                      height: 45px;
+                      padding-left: 10px;
+                      margin-right: 10px;
+                    `}
                     value={forgetPassword.password}
                     onChange={onChangeFindPassword}
                     secureTextEntry
@@ -258,16 +259,16 @@ const LoginScreen = ({
                   <TextInput
                     placeholder="비밀번호 확인"
                     placeholderTextColor="black"
-                    style={{
-                      borderBottomWidth: 1,
-                      borderColor: 'gray',
-                      opacity: 0.5,
-                      width: 150,
-                      height: 45,
-                      paddingLeft: 10,
-                      marginBottom: 10,
-                      marginRight: 10,
-                    }}
+                    style={css`
+                      border-bottom-width: 1px;
+                      border-color: gray;
+                      opacity: 0.5;
+                      width: 150px;
+                      height: 45px;
+                      padding-left: 10px;
+                      margin-bottom: 10px;
+                      margin-right: 10px;
+                    `}
                     value={forgetPassword.passwordConfirm}
                     onChange={onChangeFindPasswordConfirm}
                     secureTextEntry
@@ -284,25 +285,25 @@ const LoginScreen = ({
               ) : (
                 <>
                   <View
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      marginTop: 30,
-                    }}>
+                    style={css`
+                      flex-direction: row;
+                      align-items: center;
+                      justify-content: center;
+                      margin-top: 30px;
+                    `}>
                     <TextInput
                       placeholder="학교이메일 입력"
                       placeholderTextColor="black"
-                      style={{
-                        borderBottomWidth: 1,
-                        borderColor: 'gray',
-                        opacity: 0.5,
-                        width: 160,
-                        height: 45,
-                        paddingLeft: 10,
-                        marginBottom: 10,
-                        marginRight: 10,
-                      }}
+                      style={css`
+                        border-bottom-width: 1px;
+                        border-color: gray;
+                        opacity: 0.5;
+                        width: 150px;
+                        height: 45px;
+                        padding-left: 10px;
+                        margin-bottom: 10px;
+                        margin-right: 10px;
+                      `}
                       value={forgetPassword.email}
                       onChange={onChangeFindEmail}
                       onEndEditing={addToBehindText}
@@ -314,25 +315,25 @@ const LoginScreen = ({
                     />
                   </View>
                   <View
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      marginBottom: 20,
-                    }}>
+                    style={css`
+                      flex-direction: row;
+                      align-items: center;
+                      justify-content: center;
+                      margin-bottom: 20px;
+                    `}>
                     <TextInput
                       placeholder="인증번호 입력"
                       placeholderTextColor="black"
-                      style={{
-                        borderBottomWidth: 1,
-                        borderColor: 'gray',
-                        opacity: 0.5,
-                        width: 100,
-                        height: 45,
-                        paddingLeft: 10,
-                        marginBottom: 10,
-                        marginRight: 20,
-                      }}
+                      style={css`
+                        border-bottom-width: 1px;
+                        border-color: gray;
+                        opacity: 0.5;
+                        width: 100px;
+                        height: 45px;
+                        padding-left: 10px;
+                        margin-bottom: 10px;
+                        margin-right: 20px;
+                      `}
                       value={forgetPassword.code}
                       onChange={onChangeFindCode}
                     />
@@ -349,23 +350,23 @@ const LoginScreen = ({
         </Modal>
 
         <TouchableOpacity
+          style={styles.button}
           onPress={() => {
             trigger();
             onSubmitLogin();
-          }}
-          style={styles.button}>
-          <Text style={{color: 'white', textAlign: 'center'}}>로그인</Text>
+          }}>
+          <Text style={css`color: white; text-align: center`}>로그인</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => navigation.navigate('RegisterContainer')}
-          style={styles.button}>
-          <Text style={{color: 'white', textAlign: 'center'}}>회원가입</Text>
+          style={styles.button}
+          onPress={() => navigation.navigate('RegisterContainer')}>
+          <Text style={css`color: white; text-align: center`}>회원가입</Text>
         </TouchableOpacity>
 
-        <View style={{alignSelf: 'flex-end', marginTop: 10, marginRight: 80}}>
+        <View style={css`align-self: flex-end; margin-top: 10px; margin-right: 80px`}>
           <TouchableOpacity onPress={toggleModal}>
-            <Text style={{color: '#639fff'}}>비밀번호 찾기</Text>
+            <Text style={css`color: #639fff`}>비밀번호 찾기</Text>
           </TouchableOpacity>
         </View>
       </View>

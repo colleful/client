@@ -6,6 +6,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Picker} from '@react-native-community/picker';
 import * as authAPI from '../../lib/api';
 import { useForm, Controller } from 'react-hook-form';
+import styled, { css } from '@emotion/native';
 
 //여긴 가독성이 너무 심하게 떨어져서 prettier 일단 적용 안했음. 어차피 디자인 바뀌면 inline-style 다 바꿀 예정이라
 const RegisterScreen = ({form,getDepartmentId,getGender,getBirthYear,onSendAuthEmail, onCreateAddress, onChangeEmail, onChangePassword, onChangePasswordConfirm, onChangeNickname, onChangeSelfIntroduction,onChangeCode,onConfirmAuthEmail, onSubmitRegister, error}) => {
@@ -77,25 +78,25 @@ const RegisterScreen = ({form,getDepartmentId,getGender,getBirthYear,onSendAuthE
     <>
       {isLoading && (
         <View
-          style={{
-            position: 'absolute',
-            left: 0,
-            right: 0,
-            top: 0,
-            bottom: 0,
-            opacity: 0.5,
-            backgroundColor: 'gray',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 999,
-          }}>
+        style={css`
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: 0;
+          bottom: 0;
+          opacity: 0.5;
+          background-color: gray;
+          align-items: center;
+          justify-content: center;
+          z-index: 999;
+        `}>
           <ActivityIndicator size="large" color="#0000ff" />
         </View>
       )}
-      <ScrollView style={{flex: 1}}>
-        <View style={{justifyContent: "center", alignItems: "center", marginTop: 20}}>
-          <View style={{ alignItems:"center"}}>
-            <Text style={{alignSelf: 'flex-start', marginBottom: 5}}>이메일</Text>
+      <ScrollView style={css`flex: 1`}>
+        <View style={css`justify-content: center; align-items: center; margin-top: 20px`}>
+          <View style={css`align-items:center`}>
+            <Text style={css`align-self: flex-start; margin-bottom: 5px`}>이메일</Text>
             <Controller
               control={control}
               render={({value, onBlur, onChange}) => (
@@ -113,22 +114,22 @@ const RegisterScreen = ({form,getDepartmentId,getGender,getBirthYear,onSendAuthE
               rules={{required: true, pattern: /^\S+@\S+$/i }}
               defaultValue=""
             />
-            {errors.email && errors.email.type === "required" && (<Text style={{
-              color: '#f54260', alignSelf:'flex-start', marginBottom: 10}}>이메일을 입력해 주세요</Text>
+            {errors.email && errors.email.type === "required" && (<Text style={css`
+              color: #f54260; align-self:flex-start; margin-bottom: 10px`}>이메일을 입력해 주세요</Text>
             )}
-            {errors.email && errors.email.type === "pattern" && (<Text style={{
-              color: '#f54260', alignSelf:'flex-start', marginBottom: 10}}>이메일 형식에 맞게 작성 해주세요</Text>
+            {errors.email && errors.email.type === "pattern" && (<Text style={css`
+              color: #f54260; align-self:flex-start; margin-bottom: 10px`}>이메일 형식에 맞게 작성 해주세요</Text>
             )}
             
-            <TouchableOpacity onPress={onSendAuthEmail} style={styles.button}>
-              <Text style={{color:'white', textAlign:'center'}}>
+            <TouchableOpacity style={styles.button} onPress={onSendAuthEmail}>
+              <Text style={css`color:white; text-align:center`}>
                 인증메일 전송
               </Text>
             </TouchableOpacity>
 
-            <View style={{marginBottom:15}} />
+            <View style={css`margin-bottom:15px`} />
 
-            <Text style={{alignSelf: 'flex-start', marginBottom: 5}}>인증번호</Text>
+            <Text style={css`align-self: flex-start; margin-bottom: 5px`}>인증번호</Text>
             <Controller
               control={control}
               render={({value, onBlur, onChange}) => (
@@ -145,28 +146,28 @@ const RegisterScreen = ({form,getDepartmentId,getGender,getBirthYear,onSendAuthE
               rules={{required: true, pattern: /^[0-9]/g }}
               defaultValue=""
             />
-            {errors.mailAuth && errors.mailAuth.type === "required" && (<Text style={{
-              color: '#f54260', alignSelf:'flex-start', marginBottom: 10}}>인증번호를 입력 해주세요</Text>
+            {errors.mailAuth && errors.mailAuth.type === "required" && (<Text style={css`
+              color: #f54260; align-self:flex-start; margin-bottom: 10px`}>인증번호를 입력 해주세요</Text>
             )}
-            {errors.mailAuth && errors.mailAuth.type === "pattern" && (<Text style={{
-              color: '#f54260', alignSelf:'flex-start', marginBottom: 10}}>숫자만 입력해주세요</Text>
+            {errors.mailAuth && errors.mailAuth.type === "pattern" && (<Text style={css`
+              color: #f54260; align-self:flex-start; margin-bottom: 10px`}>숫자만 입력해주세요</Text>
             )}
-            <TouchableOpacity onPress={onConfirmAuthEmail} style={styles.button}>
-              <Text style={{color:'white', textAlign:'center'}}>
+            <TouchableOpacity style={styles.button} onPress={onConfirmAuthEmail}>
+              <Text style={css`color:white; text-align:center`}>
                 인증하기
               </Text>
             </TouchableOpacity>
 
-            <View style={{marginBottom:15}} />
+            <View style={css`margin-bottom:15px`} />
             
-            <Text style={{alignSelf: 'flex-start', marginBottom: 5}}>비밀번호</Text>
-            <View style={{flexDirection:'row', alignItems:'center'}}> 
+            <Text style={css`align-self: flex-start; margin-bottom: 5px`}>비밀번호</Text>
+            <View style={css`flex-direction:row; align-items:center`}> 
               <Controller
                 control={control}
                 render={({value, onBlur, onChange}) => (
                   <TextInput
                     name="password"
-                    style={[styles.input, {marginLeft: -10}]}
+                    style={[styles.input, css`margin-left: -10px`]}
                     onBlur={onBlur}
                     onChangeText={value => onChange(value)}
                     value={form.password, value}
@@ -178,23 +179,23 @@ const RegisterScreen = ({form,getDepartmentId,getGender,getBirthYear,onSendAuthE
                 rules={{required: true}}
                 defaultValue=""
               />
-              <View style={{marginRight:-30}} />
+              <View style={css`margin-right: -30px`} />
               {visible ? 
                 <Ionicons name="eye-off-outline" size={20} onPress={visibleText} /> 
                 : <Ionicons name="eye-outline" size={20} onPress={visibleText} />}
             </View>
-            {errors.password && <Text style={{color: '#f54260', alignSelf:'flex-start', marginBottom: 10}}>비밀번호를 입력해 주세요</Text>}
+            {errors.password && <Text style={css`color: #f54260; align-self:flex-start; margin-bottom: 10px`}>비밀번호를 입력해 주세요</Text>}
 
-            <View style={{marginBottom:10}} />
+            <View style={css`margin-bottom:10px`} />
 
-            <Text style={{alignSelf: 'flex-start', marginBottom: 5}}>비밀번호확인</Text>
-            <View style={{flexDirection:'row', alignItems:'center'}}> 
+            <Text style={css`align-self: flex-start; margin-bottom: 5px`}>비밀번호확인</Text>
+            <View style={css`flex-direction: row; align-items: center`}> 
               <Controller
                 control={control}
                 render={({value, onBlur, onChange}) => (
                   <TextInput
                     name="passwordConfirm"
-                    style={[styles.input, {marginLeft: -10}]}
+                    style={[styles.input, css`margin-left: -10px`]}
                     onBlur={onBlur}
                     onChangeText={value => onChange(value)}
                     value={form.passwordConfirm, value}
@@ -206,23 +207,23 @@ const RegisterScreen = ({form,getDepartmentId,getGender,getBirthYear,onSendAuthE
                 rules={{required: true}}
                 defaultValue=""
               />
-              <View style={{marginRight:-30}} />
+              <View style={css`margin-right:-30px`} />
               {visible ? 
                 <Ionicons name="eye-off-outline" size={20} onPress={visibleText} /> 
                 : <Ionicons name="eye-outline" size={20} onPress={visibleText} />}
             </View>
-            {errors.passwordConfirm && <Text style={{color: '#f54260', alignSelf:'flex-start', marginBottom: 10}}>비밀번호를 입력해 주세요</Text>}
+            {errors.passwordConfirm && <Text style={css`color: #f54260; align-self:flex-start; margin-bottom: 10px`}>비밀번호를 입력해 주세요</Text>}
 
-            <View style={{marginBottom:15}} />
+            <View style={css`margin-bottom:15px`} />
 
-            <Text style={{alignSelf: 'flex-start', marginBottom: 5}}>닉네임</Text>
-            <View style={{flexDirection:'row', alignItems:'center'}}> 
+            <Text style={css`align-self: flex-start; margin-bottom: 5px`}>닉네임</Text>
+            <View style={css`flex-direction:row; align-items:center`}> 
               <Controller
                 control={control}
                 render={({value, onBlur, onChange}) => (
                   <TextInput
-                    style={styles.input}
                     onBlur={onBlur}
+                    style={styles.input}
                     onChangeText={value => onChange(value)}
                     value={form.nickname, value}
                     onChange={onChangeNickname}
@@ -233,20 +234,19 @@ const RegisterScreen = ({form,getDepartmentId,getGender,getBirthYear,onSendAuthE
                 defaultValue=""
               />
             </View>
-            {errors.nickname && errors.nickname.type === "required" && (<Text style={{
-              color: '#f54260', alignSelf:'flex-start', marginBottom: 10}}>닉네임을 입력 해주세요</Text>
+            {errors.nickname && errors.nickname.type === "required" && (<Text style={css`
+              color: #f54260; align-self:flex-start; margin-bottom: 10px`}>닉네임을 입력 해주세요</Text>
             )}
-            {errors.nickname && errors.nickname.type === "maxLength" && (<Text style={{
-              color: '#f54260', alignSelf:'flex-start', marginBottom: 10}}>닉네임은 최대 10자까지 가능합니다</Text>
+            {errors.nickname && errors.nickname.type === "maxLength" && (<Text style={css`
+              color: #f54260; align-self:flex-start; margin-bottom: 10px`}>닉네임은 최대 10자까지 가능합니다</Text>
             )}
 
-            <View style={{marginBottom:15}} />      
-          
-            <Text style={{alignSelf: 'flex-start', marginBottom: 5}}>출생연도</Text>
+            <View style={css`margin-bottom:15px`} />      
+            <Text style={css`align-self: flex-start; margin-bottom: 5px`}>출생연도</Text>
 
             <Picker
               selectedValue={selectedBirthYear.item}
-              style={{ height: 50, width: 200}}
+              style={css` height: 50px; width: 200px`}
               onValueChange={(itemValue, itemIndex) => { 
                 setSelectedBirthYear({item: itemValue}); 
                 getBirthYear(selectedBirthYear.item); 
@@ -265,12 +265,12 @@ const RegisterScreen = ({form,getDepartmentId,getGender,getBirthYear,onSendAuthE
               })}
             </Picker>
 
-            <View style={{marginBottom:15}} />  
-            <Text style={{alignSelf: 'flex-start', marginBottom: 5}}>소속학과</Text>
+            <View style={css`margin-bottom:15px`} />
+            <Text style={css`align-self: flex-start; margin-bottom: 5px`}>소속학과</Text>
 
             <Picker
               selectedValue={selectedCollege.item}
-              style={{ height: 50, width: 200}}
+              style={css`height: 50px; width: 200px`}
               onValueChange={(itemValue, itemIndex) => { 
                 setSelectedCollege({item: itemValue}); 
                 setFilteredData(departmentData.filter(datas => datas.collegeName === selectedCollege.item));
@@ -291,7 +291,7 @@ const RegisterScreen = ({form,getDepartmentId,getGender,getBirthYear,onSendAuthE
 
             <Picker
               selectedValue={selectedDid.item}
-              style={{ height: 50, width: 200}}
+              style={css`height: 50px; width: 200px`}
               onValueChange={(itemValue, itemIndex) => { 
                 setSelectedDid({item: itemValue}); 
                 getDepartmentId(selectedDid.item);
@@ -310,12 +310,12 @@ const RegisterScreen = ({form,getDepartmentId,getGender,getBirthYear,onSendAuthE
                 })}
             </Picker>    
 
-            <View style={{marginBottom:15}} />  
-            <Text style={{alignSelf: 'flex-start', marginBottom: 5}}>성별</Text>
+            <View style={css`margin-bottom:15px`} />
+            <Text style={css`align-self: flex-start; margin-bottom: 5px`}>성별</Text>
 
             <Picker
               selectedValue={selectedGender.item}
-              style={{ height: 50, width: 200}}
+              style={css`height: 50px; width: 200px`}
               onValueChange={(itemValue, itemIndex) => { 
                 setSelectedGender({item: itemValue}); 
                 getGender(selectedGender.item); 
@@ -327,16 +327,16 @@ const RegisterScreen = ({form,getDepartmentId,getGender,getBirthYear,onSendAuthE
               <Picker.Item label="여자" value="FEMALE" />
             </Picker>
 
-            <View style={{marginBottom:15}} />  
+            <View style={css`margin-bottom:15px`} />
+            <Text style={css`align-self: flex-start; margin-bottom: 5px`}>자기소개</Text>
 
-            <Text style={{alignSelf: 'flex-start', marginBottom: 5}}>자기소개</Text>
-            <View style={{flexDirection:'row', alignItems:'center'}}> 
+            <View style={css`flex-direction:row; align-items:center`}> 
               <Controller
                 control={control}
                 render={({value, onBlur, onChange}) => (
                   <TextInput
-                    name="selfIntroduction"  
-                    style={styles.textArea}
+                    name="selfIntroduction"
+                    style={styles.input}
                     onBlur={onBlur}
                     onChangeText={value => onChange(value)}
                     value={form.selfIntroduction, value}
@@ -350,20 +350,20 @@ const RegisterScreen = ({form,getDepartmentId,getGender,getBirthYear,onSendAuthE
                 defaultValue=""
               />
             </View>
-            {errors.selfIntroduction && (<Text style={{
-              color: '#f54260', alignSelf:'flex-start', marginBottom: 10}}>닉네임을 입력 해주세요</Text>
+            {errors.selfIntroduction && (<Text style={css`
+              color: #f54260; align-self:flex-start; margin-bottom: 10px`}>닉네임을 입력 해주세요</Text>
             )}
           </View>
 
           <TouchableOpacity
-            onPress={() => {trigger(); handleSubmit(onSubmit); onSubmitRegister()}}
-            style={styles.button}>
-            <Text style={{color:'white', textAlign:'center' }}>
+            style={styles.button}
+            onPress={() => {trigger(); handleSubmit(onSubmit); onSubmitRegister()}}>
+            <Text style={css`color: white; text-align: center`}>
               🎉회원가입🎉
             </Text>
           </TouchableOpacity> 
 
-          <View style={{marginBottom:20}} />
+          <View style={css`margin-bottom:20px`} />
 
         </View>
       </ScrollView>
@@ -373,7 +373,7 @@ const RegisterScreen = ({form,getDepartmentId,getGender,getBirthYear,onSendAuthE
 
 export default RegisterScreen;
 
-const styles = StyleSheet.create({  
+const styles = StyleSheet.create({
   input: {
     width: 200,
     borderWidth: 0.5,
@@ -386,17 +386,17 @@ const styles = StyleSheet.create({
     backgroundColor: '#ec5990',
     borderRadius: 10,
     width: 200,
-    paddingVertical: 10,
+    paddingVertical: 12,
     borderRadius: 4,
     opacity: 0.8,
-    marginVertical: 5
+    marginVertical: 5,
   },
   textArea: {
-    width: 200, 
+    width: 200,
     borderWidth: 0.5,
     height: 100,
     padding: 10,
     marginBottom: 5,
     borderRadius: 4,
-  }
+  },
 });

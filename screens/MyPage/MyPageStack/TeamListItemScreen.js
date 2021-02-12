@@ -12,6 +12,8 @@ import Modal from 'react-native-modal';
 import * as authAPI from '../../../lib/api';
 import {trigger} from 'swr';
 import {Config} from '../../../Config';
+import useSWR from 'swr';
+import axios from 'axios';
 
 const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
   const [isLeader, setLeader] = useState(false);
@@ -20,25 +22,26 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
   const [teamMember, setTeamMember] = useState();
 
   useEffect(() => {
-    onGetTeamMemberInfo();
     if (userId === teamInfo.leaderId) {
       setLeader(true);
     }
   }, []);
 
-  const onGetTeamMemberInfo = async () => {
-    try {
-      const response = await authAPI.getTeamMemberInfo(teamId, {
-        headers: {
-          Authorization: await AsyncStorage.getItem('authorization'),
-        },
-      });
-      setTeamMember(response.data);
-    } catch (error) {
-      console.log({error});
-    }
+  const fetcher = async (url) => {
+    const response = await axios.get(url, {
+      headers: {
+        Authorization: await AsyncStorage.getItem('authorization'),
+      },
+    });
+    setTeamMember(response.data);
+    return response.data;
   };
 
+  const {data = [], error} = useSWR(
+    `${Config.baseUrl}/api/teams/${teamId}/members`,
+    fetcher,
+  );
+  if (error) return console.log(error);
   const onChangeTeamStatus = async (teamStatus) => {
     if (teamStatus === prevTeamStatus) {
       Alert.alert('오류', '현재 팀 상태와 동일합니다.', [
@@ -91,7 +94,7 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
           text: '확인',
         },
       ]);
-      trigger(`${Config.baseUrl}/api/users`);
+      trigger(`${Config.baseUrl}/api/teams/${teamId}/members`);
     } catch (error) {
       console.log(error);
     }
@@ -109,7 +112,7 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
           text: '확인',
         },
       ]);
-      trigger(`${Config.baseUrl}/api/users`);
+      trigger(`${Config.baseUrl}/api/teams/${teamId}/members`);
     } catch (error) {
       console.log({error});
     }
