@@ -5,7 +5,7 @@ import {setLoginState} from '../../../modules/auth';
 import AsyncStorage from '@react-native-community/async-storage';
 import {Picker} from '@react-native-community/picker';
 import * as authAPI from '../../../lib/api';
-
+import {css} from '@emotion/native';
 import {trigger} from 'swr';
 import {Config} from '../../../Config';
 
@@ -155,42 +155,42 @@ const AccountScreen = ({navigation, myInfoData}) => {
   return (
     <>
       {isSuccessIdentification ? (
-        <ScrollView style={{marginTop: 40, paddingHorizontal: 30}}>
-          <Text style={{fontSize: 32, }}>내 계정</Text>
-          <View style={{marginTop: 30, alignItems:'center'}}>
+        <ScrollView style={css`margin-top: 40px; padding-horizontal: 30px`}>
+          <Text style={css`font-size: 32px`}>내 계정</Text>
+          <View style={css`margin-top: 30px; align-items:center`}>
             <View
-              style={{flexDirection: 'row', alignItems: 'center', marginTop: 10}}>
-              <Text style={{fontSize: 18, marginRight: 20,  }}>    닉네임</Text>
+              style={css`flex-direction: row; align-items: center; margin-top: 10px`}>
+              <Text style={css`font-size: 18px; margin-right: 20px`}>{'    '}닉네임</Text>
               <TextInput
                 onChangeText={text => setNicknameForChange(text)}
                 defaultValue={myInfoData.nickname}
-                style={{
-                  marginRight: 20,
-                  paddingLeft: 15,
-                  width: 160,
-                  height: 40,
-                  borderWidth: 1,
-                  borderRadius: 5,
-                  borderColor: '#404040',
-                }}
+                style={css`
+                  margin-right: 20px;
+                  padding-left: 15px;
+                  width: 160px;
+                  height: 40px;
+                  border-width: 1px;
+                  border-radius: 5px;
+                  border-color: #404040;
+                `}
               />
             </View>
             <View
-              style={{flexDirection: 'row', alignItems: 'center', marginTop: 15}}>
-              <Text style={{fontSize: 18, marginRight: 20,  }}>단과대학</Text>
+              style={css`flex-direction: row; align-items: center; margin-top: 15px`}>
+              <Text style={css`font-size: 18px; margin-right: 20px`}>단과대학</Text>
               <TouchableOpacity
-                style={{
-                  marginRight: 20,
-                  paddingLeft: 5,
-                  width: 160,
-                  borderWidth: 1,
-                  borderRadius: 5,
-                  borderColor: '#404040',
-                }}>
+                style={css`
+                  margin-right: 20px;
+                  padding-left: 5px;
+                  width: 160px;
+                  border-width: 1px;
+                  border-radius: 5px;
+                  border-color: #404040;
+                `}>
                 <Picker
                   selectedValue={selectedDepartment.item}  
                   mode="dropdown"
-                  style={{ height: 50, width: 250}}
+                  style={css`height: 50px; width: 250px`}
                   onValueChange={(itemValue) => { 
                     setSelectedDepartment({item: itemValue});
                   }}
@@ -210,102 +210,99 @@ const AccountScreen = ({navigation, myInfoData}) => {
               </TouchableOpacity>
             </View>
             <View
-              style={{flexDirection: 'row', alignItems: 'center', marginTop: 15}}>
-              <Text style={{fontSize: 18, marginRight: 20,  }}>자기소개</Text>
+              style={css`flex-direction: row; align-items: center; margin-top: 15px`}>
+              <Text style={css`font-size: 18px; margin-right: 20px`}>자기소개</Text>
               <TextInput
                 onChangeText={text => setSelfIntroductionForChange(text)}
                 defaultValue={myInfoData.selfIntroduction}
-                style={{
-                  marginRight: 20,
-                  paddingLeft: 15,
-                  width: 160,
-                  height: 40,
-                  borderWidth: 1,
-                  borderRadius: 5,
-                  borderColor: '#404040',
-                }}
+                style={css`
+                  margin-right: 20px;
+                  padding-left: 5px;
+                  width: 160px;
+                  height: 40px;
+                  border-width: 1px;
+                  border-radius: 5px;
+                  border-color: #404040;
+                `}
               />
             </View>
             <TouchableOpacity
               onPress={() => onChangeUserInfo()}
-              style={{
-                backgroundColor: '#5e5e5e',
-                borderRadius: 5,
-                padding: 18,
-                paddingVertical: 10,
-                marginVertical: 20,
-                width: 70,
-              }}>
-              <Text style={{color: 'white', textAlign: 'center'}}>수정</Text>
+              style={css`
+                background-color: #5e5e5e;
+                border-radius: 5px;
+                padding: 10px 18px;
+                margin-vertical: 20px;
+                width: 70px;
+              `}>
+              <Text style={css`color: white; text-align: center`}>수정</Text>
             </TouchableOpacity>
           </View>
 
-          <View style={{borderBottomWidth:1, marginHorizontal: 15, marginRight: 25}} />
+          <View style={css`border-bottom-width:1px; margin-horizontal: 15px; margin-right: 25px`} />
 
-          <View style={{marginTop: 10, alignItems:'center'}}>
+          <View style={css`margin-top: 10px; align-items: center`}>
             <View
-              style={{flexDirection: 'row', alignItems: 'center', marginTop: 15}}>
-              <Text style={{fontSize: 18, marginRight: 20,  }}>비밀번호 변경</Text>
+              style={css`flex-direction: row; align-items: center; margin-top: 15px`}>
+              <Text style={css`font-size: 18px; margin-right: 20px`}>비밀번호 변경</Text>
               <TextInput
                 placeholder="비밀번호"
                 onChangeText={text => setPasswordForChange(text)}
                 secureTextEntry
-                style={{
-                  marginRight: 20,
-                  paddingLeft: 15,
-                  width: 130,
-                  height: 40,
-                  borderWidth: 1,
-                  borderRadius: 5,
-                  borderColor: '#404040',
-                }}
+                style={css`
+                  margin-right: 20px;
+                  padding-left: 15px;
+                  width: 130px;
+                  height: 40px;
+                  border-width: 1px;
+                  border-radius: 5px;
+                  border-color: #404040;
+                `}
               />
             </View>
             <View
-              style={{flexDirection: 'row', alignItems: 'center', marginTop: 15}}>
-              <Text style={{fontSize: 18, marginRight: 20,  }}>비밀번호 확인</Text>
+              style={css`flex-direction: row; align-items: center; margin-top: 15px`}>
+              <Text style={css`font-size: 18px; margin-right: 20px`}>비밀번호 확인</Text>
               <TextInput
                 placeholder="비밀번호"
                 onChangeText={text => setPasswordForConfirm(text)}
                 secureTextEntry
-                style={{
-                  marginRight: 20,
-                  paddingLeft: 15,
-                  width: 130,
-                  height: 40,
-                  borderWidth: 1,
-                  borderRadius: 5,
-                  borderColor: '#404040',
-                }}
+                style={css`
+                  margin-right: 20px;
+                  padding-left: 15px;
+                  width: 130px;
+                  height: 40px;
+                  border-width: 1px;
+                  border-radius: 5px;
+                  border-color: #404040;
+                `}
               />
             </View>
             <TouchableOpacity
               onPress={ConfirmToChangePassword}
-              style={{
-                backgroundColor: '#5e5e5e',
-                borderRadius: 5,
-                padding: 18,
-                paddingVertical: 10,
-                marginVertical: 20,
-                width: 70,
-              }}>
-              <Text style={{color: 'white', textAlign: 'center'}}>수정</Text>
+              style={css`
+                background-color: #5e5e5e;
+                border-radius: 5px;
+                padding: 10px 18px;
+                margin-vertical: 20px;
+                width: 70px;
+              `}>
+              <Text style={css`color: white; text-align: center`}>수정</Text>
             </TouchableOpacity>
           </View>
-          <View style={{borderBottomWidth:1, marginHorizontal: 15, marginRight: 25}} />
-          <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: 20, marginHorizontal: 30}}>
+          <View style={css`border-bottom-width:1px; margin-horizontal: 15px; margin-right: 25px`} />
+          <View style={css`flex-direction: row; justify-content: space-between; margin-top: 20px; margin-horizontal: 30px`}>
             <TouchableOpacity
-              style={{
-                width: 80,
-                justifyContent: 'center',
-                paddingHorizontal: 13,
-                paddingVertical: 7,
-                borderRadius: 5,
-                borderColor: 'gray',
-                borderWidth: 1,
-                opacity: 0.4,
-                backgroundColor: 'gray',
-              }}
+              style={css`
+                width: 80px;
+                justify-content: center;
+                padding: 7px 13px;
+                border-radius: 5px;
+                border-color: gray;
+                border-width: 1px;
+                opacity: 0.4;
+                background-color: gray;
+              `}
               onPress={() => {
                 Alert.alert('LOGOUT', '로그아웃 하시겠습니까?', [
                   {
@@ -327,17 +324,17 @@ const AccountScreen = ({navigation, myInfoData}) => {
               <Text>로그아웃</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={{
-                width: 81,
-                justifyContent: 'center',
-                paddingHorizontal: 13,
-                paddingVertical: 7,
-                borderRadius: 5,
-                borderColor: 'gray',
-                borderWidth: 1,
-                opacity: 0.4,
-                backgroundColor: 'gray',
-              }}
+              style={css`
+                width: 81px;
+                justify-content: center;
+                padding-horizontal: 13px;
+                padding-vertical: 7px;
+                border-radius: 5px;
+                border-color: gray;
+                border-width: 1px;
+                opacity: 0.4;
+                background-color: gray;
+              `}
               onPress={() => {
                 Alert.alert('회원 탈퇴', '정말 회원 탈퇴를 하시겠습니까?', [
                   {
@@ -363,35 +360,34 @@ const AccountScreen = ({navigation, myInfoData}) => {
           </View>
         </ScrollView>
       ) : (
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-          <Text style={{fontSize: 36}}>
+        <View style={css`flex: 1; justify-content: center; align-items: center`}>
+          <Text style={css`font-size: 36px`}>
             비밀번호 입력
           </Text>
-          <View style={{flexDirection: 'row', marginTop: 30}}>
+          <View style={css`flex-direction: row; margin-top: 30px`}>
             <TextInput
               onChangeText={(text) => setPasswordForAuth(text)}
               placeholder="비밀번호"
               secureTextEntry
-              style={{
-                marginRight: 20,
-                paddingLeft: 15,
-                width: 130,
-                height: 40,
-                borderWidth: 1,
-                borderRadius: 5,
-                borderColor: '#404040',
-              }}
+              style={css`
+                margin-right: 20px;
+                padding-left: 15px;
+                width: 130px;
+                height: 40px;
+                border-width: 1px;
+                border-radius: 5px;
+                border-color: #404040;
+              `}
             />
             <TouchableOpacity
               onPress={confirmUser}
-              style={{
-                backgroundColor: '#e0e0e0',
-                borderRadius: 5,
-                padding: 18,
-                paddingVertical: 10,
-                width: 61,
-              }}>
-              <Text style={{color: '#404040'}}>확인</Text>
+              style={css`
+                background-color: #5e5e5e;
+                border-radius: 5px;
+                padding: 12px 18px;
+                width: 61px;
+              `}>
+              <Text style={css`color: white; text-align: center`}>확인</Text>
             </TouchableOpacity>
           </View>
         </View>

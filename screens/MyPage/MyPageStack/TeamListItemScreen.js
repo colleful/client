@@ -14,6 +14,7 @@ import {trigger} from 'swr';
 import {Config} from '../../../Config';
 import useSWR from 'swr';
 import axios from 'axios';
+import {css} from '@emotion/native';
 
 const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
   const [isLeader, setLeader] = useState(false);
@@ -120,9 +121,9 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
 
   return (
     <>
-      <View style={{borderBottomWidth: 1, marginVertical: 15}} />
+      <View style={css`border-bottom-width: 1px; margin-vertical: 15px`} />
       <View>
-        <Text style={{fontSize: 19, lineHeight: 30}}>
+        <Text style={css`font-size: 19px; line-height: 30px`}>
           팀명 : {teamInfo.teamName}
           {'\n'}
           팀인원 : {teamInfo.headcount}명{'\n'}
@@ -133,11 +134,11 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
             ))}
         </Text>
         <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'center',
-            marginTop: 20,
-          }}>
+          style={css`
+            flex-direction: row;
+            justify-content: center;
+            margin-top: 20px;
+          `}>
           {isLeader ? (
             <>
               <TouchableOpacity
@@ -146,26 +147,26 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
                     teamId: teamInfo.id,
                   });
                 }}
-                style={{
-                  backgroundColor: '#5e5e5e',
-                  borderRadius: 5,
-                  padding: 10,
-                  paddingTop: 15,
-                  width: 61,
-                  marginRight: 20,
-                }}>
-                <Text style={{color: '#fff', fontWeight: '500'}}>팀 초대</Text>
+                style={css`
+                  background-color: #5e5e5e;
+                  border-radius: 5px;
+                  padding: 10px;
+                  padding-top: 15px;
+                  width: 61px;
+                  margin-right: 20px;
+                `}>
+                <Text style={css`color: #fff; font-weight: 500`}>팀 초대</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => setModalVisible(!isModalVisible)}
-                style={{
-                  backgroundColor: '#5e5e5e',
-                  borderRadius: 5,
-                  padding: 15,
-                  width: 100,
-                  marginRight: 20,
-                }}>
-                <Text style={{color: '#fff', fontWeight: '500'}}>
+                style={css`
+                  background-color: #5e5e5e;
+                  border-radius: 5px;
+                  padding: 15px;
+                  width: 100px;
+                  margin-right: 20px;
+                `}>
+                <Text style={css`color: #fff; font-weight: 500`}>
                   팀 상태 변경
                 </Text>
               </TouchableOpacity>
@@ -180,19 +181,19 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
                     ],
                   );
                 }}
-                style={{
-                  backgroundColor: '#5e5e5e',
-                  borderRadius: 5,
-                  padding: 10,
-                  paddingTop: 15,
-                  width: 61,
-                }}>
+                style={css`
+                  background-color: #5e5e5e;
+                  border-radius: 5px;
+                  padding: 10px;
+                  padding-top: 15px;
+                  width: 61px;
+                `}>
                 <Text
-                  style={{
-                    color: '#fff',
-                    fontWeight: '500',
-                    textAlign: 'center',
-                  }}>
+                  style={css`
+                    color: #fff;
+                    font-weight: 500;
+                    text-align: center;
+                  `}>
                   팀 삭제
                 </Text>
               </TouchableOpacity>
@@ -209,67 +210,67 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
                   ],
                 );
               }}
-              style={{
-                backgroundColor: '#5e5e5e',
-                borderRadius: 5,
-                padding: 10,
-                width: 74,
-              }}>
-              <Text style={{color: '#fff', fontWeight: '500'}}>팀 나가기</Text>
+              style={css`
+                background-color: #5e5e5e;
+                border-radius: 5px;
+                padding: 10px;
+                width: 74px;
+              `}>
+              <Text style={css`color: #fff; font-weight: 500`}>팀 나가기</Text>
             </TouchableOpacity>
           )}
         </View>
       </View>
       <Modal
-        style={{justifyContent: 'flex-end', margin: 0}}
+        style={css`justify-content: flex-end; margin: 0`}
         isVisible={isModalVisible}
         onBackButtonPress={() => setModalVisible(!isModalVisible)}
         onSwipeComplete={() => setModalVisible(!isModalVisible)}
         swipeDirection={['up', 'down']}>
         <TouchableWithoutFeedback
           onPress={() => setModalVisible(!isModalVisible)}>
-          <View style={{flex: 1}} />
+          <View style={css`flex: 1`} />
         </TouchableWithoutFeedback>
         <View
-          style={{
-            backgroundColor: 'white',
-          }}>
+          style={css`
+            background-color: white;
+          `}>
           <View
-            style={{
-              height: 100,
-              justifyContent: 'center',
-              alignItems: 'center',
-              borderBottomWidth: 0.5,
-              borderColor: 'gray',
-            }}>
+            style={css`
+              height: 100px;
+              justify-content: center;
+              align-items: center;
+              border-bottom-width: 0.5px;
+              border-color: gray;
+            `}>
             <TouchableOpacity
               onPress={() => onChangeTeamStatus('PENDING')}
-              style={{
-                flex: 1,
-                width: '100%',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <Text style={{fontSize: 16, fontFamily: 'AntDesign'}}>
+              style={css`
+                flex: 1;
+                width: 100%;
+                justify-content: center;
+                align-items: center;
+              `}>
+              <Text style={css`font-size: 16px; font-family: AntDesign`}>
                 멤버 구성중
               </Text>
             </TouchableOpacity>
             <View
-              style={{
-                width: '100%',
-                borderBottomWidth: 1,
-                borderBottomColor: '#cccccc',
-              }}
+              style={css`
+                width: 100%;
+                border-bottom-width: 1px;
+                border-bottom-color: #cccccc;
+              `}
             />
             <TouchableOpacity
               onPress={() => onChangeTeamStatus('READY')}
-              style={{
-                flex: 1,
-                width: '100%',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <Text style={{fontSize: 16, fontFamily: 'AntDesign'}}>
+              style={css`
+                flex: 1;
+                width: 100%;
+                justify-content: center;
+                align-items: center;
+              `}>
+              <Text style={css`font-size: 16px; font-family: AntDesign`}>
                 준비 완료
               </Text>
             </TouchableOpacity>

@@ -90,15 +90,15 @@ const HomeScreen = ({}) => {
     <View style={{flex: 1}}>
       <View
         style={css`
-          margin: 20;
-          paddingB-bttom: 20px;
+          margin: 20px;
+          padding-bottom: 20px;
           padding-horizontal: 20px;
-          background-color: '#fff';
+          background-color: #fff;
           border-radius: 10px;
           elevation: 4; //android
-          // shadow-color: '#000'; //ios
-          // shadow-opacity: 0.3;
-          // shadow-offset: {width: 2px, height: 2px};
+          shadow-color: #000; //ios
+          shadow-opacity: 0.3;
+          shadow-offset: 2px 2px;
         `}>
         <View style={css`flex-direction: row; align-items: center`}>
           <Ionicons name="search-outline" size={18} />
@@ -140,13 +140,13 @@ const HomeScreen = ({}) => {
           flex-direction: row;
           align-items: center;
           justify-content: space-between;
-          paddin-horizontal: 25px;
+          padding-horizontal: 25px;
         `}>
         <Text>
           {keyword === '' ? team.length : newTeam.length}개의 결과
         </Text>
       </View>
-      <View style={{backgroundColor: '#fafafa'}}>
+      <View style={css`background-color: #fafafa`}>
         <FlatList
           disableVirtualization={false} //비정상적인 스크롤 동작을 방지하려고
           style={css`height: 400px`}

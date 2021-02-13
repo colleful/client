@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {View, Text, Alert, TouchableOpacity, Image} from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {css} from '@emotion/native';
 
 const ProfileScreen = ({navigation, myInfoData}) => {
   const [imageSource, setImageSource] = useState('');
@@ -35,59 +36,59 @@ const ProfileScreen = ({navigation, myInfoData}) => {
   };
 
   return (
-    <View style={{flex: 1, backgroundColor: '#fff'}}>
+    <View style={css`flex: 1; background-color: #fff`}>
       <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          padding: 10,
-          justifyContent: 'space-between',
-          borderBottomWidth: 1,
-          borderColor: '#cccccc',
-          marginBottom: 20,
-        }}>
+        style={css`
+          flex-direction: row;
+          align-items: center;
+          padding: 10px;
+          justify-content: space-between;
+          border-bottom-width: 1px;
+          border-color: #cccccc;
+          margin-bottom: 20px;
+        `}>
         <TouchableOpacity
           onPress={() => {
             navigation.navigate('유저정보');
           }}>
-          <Text style={{fontFamily: 'AntDesign'}}>닫기</Text>
+          <Text style={css`font-family: AntDesign`}>닫기</Text>
         </TouchableOpacity>
-        <Text style={{fontSize: 16, fontFamily: 'AntDesign'}}>프로필 설정</Text>
-        <Text style={{fontFamily: 'AntDesign'}}>완료</Text>
+        <Text style={css`font-size: 16px; font-family: AntDesign`}>프로필 설정</Text>
+        <Text style={css`font-family: AntDesign`}>완료</Text>
       </View>
-      <View style={{alignItems: 'center'}}>
+      <View style={css`align-items: center`}>
         <TouchableOpacity onPress={showImagePicker}>
           <View
-            style={{
-              position: 'absolute',
-              bottom: 0,
-              right: 5,
-              width: 22,
-              height: 22,
-              backgroundColor: '#fff',
-              opacity: 0.8,
-              zIndex: 1,
-              borderRadius: 100,
-              borderWidth: 1,
-              borderColor: '#c0c0c0',
-              justifyContent: 'center',
-              alignItems: 'center'
-            }}>
+            style={css`
+              position: absolute;
+              bottom: 0;
+              right: 5px;
+              width: 22px;
+              height: 22px;
+              background-color: #fff;
+              opacity: 0.8;
+              z-index: 1;
+              border-radius: 100px;
+              border-width: 1px;
+              border-color: #c0c0c0;
+              justify-content: center;
+              align-items: center
+            `}>
             <Ionicons name="camera" size={16} color='gray'/>
           </View>
           {imageSource === '' ? (
             <Image
               source={require('../../../images/1.png')}
-              style={{width: 100, height: 100, borderRadius: 100}}
+              style={css`width: 100px; height: 100px; border-radius: 100px`}
             />
           ) : (
             <Image
               source={{uri: imageSource}}
-              style={{width: 100, height: 100, borderRadius: 100}}
+              style={css`width: 100px; height: 100px; border-radius: 100px`}
             />
           )}
         </TouchableOpacity>
-        <View style={{marginVertical: 20}}>
+        <View style={css`margin-vertical: 20px`}>
           <Text>
             {' '}
             {myInfoData.nickname} {myInfoData.age} {myInfoData.department}{' '}

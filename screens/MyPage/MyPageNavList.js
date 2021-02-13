@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 
 import MyPageNavListItem from './MyPageNavListItem';
+import {css} from '@emotion/native';
 
 const MyPageNavList = ({navigation}) => {
   const [navInfo, setNavInfo] = useState([
@@ -47,7 +48,7 @@ const MyPageNavList = ({navigation}) => {
     ],
   ]);
   return navInfo.map((navinfos, index) => (
-    <View style={[index === 0 && {marginTop: 10}, styles.item]} key={index}>
+    <View style={[index === 0 && css`margin-top: 10px`, styles.item]} key={index}>
       <MyPageNavListItem navigation={navigation} navInfo={navinfos} />
     </View>
   ));

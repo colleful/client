@@ -2,6 +2,7 @@ import React, {useState, useCallback} from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
 import {Picker} from '@react-native-community/picker';
 import Modal from 'react-native-modal';
+import styled, {css} from '@emotion/native';
 
 const ModalFilter = ({
   setTeam,
@@ -59,35 +60,35 @@ const ModalFilter = ({
       isVisible={isModalVisible}
       onBackButtonPress={() => setModalVisible(!isModalVisible)}>
       <View
-        style={{
-          flex: 1,
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
+        style={css`
+          flex: 1;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+        `}>
         <View
-          style={{
-            backgroundColor: 'white',
-            width: 250,
-            height: 250,
-            borderRadius: 10,
-          }}>
+          style={css`
+            background-color: white;
+            width: 250px;
+            height: 250px;
+            border-radius: 10px;
+          `}>
           <View
-            style={{
-              height: 50,
-              justifyContent: 'center',
-              alignItems: 'center',
-              borderBottomWidth: 0.5,
-              borderColor: 'gray',
-            }}>
-            <Text style={{fontSize: 18}}>필터 설정</Text>
+            style={css`
+              height: 50px;
+              justify-content: center;
+              align-items: center;
+              border-bottomWidth: 0.5px;
+              border-color: gray;
+            `}>
+            <Text style={css`font-size: 18px`}>필터 설정</Text>
           </View>
           <View
-            style={{
-              flex: 1,
-              justifyContent: 'space-between',
-              paddingBottom: 20,
-            }}>
+            style={css`
+              flex: 1;
+              justify-content: space-between;
+              padding-bottom: 20px;
+            `}>
             <Picker
               selectedValue={selectItem.selectedFilter}
               onValueChange={(value) => setSelectItem({selectedFilter: value})}
@@ -102,17 +103,16 @@ const ModalFilter = ({
                 );
               })}
             </Picker>
-            <View style={{alignItems: 'center'}}>
+            <View style={css`align-items: center`}>
               <TouchableOpacity
                 onPress={onToggleModal}
-                style={{
-                  backgroundColor: '#5e5e5e',
-                  borderRadius: 5,
-                  padding: 16,
-                  paddingVertical: 10,
-                  width: 58,
-                }}>
-                <Text style={{color: '#fff'}}>적용</Text>
+                style={css`
+                  background-color: #5e5e5e;
+                  border-radius: 5px;
+                  padding: 12px 16px;
+                  width: 58px;
+                `}>
+                <Text style={css`color: #fff`}>적용</Text>
               </TouchableOpacity>
             </View>
           </View>

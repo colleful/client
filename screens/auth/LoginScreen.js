@@ -273,14 +273,21 @@ const LoginScreen = ({
                     onChange={onChangeFindPasswordConfirm}
                     secureTextEntry
                   />
-                  <Button
-                    title="변경하기"
+                  <TouchableOpacity
+                    style={css`
+                      background-color: #5e5e5e;
+                      border-radius: 5px;
+                      padding: 12px 4px;
+                      margin-top: 5px;
+                      width: 66px;
+                    `}
                     onPress={() => {
                       onSubmitChangePassword();
                       toggleModal(); //변경하기후에 나가지지 않으면 지우기
                     }}
-                    color="#00C831"
-                  />
+                    >
+                    <Text style={css`color: white; text-align: center`}>변경하기</Text>
+                  </TouchableOpacity>
                 </View>
               ) : (
                 <>
@@ -308,11 +315,17 @@ const LoginScreen = ({
                       onChange={onChangeFindEmail}
                       onEndEditing={addToBehindText}
                     />
-                    <Button
-                      title="보내기"
+                    <TouchableOpacity
+                      style={css`
+                        background-color: #5e5e5e;
+                        border-radius: 5px;
+                        padding: 12px 12px;
+                        width: 61px;
+                      `}
                       onPress={onSendAuthEmailForPasswordChange}
-                      color="#00C831"
-                    />
+                      >
+                      <Text style={css`color: white; text-align: center`}>보내기</Text>
+                    </TouchableOpacity>
                   </View>
                   <View
                     style={css`
@@ -337,11 +350,17 @@ const LoginScreen = ({
                       value={forgetPassword.code}
                       onChange={onChangeFindCode}
                     />
-                    <Button
-                      title="인증하기"
+                    <TouchableOpacity
+                      style={css`
+                        background-color: #5e5e5e;
+                        border-radius: 5px;
+                        padding: 12px 4px;
+                        width: 66px;
+                      `}
                       onPress={onConfirmAuthEmail}
-                      color="#00C831"
-                    />
+                      >
+                      <Text style={css`color: white; text-align: center`}>인증하기</Text>
+                    </TouchableOpacity>
                   </View>
                 </>
               )}

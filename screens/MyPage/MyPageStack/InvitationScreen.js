@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, TextInput, TouchableOpacity, Alert} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import * as authAPI from '../../../lib/api';
+import {css} from '@emotion/native';
 
 const InvitationScreen = ({route}) => {
   const [userNickname, setUserNickname] = useState();
@@ -67,71 +68,71 @@ const InvitationScreen = ({route}) => {
   };
 
   return (
-    <View style={{flex: 1, paddingTop: 100, paddingHorizontal: 20}}>
-      <View style={{marginBottom: 30}}>
-        <Text style={{fontSize: 32}}> 멤버 초대하기</Text>
+    <View style={css`flex: 1; padding-top: 100px; padding-horizontal: 20px`}>
+      <View style={css`margin-bottom: 30px`}>
+        <Text style={css`font-size: 32px`}> 멤버 초대하기</Text>
       </View>
       <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'center',
-          marginBottom: 40,
-        }}>
+        style={css`
+          flex-direction: row;
+          justify-content: center;
+          margin-bottom: 40px;
+        `}>
         <TextInput
           placeholder="초대할 멤버의 닉네임 입력"
           onChangeText={(text) => setUserNickname(text)}
-          style={{
-            marginRight: 15,
-            paddingLeft: 15,
-            width: 200,
-            height: 40,
-            borderWidth: 1,
-            borderRadius: 5,
-            borderColor: '#5e5e5e',
-          }}
+          style={css`
+            margin-right: 15px;
+            padding-left: 15px;
+            width: 200px;
+            height: 40px;
+            border-width: 1px;
+            border-radius: 5px;
+            border-color: #5e5e5e;
+          `}
         />
         <TouchableOpacity
           onPress={() => onSearchUserByNickname()}
-          style={{
-            backgroundColor: '#3498db',
-            borderRadius: 5,
-            padding: 18,
-            paddingVertical: 11,
-            width: 61,
-          }}>
-          <Text style={{color: '#fff', fontWeight: '500'}}>검색</Text>
+          style={css`
+            background-color: #3498db;
+            border-radius: 5px;
+            padding: 18px;
+            padding-vertical: 11px;
+            width: 61px;
+          `}>
+          <Text style={css`color: #fff; font-weight: 500`}>검색</Text>
         </TouchableOpacity>
       </View>
 
-      <View style={{borderBottomWidth: 1, marginBottom: 20}} />
-      <Text style={{fontSize: 20, marginBottom: 15}}>검색결과</Text>
+      <View style={css`border-bottom-width: 1px; margin-bottom: 20px`} />
+      <Text style={css`font-size: 20px; margin-bottom: 15px`}>검색결과</Text>
 
       {userInfo.hasOwnProperty('id') ? (
         <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            borderRadius: 10,
-            marginBottom: 5,
-            padding: 10,
-            backgroundColor: '#e5e5e5',
-          }}>
-          <Text style={{fontSize: 16, marginRight: 15}}>
+          style={css`
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 10px;
+            margin-bottom: 5px;
+            padding: 10px;
+            background-color: #e5e5e5;
+          `}>
+          <Text style={css`font-size: 16px; margin-right: 15px`}>
             {userInfo.nickname} {userInfo.age}
             {' / '}
             {userInfo.gender === 'MALE' ? '남' : '여'}
           </Text>
           <TouchableOpacity
             onPress={() => onInviteTeam()}
-            style={{
-              backgroundColor: '#5e5e5e',
-              borderRadius: 5,
-              padding: 18,
-              paddingVertical: 10,
-              width: 61,
-            }}>
-            <Text style={{color: '#fff', fontWeight: '500'}}>초대</Text>
+            style={css`
+              background-color: #5e5e5e;
+              border-radius: 5px;
+              padding: 18px;
+              padding-vertical: 10px;
+              width: 61px;
+            `}>
+            <Text style={css`color: #fff; font-weight: 500`}>초대</Text>
           </TouchableOpacity>
         </View>
       ) : (

@@ -5,6 +5,7 @@ import * as authAPI from '../../../lib/api';
 import MemberInfo from './MemberInfo';
 import { trigger } from 'swr';
 import {Config} from '../../../Config';
+import {css} from '@emotion/native';
 
 const InvitationListItemScreen = ({invitationList}) => {
   return invitationList.map((list, index) => (
@@ -80,7 +81,7 @@ const InvitationListItem = ({invitationList}) => {
 
   return (
     <>
-      <Text style={{fontSize: 19, lineHeight: 30}}>
+      <Text style={css`font-size: 19px; line-height: 30px`}>
         팀명 : {invitationList.team.teamName} {'\n'}리더 :{' '}
         {
           invitationList.team.members.filter(
@@ -93,40 +94,40 @@ const InvitationListItem = ({invitationList}) => {
         ))}
       </Text>
       <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'center',
-          marginTop: 20,
-        }}>
+        style={css`
+          flex-direction: row;
+          justify-content: center;
+          margin-top: 20px;
+        `}>
         <TouchableOpacity
           onPress={()=> {
             onAcceptInvitation()
           }}
-          style={{
-            backgroundColor: '#5e5e5e',
-            borderRadius: 5,
-            marginRight: 20,
-            padding: 18,
-            paddingVertical: 10,
-            width: 61,
-          }}>
-          <Text style={{color: '#fff', fontWeight: '500'}}>수락</Text>
+          style={css`
+            background-color: #5e5e5e;
+            border-radius: 5px;
+            margin-right: 20px;
+            padding: 18px;
+            padding-vertical: 10px;
+            width: 61px;
+          `}>
+          <Text style={css`color: #fff; font-weight: 500px`}>수락</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={()=> {
             onRefusalInvitation()
           }}
-          style={{
-            backgroundColor: '#5e5e5e',
-            borderRadius: 5,
-            padding: 18,
-            paddingVertical: 10,
-            width: 61,
-          }}>
-          <Text style={{color: '#fff', fontWeight: '500'}}>거절</Text>
+          style={css`
+            background-color: #5e5e5e;
+            border-radius: 5px;
+            padding: 18px;
+            padding-vertical: 10px;
+            width: 61px;
+          `}>
+          <Text style={css`color: #fff; font-weight: 500`}>거절</Text>
         </TouchableOpacity>
       </View>
-      <View style={{borderBottomWidth: 1, marginVertical: 20}} />
+      <View style={css`border-bottom-width: 1px; margin-vertical: 20px`} />
     </>
   );
 };
