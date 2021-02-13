@@ -2,58 +2,13 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, TextInput, TouchableOpacity, Alert} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import * as authAPI from '../../../lib/api';
-import useSWR, {trigger} from 'swr';
+import {trigger} from 'swr';
 import {Config} from '../../../Config';
 
 const AddTeamScreen = ({navigation}) => {
   const [teamName, setTeamName] = useState('');
   const [teamInfo, setTeamInfo] = useState('');
-  const [teamInfoError, setTeamInfoError] = useState('');
-
-  // const fetcher = async (url) => {
-  //   const response = await axios.post(url, {teamName: teamName},
-  //     {
-  //       headers: {
-  //         'Authorization': await AsyncStorage.getItem('authorization'),
-  //       },
-  //     });
-  //   setTeamInfo(response.data);
-  //   return response.data;
-  // };
-
-  // const {data = [], error} = useSWR(`${Config.baseUrl}/api/teams`, fetcher);
-  // if(!data) return <div style={{backgroundColor:'green'}}>asd</div>
-  // if(error) {
-  //   Alert.alert('팀생성 오류', '이미 존재하는 팀명입니다.', [
-  //     {text: '확인', onPress: console.log('팀생성 오류')},
-  //   ]);
-  // }
-
-  // useEffect(()=>{
-  //   if(teamInfo) { 
-  //     Alert.alert('완료', '팀 생성이 완료되었습니다. 이어서 팀 초대를 하시겠습니까? ( 나중에 팀목록 -> 팀초대로 팀을 초대할 수 있습니다 )', [
-  //       {
-  //         text: '팀 초대',
-  //         onPress: () => {
-  //           // setUpdate(!update);
-  //           trigger(`${Config.baseUrl}/api/users`);
-  //           navigation.navigate('팀초대',{
-  //             teamId: teamInfo.id
-  //           });
-  //         },
-  //       },
-  //       {
-  //         text: '나가기',
-  //         onPress: () => {
-  //           // setUpdate(!update);
-  //           trigger(`${Config.baseUrl}/api/users`);
-  //           navigation.navigate('유저정보');
-  //         },
-  //       },
-  //     ]);
-  //   }
-  // },[teamInfo])
-
+  const [teamInfoError, setTeamInfoError] = useState(0);
 
   const onCreateTeam = async () => {
     try {
@@ -66,9 +21,8 @@ const AddTeamScreen = ({navigation}) => {
         },
       );
       setTeamInfo(response.data);
-    } catch (e) {
-      setTeamInfoError(e);
-      console.log(e);
+    } catch (error) {
+      setTeamInfoError(error);
     }
   };
 
@@ -95,10 +49,16 @@ const AddTeamScreen = ({navigation}) => {
       ]);
     }
     if (teamInfoError) {
-      Alert.alert('팀생성 오류', '이미 존재하는 팀명입니다.', [
-        {text: '확인', onPress: console.log('팀생성 오류')},
-      ]);
-      setTeamInfoError('');
+      if(teamInfoError.response.data.status == 500){
+        Alert.alert('팀생성 오류', '이미 존재하는 팀명입니다.', [
+          {text: '확인', onPress: console.log('팀생성 오류')},
+        ]);
+      } else if(teamInfoError.response.data.status === 403){
+        Alert.alert('팀생성 오류', '팀은 하나만 생성 가능합니다.', [
+          {text: '확인', onPress: console.log('팀생성 오류')},
+        ]);
+      }
+      setTeamInfoError(0);
     }
   }, [teamInfo, teamInfoError]);
 
