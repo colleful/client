@@ -92,7 +92,7 @@ const InvitationScreen = ({route}) => {
           `}
         />
         <TouchableOpacity
-          onPress={() => onSearchUserByNickname()}
+          onPress={onSearchUserByNickname}
           style={css`
             background-color: #3498db;
             border-radius: 5px;
@@ -124,7 +124,7 @@ const InvitationScreen = ({route}) => {
             {userInfo.gender === 'MALE' ? '남' : '여'}
           </Text>
           <TouchableOpacity
-            onPress={() => onInviteTeam()}
+            onPress={onInviteTeam}
             style={css`
               background-color: #5e5e5e;
               border-radius: 5px;

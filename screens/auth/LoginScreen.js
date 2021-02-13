@@ -4,7 +4,6 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
-  Button,
   StyleSheet,
   ActivityIndicator,
 } from 'react-native';
@@ -13,7 +12,7 @@ import Modal from 'react-native-modal';
 import {useSelector, useDispatch} from 'react-redux';
 import {emailValidstatus} from '../../modules/auth';
 import {useForm, Controller} from 'react-hook-form';
-import styled, { css } from '@emotion/native';
+import { css } from '@emotion/native';
 
 const LoginScreen = ({
   navigation,

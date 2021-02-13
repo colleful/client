@@ -43,6 +43,7 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
     fetcher,
   );
   if (error) return console.log(error);
+
   const onChangeTeamStatus = async (teamStatus) => {
     if (teamStatus === prevTeamStatus) {
       Alert.alert('오류', '현재 팀 상태와 동일합니다.', [
@@ -119,6 +120,10 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
     }
   };
 
+  const onToggleModal = () => {
+    setModalVisible(!isModalVisible);
+  }
+
   return (
     <>
       <View style={css`border-bottom-width: 1px; margin-vertical: 15px`} />
@@ -158,7 +163,7 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
                 <Text style={css`color: #fff; font-weight: 500`}>팀 초대</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => setModalVisible(!isModalVisible)}
+                onPress={onToggleModal}
                 style={css`
                   background-color: #5e5e5e;
                   border-radius: 5px;
@@ -177,7 +182,7 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
                     `정말 ${teamInfo.teamName} 팀을 삭제하시겠습니까? ※팀원들도 마찬가지로 삭제됩니다.`,
                     [
                       {text: '취소', onPress: () => console.log('취소')},
-                      {text: '확인', onPress: () => onDeleteTeam()},
+                      {text: '확인', onPress: onDeleteTeam},
                     ],
                   );
                 }}
@@ -206,7 +211,7 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
                   `정말 ${teamInfo.teamName} 팀을 나가시겠습니까?`,
                   [
                     {text: '취소', onPress: () => console.log('취소')},
-                    {text: '확인', onPress: () => onExitTeam()},
+                    {text: '확인', onPress: onExitTeam},
                   ],
                 );
               }}
@@ -224,11 +229,11 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
       <Modal
         style={css`justify-content: flex-end; margin: 0`}
         isVisible={isModalVisible}
-        onBackButtonPress={() => setModalVisible(!isModalVisible)}
-        onSwipeComplete={() => setModalVisible(!isModalVisible)}
+        onBackButtonPress={onToggleModal}
+        onSwipeComplete={onToggleModal}
         swipeDirection={['up', 'down']}>
         <TouchableWithoutFeedback
-          onPress={() => setModalVisible(!isModalVisible)}>
+          onPress={onToggleModal}>
           <View style={css`flex: 1`} />
         </TouchableWithoutFeedback>
         <View

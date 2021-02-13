@@ -48,9 +48,7 @@ const ProfileScreen = ({navigation, myInfoData}) => {
           margin-bottom: 20px;
         `}>
         <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('유저정보');
-          }}>
+          onPress={() => navigation.navigate('유저정보')}>
           <Text style={css`font-family: AntDesign`}>닫기</Text>
         </TouchableOpacity>
         <Text style={css`font-size: 16px; font-family: AntDesign`}>프로필 설정</Text>

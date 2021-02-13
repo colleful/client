@@ -52,13 +52,15 @@ const ModalFilter = ({
 
   const onToggleModal = () => {
     setModalVisible(!isModalVisible);
+  };
+
+  const onToggleModalAndSetFilter = () => {
+    setModalVisible(!isModalVisible);
     setFilter();
   };
 
   return (
-    <Modal
-      isVisible={isModalVisible}
-      onBackButtonPress={() => setModalVisible(!isModalVisible)}>
+    <Modal isVisible={isModalVisible} onBackButtonPress={onToggleModal}>
       <View
         style={css`
           flex: 1;
@@ -78,10 +80,15 @@ const ModalFilter = ({
               height: 50px;
               justify-content: center;
               align-items: center;
-              border-bottomWidth: 0.5px;
+              border-bottom-width: 0.5px;
               border-color: gray;
             `}>
-            <Text style={css`font-size: 18px`}>필터 설정</Text>
+            <Text
+              style={css`
+                font-size: 18px;
+              `}>
+              필터 설정
+            </Text>
           </View>
           <View
             style={css`
@@ -103,16 +110,24 @@ const ModalFilter = ({
                 );
               })}
             </Picker>
-            <View style={css`align-items: center`}>
+            <View
+              style={css`
+                align-items: center;
+              `}>
               <TouchableOpacity
-                onPress={onToggleModal}
+                onPress={onToggleModalAndSetFilter}
                 style={css`
                   background-color: #5e5e5e;
                   border-radius: 5px;
                   padding: 12px 16px;
                   width: 58px;
                 `}>
-                <Text style={css`color: #fff`}>적용</Text>
+                <Text
+                  style={css`
+                    color: #fff;
+                  `}>
+                  적용
+                </Text>
               </TouchableOpacity>
             </View>
           </View>

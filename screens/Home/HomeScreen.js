@@ -86,6 +86,10 @@ const HomeScreen = ({}) => {
     }
   };
 
+  const onToggleModal = () => {
+    setModalVisible(!isModalVisible);
+  }
+
   return (
     <View style={{flex: 1}}>
       <View
@@ -122,7 +126,7 @@ const HomeScreen = ({}) => {
           <Ionicons
             name="funnel-outline"
             size={20}
-            onPress={() => setModalVisible(!isModalVisible)}
+            onPress={onToggleModal}
           />
           <ModalFilter
             setTeam={setTeam}

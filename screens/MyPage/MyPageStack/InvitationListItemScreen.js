@@ -100,9 +100,7 @@ const InvitationListItem = ({invitationList}) => {
           margin-top: 20px;
         `}>
         <TouchableOpacity
-          onPress={()=> {
-            onAcceptInvitation()
-          }}
+          onPress={onAcceptInvitation}
           style={css`
             background-color: #5e5e5e;
             border-radius: 5px;
@@ -114,9 +112,7 @@ const InvitationListItem = ({invitationList}) => {
           <Text style={css`color: #fff; font-weight: 500px`}>수락</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={()=> {
-            onRefusalInvitation()
-          }}
+          onPress={onRefusalInvitation}
           style={css`
             background-color: #5e5e5e;
             border-radius: 5px;
