@@ -59,7 +59,8 @@ const InvitationScreen = ({route}) => {
           'Content-Type': 'application/json',
         },
       });
-      if (response.status === 200) {
+      console.log("초대 res", response)
+      if (response.status === 201) {
         Alert.alert(
           '완료',
           `${userInfo.nickname}님께 팀 초대 메세지를 보냈습니다`,
@@ -77,8 +78,8 @@ const InvitationScreen = ({route}) => {
             text: '확인',
           },
         ]);
-      } else if (error.response.status === 400) {
-        Alert.alert('에러', `자기 자신을 초대할 수 없습니다!`, [
+      } else if (error.response.status === 403) {
+        Alert.alert('에러', `${error.response.data.message}`, [
           {
             text: '확인',
           },

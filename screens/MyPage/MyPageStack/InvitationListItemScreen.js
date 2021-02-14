@@ -15,16 +15,20 @@ const InvitationListItemScreen = ({receivedInvitationList}) => {
 const InvitationListItem = ({receivedInvitationList}) => {
   
   useEffect(() => {
-    console.log(receivedInvitationList);
+    console.log("receivedInvitationList", receivedInvitationList.id);
   }, [receivedInvitationList])
 
   const onAcceptInvitation = async () => {
     try {
-      const response = await authAPI.acceptInvitation(receivedInvitationList.id, {
-        headers: {
-          'Authorization': await AsyncStorage.getItem('authorization'),
+      const response = await authAPI.acceptInvitation(
+        receivedInvitationList.id,
+        {},
+        {
+          headers: {
+            Authorization: await AsyncStorage.getItem('authorization'),
+          },
         },
-      });
+      );
       if (response.status === 200) {
         Alert.alert(
           '완료',
@@ -38,26 +42,26 @@ const InvitationListItem = ({receivedInvitationList}) => {
       }
       trigger(`${Config.baseUrl}/api/users`);
     } catch (error) {
-      Alert.alert(
-        '에러발생',
-        `${error.response.data.message}`,
-        [
-          {
-            text: '확인',
-          },
-        ],
-      );
-      console.log({error})
+      Alert.alert('에러발생', `${error.response.data.message}`, [
+        {
+          text: '확인',
+        },
+      ]);
+      console.log({error});
     }
   };
 
   const onRefusalInvitation = async () => {
     try {
-      const response = await authAPI.refusalInvitation(receivedInvitationList.id, {
-        headers: {
-          'Authorization': await AsyncStorage.getItem('authorization'),
+      const response = await authAPI.refuseInvitation(
+        receivedInvitationList.id,
+        {},
+        {
+          headers: {
+            Authorization: await AsyncStorage.getItem('authorization'),
+          },
         },
-      });
+      );
       if (response.status === 200) {
         Alert.alert(
           '완료',
@@ -70,16 +74,12 @@ const InvitationListItem = ({receivedInvitationList}) => {
         );
       }
     } catch (error) {
-      Alert.alert(
-        '에러발생',
-        `${error.response.data.message}`,
-        [
-          {
-            text: '확인',
-          },
-        ],
-      );
-      console.log({error})
+      Alert.alert('에러발생', `${error.response.data.message}`, [
+        {
+          text: '확인',
+        },
+      ]);
+      console.log({error});
     }
   };
 
