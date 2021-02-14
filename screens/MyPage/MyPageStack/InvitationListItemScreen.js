@@ -1,22 +1,26 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, Text, TouchableOpacity,Alert} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import * as authAPI from '../../../lib/api';
-import MemberInfo from './MemberInfo';
-import { trigger } from 'swr';
+import {trigger} from 'swr';
 import {Config} from '../../../Config';
 import {css} from '@emotion/native';
 
-const InvitationListItemScreen = ({invitationList}) => {
-  return invitationList.map((list, index) => (
-    <InvitationListItem invitationList={list} key={index} />
+const InvitationListItemScreen = ({receivedInvitationList}) => {
+  return receivedInvitationList.map((list, index) => (
+    <InvitationListItem receivedInvitationList={list} key={index} />
   ));
 };
 
-const InvitationListItem = ({invitationList}) => {
+const InvitationListItem = ({receivedInvitationList}) => {
+  
+  useEffect(() => {
+    console.log(receivedInvitationList);
+  }, [receivedInvitationList])
+
   const onAcceptInvitation = async () => {
     try {
-      const response = await authAPI.acceptInvitation(invitationList.id, {
+      const response = await authAPI.acceptInvitation(receivedInvitationList.id, {
         headers: {
           'Authorization': await AsyncStorage.getItem('authorization'),
         },
@@ -24,7 +28,7 @@ const InvitationListItem = ({invitationList}) => {
       if (response.status === 200) {
         Alert.alert(
           '완료',
-          `${invitationList.team.teamName}팀 초대를 수락했습니다.`,
+          `${receivedInvitationList.team.teamName}팀 초대를 수락했습니다.`,
           [
             {
               text: '확인',
@@ -49,7 +53,7 @@ const InvitationListItem = ({invitationList}) => {
 
   const onRefusalInvitation = async () => {
     try {
-      const response = await authAPI.refusalInvitation(invitationList.id, {
+      const response = await authAPI.refusalInvitation(receivedInvitationList.id, {
         headers: {
           'Authorization': await AsyncStorage.getItem('authorization'),
         },
@@ -57,7 +61,7 @@ const InvitationListItem = ({invitationList}) => {
       if (response.status === 200) {
         Alert.alert(
           '완료',
-          `${invitationList.team.teamName}팀 초대를 거절했습니다.`,
+          `${receivedInvitationList.team.teamName}팀 초대를 거절했습니다.`,
           [
             {
               text: '확인',
@@ -82,16 +86,16 @@ const InvitationListItem = ({invitationList}) => {
   return (
     <>
       <Text style={css`font-size: 19px; line-height: 30px`}>
-        팀명 : {invitationList.team.teamName} {'\n'}리더 :{' '}
-        {
-          invitationList.team.members.filter(
-            (teams) => teams.id === invitationList.team.leaderId,
+        팀명 : {receivedInvitationList.team.teamName} {'\n'}리더 :{' '}
+        {/* {
+          receivedInvitationList.team.members.filter(
+            (teams) => teams.id === receivedInvitationList.team.leaderId,
           )[0].nickname
         }{' '}
         {'\n'}팀 멤버 :
-        {invitationList.team.members.map((member, index) => (
+        {receivedInvitationList.team.members.map((member, index) => (
           <MemberInfo memberInfo={member} key={index} />
-        ))}
+        ))} */}
       </Text>
       <View
         style={css`
@@ -105,19 +109,17 @@ const InvitationListItem = ({invitationList}) => {
             background-color: #5e5e5e;
             border-radius: 5px;
             margin-right: 20px;
-            padding: 18px;
-            padding-vertical: 10px;
+            padding: 10px 18px;
             width: 61px;
           `}>
-          <Text style={css`color: #fff; font-weight: 500px`}>수락</Text>
+          <Text style={css`color: #fff; font-weight: 500`}>수락</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={onRefusalInvitation}
           style={css`
             background-color: #5e5e5e;
             border-radius: 5px;
-            padding: 18px;
-            padding-vertical: 10px;
+            padding: 10px 18px;
             width: 61px;
           `}>
           <Text style={css`color: #fff; font-weight: 500`}>거절</Text>

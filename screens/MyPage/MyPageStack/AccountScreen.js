@@ -217,7 +217,7 @@ const AccountScreen = ({navigation, myInfoData}) => {
                 defaultValue={myInfoData.selfIntroduction}
                 style={css`
                   margin-right: 20px;
-                  padding-left: 5px;
+                  padding-left: 15px;
                   width: 160px;
                   height: 40px;
                   border-width: 1px;

@@ -42,7 +42,7 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
     `${Config.baseUrl}/api/teams/${teamId}/members`,
     fetcher,
   );
-  if (error) return console.log(error);
+  if(error) console.log(error);
 
   const onChangeTeamStatus = async (teamStatus) => {
     if (teamStatus === prevTeamStatus) {
@@ -96,7 +96,7 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
           text: '확인',
         },
       ]);
-      trigger(`${Config.baseUrl}/api/teams/${teamId}/members`);
+      // trigger(`${Config.baseUrl}/api/teams/${teamId}`);
     } catch (error) {
       console.log(error);
     }
@@ -114,7 +114,7 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
           text: '확인',
         },
       ]);
-      trigger(`${Config.baseUrl}/api/teams/${teamId}/members`);
+      // trigger(`${Config.baseUrl}/api/teams/${teamId}`);
     } catch (error) {
       console.log({error});
     }

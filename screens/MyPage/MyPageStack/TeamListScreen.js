@@ -2,33 +2,46 @@ import React, {useState, useEffect} from 'react';
 import {View, Text, ScrollView} from 'react-native';
 import TeamListItemScreen from './TeamListItemScreen';
 import AsyncStorage from '@react-native-community/async-storage';
-import * as authAPI from '../../../lib/api';
+import {Config} from '../../../Config';
 import { css } from '@emotion/native';
+import useSWR from 'swr';
+import axios from 'axios';
 
 const TeamListScreen = ({navigation, teamId, userId}) => {
   const [teamInfo, setTeamInfo] = useState([]);
 
-  const onGetTeamInfo = async () => {
-    try {
-      const response = await authAPI.getTeamInfo(teamId, {
-        headers: {
-          Authorization: await AsyncStorage.getItem('authorization'),
-        },
-      });
-      setTeamInfo(response.data);
-    } catch (error) {
-      console.log({error});
-    }
-  };
+  useEffect(() => {
+    if (!teamId) return; //400에러나는 이유는 팀이 없을떄 teamId가 null로 넘겨져서 그럼
+  }, []);
 
   useEffect(() => {
     console.log(teamInfo);
   }, [teamInfo]);
 
-  useEffect(() => {
-    if (!teamId) return;
-    onGetTeamInfo();
-  }, []);
+  const fetcher = async (url) => {
+    const response = await axios.get(url, {
+      headers: {
+        Authorization: await AsyncStorage.getItem('authorization'),
+      },
+    });
+    setTeamInfo(response.data);
+    return response.data;
+  }
+
+  const {data = [], error} = useSWR(
+    `${Config.baseUrl}/api/teams/${teamId}`,
+    fetcher,
+    {
+      onErrorRetry: (error, key, config, revalidate, {retryCount}) => {
+        if (error) console.log({error});
+        // if (error.response.status === 400) return;
+        // if (error.response.status === 403) return;
+        // if (error.response.status === 404) return;
+        // if (retryCount >= 10) return;
+        // setTimeout(() => revalidate({retryCount: retryCount + 1}), 5000);
+      },
+    },
+  );
 
   return (
     <View

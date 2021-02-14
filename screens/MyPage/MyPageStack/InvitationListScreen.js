@@ -6,11 +6,15 @@ import InvitationListItemScreen from './InvitationListItemScreen';
 import {css} from '@emotion/native';
 
 const InvitationListScreen = () => {
-  const [invitationList, setInvitationList] = useState([]);
+  const [receivedInvitationList, setReceivedInvitationList] = useState([]);
 
-  useEffect(()=>{
+  useEffect(() => {
     onGetInvitationList();
-  },[])
+  }, []);
+
+  useEffect(() => {
+    console.log("receivedInvitationList",receivedInvitationList)
+  }, [receivedInvitationList]);
 
   const onGetInvitationList = async () => {
     try {
@@ -19,7 +23,8 @@ const InvitationListScreen = () => {
           'Authorization': await AsyncStorage.getItem('authorization'),
         },
       });
-      setInvitationList(response.data);
+      console.log(response.data);
+      setReceivedInvitationList(response.data);
     } catch (error) {
       console.log(error);
     }
@@ -34,9 +39,9 @@ const InvitationListScreen = () => {
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
       <View style={css`border-bottom-width: 1px; margin-bottom: 20px`} />
-        {( invitationList != null && typeof invitationList == "object" && !Object.keys(invitationList).length )
+        {( receivedInvitationList != null && typeof receivedInvitationList == "object" && !Object.keys(receivedInvitationList).length )
         ? <Text>받은 초대가 없습니다</Text> 
-        : <InvitationListItemScreen invitationList={invitationList} /> }
+        : <InvitationListItemScreen receivedInvitationList={receivedInvitationList} /> }
       </ScrollView>
     </View>
   );

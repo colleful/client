@@ -6,7 +6,7 @@ import {css} from '@emotion/native';
 
 const InvitationScreen = ({route}) => {
   const [userNickname, setUserNickname] = useState();
-  const [userId, setUserId] = useState();
+  const [userId, setUserId] = useState(0);
   const [teamId, setTeamIds] = useState();
   const [userInfo, setUserInfo] = useState({
     nickname: '',
@@ -18,6 +18,10 @@ const InvitationScreen = ({route}) => {
     setTeamIds(JSON.stringify(route.params.teamId));
   }, []);
 
+  useEffect(() => {
+    console.log("userId", userId);
+  }, [userId]);
+
   const onSearchUserByNickname = async () => {
     try {
       const response = await authAPI.searchUserByNickname(userNickname, {
@@ -25,9 +29,18 @@ const InvitationScreen = ({route}) => {
           'Authorization': await AsyncStorage.getItem('authorization'),
         },
       });
-      setUserInfo(response.data);
-      setUserId(response.data.id);
+      if(!response.data.length){
+        Alert.alert('검색결과', `해당 키워드를 포함한 사용자를 찾을 수 없습니다.`, [
+          {
+            text: '확인',
+          },
+        ]);
+        return;
+      }
+      setUserInfo(response.data[0]);
+      setUserId(response.data[0].id);
     } catch (error) {
+      console.log({error});
       if (error.response.status === 404) {
         Alert.alert('검색결과', `${error.response.data.message}`, [
           {
@@ -35,18 +48,18 @@ const InvitationScreen = ({route}) => {
           },
         ]);
       }
-      console.log({error});
     }
   };
 
   const onInviteTeam = async () => {
     try {
-      const res = await authAPI.inviteTeam(teamId, userId, {
+      const response = await authAPI.inviteTeam({userId}, {
         headers: {
           'Authorization': await AsyncStorage.getItem('authorization'),
+          'Content-Type': 'application/json',
         },
       });
-      if (res.status === 200) {
+      if (response.status === 200) {
         Alert.alert(
           '완료',
           `${userInfo.nickname}님께 팀 초대 메세지를 보냈습니다`,
@@ -58,11 +71,19 @@ const InvitationScreen = ({route}) => {
         );
       }
     } catch (error) {
-      Alert.alert('에러발생', `${error.response.data.message}`, [
-        {
-          text: '확인',
-        },
-      ]);
+      if (error.response.status === 404) {
+        Alert.alert('에러', `${error.response.data.message}`, [
+          {
+            text: '확인',
+          },
+        ]);
+      } else if (error.response.status === 400) {
+        Alert.alert('에러', `자기 자신을 초대할 수 없습니다!`, [
+          {
+            text: '확인',
+          },
+        ]);
+      }
       console.log({error});
     }
   };
@@ -94,10 +115,9 @@ const InvitationScreen = ({route}) => {
         <TouchableOpacity
           onPress={onSearchUserByNickname}
           style={css`
-            background-color: #3498db;
+            background-color: #5e5e5e;
             border-radius: 5px;
-            padding: 18px;
-            padding-vertical: 11px;
+            padding: 11px 18px;
             width: 61px;
           `}>
           <Text style={css`color: #fff; font-weight: 500`}>검색</Text>
@@ -128,9 +148,8 @@ const InvitationScreen = ({route}) => {
             style={css`
               background-color: #5e5e5e;
               border-radius: 5px;
-              padding: 18px;
-              padding-vertical: 10px;
-              width: 61px;
+              padding: 10px 15px;
+              width: 56px;
             `}>
             <Text style={css`color: #fff; font-weight: 500`}>초대</Text>
           </TouchableOpacity>

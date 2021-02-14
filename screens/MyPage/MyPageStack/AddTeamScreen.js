@@ -35,6 +35,7 @@ const AddTeamScreen = ({navigation}) => {
   };
 
   useEffect(() => {
+    console.log(teamInfo);
     if (teamInfo) {
       Alert.alert(
         '완료',
@@ -99,7 +100,7 @@ const AddTeamScreen = ({navigation}) => {
       />
 
       <TouchableOpacity
-        onPress={onCreateTeam}
+        onPress={() => onCreateTeam()}
         style={css`
           background-color: #5e5e5e;
           border-radius: 5px;

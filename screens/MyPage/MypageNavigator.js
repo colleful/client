@@ -24,14 +24,14 @@ const MypageNavigator = ({navigation}) => {
   const fetcher = async (url) => {
     const response = await axios.get(url, {
       headers: {
-        'Authorization': await AsyncStorage.getItem('authorization'),
+        Authorization: await AsyncStorage.getItem('authorization'),
       },
     });
     return response.data;
   };
 
   const {data = [], error} = useSWR(`${Config.baseUrl}/api/users`, fetcher);
-  if(error) return console.log(error);
+  if (error) return console.log(error);
 
   return (
     <MyPageStack.Navigator
@@ -59,12 +59,7 @@ const MypageNavigator = ({navigation}) => {
       </MyPageStack.Screen>
       <MyPageStack.Screen name="쪽지함" component={MessageScreen} />
       <MyPageStack.Screen name="팀생성">
-        {(props) => (
-          <AddTeamScreen
-            {...props}
-            navigation={navigation}
-          />
-        )}
+        {(props) => <AddTeamScreen {...props} navigation={navigation} />}
       </MyPageStack.Screen>
       <MyPageStack.Screen name="팀초대" component={InvitationScreen} />
       <MyPageStack.Screen name="팀목록">
@@ -78,12 +73,7 @@ const MypageNavigator = ({navigation}) => {
         )}
       </MyPageStack.Screen>
       <MyPageStack.Screen name="받은초대목록">
-        {(props) => (
-          <InvitationListScreen
-            {...props}
-            navigation={navigation}
-          />
-        )}
+        {(props) => <InvitationListScreen {...props} navigation={navigation} />}
       </MyPageStack.Screen>
       <MyPageStack.Screen name="친구목록" component={FriendsListScreen} />
       <MyPageStack.Screen name="공지사항" component={NoticeScreen} />
