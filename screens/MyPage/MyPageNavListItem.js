@@ -25,4 +25,4 @@ const MyPageNavListItem = ({navigation, navInfo}) => {
   ));
 };
 
-export default MyPageNavListItem;
+export default React.memo(MyPageNavListItem);

@@ -96,7 +96,7 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
           text: '확인',
         },
       ]);
-      // trigger(`${Config.baseUrl}/api/teams/${teamId}`);
+      trigger(`${Config.baseUrl}/api/teams/${teamId}`);
     } catch (error) {
       console.log(error);
     }
@@ -114,7 +114,7 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
           text: '확인',
         },
       ]);
-      // trigger(`${Config.baseUrl}/api/teams/${teamId}`);
+      trigger(`${Config.baseUrl}/api/teams/${teamId}`);
     } catch (error) {
       console.log({error});
     }
@@ -122,6 +122,34 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
 
   const onToggleModal = () => {
     setModalVisible(!isModalVisible);
+  }
+
+  const onPressDeleteTeam = () => {
+    Alert.alert(
+      '경고',
+      `정말 ${teamInfo.teamName} 팀을 삭제하시겠습니까? ※팀원들도 마찬가지로 삭제됩니다.`,
+      [
+        {text: '취소', onPress: () => console.log('취소')},
+        {text: '확인', onPress: onDeleteTeam},
+      ],
+    );
+  }
+
+  const onPressExitTeam = () => {
+    Alert.alert(
+      '팀 나가기',
+      `정말 ${teamInfo.teamName} 팀을 나가시겠습니까?`,
+      [
+        {text: '취소', onPress: () => console.log('취소')},
+        {text: '확인', onPress: onExitTeam},
+      ],
+    );
+  }
+
+  const goToInvitationScreen = () => {
+    navigation.navigate('팀초대', {
+      teamId: teamInfo.id,
+    });
   }
 
   return (
@@ -147,11 +175,7 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
           {isLeader ? (
             <>
               <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate('팀초대', {
-                    teamId: teamInfo.id,
-                  });
-                }}
+                onPress={goToInvitationScreen}
                 style={css`
                   background-color: #5e5e5e;
                   border-radius: 5px;
@@ -176,16 +200,7 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => {
-                  Alert.alert(
-                    '경고',
-                    `정말 ${teamInfo.teamName} 팀을 삭제하시겠습니까? ※팀원들도 마찬가지로 삭제됩니다.`,
-                    [
-                      {text: '취소', onPress: () => console.log('취소')},
-                      {text: '확인', onPress: onDeleteTeam},
-                    ],
-                  );
-                }}
+                onPress={onPressDeleteTeam}
                 style={css`
                   background-color: #5e5e5e;
                   border-radius: 5px;
@@ -205,16 +220,7 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
             </>
           ) : (
             <TouchableOpacity
-              onPress={() => {
-                Alert.alert(
-                  '팀 나가기',
-                  `정말 ${teamInfo.teamName} 팀을 나가시겠습니까?`,
-                  [
-                    {text: '취소', onPress: () => console.log('취소')},
-                    {text: '확인', onPress: onExitTeam},
-                  ],
-                );
-              }}
+              onPress={onPressExitTeam}
               style={css`
                 background-color: #5e5e5e;
                 border-radius: 5px;

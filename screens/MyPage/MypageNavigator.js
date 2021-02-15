@@ -27,6 +27,7 @@ const MypageNavigator = ({navigation}) => {
         Authorization: await AsyncStorage.getItem('authorization'),
       },
     });
+    console.log(response)
     return response.data;
   };
 

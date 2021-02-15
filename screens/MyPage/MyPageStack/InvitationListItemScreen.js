@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, TouchableOpacity,Alert} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import * as authAPI from '../../../lib/api';
@@ -7,16 +7,24 @@ import {Config} from '../../../Config';
 import {css} from '@emotion/native';
 
 const InvitationListItemScreen = ({receivedInvitationList}) => {
-  return receivedInvitationList.map((list, index) => (
-    <InvitationListItem receivedInvitationList={list} key={index} />
-  ));
-};
+  const [inviterInfo, setInviterInfo] = useState('');
 
-const InvitationListItem = ({receivedInvitationList}) => {
-  
   useEffect(() => {
-    console.log("receivedInvitationList", receivedInvitationList.id);
-  }, [receivedInvitationList])
+    onGetUserInfo();
+  }, []);
+
+  const onGetUserInfo = async () => {
+    try {
+      const response = await authAPI.getUserInfo(receivedInvitationList.team.leaderId,{
+        headers: {
+          Authorization: await AsyncStorage.getItem('authorization'),
+        }
+      });
+      setInviterInfo(response.data);
+    } catch (error) {
+      console.log({error});
+    }
+  }
 
   const onAcceptInvitation = async () => {
     try {
@@ -39,8 +47,8 @@ const InvitationListItem = ({receivedInvitationList}) => {
             },
           ],
         );
+        trigger(`${Config.baseUrl}/api/invitations/received`);
       }
-      trigger(`${Config.baseUrl}/api/users`);
     } catch (error) {
       Alert.alert('에러발생', `${error.response.data.message}`, [
         {
@@ -51,7 +59,7 @@ const InvitationListItem = ({receivedInvitationList}) => {
     }
   };
 
-  const onRefusalInvitation = async () => {
+  const onRefuseInvitation = async () => {
     try {
       const response = await authAPI.refuseInvitation(
         receivedInvitationList.id,
@@ -72,6 +80,7 @@ const InvitationListItem = ({receivedInvitationList}) => {
             },
           ],
         );
+        trigger(`${Config.baseUrl}/api/invitations/received`);
       }
     } catch (error) {
       Alert.alert('에러발생', `${error.response.data.message}`, [
@@ -87,15 +96,7 @@ const InvitationListItem = ({receivedInvitationList}) => {
     <>
       <Text style={css`font-size: 19px; line-height: 30px`}>
         팀명 : {receivedInvitationList.team.teamName} {'\n'}리더 :{' '}
-        {/* {
-          receivedInvitationList.team.members.filter(
-            (teams) => teams.id === receivedInvitationList.team.leaderId,
-          )[0].nickname
-        }{' '}
-        {'\n'}팀 멤버 :
-        {receivedInvitationList.team.members.map((member, index) => (
-          <MemberInfo memberInfo={member} key={index} />
-        ))} */}
+        {inviterInfo.nickname} {'( '}{inviterInfo.age}{', '}{inviterInfo.department}{' )'}
       </Text>
       <View
         style={css`
@@ -115,7 +116,7 @@ const InvitationListItem = ({receivedInvitationList}) => {
           <Text style={css`color: #fff; font-weight: 500`}>수락</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={onRefusalInvitation}
+          onPress={onRefuseInvitation}
           style={css`
             background-color: #5e5e5e;
             border-radius: 5px;
@@ -130,4 +131,4 @@ const InvitationListItem = ({receivedInvitationList}) => {
   );
 };
 
-export default InvitationListItemScreen;
+export default React.memo(InvitationListItemScreen);

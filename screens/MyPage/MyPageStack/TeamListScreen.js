@@ -8,11 +8,7 @@ import useSWR from 'swr';
 import axios from 'axios';
 
 const TeamListScreen = ({navigation, teamId, userId}) => {
-  const [teamInfo, setTeamInfo] = useState([]);
-
-  useEffect(() => {
-    if (!teamId) return; //400에러나는 이유는 팀이 없을떄 teamId가 null로 넘겨져서 그럼
-  }, []);
+  const [teamInfo, setTeamInfo] = useState({});
 
   useEffect(() => {
     console.log(teamInfo);
@@ -24,7 +20,7 @@ const TeamListScreen = ({navigation, teamId, userId}) => {
         Authorization: await AsyncStorage.getItem('authorization'),
       },
     });
-    setTeamInfo(response.data);
+    setTeamInfo({...response.data});
     return response.data;
   }
 
@@ -33,10 +29,11 @@ const TeamListScreen = ({navigation, teamId, userId}) => {
     fetcher,
     {
       onErrorRetry: (error, key, config, revalidate, {retryCount}) => {
-        if (error) console.log({error});
-        // if (error.response.status === 400) return;
+        if(teamId === null) return;
         // if (error.response.status === 403) return;
         // if (error.response.status === 404) return;
+        // if (error.response.status === 500) return;
+        if (error) console.log({error});
         // if (retryCount >= 10) return;
         // setTimeout(() => revalidate({retryCount: retryCount + 1}), 5000);
       },
