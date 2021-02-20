@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useCallback, useRef} from 'react';
 import {
   View,
   Text,
@@ -33,6 +33,7 @@ const LoginScreen = ({
   const [isPasswordVisible, setPasswordVisible] = useState(true);
   const [isModalVisible, setModalVisible] = useState(false);
 
+  const dispatch = useDispatch();
   const {isEmailvalidedAtPasswordFind} = useSelector(({auth}) => ({
     isEmailvalidedAtPasswordFind: auth.isEmailvalidedAtPasswordFind,
   }));
@@ -53,10 +54,36 @@ const LoginScreen = ({
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
-  const dispatch = useDispatch();
+
+  const loginHandler = () => {
+    trigger();
+    onSubmitLogin();
+  }
+  
+  const goToRegisterScreenHandler = () => {
+    navigation.navigate('RegisterContainer');
+  }
+
+  const changePasswordHandler = () => {
+    onSubmitChangePassword();
+    toggleModal();
+  }
+
+  const exitChangePasswordHandler = () => {
+    toggleModal();
+    dispatch(
+      emailValidstatus({
+        form: 'isEmailvalidedAtPasswordFind',
+        value: false,
+      }),
+    );
+  }
 
   const {control, handleSubmit, trigger, watch, errors} = useForm({ mode: 'onChange' });
   // const onSubmit = (data) => console.log(data);
+
+  const count = useRef(0);
+  console.log(`LoginScreen:, ${count.current++}`)
 
   return (
     <>
@@ -215,15 +242,7 @@ const LoginScreen = ({
                 )}
               </View>
               <TouchableOpacity
-                onPress={() => {
-                  toggleModal();
-                  dispatch(
-                    emailValidstatus({
-                      form: 'isEmailvalidedAtPasswordFind',
-                      value: false,
-                    }),
-                  );
-                }}
+                onPress={exitChangePasswordHandler}
                 style={css`
                   position: absolute;
                   bottom: 0;
@@ -280,10 +299,7 @@ const LoginScreen = ({
                       margin-top: 5px;
                       width: 66px;
                     `}
-                    onPress={() => {
-                      onSubmitChangePassword();
-                      toggleModal(); //변경하기후에 나가지지 않으면 지우기
-                    }}
+                    onPress={changePasswordHandler}
                     >
                     <Text style={css`color: white; text-align: center`}>변경하기</Text>
                   </TouchableOpacity>
@@ -369,16 +385,13 @@ const LoginScreen = ({
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() => {
-            trigger();
-            onSubmitLogin();
-          }}>
+          onPress={loginHandler}>
           <Text style={css`color: white; text-align: center`}>로그인</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('RegisterContainer')}>
+          onPress={goToRegisterScreenHandler}>
           <Text style={css`color: white; text-align: center`}>회원가입</Text>
         </TouchableOpacity>
 

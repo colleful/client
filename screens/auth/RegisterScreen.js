@@ -1,4 +1,4 @@
-import React,{useState, useEffect, useCallback, useRef} from 'react';
+import React,{useState, useEffect, useCallback, useMemo, useRef} from 'react';
 import {View, ScrollView, Text, TextInput, TouchableOpacity, ActivityIndicator, StyleSheet} from 'react-native';
 import {useSelector} from 'react-redux';
 import loading from "../../modules/loading";
@@ -8,7 +8,6 @@ import * as authAPI from '../../lib/api';
 import { useForm, Controller } from 'react-hook-form';
 import styled, { css } from '@emotion/native';
 
-//여긴 가독성이 너무 심하게 떨어져서 prettier 일단 적용 안했음. 어차피 디자인 바뀌면 inline-style 다 바꿀 예정이라
 const RegisterScreen = ({form,getDepartmentId,getGender,getBirthYear,onSendAuthEmail, onCreateAddress, onChangeEmail, onChangePassword, onChangePasswordConfirm, onChangeNickname, onChangeSelfIntroduction,onChangeCode,onConfirmAuthEmail, onSubmitRegister, error}) => {
   const [visible, setVisible] = useState(true);
   const [selectedDid, setSelectedDid] = useState({ //Did => DepartmentId
@@ -26,7 +25,14 @@ const RegisterScreen = ({form,getDepartmentId,getGender,getBirthYear,onSendAuthE
   const [collegeData, setCollegeData] = useState([]);
   const [departmentData, setDepartmentData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
-  const [birthYearData, setBirthYearData] = useState([]);
+
+  const {isLoading} = useSelector(({loading}) => ({
+    isLoading: loading.isLoading
+  }));
+
+  useEffect(() => {
+    getDepartments();
+  },[])
 
   const getDepartments = async () => {
     try {
@@ -39,9 +45,10 @@ const RegisterScreen = ({form,getDepartmentId,getGender,getBirthYear,onSendAuthE
       console.log(error);
     }
   }
-  const visibleText = () => {
+  const visibleText = useCallback(() => {
     setVisible(!visible);
-  }
+  },[visible]);
+
   const addToBehindText = (e) => {
     onCreateAddress(
       e.nativeEvent.text.includes('@')
@@ -50,29 +57,33 @@ const RegisterScreen = ({form,getDepartmentId,getGender,getBirthYear,onSendAuthE
     );
     // onCreateAddress(e.nativeEvent.text)
   }
-  useEffect(() => {
-    getDepartments();
-    setYearData();
-  },[])
+
+  let today = useRef(new Date().getFullYear()).current;
+  let yearData = useRef([]).current;
   
-  const setYearData = useCallback(() => {
-    let today = new Date().getFullYear();
-    let yearData = [];
+  const setYearData = (today,yearData) => {
     for(let i=today-20; i>=today-30; i--){
       yearData.push(String(i));
     }
-    setBirthYearData(yearData);
-  },[])
+    return yearData;
+  }
 
-  const {isLoading} = useSelector(({loading}) => ({
-    isLoading: loading.isLoading
-  }));
+  const yearList = useMemo(() => setYearData(today, yearData), [today, yearData]);
 
-  const { control, handleSubmit, watch, trigger, errors } = useForm({ mode: "onChange"}); // useForm({ mode: "onChange"});
+  const registerHandler = () => {
+    trigger(); 
+    handleSubmit(onSubmit); 
+    onSubmitRegister();
+  }
+
+  const { control, handleSubmit, watch, trigger, errors } = useForm({ mode: "onChange"});
   const onSubmit = data => console.log(data);
 
   const password = useRef();
   password.current = watch("password");
+
+  const count = useRef(0);
+  console.log(`LoginScreen:, ${count.current++}`)
 
   return (
     <>
@@ -254,15 +265,13 @@ const RegisterScreen = ({form,getDepartmentId,getGender,getBirthYear,onSendAuthE
               mode="dropdown"
               >
               <Picker.Item label="출생연도" />
-              {birthYearData.map((datas) => {
-                return (
-                  <Picker.Item
-                    label={datas}
-                    value={datas}
-                    key={datas}
-                  />
-                );
-              })}
+              {yearList.map((datas) => (
+                <Picker.Item
+                  label={datas}
+                  value={datas}
+                  key={datas}
+                />
+              ))}
             </Picker>
 
             <View style={css`margin-bottom:15px`} />
@@ -278,15 +287,13 @@ const RegisterScreen = ({form,getDepartmentId,getGender,getBirthYear,onSendAuthE
               mode="dropdown"
               >
               <Picker.Item label="단과대학" />
-              {collegeData.map((datas) => {
-                return (
-                  <Picker.Item
+              {collegeData.map((datas) => (
+                <Picker.Item
                   label={datas}
                   value={datas}
                   key={datas}
-                  />
-                  );
-                })}
+                />
+              ))}
             </Picker>
 
             <Picker
@@ -299,15 +306,13 @@ const RegisterScreen = ({form,getDepartmentId,getGender,getBirthYear,onSendAuthE
               mode="dropdown"
               >
               {selectedCollege.item ? <Picker.Item label="소속학과 선택" /> : <Picker.Item label="단과대 먼저 선택" /> }
-              {filteredData.map((datas) => {
-                return (
-                  <Picker.Item
+              {filteredData.map((datas) => (
+                <Picker.Item
                   label={datas.departmentName}
                   value={datas.id}
                   key={datas.id}
-                  />
-                  );
-                })}
+                />
+              ))}
             </Picker>    
 
             <View style={css`margin-bottom:15px`} />
@@ -357,7 +362,7 @@ const RegisterScreen = ({form,getDepartmentId,getGender,getBirthYear,onSendAuthE
 
           <TouchableOpacity
             style={styles.button}
-            onPress={() => {trigger(); handleSubmit(onSubmit); onSubmitRegister()}}>
+            onPress={registerHandler}>
             <Text style={css`color: white; text-align: center`}>
               🎉회원가입🎉
             </Text>

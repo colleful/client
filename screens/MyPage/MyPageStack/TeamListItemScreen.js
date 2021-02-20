@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {
   View,
   Text,
@@ -120,11 +120,11 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
     }
   };
 
-  const onToggleModal = () => {
+  const onToggleModal = useCallback(() => {
     setModalVisible(!isModalVisible);
-  }
+  },[isModalVisible]);
 
-  const onPressDeleteTeam = () => {
+  const onPressDeleteTeam = useCallback(() => {
     Alert.alert(
       '경고',
       `정말 ${teamInfo.teamName} 팀을 삭제하시겠습니까? ※팀원들도 마찬가지로 삭제됩니다.`,
@@ -133,9 +133,9 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
         {text: '확인', onPress: onDeleteTeam},
       ],
     );
-  }
+  },[teamInfo.teamName]);
 
-  const onPressExitTeam = () => {
+  const onPressExitTeam = useCallback(() => {
     Alert.alert(
       '팀 나가기',
       `정말 ${teamInfo.teamName} 팀을 나가시겠습니까?`,
@@ -144,7 +144,7 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
         {text: '확인', onPress: onExitTeam},
       ],
     );
-  }
+  },[teamInfo.teamName]);
 
   const goToInvitationScreen = () => {
     navigation.navigate('팀초대', {

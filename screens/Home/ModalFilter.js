@@ -46,16 +46,16 @@ const ModalFilter = ({
     } else if (selectItem.selectedFilter === 'ALL') {
       setTeam(immutableTeam);
     } else if (selectItem.selectedFilter === 'MATCHABLE') {
-      // 내 팀 선택하는 기능? 이있어야 비교가능할듯
+
     }
   }, [selectItem.selectedFilter]);
 
-  const onToggleModal = () => {
+  const onToggleModal = useCallback(() => {
     setModalVisible(!isModalVisible);
-  };
+  },[isModalVisible]);
 
   const onToggleModalAndSetFilter = () => {
-    setModalVisible(!isModalVisible);
+    onToggleModal();
     setFilter();
   };
 

@@ -1,11 +1,11 @@
 import React, {useEffect} from 'react';
+import {Alert} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {changeField, initializeForm, login, setLoginState, sendAuthEmailForPasswordChange, emailValidstatus, changePassword, confirmPasswordAuthEmail, confirmPasswordAuthEmailInitialize, passwordEmailAuthInitialize, passwordChangeInitialize} from '../modules/auth';
 import LoginScreen from '../screens/auth/LoginScreen';
-import {Alert} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 // import * as Keychain from 'react-native-keychain'; AsyncStorage은 안전하지않음, keychain 적용해야 안전
-// 계정페이지에서 본인인증을 하기위해 또 다시 패스워드를 칠때 password를 asyncstorage에 저장했는데,, 문제될거같음 
+// 계정페이지에서 본인인증을 하기위해 또 다시 패스워드를 칠때 password를 asyncstorage에 저장했는데,, 문제될거같음. 다시한번 생각해보기
 const LoginContainer = ({navigation}) => {
   const { form, password, forgetPassword, auth, authError, passwordConfirmEmail, passwordConfirmEmailError, passwordEmailAuth, passwordEmailAuthError, passwordChange, passwordChangeError} = useSelector(({auth}) => ({
     form: auth.login,
@@ -22,6 +22,7 @@ const LoginContainer = ({navigation}) => {
   }));
 
   const dispatch = useDispatch();
+
   const onCreateAddress = (text) => {
     dispatch(
       changeField({

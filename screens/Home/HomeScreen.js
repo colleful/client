@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useEffect, useMemo} from 'react';
+import React, {useState, useCallback, useEffect} from 'react';
 import {
   View,
   Text,
@@ -78,17 +78,16 @@ const HomeScreen = ({}) => {
     }
   };
 
-  const onEndReachedHandler = () => {
+  const onEndReachedHandler = useCallback(() => {
     if (loading) {
       return;
-    } else {
-      onGetReadyTeam();
     }
-  };
+    onGetReadyTeam();
+  },[loading]);
 
-  const onToggleModal = () => {
+  const onToggleModal = useCallback(() => {
     setModalVisible(!isModalVisible);
-  }
+  },[isModalVisible]);
 
   return (
     <View style={{flex: 1}}>

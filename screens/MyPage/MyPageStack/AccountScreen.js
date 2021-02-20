@@ -10,7 +10,6 @@ import {trigger} from 'swr';
 import {Config} from '../../../Config';
 
 const AccountScreen = ({navigation, myInfoData}) => {
-  const dispatch = useDispatch();
   const [isSuccessIdentification, setSuccessIdentification] = useState(false);
   const [passwordForAuth, setPasswordForAuth] = useState();
   const [passwordForChange, setPasswordForChange] = useState();
@@ -23,6 +22,8 @@ const AccountScreen = ({navigation, myInfoData}) => {
   const [sortedDepartmentName, setSortedDepartmentName] = useState([]);
   const [nicknameForChange, setNicknameForChange] = useState('');
   const [selfIntroductionForChange, setSelfIntroductionForChange] = useState('');
+
+  const dispatch = useDispatch();
 
   useEffect(()=>{
     getDepartments();
@@ -62,9 +63,7 @@ const AccountScreen = ({navigation, myInfoData}) => {
       Alert.alert('인증 완료', '본인인증을 확인했습니다.', [
         {
           text: '확인',
-          onPress: () => {
-            setSuccessIdentification(true);
-          },
+          onPress: () => setSuccessIdentification(true)
         },
       ]);
     } else {
@@ -89,9 +88,7 @@ const AccountScreen = ({navigation, myInfoData}) => {
       Alert.alert('변경 성공', '비밀번호 변경을 완료했습니다.', [
         {
           text: '확인',
-          onPress: () => {
-            navigation.navigate('유저정보');
-          },
+          onPress: () => navigation.navigate('유저정보')
         },
       ]);
     } catch (error) {
@@ -151,6 +148,20 @@ const AccountScreen = ({navigation, myInfoData}) => {
       console.log({error});
     }
   };
+
+  const logoutHandler = () => {
+    AsyncStorage.removeItem('authorization');
+    AsyncStorage.removeItem('userPassword');
+    dispatch(setLoginState(false)); // dispatch로 token값 변경하면 구독한 listener(SwitchNavigator)에 가서 바뀐 token값을 변경
+  }
+
+  const deleteUserHandler = () => {
+    DeleteUser();
+    setTimeout(() => {
+      AsyncStorage.removeItem('authorization');
+    }, 2000);
+    dispatch(setLoginState(false));
+  }
 
   return (
     <>
@@ -307,17 +318,11 @@ const AccountScreen = ({navigation, myInfoData}) => {
                 Alert.alert('LOGOUT', '로그아웃 하시겠습니까?', [
                   {
                     text: '취소',
-                    onPress: () => {
-                      console.log('취소');
-                    },
+                    onPress: () => console.log('취소')
                   },
                   {
                     text: '확인',
-                    onPress: () => {
-                      AsyncStorage.removeItem('authorization');
-                      AsyncStorage.removeItem('userPassword');
-                      dispatch(setLoginState(false)); // dispatch로 token값 변경하면 구독한 listener(SwitchNavigator)에 가서 바뀐 token값을 변경
-                    },
+                    onPress: logoutHandler
                   },
                 ]);
               }}>
@@ -339,19 +344,11 @@ const AccountScreen = ({navigation, myInfoData}) => {
                 Alert.alert('회원 탈퇴', '정말 회원 탈퇴를 하시겠습니까?', [
                   {
                     text: '취소',
-                    onPress: () => {
-                      console.log('취소');
-                    },
+                    onPress: () => console.log('취소'),
                   },
                   {
                     text: '확인',
-                    onPress: () => {
-                      DeleteUser();
-                      setTimeout(() => {
-                        AsyncStorage.removeItem('authorization');
-                      }, 2000);
-                      dispatch(setLoginState(false));
-                    },
+                    onPress: deleteUserHandler,
                   },
                 ]);
               }}>
