@@ -44,10 +44,13 @@ const InvitationListItemScreen = ({receivedInvitationList}) => {
           [
             {
               text: '확인',
+              onPress: () => {
+                trigger(`${Config.baseUrl}/api/invitations/received`);
+                trigger(`${Config.baseUrl}/api/users`);
+              }
             },
           ],
         );
-        trigger(`${Config.baseUrl}/api/invitations/received`);
       }
     } catch (error) {
       Alert.alert('에러발생', `${error.response.data.message}`, [
@@ -77,10 +80,13 @@ const InvitationListItemScreen = ({receivedInvitationList}) => {
           [
             {
               text: '확인',
+              onPress: () => {
+                trigger(`${Config.baseUrl}/api/invitations/received`);
+                trigger(`${Config.baseUrl}/api/users`);
+              }
             },
           ],
         );
-        trigger(`${Config.baseUrl}/api/invitations/received`);
       }
     } catch (error) {
       Alert.alert('에러발생', `${error.response.data.message}`, [

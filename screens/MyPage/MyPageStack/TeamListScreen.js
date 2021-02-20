@@ -32,7 +32,7 @@ const TeamListScreen = ({navigation, teamId, userId}) => {
         if(teamId === null) return;
         // if (error.response.status === 403) return;
         // if (error.response.status === 404) return;
-        // if (error.response.status === 500) return;
+        // if (error.response.status === 500) return; //팀나가기 했을때
         if (error) console.log({error});
         // if (retryCount >= 10) return;
         // setTimeout(() => revalidate({retryCount: retryCount + 1}), 5000);
@@ -64,9 +64,7 @@ const TeamListScreen = ({navigation, teamId, userId}) => {
       </View>
       <Text style={css`font-size: 32px; font-weight: 500`}>내 팀 목록</Text>
       <ScrollView showsVerticalScrollIndicator={false}>
-        {teamInfo != null &&
-        typeof teamInfo == 'object' &&
-        !Object.keys(teamInfo).length ? (
+        {typeof teamInfo == 'object' && !Object.keys(teamInfo).length ? (
           <>
             <View style={css`border-bottom-width: 1px; margin-vertical: 15px`} />
             <Text style={css`font-size: 20px`}>등록된 팀이 없습니다</Text>

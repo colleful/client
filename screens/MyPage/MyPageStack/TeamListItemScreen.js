@@ -38,11 +38,12 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
     return response.data;
   };
 
-  const {data = [], error} = useSWR(
-    `${Config.baseUrl}/api/teams/${teamId}/members`,
-    fetcher,
-  );
-  if(error) console.log(error);
+  const {data = [], error} = useSWR(`${Config.baseUrl}/api/teams/${teamId}/members`, fetcher, {
+    onErrorRetry: (error, key, config, revalidate, {retryCount}) => {
+      if(teamId === null) return;
+      if (error) console.log({error});
+    },
+  },);
 
   const onChangeTeamStatus = async (teamStatus) => {
     if (teamStatus === prevTeamStatus) {
@@ -55,7 +56,6 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
     }
     try {
       await authAPI.changeTeamStatus(
-        teamInfo.id,
         {status: teamStatus},
         {
           headers: {
@@ -94,9 +94,9 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
       Alert.alert('팀 삭제', '팀 삭제를 완료했습니다.', [
         {
           text: '확인',
+          onPress: () => trigger(`${Config.baseUrl}/api/users`),
         },
       ]);
-      trigger(`${Config.baseUrl}/api/teams/${teamId}`);
     } catch (error) {
       console.log(error);
     }
@@ -112,9 +112,9 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
       Alert.alert('팀 탈퇴', '팀 나가기를 완료했습니다.', [
         {
           text: '확인',
+          onPress: () => trigger(`${Config.baseUrl}/api/users`),
         },
       ]);
-      trigger(`${Config.baseUrl}/api/teams/${teamId}`);
     } catch (error) {
       console.log({error});
     }

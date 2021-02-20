@@ -27,12 +27,18 @@ const MypageNavigator = ({navigation}) => {
         Authorization: await AsyncStorage.getItem('authorization'),
       },
     });
-    console.log(response)
+    console.log("내 정보 /api/users",response.data)
     return response.data;
   };
 
-  const {data = [], error} = useSWR(`${Config.baseUrl}/api/users`, fetcher);
-  if (error) return console.log(error);
+  const {data = [], error} = useSWR(`${Config.baseUrl}/api/users`, fetcher, {
+    onErrorRetry: (error, key, config, revalidate, {retryCount}) => {
+      if (error.response.status === 500){ //탈퇴한 사용자의 토큰을 들고있을 경우
+        AsyncStorage.removeItem('authorization');
+        AsyncStorage.removeItem('userPassword');
+      }
+    },
+  },);
 
   return (
     <MyPageStack.Navigator
