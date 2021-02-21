@@ -16,7 +16,7 @@ const MyPageNavListItem = ({navigation, navInfo}) => {
       <Ionicons name={navInfos.iconName} size={22} />
       <Text
         style={css`
-          padding-left: 10px;
+          padding: 3px 0 0 10px;
           font-size: 15px;
         `}>
         {navInfos.navName}

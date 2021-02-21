@@ -6,7 +6,7 @@ import {trigger} from 'swr';
 import {Config} from '../../../Config';
 import {css} from '@emotion/native';
 
-const InvitationListItemScreen = ({receivedInvitationList}) => {
+const ReceivedInvitationListItemScreen = ({receivedInvitationList}) => {
   const [inviterInfo, setInviterInfo] = useState('');
 
   useEffect(() => {
@@ -28,7 +28,7 @@ const InvitationListItemScreen = ({receivedInvitationList}) => {
 
   const onAcceptInvitation = async () => {
     try {
-      const response = await authAPI.acceptInvitation(
+      await authAPI.acceptInvitation(
         receivedInvitationList.id,
         {},
         {
@@ -37,21 +37,19 @@ const InvitationListItemScreen = ({receivedInvitationList}) => {
           },
         },
       );
-      if (response.status === 200) {
-        Alert.alert(
-          '완료',
-          `${receivedInvitationList.team.teamName}팀 초대를 수락했습니다.`,
-          [
-            {
-              text: '확인',
-              onPress: () => {
-                trigger(`${Config.baseUrl}/api/invitations/received`);
-                trigger(`${Config.baseUrl}/api/users`);
-              }
-            },
-          ],
-        );
-      }
+      Alert.alert(
+        '완료',
+        `${receivedInvitationList.team.teamName}팀 초대를 수락했습니다.`,
+        [
+          {
+            text: '확인',
+            onPress: () => {
+              trigger(`${Config.baseUrl}/api/invitations/received`);
+              trigger(`${Config.baseUrl}/api/users`);
+            }
+          },
+        ],
+      );
     } catch (error) {
       Alert.alert('에러발생', `${error.response.data.message}`, [
         {
@@ -137,4 +135,4 @@ const InvitationListItemScreen = ({receivedInvitationList}) => {
   );
 };
 
-export default React.memo(InvitationListItemScreen);
+export default React.memo(ReceivedInvitationListItemScreen);

@@ -1,16 +1,17 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
+
 import MyPageScreen from './MyPageScreen';
 import MessageScreen from './MyPageStack/MessageScreen';
 import TeamListScreen from './MyPageStack/TeamListScreen';
-import FriendsListScreen from './MyPageStack/FriendsListScreen';
 import AccountScreen from './MyPageStack/AccountScreen';
 import SuggestionScreen from './MyPageStack/SuggestionScreen';
 import NoticeScreen from './MyPageStack/NoticeScreen';
 import SettingScreen from './MyPageStack/SettingScreen';
 import AddTeamScreen from './MyPageStack/AddTeamScreen';
 import InvitationScreen from './MyPageStack/InvitationScreen';
-import InvitationListScreen from './MyPageStack/InvitationListScreen';
+import ReceivedInvitationListScreen from './MyPageStack/ReceivedInvitationListScreen';
+import SentInvitationListScreen from './MyPageStack/SentInvitationListScreen';
 import ProfileScreen from './MyPageStack/ProfileScreen';
 
 import AsyncStorage from '@react-native-community/async-storage';
@@ -80,9 +81,9 @@ const MypageNavigator = ({navigation}) => {
         )}
       </MyPageStack.Screen>
       <MyPageStack.Screen name="받은초대목록">
-        {(props) => <InvitationListScreen {...props} navigation={navigation} />}
+        {(props) => <ReceivedInvitationListScreen {...props} navigation={navigation} />}
       </MyPageStack.Screen>
-      <MyPageStack.Screen name="친구목록" component={FriendsListScreen} />
+      <MyPageStack.Screen name="보낸초대목록" component={SentInvitationListScreen} />
       <MyPageStack.Screen name="공지사항" component={NoticeScreen} />
       <MyPageStack.Screen name="건의사항" component={SuggestionScreen} />
       <MyPageStack.Screen name="설정" component={SettingScreen} />

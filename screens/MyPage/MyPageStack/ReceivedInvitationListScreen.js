@@ -2,13 +2,13 @@ import React,{useState,useEffect} from 'react';
 import {View, Text, ScrollView} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import * as authAPI from '../../../lib/api';
-import InvitationList from './InvitationList';
+import ReceivedInvitationList from './ReceivedInvitationList';
 import {css} from '@emotion/native';
 import {Config} from '../../../Config';
 import useSWR from 'swr';
 import axios from 'axios';
 
-const InvitationListScreen = () => {
+const ReceivedInvitationListScreen = () => {
   const [receivedInvitationList, setReceivedInvitationList] = useState([]);
   
   const fetcher = async (url) => {
@@ -22,7 +22,7 @@ const InvitationListScreen = () => {
   };
 
   const {data = [], error} = useSWR(`${Config.baseUrl}/api/invitations/received`, fetcher);
-  if (error) return console.log(error);
+  if (error) console.log({error});
 
   return (
     <View style={css`flex: 1; padding-top: 100px; padding-horizontal: 25px`}>
@@ -35,10 +35,10 @@ const InvitationListScreen = () => {
       <View style={css`border-bottom-width: 1px; margin-bottom: 20px`} />
         {( receivedInvitationList != null && typeof receivedInvitationList == "object" && !Object.keys(receivedInvitationList).length )
         ? <Text>받은 초대가 없습니다</Text> 
-        : <InvitationList receivedInvitationList={receivedInvitationList} /> }
+        : <ReceivedInvitationList receivedInvitationList={receivedInvitationList} /> }
       </ScrollView>
     </View>
   );
 };
 
-export default InvitationListScreen;
+export default ReceivedInvitationListScreen;
