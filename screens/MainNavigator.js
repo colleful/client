@@ -19,7 +19,7 @@ export default MainNavigator = () => {
       routeName === '팀초대' ||
       routeName === '팀목록' ||
       routeName === '받은초대목록' ||
-      routeName === '친구목록' ||
+      routeName === '보낸초대목록' ||
       routeName === '계정' ||
       routeName === '건의사항' ||
       routeName === '공지사항' ||

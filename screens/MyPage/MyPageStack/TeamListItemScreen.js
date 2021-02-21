@@ -1,14 +1,8 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  Alert,
-} from 'react-native';
+import {View, Text, TouchableOpacity, Alert} from 'react-native';
 import MemberInfo from './MemberInfo';
+import TeamListItemModal from './TeamListItemModal';
 import AsyncStorage from '@react-native-community/async-storage';
-import Modal from 'react-native-modal';
 import * as authAPI from '../../../lib/api';
 import {trigger} from 'swr';
 import {Config} from '../../../Config';
@@ -19,7 +13,6 @@ import {css} from '@emotion/native';
 const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
   const [isLeader, setLeader] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
-  const [prevTeamStatus, setPrevTeamStatus] = useState();
   const [teamMember, setTeamMember] = useState();
 
   useEffect(() => {
@@ -45,44 +38,9 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
     },
   },);
 
-  const onChangeTeamStatus = async (teamStatus) => {
-    if (teamStatus === prevTeamStatus) {
-      Alert.alert('오류', '현재 팀 상태와 동일합니다.', [
-        {
-          text: '확인',
-        },
-      ]);
-      return;
-    }
-    try {
-      await authAPI.changeTeamStatus(
-        {status: teamStatus},
-        {
-          headers: {
-            Authorization: await AsyncStorage.getItem('authorization'),
-          },
-        },
-      );
-      Alert.alert(
-        '팀 상태변경',
-        `팀 상태를 ${
-          teamStatus === `PENDING` ? `멤버 구성중 ` : `준비 완료 `
-        }(으)로 변경했습니다`,
-        [
-          {
-            text: '확인',
-            onPress: () => {
-              setModalVisible(!isModalVisible);
-              setPrevTeamStatus(teamStatus);
-            },
-          },
-        ],
-      );
-      // trigger(`${Config.baseUrl}/api/teams?page=0`);
-    } catch (error) {
-      console.log({error});
-    }
-  };
+  const onToggleModal = useCallback(() => {
+    setModalVisible(!isModalVisible);
+  },[isModalVisible]);
 
   const onDeleteTeam = async () => {
     try {
@@ -120,10 +78,6 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
     }
   };
 
-  const onToggleModal = useCallback(() => {
-    setModalVisible(!isModalVisible);
-  },[isModalVisible]);
-
   const onPressDeleteTeam = useCallback(() => {
     Alert.alert(
       '경고',
@@ -146,11 +100,11 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
     );
   },[teamInfo.teamName]);
 
-  const goToInvitationScreen = () => {
+  const goToInvitationScreen = useCallback(() => {
     navigation.navigate('팀초대', {
       teamId: teamInfo.id,
     });
-  }
+  },[teamId])
 
   return (
     <>
@@ -159,12 +113,12 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
         <Text style={css`font-size: 19px; line-height: 30px`}>
           팀명 : {teamInfo.teamName}
           {'\n'}
-          팀인원 : {teamInfo.headcount}명{'\n'}
           멤버 :{' '}
           {teamMember &&
             teamMember.map((member, index) => (
               <MemberInfo memberInfo={member} key={index} />
-            ))}
+            ))}{'\n'}
+          팀상태 : {teamInfo.status === `PENDING` ? `멤버 구성중 ` : `준비 완료 `}
         </Text>
         <View
           style={css`
@@ -232,62 +186,7 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
           )}
         </View>
       </View>
-      <Modal
-        style={css`justify-content: flex-end; margin: 0`}
-        isVisible={isModalVisible}
-        onBackButtonPress={onToggleModal}
-        onSwipeComplete={onToggleModal}
-        swipeDirection={['up', 'down']}>
-        <TouchableWithoutFeedback
-          onPress={onToggleModal}>
-          <View style={css`flex: 1`} />
-        </TouchableWithoutFeedback>
-        <View
-          style={css`
-            background-color: white;
-          `}>
-          <View
-            style={css`
-              height: 100px;
-              justify-content: center;
-              align-items: center;
-              border-bottom-width: 0.5px;
-              border-color: gray;
-            `}>
-            <TouchableOpacity
-              onPress={() => onChangeTeamStatus('PENDING')}
-              style={css`
-                flex: 1;
-                width: 100%;
-                justify-content: center;
-                align-items: center;
-              `}>
-              <Text style={css`font-size: 16px; font-family: AntDesign`}>
-                멤버 구성중
-              </Text>
-            </TouchableOpacity>
-            <View
-              style={css`
-                width: 100%;
-                border-bottom-width: 1px;
-                border-bottom-color: #cccccc;
-              `}
-            />
-            <TouchableOpacity
-              onPress={() => onChangeTeamStatus('READY')}
-              style={css`
-                flex: 1;
-                width: 100%;
-                justify-content: center;
-                align-items: center;
-              `}>
-              <Text style={css`font-size: 16px; font-family: AntDesign`}>
-                준비 완료
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
+      <TeamListItemModal isModalVisible={isModalVisible} onToggleModal={onToggleModal} />
     </>
   );
 };

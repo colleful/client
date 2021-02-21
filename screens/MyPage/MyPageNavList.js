@@ -24,12 +24,12 @@ const MyPageNavList = ({navigation}) => {
         navName: '팀목록',
       },
       {
-        iconName: 'albums-outline',
+        iconName: 'file-tray-full-outline',
         navName: '받은초대목록',
       },
       {
-        iconName: 'people-outline',
-        navName: '친구목록',
+        iconName: 'albums-outline',
+        navName: '보낸초대목록',
       },
     ],
     [
