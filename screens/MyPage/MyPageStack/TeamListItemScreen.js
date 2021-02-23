@@ -13,7 +13,6 @@ import {css} from '@emotion/native';
 const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
   const [isLeader, setLeader] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
-  const [teamMember, setTeamMember] = useState();
 
   useEffect(() => {
     if (userId === teamInfo.leaderId) {
@@ -27,11 +26,10 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
         Authorization: await AsyncStorage.getItem('authorization'),
       },
     });
-    setTeamMember(response.data);
     return response.data;
   };
 
-  const {data = [], error} = useSWR(`${Config.baseUrl}/api/teams/${teamId}/members`, fetcher, {
+  const {data:teamMember = [], error} = useSWR(`${Config.baseUrl}/api/teams/${teamId}/members`, fetcher, {
     onErrorRetry: (error, key, config, revalidate, {retryCount}) => {
       if(teamId === null) return;
       if (error) console.log({error});
@@ -39,8 +37,8 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
   },);
 
   const onToggleModal = useCallback(() => {
-    setModalVisible(!isModalVisible);
-  },[isModalVisible]);
+    setModalVisible(prev => !prev);
+  },[]);
 
   const onDeleteTeam = async () => {
     try {
@@ -186,7 +184,7 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
           )}
         </View>
       </View>
-      <TeamListItemModal isModalVisible={isModalVisible} onToggleModal={onToggleModal} />
+      <TeamListItemModal isModalVisible={isModalVisible} onToggleModal={onToggleModal} teamId={teamId} />
     </>
   );
 };

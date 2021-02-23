@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useCallback} from 'react';
 import {Alert} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {changeField, initializeForm, login, setLoginState, sendAuthEmailForPasswordChange, emailValidstatus, changePassword, confirmPasswordAuthEmail, confirmPasswordAuthEmailInitialize, passwordEmailAuthInitialize, passwordChangeInitialize} from '../modules/auth';
@@ -23,7 +23,7 @@ const LoginContainer = ({navigation}) => {
 
   const dispatch = useDispatch();
 
-  const onCreateAddress = (text) => {
+  const onCreateAddress = useCallback((text) => {
     dispatch(
       changeField({
         form: 'login',
@@ -31,10 +31,10 @@ const LoginContainer = ({navigation}) => {
         value: text === '@jbnu.ac.kr' ? '' : text
       })
     );
-  };
+  },[dispatch]);
   //비밀번호 찾기에서도 하려면 form: 'forgetPassword'
 
-  const onChangeLoginEmail = (e) => {
+  const onChangeLoginEmail = useCallback((e) => {
     const {text} = e.nativeEvent;
     dispatch(
       changeField({
@@ -43,9 +43,9 @@ const LoginContainer = ({navigation}) => {
         value: text,
       }),
     );
-  };
+  },[dispatch]);
 
-  const onChangeLoginPassword = (e) => {
+  const onChangeLoginPassword = useCallback((e) => {
     const {text} = e.nativeEvent;
     dispatch(
       changeField({
@@ -54,8 +54,9 @@ const LoginContainer = ({navigation}) => {
         value: text,
       }),
     );
-  };
-  const onChangeFindEmail = e => {
+  },[dispatch]);
+
+  const onChangeFindEmail = useCallback((e) => {
     const { text } = e.nativeEvent;
     dispatch(
       changeField({
@@ -64,8 +65,9 @@ const LoginContainer = ({navigation}) => {
         value: text
       })
     );
-  };
-  const onChangeFindCode = e => {
+  },[dispatch]);
+
+  const onChangeFindCode = useCallback((e) => {
     const { text } = e.nativeEvent;
     dispatch(
       changeField({
@@ -74,8 +76,9 @@ const LoginContainer = ({navigation}) => {
         value: text
       })
     );
-  };
-  const onChangeFindPassword = e => {
+  },[dispatch]);
+
+  const onChangeFindPassword = useCallback((e) => {
     const { text } = e.nativeEvent;
     dispatch(
       changeField({
@@ -84,8 +87,9 @@ const LoginContainer = ({navigation}) => {
         value: text
       })
     );
-  };
-  const onChangeFindPasswordConfirm = e => {
+  },[dispatch]);
+
+  const onChangeFindPasswordConfirm = useCallback((e) => {
     const { text } = e.nativeEvent;
     dispatch(
       changeField({
@@ -94,19 +98,19 @@ const LoginContainer = ({navigation}) => {
         value: text
       })
     );
-  };
+  },[dispatch]);
 
-  const onSendAuthEmailForPasswordChange = () => {
+  const onSendAuthEmailForPasswordChange = useCallback(() => {
     const { email } = forgetPassword;
     dispatch(sendAuthEmailForPasswordChange({ email }));
-  };
+  },[dispatch, forgetPassword]);
 
-  const onConfirmAuthEmail = () => {
-    const { email,code } = forgetPassword;
+  const onConfirmAuthEmail = useCallback(() => {
+    const { email, code } = forgetPassword;
     dispatch(confirmPasswordAuthEmail({ email,code }));
-  };
+  },[dispatch, forgetPassword]);
 
-  const onSubmitLogin = () => {
+  const onSubmitLogin = useCallback(() => {
     const {email, password} = form;
     if ([email].includes('')) {
       Alert.alert('로그인 실패', '아이디를 입력해주세요', [
@@ -132,9 +136,9 @@ const LoginContainer = ({navigation}) => {
     }
     dispatch(login({email, password}));
     dispatch(emailValidstatus({form: 'isEmailvalidedAtPasswordFind', value: false}));
-  };
+  },[dispatch, form]);
 
-  const onSubmitChangePassword = () => {
+  const onSubmitChangePassword = useCallback(() => {
     const {email, password, passwordConfirm} = forgetPassword;
     if([password].includes('')) {
       Alert.alert('비밀번호 변경 실패', '비밀번호를 입력해주세요', [
@@ -151,7 +155,7 @@ const LoginContainer = ({navigation}) => {
       return;
     }
     dispatch(changePassword({email, password}));
-  };
+  },[dispatch, forgetPassword]);
 
   const storeToken = async (value) => {
     try {

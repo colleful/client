@@ -51,13 +51,13 @@ const ModalFilter = ({
   }, [selectItem.selectedFilter]);
 
   const onToggleModal = useCallback(() => {
-    setModalVisible(!isModalVisible);
-  },[isModalVisible]);
+    setModalVisible(prev => !prev);
+  },[]);
 
-  const onToggleModalAndSetFilter = () => {
+  const onToggleModalAndSetFilter = useCallback(() => {
     onToggleModal();
     setFilter();
-  };
+  },[onToggleModal, setFilter]);
 
   return (
     <Modal isVisible={isModalVisible} onBackButtonPress={onToggleModal}>

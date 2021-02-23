@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {View, Text, TextInput, TouchableOpacity, Alert, ScrollView} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {setLoginState} from '../../../modules/auth';
@@ -88,7 +88,10 @@ const AccountScreen = ({navigation, myInfoData}) => {
       Alert.alert('변경 성공', '비밀번호 변경을 완료했습니다.', [
         {
           text: '확인',
-          onPress: () => navigation.navigate('유저정보')
+          onPress: () => {
+            navigation.navigate('유저정보'), 
+            AsyncStorage.setItem("userPassword", passwordForChange)
+          },
         },
       ]);
     } catch (error) {
@@ -96,7 +99,7 @@ const AccountScreen = ({navigation, myInfoData}) => {
     }
   };
 
-  const ConfirmToChangePassword = () => {
+  const ConfirmToChangePassword = useCallback(() => {
     if(passwordForChange !== passwordForConfirm) {
       Alert.alert('변경 실패', '두 비밀번호가 일치하지 않습니다.', [
         {
@@ -106,9 +109,9 @@ const AccountScreen = ({navigation, myInfoData}) => {
     } else {
       onChangeUserPassword();
     }
-  };
+  },[passwordForChange,passwordForConfirm,onChangeUserPassword]);
 
-  const userData = () => {
+  const userData = useCallback(() => {
     let changeData = {};
     if(nicknameForChange !== myInfoData.nickname && nicknameForChange !== ''){
       let pair = {nickname: nicknameForChange};
@@ -123,7 +126,7 @@ const AccountScreen = ({navigation, myInfoData}) => {
       changeData = {...changeData, ...pair};
     }
     return changeData;
-  }
+  },[nicknameForChange,selfIntroductionForChange,selectedDepartment,myInfoData.nickname,myInfoData.selfIntroduction,myInfoData.department]);
 
   const onChangeUserInfo = async () => {
     try {
@@ -149,19 +152,43 @@ const AccountScreen = ({navigation, myInfoData}) => {
     }
   };
 
-  const logoutHandler = () => {
+  const logoutHandler = useCallback(() => {
     AsyncStorage.removeItem('authorization');
     AsyncStorage.removeItem('userPassword');
     dispatch(setLoginState(false)); // dispatch로 token값 변경하면 구독한 listener(SwitchNavigator)에 가서 바뀐 token값을 변경
-  }
+  },[dispatch]);
 
-  const deleteUserHandler = () => {
+  const deleteUserHandler = useCallback(() => {
     DeleteUser();
     setTimeout(() => {
       AsyncStorage.removeItem('authorization');
     }, 2000);
     dispatch(setLoginState(false));
-  }
+  },[DeleteUser,dispatch])
+
+  const logoutAlert = useCallback(() => {
+    Alert.alert('LOGOUT', '로그아웃 하시겠습니까?', [
+      {
+        text: '취소',
+      },
+      {
+        text: '확인',
+        onPress: logoutHandler
+      },
+    ]);
+  },[logoutHandler]);
+
+  const userDeleteAlert = useCallback(() => {
+    Alert.alert('회원 탈퇴', '정말 회원 탈퇴를 하시겠습니까?', [
+      {
+        text: '취소',
+      },
+      {
+        text: '확인',
+        onPress: deleteUserHandler,
+      },
+    ]);
+  },[deleteUserHandler]);
 
   return (
     <>
@@ -238,7 +265,7 @@ const AccountScreen = ({navigation, myInfoData}) => {
               />
             </View>
             <TouchableOpacity
-              onPress={() => onChangeUserInfo()}
+              onPress={onChangeUserInfo}
               style={css`
                 background-color: #5e5e5e;
                 border-radius: 5px;
@@ -314,18 +341,7 @@ const AccountScreen = ({navigation, myInfoData}) => {
                 opacity: 0.4;
                 background-color: gray;
               `}
-              onPress={() => {
-                Alert.alert('LOGOUT', '로그아웃 하시겠습니까?', [
-                  {
-                    text: '취소',
-                    onPress: () => console.log('취소')
-                  },
-                  {
-                    text: '확인',
-                    onPress: logoutHandler
-                  },
-                ]);
-              }}>
+              onPress={logoutAlert}>
               <Text>로그아웃</Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -340,18 +356,7 @@ const AccountScreen = ({navigation, myInfoData}) => {
                 opacity: 0.4;
                 background-color: gray;
               `}
-              onPress={() => {
-                Alert.alert('회원 탈퇴', '정말 회원 탈퇴를 하시겠습니까?', [
-                  {
-                    text: '취소',
-                    onPress: () => console.log('취소'),
-                  },
-                  {
-                    text: '확인',
-                    onPress: deleteUserHandler,
-                  },
-                ]);
-              }}>
+              onPress={userDeleteAlert}>
               <Text>회원 탈퇴</Text>
             </TouchableOpacity>
           </View>

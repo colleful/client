@@ -28,18 +28,23 @@ const MypageNavigator = ({navigation}) => {
         Authorization: await AsyncStorage.getItem('authorization'),
       },
     });
-    console.log("내 정보 /api/users",response.data)
+    console.log('내 정보 /api/users', response.data);
     return response.data;
   };
 
-  const {data = [], error} = useSWR(`${Config.baseUrl}/api/users`, fetcher, {
-    onErrorRetry: (error, key, config, revalidate, {retryCount}) => {
-      if (error.response.status === 500){ //탈퇴한 사용자의 토큰을 들고있을 경우
-        AsyncStorage.removeItem('authorization');
-        AsyncStorage.removeItem('userPassword');
-      }
+  const {data: userData = [], error} = useSWR(
+    `${Config.baseUrl}/api/users`,
+    fetcher,
+    {
+      onErrorRetry: (error, key, config, revalidate, {retryCount}) => {
+        if (error.response.status === 500) {
+          //탈퇴한 사용자의 토큰을 들고있을 경우
+          AsyncStorage.removeItem('authorization');
+          AsyncStorage.removeItem('userPassword');
+        }
+      },
     },
-  },);
+  );
 
   return (
     <MyPageStack.Navigator
@@ -52,17 +57,29 @@ const MypageNavigator = ({navigation}) => {
       }}>
       <MyPageStack.Screen name="유저정보">
         {(props) => (
-          <MyPageScreen {...props} navigation={navigation} myInfoData={data} />
+          <MyPageScreen
+            {...props}
+            navigation={navigation}
+            myInfoData={userData}
+          />
         )}
       </MyPageStack.Screen>
       <MyPageStack.Screen name="프로필">
         {(props) => (
-          <ProfileScreen {...props} navigation={navigation} myInfoData={data} />
+          <ProfileScreen
+            {...props}
+            navigation={navigation}
+            myInfoData={userData}
+          />
         )}
       </MyPageStack.Screen>
       <MyPageStack.Screen name="계정">
         {(props) => (
-          <AccountScreen {...props} navigation={navigation} myInfoData={data} />
+          <AccountScreen
+            {...props}
+            navigation={navigation}
+            myInfoData={userData}
+          />
         )}
       </MyPageStack.Screen>
       <MyPageStack.Screen name="쪽지함" component={MessageScreen} />
@@ -75,15 +92,25 @@ const MypageNavigator = ({navigation}) => {
           <TeamListScreen
             {...props}
             navigation={navigation}
-            teamId={data.teamId}
-            userId={data.id}
+            teamId={userData.teamId}
+            userId={userData.id}
           />
         )}
       </MyPageStack.Screen>
       <MyPageStack.Screen name="받은초대목록">
-        {(props) => <ReceivedInvitationListScreen {...props} navigation={navigation} />}
+        {(props) => (
+          <ReceivedInvitationListScreen {...props} navigation={navigation} />
+        )}
       </MyPageStack.Screen>
-      <MyPageStack.Screen name="보낸초대목록" component={SentInvitationListScreen} />
+      <MyPageStack.Screen name="보낸초대목록">
+        {(props) => (
+          <SentInvitationListScreen
+            {...props}
+            navigation={navigation}
+            teamId={userData.teamId}
+          />
+        )}
+      </MyPageStack.Screen>
       <MyPageStack.Screen name="공지사항" component={NoticeScreen} />
       <MyPageStack.Screen name="건의사항" component={SuggestionScreen} />
       <MyPageStack.Screen name="설정" component={SettingScreen} />

@@ -9,7 +9,6 @@ import useSWR from 'swr';
 import axios from 'axios';
 
 const ReceivedInvitationListScreen = () => {
-  const [receivedInvitationList, setReceivedInvitationList] = useState([]);
   
   const fetcher = async (url) => {
     const response = await axios.get(url, {
@@ -17,11 +16,10 @@ const ReceivedInvitationListScreen = () => {
         Authorization: await AsyncStorage.getItem('authorization'),
       },
     });
-    setReceivedInvitationList(response.data);
     return response.data;
   };
 
-  const {data = [], error} = useSWR(`${Config.baseUrl}/api/invitations/received`, fetcher);
+  const {data:receivedInvitationList = [], error} = useSWR(`${Config.baseUrl}/api/invitations/received`, fetcher);
   if (error) console.log({error});
 
   return (

@@ -8,10 +8,9 @@ import useSWR from 'swr';
 import axios from 'axios';
 
 const TeamListScreen = ({navigation, teamId, userId}) => {
-  const [teamInfo, setTeamInfo] = useState({});
 
   useEffect(() => {
-    console.log(teamInfo);
+    console.log("teamInfo",teamInfo);
   }, [teamInfo]);
 
   const fetcher = async (url) => {
@@ -20,22 +19,15 @@ const TeamListScreen = ({navigation, teamId, userId}) => {
         Authorization: await AsyncStorage.getItem('authorization'),
       },
     });
-    setTeamInfo({...response.data});
-    return response.data;
+    return {...response.data}
   }
 
-  const {data = [], error} = useSWR(
-    `${Config.baseUrl}/api/teams/${teamId}`,
+  const {data:teamInfo = {}, error} = useSWR(
+    teamId === null ? null : `${Config.baseUrl}/api/teams/${teamId}`,
     fetcher,
     {
       onErrorRetry: (error, key, config, revalidate, {retryCount}) => {
-        if(teamId === null) return;
-        // if (error.response.status === 403) return;
-        // if (error.response.status === 404) return;
-        // if (error.response.status === 500) return; //팀나가기 했을때
         if (error) console.log({error});
-        // if (retryCount >= 10) return;
-        // setTimeout(() => revalidate({retryCount: retryCount + 1}), 5000);
       },
     },
   );

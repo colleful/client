@@ -46,8 +46,8 @@ const RegisterScreen = ({form,getDepartmentId,getGender,getBirthYear,onSendAuthE
     }
   }
   const visibleText = useCallback(() => {
-    setVisible(!visible);
-  },[visible]);
+    setVisible(prev => !prev);
+  },[]);
 
   const addToBehindText = (e) => {
     onCreateAddress(
@@ -70,21 +70,18 @@ const RegisterScreen = ({form,getDepartmentId,getGender,getBirthYear,onSendAuthE
 
   const yearList = useMemo(() => setYearData(today, yearData), [today, yearData]);
 
-  const registerHandler = () => {
+  const registerHandler = useCallback(() => {
     trigger(); 
     handleSubmit(onSubmit); 
     onSubmitRegister();
-  }
+  },[trigger, handleSubmit, onSubmitRegister])
 
   const { control, handleSubmit, watch, trigger, errors } = useForm({ mode: "onChange"});
   const onSubmit = data => console.log(data);
 
   const password = useRef();
   password.current = watch("password");
-
-  const count = useRef(0);
-  console.log(`LoginScreen:, ${count.current++}`)
-
+  
   return (
     <>
       {isLoading && (

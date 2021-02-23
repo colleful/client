@@ -7,24 +7,18 @@ import useSWR from 'swr';
 import axios from 'axios';
 import SentInvitationList from './SentInvitationList';
 
-const SentInvitationListScreen = () => {
-  const [sentInvitationList, setSentInvitationList] = useState([]);
-
-  useEffect(()=>{
-    console.log(sentInvitationList);
-  },[sentInvitationList]);
-
+const SentInvitationListScreen = ({teamId}) => {
+  
   const fetcher = async (url) => {
     const response = await axios.get(url, {
       headers: {
         Authorization: await AsyncStorage.getItem('authorization'),
       },
     });
-    setSentInvitationList(response.data);
     return response.data;
   };
 
-  const {data = [], error} = useSWR(`${Config.baseUrl}/api/invitations/sent`, fetcher, {
+  const {data:sentInvitationList = [], error} = useSWR(teamId === null ? null :`${Config.baseUrl}/api/invitations/sent`, fetcher, {
     onErrorRetry: (error, key, config, revalidate, {retryCount}) => {
       if (error.response.status === 403) return; //팀이 없는데 받은초대목록페이지가 마운트 될 때
       if (error) console.log({error});

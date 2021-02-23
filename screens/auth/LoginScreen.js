@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useRef} from 'react';
+import React, {useState, useCallback} from 'react';
 import {
   View,
   Text,
@@ -33,7 +33,6 @@ const LoginScreen = ({
   const [isPasswordVisible, setPasswordVisible] = useState(true);
   const [isModalVisible, setModalVisible] = useState(false);
 
-  const dispatch = useDispatch();
   const {isEmailvalidedAtPasswordFind} = useSelector(({auth}) => ({
     isEmailvalidedAtPasswordFind: auth.isEmailvalidedAtPasswordFind,
   }));
@@ -41,35 +40,45 @@ const LoginScreen = ({
     isLoading: loading.isLoading,
   }));
 
-  const visibleText = () => {
-    setPasswordVisible(!isPasswordVisible);
-  };
-  const addToBehindText = (e) => {
+  const dispatch = useDispatch();
+
+  const addToBehindText = useCallback((e) => {
     onCreateAddress(
       e.nativeEvent.text.includes('@')
         ? e.nativeEvent.text
         : `${e.nativeEvent.text}@jbnu.ac.kr`,
     );
-  };
-  const toggleModal = () => {
-    setModalVisible(!isModalVisible);
-  };
+  },[]);
 
-  const loginHandler = () => {
+  const visibleText = useCallback(() => {
+    setPasswordVisible(prev => !prev);
+  },[]);
+
+  const toggleModal = useCallback(() => {
+    setModalVisible(prev => !prev);
+  },[]);
+
+  const loginHandler = useCallback(() => {
     trigger();
     onSubmitLogin();
-  }
+  },[onSubmitLogin, trigger]);
   
-  const goToRegisterScreenHandler = () => {
+  const goToRegisterScreenHandler = useCallback(() => {
     navigation.navigate('RegisterContainer');
-  }
+  },[]);
 
-  const changePasswordHandler = () => {
+  const changePasswordHandler = useCallback(() => {
     onSubmitChangePassword();
+    dispatch(
+      emailValidstatus({
+        form: 'isEmailvalidedAtPasswordFind',
+        value: false,
+      }),
+    );
     toggleModal();
-  }
+  },[dispatch, onSubmitChangePassword, toggleModal]);
 
-  const exitChangePasswordHandler = () => {
+  const exitChangePasswordHandler = useCallback(() => {
     toggleModal();
     dispatch(
       emailValidstatus({
@@ -77,13 +86,10 @@ const LoginScreen = ({
         value: false,
       }),
     );
-  }
+  },[dispatch, toggleModal]);
 
   const {control, handleSubmit, trigger, watch, errors} = useForm({ mode: 'onChange' });
   // const onSubmit = (data) => console.log(data);
-
-  const count = useRef(0);
-  console.log(`LoginScreen:, ${count.current++}`)
 
   return (
     <>

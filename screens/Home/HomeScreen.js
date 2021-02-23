@@ -86,8 +86,8 @@ const HomeScreen = ({}) => {
   },[loading]);
 
   const onToggleModal = useCallback(() => {
-    setModalVisible(!isModalVisible);
-  },[isModalVisible]);
+    setModalVisible(prev => !prev);
+  },[]);
 
   return (
     <View style={{flex: 1}}>

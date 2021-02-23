@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import {Alert} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {changeField, initializeForm, register, sendAuthEmail, confirmAuthEmail, authEmailInitialize, confirmAuthEmailInitialize, emailValidstatus} from '../modules/auth';
@@ -17,7 +17,7 @@ const RegisterContainer = ({navigation}) => {
     confirmEmailError: auth.confirmEmailError
   }));
 
-  const onCreateAddress = (text) => {
+  const onCreateAddress = useCallback((text) => {
     dispatch(
       changeField({
         form: 'register',
@@ -25,9 +25,9 @@ const RegisterContainer = ({navigation}) => {
         value: text === '@jbnu.ac.kr' ? '' : text
       })
     );
-  };
+  },[dispatch]);
 
-  const onChangeCode = (e) => {
+  const onChangeCode = useCallback((e) => {
     const { text } = e.nativeEvent;
     dispatch(
       changeField({
@@ -36,9 +36,9 @@ const RegisterContainer = ({navigation}) => {
         value: text
       })
     )
-  }
+  },[dispatch]);
 
-  const getDepartmentId = (item) => {
+  const getDepartmentId = useCallback((item) => {
     dispatch(
       changeField({
         form: 'register',
@@ -46,8 +46,9 @@ const RegisterContainer = ({navigation}) => {
         value: item
       })
     );
-  };
-  const getGender = (item) => {
+  },[dispatch]);
+
+  const getGender = useCallback((item) => {
     dispatch(
       changeField({
         form: 'register',
@@ -55,8 +56,9 @@ const RegisterContainer = ({navigation}) => {
         value: item
       })
     );
-  };
-  const getBirthYear = (item) => {
+  },[dispatch]);
+
+  const getBirthYear = useCallback((item) => {
     dispatch(
       changeField({
         form: 'register',
@@ -64,8 +66,9 @@ const RegisterContainer = ({navigation}) => {
         value: item
       })
     );
-  };
-  const onChangeEmail = e => {
+  },[dispatch]);
+
+  const onChangeEmail = useCallback((e) => {
     const { text } = e.nativeEvent;
     dispatch(
       changeField({
@@ -74,8 +77,9 @@ const RegisterContainer = ({navigation}) => {
         value: text
       })
     );
-  };
-  const onChangePassword = e => {
+  },[dispatch]);
+
+  const onChangePassword = useCallback((e) => {
     const { text } = e.nativeEvent;
     dispatch(
       changeField({
@@ -84,9 +88,9 @@ const RegisterContainer = ({navigation}) => {
         value: text
       })
     );
-  };
+  },[dispatch]);
 
-  const onChangePasswordConfirm = e => {
+  const onChangePasswordConfirm = useCallback((e) => {
     const { text } = e.nativeEvent;
     dispatch(
       changeField({
@@ -95,8 +99,9 @@ const RegisterContainer = ({navigation}) => {
         value: text
       })
     );
-  };
-  const onChangeNickname = e => {
+  },[dispatch]);
+
+  const onChangeNickname = useCallback((e) => {
     const { text } = e.nativeEvent;
     dispatch(
       changeField({
@@ -105,8 +110,9 @@ const RegisterContainer = ({navigation}) => {
         value: text
       })
     );
-  };
-  const onChangeBirthYear = e => {
+  },[dispatch]);
+
+  const onChangeBirthYear = useCallback((e) => {
     const { text } = e.nativeEvent;
     dispatch(
       changeField({
@@ -115,8 +121,9 @@ const RegisterContainer = ({navigation}) => {
         value: text
       })
     );
-  };
-  const onChangeGender = e => {
+  },[dispatch]);
+
+  const onChangeGender = useCallback((e) => {
     const { text } = e.nativeEvent;
     dispatch(
       changeField({
@@ -125,8 +132,9 @@ const RegisterContainer = ({navigation}) => {
         value: text
       })
     );
-  };
-  const onChangeDepartmentId = e => {
+  },[dispatch]);
+
+  const onChangeDepartmentId = useCallback((e) => {
     const { text } = e.nativeEvent;
     dispatch(
       changeField({
@@ -135,8 +143,9 @@ const RegisterContainer = ({navigation}) => {
         value: text
       })
     );
-  };
-  const onChangeSelfIntroduction = e => {
+  },[dispatch]);
+
+  const onChangeSelfIntroduction = useCallback((e) => {
     const { text } = e.nativeEvent;
     dispatch(
       changeField({
@@ -145,18 +154,19 @@ const RegisterContainer = ({navigation}) => {
         value: text
       })
     );
-  };
-  const onSendAuthEmail = () => {
+  },[dispatch]);
+
+  const onSendAuthEmail = useCallback(() => {
     const { email } = form;
     dispatch(sendAuthEmail({ email }));
-  }
+  },[dispatch, form]);
 
-  const onConfirmAuthEmail = () => {
+  const onConfirmAuthEmail = useCallback(() => {
     const { email,code } = form;
     dispatch(confirmAuthEmail({ email,code }));
-  }
+  },[dispatch, form]);
 
-  const onSubmitRegister = () => {
+  const onSubmitRegister = useCallback(() => {
     const { email, password, nickname, birthYear, gender, departmentId, selfIntroduction, passwordConfirm } = form;
     if ([email, password, nickname, birthYear, gender, departmentId, selfIntroduction, passwordConfirm].includes('')) {
       Alert.alert('회원가입 실패', '빈 칸을 모두 입력해주세요', [
@@ -180,7 +190,7 @@ const RegisterContainer = ({navigation}) => {
     }
     dispatch(register({ email, password, nickname, birthYear, gender, departmentId, selfIntroduction }));
     dispatch(emailValidstatus({form: 'isEmailvalided', value: false}));
-  };
+  },[dispatch, form]);
 
   useEffect(() => {
     dispatch(initializeForm('register'));

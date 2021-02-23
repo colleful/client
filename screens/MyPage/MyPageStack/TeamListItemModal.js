@@ -10,8 +10,10 @@ import AsyncStorage from '@react-native-community/async-storage';
 import * as authAPI from '../../../lib/api';
 import Modal from 'react-native-modal';
 import {css} from '@emotion/native';
+import {trigger} from 'swr';
+import {Config} from '../../../Config';
 
-const TeamListItemModal = ({isModalVisible, onToggleModal}) => {
+const TeamListItemModal = ({isModalVisible, onToggleModal, teamId}) => {
   const onChangeTeamStatus = async (status) => {
     try {
       await authAPI.changeTeamStatus(
@@ -22,6 +24,7 @@ const TeamListItemModal = ({isModalVisible, onToggleModal}) => {
           },
         },
       );
+      trigger(`${Config.baseUrl}/api/teams/${teamId}`);
       Alert.alert(
         '팀 상태변경',
         `팀 상태를 ${
