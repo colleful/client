@@ -6,12 +6,13 @@ import {
   RefreshControl,
   TextInput,
   StyleSheet,
+  TouchableWithoutFeedback
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-community/async-storage';
 import * as authAPI from '../../lib/api';
 import ModalFilter from './ModalFilter';
-import TeamListItem from '../../components/TeamListItem';
+import TeamListItem from './TeamListItem';
 import {useDispatch} from 'react-redux';
 import {setLoginState} from '../../modules/auth';
 import { css } from '@emotion/native';
@@ -64,6 +65,7 @@ const HomeScreen = ({}) => {
       } else {
         setPageNumber(pageNumber + 1);
       }
+      console.log(response.data)
       setTeam(team.concat(response.data.content));
       setImmutableTeam(team.concat(response.data.content));
       setLoading(false);
@@ -156,11 +158,13 @@ const HomeScreen = ({}) => {
           keyExtractor={(item, index) => index.toString()}
           data={keyword === '' ? team : newTeam}
           renderItem={({item, index}) => (
-            <View
-              style={[index === 0 && css`margin-top: 12px`, styles.item]}
-              key={index}>
-              <TeamListItem team={item} />
-            </View>
+            <TouchableWithoutFeedback onPress={() => console.log("aa")}>
+              <View
+                style={[index === 0 && css`margin-top: 12px`, styles.item]}
+                key={index}>
+                <TeamListItem team={item} />
+              </View>
+            </TouchableWithoutFeedback>
           )}
           onEndReached={onEndReachedHandler}
           onEndReachedThreshold={0.3}

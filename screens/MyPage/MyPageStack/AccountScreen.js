@@ -57,7 +57,7 @@ const AccountScreen = ({navigation, myInfoData}) => {
     }
   };
 
-  const confirmUser = async () => {
+  const confirmUser = useCallback(async () => {
     const userPassword = await AsyncStorage.getItem('userPassword');
     if (passwordForAuth === userPassword) {
       Alert.alert('인증 완료', '본인인증을 확인했습니다.', [
@@ -73,7 +73,7 @@ const AccountScreen = ({navigation, myInfoData}) => {
         },
       ]);
     }
-  };
+  },[passwordForAuth, setSuccessIdentification]);
 
   const onChangeUserPassword = async () => {
     try {

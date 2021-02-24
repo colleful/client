@@ -1,6 +1,7 @@
 import React from 'react';
 import {View, Text, Image} from 'react-native';
 import {css} from '@emotion/native';
+import GetTimeFromNow from '../../utils/GetTimeFromNow';
 
 const TeamListItem = ({team}) => {
   return (
@@ -16,7 +17,7 @@ const TeamListItem = ({team}) => {
           height: 50px;
         `}>
         <Image
-          source={require('../images/1.png')}
+          source={require('../../images/1.png')}
           style={css`
             border-radius: 10px;
           `}
@@ -36,10 +37,19 @@ const TeamListItem = ({team}) => {
           {'\n'}
           팀인원 : {team.headcount}명{'  '}
           {team.gender === 'MALE' ? `💪` : `👗`}
+          {'\n'}
+          <Text
+            style={css`
+              font-size: 14px;
+              color: #c4c4c4;
+              font-weight: 100;
+            `}>
+            {GetTimeFromNow(team.updatedAt)}
+          </Text>
         </Text>
       </View>
     </View>
   );
 };
 
-export default React.memo(TeamListItem);
+export default TeamListItem;
