@@ -6,13 +6,12 @@ import {
   RefreshControl,
   TextInput,
   StyleSheet,
-  TouchableWithoutFeedback
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-community/async-storage';
 import * as authAPI from '../../lib/api';
 import ModalFilter from './ModalFilter';
-import TeamListItem from './TeamListItem';
+import TeamInfo from './TeamInfo';
 import {useDispatch} from 'react-redux';
 import {setLoginState} from '../../modules/auth';
 import { css } from '@emotion/native';
@@ -158,13 +157,11 @@ const HomeScreen = ({}) => {
           keyExtractor={(item, index) => index.toString()}
           data={keyword === '' ? team : newTeam}
           renderItem={({item, index}) => (
-            <TouchableWithoutFeedback onPress={() => console.log("aa")}>
-              <View
-                style={[index === 0 && css`margin-top: 12px`, styles.item]}
-                key={index}>
-                <TeamListItem team={item} />
-              </View>
-            </TouchableWithoutFeedback>
+            <View
+              style={[index === 0 && css`margin-top: 12px`, styles.item]}
+              key={index}>
+              <TeamInfo team={item} />
+            </View>
           )}
           onEndReached={onEndReachedHandler}
           onEndReachedThreshold={0.3}
@@ -176,7 +173,7 @@ const HomeScreen = ({}) => {
   );
 };
 
-export default React.memo(HomeScreen);
+export default HomeScreen;
 
 const styles = StyleSheet.create({
   item: {
