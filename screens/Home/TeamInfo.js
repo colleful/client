@@ -3,6 +3,8 @@ import {View, Text, Image, TouchableWithoutFeedback} from 'react-native';
 import {css} from '@emotion/native';
 import GetTimeFromNow from '../../utils/GetTimeFromNow';
 import TeamInfoModal from '../../screens/Home/TeamInfoModal';
+import {Gravatar} from 'react-native-gravatar';
+
 const TeamInfo = ({team}) => {
   const [isTeamListModalVisible, setTeamListModalVisible] = useState(false);
 
@@ -23,18 +25,14 @@ const TeamInfo = ({team}) => {
             align-items: center;
             margin-left: 20px;
           `}>
-          <View
-            style={css`
-              width: 50px;
-              height: 50px;
-            `}>
-            <Image
-              source={require('../../images/1.png')}
-              style={css`
-                border-radius: 10px;
-              `}
-            />
-          </View>
+          <Gravatar
+            options={{
+              email: team.teamName + '@naver.com',
+              parameters: {s: '50', d: 'retro'},
+              secure: true,
+            }}
+            style={{borderRadius: 30, width: 60, height: 60}}
+          />
           <View
             style={css`
               flex-direction: column;
