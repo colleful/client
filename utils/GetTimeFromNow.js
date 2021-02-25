@@ -1,15 +1,20 @@
 import {useState, useEffect} from 'react';
+// import {useInterval} from '../hooks/useInterval';
 
 const GetTimeFromNow = (updatedAt) => {
   const [dateTime, setDateTime] = useState(new Date());
   const [updatedAtTime] = useState(new Date(updatedAt));
 
-  useEffect(() => {
-    const id = setInterval(() => setDateTime(new Date()), 60000);
-    return () => {
-      clearInterval(id);
-    };
-  }, []);
+  // useEffect(() => {
+  //   const id = setInterval(() => setDateTime(new Date()), 60000);
+  //   return () => {
+  //     clearInterval(id);
+  //   };
+  // }, []);
+
+  // useInterval(() => {
+  //   setDateTime(new Date());
+  // },60000);
 
   const timeAgo = Math.floor(
     (dateTime.getTime() - updatedAtTime.getTime()) / 1000 / 60,
