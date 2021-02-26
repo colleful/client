@@ -1,46 +1,27 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {View, Text, TouchableOpacity, Alert} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import * as authAPI from '../../../lib/api';
+import * as authAPI from '../../../../lib/api';
+import {Config} from '../../../../Config';
 import useSWR, {trigger} from 'swr';
-import {Config} from '../../../Config';
 import {css} from '@emotion/native';
 
-const SentInvitationListItemScreen = ({sentInvitationList}) => {
-  const [senderData, setSenderData] = useState([]);
-
+const SentMatchingListItemScreen = ({sentMatchingList}) => {
   useEffect(() => {
-    onGetSenderData();
-    console.log('senderData', senderData);
-  }, []);
+    console.log('sentMatchingList', sentMatchingList);
+  }, [sentMatchingList]);
 
-  const onGetSenderData = async () => {
+  const onDeleteMatching = async () => {
     try {
-      const response = await authAPI.getUserInfo(
-        sentInvitationList.team.leaderId,
-        {
-          headers: {
-            Authorization: await AsyncStorage.getItem('authorization'),
-          },
-        },
-      );
-      setSenderData(response.data);
-    } catch (error) {
-      console.log({error});
-    }
-  };
-
-  const onDeleteInvitation = async () => {
-    try {
-      await authAPI.deleteInvitation(sentInvitationList.id, {
+      await authAPI.deleteMatching(sentMatchingList.id, {
         headers: {
           Authorization: await AsyncStorage.getItem('authorization'),
         },
       });
-      Alert.alert('완료', `초대를 취소하였습니다.`, [
+      Alert.alert('완료', `요청을 취소하였습니다.`, [
         {
           text: '확인',
-          onPress: () => trigger(`${Config.baseUrl}/api/invitations/sent`),
+          onPress: () => trigger(`${Config.baseUrl}/api/matching/sent`),
         },
       ]);
     } catch (error) {
@@ -53,13 +34,13 @@ const SentInvitationListItemScreen = ({sentInvitationList}) => {
     }
   };
 
-  const onPressDeleteInvitation = useCallback(() => {
+  const onPressDeleteMatching = useCallback(() => {
     Alert.alert(
       '경고',
-      `정말 ${sentInvitationList.user.nickname} 님에게 보낸 초대를 취소하시겠습니까?`,
+      `정말 ${sentMatchingList.receivedTeam.teamName}팀에게 보낸 요청을 취소하시겠습니까?`,
       [
         {text: '취소', onPress: () => console.log('취소')},
-        {text: '확인', onPress: onDeleteInvitation},
+        {text: '확인', onPress: onDeleteMatching},
       ],
     );
   }, []);
@@ -71,11 +52,9 @@ const SentInvitationListItemScreen = ({sentInvitationList}) => {
           font-size: 19px;
           line-height: 30px;
         `}>
-        보낸사람 : {senderData.nickname}{' '}
-        {/* {`( ${senderData.age}, ${senderData.department} )`} */}{'\n'}
-        받는사람 : {sentInvitationList.user.nickname}{' '}
-        {/* {`( ${sentInvitationList.user.age}, ${sentInvitationList.user.department} )`}{' '}
-        {'\n'} */}
+        보낸 팀 : {sentMatchingList.sentTeam.teamName}
+        {'\n'}
+        받는 팀 : {sentMatchingList.receivedTeam.teamName}
       </Text>
       <View
         style={css`
@@ -84,7 +63,7 @@ const SentInvitationListItemScreen = ({sentInvitationList}) => {
           margin-top: 20px;
         `}>
         <TouchableOpacity
-          onPress={onPressDeleteInvitation}
+          onPress={onPressDeleteMatching}
           style={css`
             background-color: #5e5e5e;
             border-radius: 5px;
@@ -96,7 +75,7 @@ const SentInvitationListItemScreen = ({sentInvitationList}) => {
               color: #fff;
               font-weight: 500;
             `}>
-            초대 취소
+            매칭 취소
           </Text>
         </TouchableOpacity>
       </View>
@@ -110,4 +89,4 @@ const SentInvitationListItemScreen = ({sentInvitationList}) => {
   );
 };
 
-export default SentInvitationListItemScreen;
+export default SentMatchingListItemScreen;

@@ -12,13 +12,14 @@ import AddTeamScreen from './MyPageStack/AddTeamScreen';
 import InvitationScreen from './MyPageStack/InvitationScreen';
 import ReceivedInvitationListScreen from './MyPageStack/ReceivedInvitationListScreen';
 import SentInvitationListScreen from './MyPageStack/SentInvitationListScreen';
+import ReceivedMatchingLIstScreen from './MyPageStack/ReceivedMatching/ReceivedMatchingLIstScreen';
+import SentMatchingListScreen from './MyPageStack/SentMatchingList/SentMatchingListScreen';
 import ProfileScreen from './MyPageStack/ProfileScreen';
 
 import AsyncStorage from '@react-native-community/async-storage';
 import useSWR from 'swr';
 import axios from 'axios';
 import {Config} from '../../Config';
-
 const MypageNavigator = ({navigation}) => {
   const MyPageStack = createStackNavigator();
 
@@ -105,6 +106,24 @@ const MypageNavigator = ({navigation}) => {
       <MyPageStack.Screen name="보낸초대목록">
         {(props) => (
           <SentInvitationListScreen
+            {...props}
+            navigation={navigation}
+            teamId={userData.teamId}
+          />
+        )}
+      </MyPageStack.Screen>
+      <MyPageStack.Screen name="받은매칭요청">
+        {(props) => (
+          <ReceivedMatchingLIstScreen
+            {...props}
+            navigation={navigation}
+            teamId={userData.teamId}
+          />
+        )}
+      </MyPageStack.Screen>
+      <MyPageStack.Screen name="보낸매칭요청">
+        {(props) => (
+          <SentMatchingListScreen
             {...props}
             navigation={navigation}
             teamId={userData.teamId}

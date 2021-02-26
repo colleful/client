@@ -11,7 +11,7 @@ const MyPageNavListItem = ({navigation, navInfo}) => {
       style={css`
         flex-direction: row;
         padding: 10px 5px;
-        width: 100px;
+        width: 120px;
       `}>
       <Ionicons name={navInfos.iconName} size={22} />
       <Text

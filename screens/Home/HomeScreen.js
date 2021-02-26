@@ -34,6 +34,14 @@ const HomeScreen = ({}) => {
 
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    onGetReadyTeam();
+  }, []);
+
+  useEffect(() => {
+    setNewTeam(team.filter((teams) => teams.teamName.indexOf(keyword) > -1));
+  }, [team, keyword]);
+  
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     wait(2000).then(() => {
@@ -42,14 +50,6 @@ const HomeScreen = ({}) => {
       setPageNumber(0);
     });
   }, []);
-
-  useEffect(() => {
-    onGetReadyTeam();
-  }, []);
-
-  useEffect(() => {
-    setNewTeam(team.filter((teams) => teams.teamName.indexOf(keyword) > -1));
-  }, [team, keyword]);
 
   const onGetReadyTeam = async () => {
     try {
@@ -128,12 +128,13 @@ const HomeScreen = ({}) => {
             size={20}
             onPress={onToggleModal}
           />
-          <ModalFilter
+          
+          {isModalVisible && <ModalFilter
             setTeam={setTeam}
             isModalVisible={isModalVisible}
             setModalVisible={setModalVisible}
             immutableTeam={immutableTeam}
-          />
+          />}
         </View>
       </View>
 

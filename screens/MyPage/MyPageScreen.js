@@ -59,7 +59,7 @@ const MyPageScreen = ({navigation, myInfoData}) => {
       </View>
       <ScrollView
         style={css`
-          max-height: 475px;
+          max-height: 465px;
         `}
         showsVerticalScrollIndicator={false}>
         {/* maxHeight 대신 기기들마다 크기가 다르니까 tabbar의 크기를 변수화 시켜서 (폰의 높이 - tabbar의 크기) 로 바꾸기 */}

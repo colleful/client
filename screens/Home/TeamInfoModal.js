@@ -1,14 +1,42 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity, Alert} from 'react-native';
 import Modal from 'react-native-modal';
 import styled, {css} from '@emotion/native';
 import TeamInfoModalList from './TeamInfoModalList';
+import * as authAPI from '../../lib/api';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const TeamInfoModal = ({
   team,
   isTeamListModalVisible,
   onToggleTeamListModal,
 }) => {
+  console.log('team', team);
+  const onGetSendMatching = async () => {
+    try {
+      await authAPI.sendMatching(
+        {teamId: team.id},
+        {
+          headers: {
+            Authorization: await AsyncStorage.getItem('authorization'),
+          },
+        },
+      );
+      Alert.alert('완료', `${team.teamName}팀에게 매칭 요청을 보냈습니다.`, [
+        {
+          text: '확인',
+          onPress: () => console.log("완료"),
+        },
+      ]);
+    } catch (error) {
+      Alert.alert('에러발생', `${error.response.data.message}`, [
+        {
+          text: '확인',
+        },
+      ]);
+      console.log({error});
+    }
+  };
   return (
     <Modal
       isVisible={isTeamListModalVisible}
@@ -47,7 +75,8 @@ const TeamInfoModal = ({
                 border-radius: 5px;
                 padding: 12px 16px;
                 width: 110px;
-              `}>
+              `}
+              onPress={onGetSendMatching}>
               <Text
                 style={css`
                   color: #fff;
