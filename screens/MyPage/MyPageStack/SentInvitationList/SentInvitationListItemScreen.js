@@ -1,9 +1,9 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {View, Text, TouchableOpacity, Alert} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import * as authAPI from '../../../lib/api';
+import * as authAPI from '../../../../lib/api';
 import useSWR, {trigger} from 'swr';
-import {Config} from '../../../Config';
+import {Config} from '../../../../Config';
 import {css} from '@emotion/native';
 
 const SentInvitationListItemScreen = ({sentInvitationList}) => {

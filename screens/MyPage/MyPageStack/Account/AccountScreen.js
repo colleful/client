@@ -1,13 +1,13 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {View, Text, TextInput, TouchableOpacity, Alert, ScrollView} from 'react-native';
 import {useDispatch} from 'react-redux';
-import {setLoginState} from '../../../modules/auth';
+import {setLoginState} from '../../../../modules/auth';
 import AsyncStorage from '@react-native-community/async-storage';
 import {Picker} from '@react-native-community/picker';
-import * as authAPI from '../../../lib/api';
+import * as authAPI from '../../../../lib/api';
 import {css} from '@emotion/native';
 import {trigger} from 'swr';
-import {Config} from '../../../Config';
+import {Config} from '../../../../Config';
 
 const AccountScreen = ({navigation, myInfoData}) => {
   const [isSuccessIdentification, setSuccessIdentification] = useState(false);

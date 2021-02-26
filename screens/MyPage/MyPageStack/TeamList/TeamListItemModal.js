@@ -7,11 +7,11 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import * as authAPI from '../../../lib/api';
+import * as authAPI from '../../../../lib/api';
 import Modal from 'react-native-modal';
 import {css} from '@emotion/native';
 import {trigger} from 'swr';
-import {Config} from '../../../Config';
+import {Config} from '../../../../Config';
 
 const TeamListItemModal = ({isModalVisible, onToggleModal, teamId}) => {
   const onChangeTeamStatus = async (status) => {

@@ -3,16 +3,16 @@ import {createStackNavigator} from '@react-navigation/stack';
 
 import MyPageScreen from './MyPageScreen';
 import MessageScreen from './MyPageStack/MessageScreen';
-import TeamListScreen from './MyPageStack/TeamListScreen';
-import AccountScreen from './MyPageStack/AccountScreen';
+import TeamListScreen from './MyPageStack/TeamList/TeamListScreen';
+import AccountScreen from './MyPageStack/Account/AccountScreen';
 import SuggestionScreen from './MyPageStack/SuggestionScreen';
 import NoticeScreen from './MyPageStack/NoticeScreen';
 import SettingScreen from './MyPageStack/SettingScreen';
-import AddTeamScreen from './MyPageStack/AddTeamScreen';
-import InvitationScreen from './MyPageStack/InvitationScreen';
-import ReceivedInvitationListScreen from './MyPageStack/ReceivedInvitationListScreen';
-import SentInvitationListScreen from './MyPageStack/SentInvitationListScreen';
-import ReceivedMatchingLIstScreen from './MyPageStack/ReceivedMatching/ReceivedMatchingLIstScreen';
+import AddTeamScreen from './MyPageStack/AddTeam/AddTeamScreen';
+import InvitationScreen from './MyPageStack/TeamList/InvitationScreen';
+import ReceivedInvitationListScreen from './MyPageStack/ReceivedInvitationList/ReceivedInvitationListScreen';
+import SentInvitationListScreen from './MyPageStack/SentInvitationList/SentInvitationListScreen';
+import ReceivedMatchingLIstScreen from './MyPageStack/ReceivedMatchingList/ReceivedMatchingListScreen';
 import SentMatchingListScreen from './MyPageStack/SentMatchingList/SentMatchingListScreen';
 import ProfileScreen from './MyPageStack/ProfileScreen';
 
@@ -20,6 +20,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import useSWR from 'swr';
 import axios from 'axios';
 import {Config} from '../../Config';
+
 const MypageNavigator = ({navigation}) => {
   const MyPageStack = createStackNavigator();
 

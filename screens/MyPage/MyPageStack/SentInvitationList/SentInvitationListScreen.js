@@ -2,7 +2,7 @@ import React,{useState, useEffect} from 'react';
 import {View, Text, ScrollView} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import {css} from '@emotion/native';
-import {Config} from '../../../Config';
+import {Config} from '../../../../Config';
 import useSWR from 'swr';
 import axios from 'axios';
 import SentInvitationList from './SentInvitationList';

@@ -1,10 +1,10 @@
 import React,{useState,useEffect} from 'react';
 import {View, Text, ScrollView} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import * as authAPI from '../../../lib/api';
+import * as authAPI from '../../../../lib/api';
 import ReceivedInvitationList from './ReceivedInvitationList';
 import {css} from '@emotion/native';
-import {Config} from '../../../Config';
+import {Config} from '../../../../Config';
 import useSWR from 'swr';
 import axios from 'axios';
 
