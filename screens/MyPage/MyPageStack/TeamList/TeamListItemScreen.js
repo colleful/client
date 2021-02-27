@@ -104,6 +104,18 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
     });
   },[teamId])
 
+  const teamInfoStatus = useCallback(() => {
+    if (teamInfo.status === 'PENDING') {
+      return '멤버 구성중';
+    } else if (teamInfo.status === 'READY') {
+      return '준비 완료';
+    } else if (teamInfo.status === 'WATCHING'){
+      return '탐색중';
+    } else {
+      return '매칭 완료';
+    }
+  },[]);
+
   return (
     <>
       <View style={css`border-bottom-width: 1px; margin-vertical: 15px`} />
@@ -116,7 +128,7 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
             teamMember.map((member, index) => (
               <MemberInfo memberInfo={member} key={index} />
             ))}{'\n'}
-          팀상태 : {teamInfo.status === `PENDING` ? `멤버 구성중 ` : `준비 완료 `}
+          팀상태 : {teamInfoStatus()}
         </Text>
         <View
           style={css`
