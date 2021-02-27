@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {View, Text, ScrollView} from 'react-native';
 import TeamListItemScreen from './TeamListItemScreen';
 import AsyncStorage from '@react-native-community/async-storage';
-import {Config} from '../../../Config';
+import {Config} from '../../../../Config';
 import { css } from '@emotion/native';
 import useSWR from 'swr';
 import axios from 'axios';

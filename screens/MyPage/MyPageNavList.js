@@ -28,8 +28,16 @@ const MyPageNavList = ({navigation}) => {
         navName: '받은초대목록',
       },
       {
-        iconName: 'albums-outline',
+        iconName: 'file-tray-outline',
         navName: '보낸초대목록',
+      },
+      {
+        iconName: 'enter-outline',
+        navName: '받은매칭요청',
+      },
+      {
+        iconName: 'exit-outline',
+        navName: '보낸매칭요청',
       },
     ],
     [

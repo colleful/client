@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {
   View,
   Text,
@@ -7,13 +7,25 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import * as authAPI from '../../../lib/api';
+import * as authAPI from '../../../../lib/api';
 import Modal from 'react-native-modal';
 import {css} from '@emotion/native';
 import {trigger} from 'swr';
-import {Config} from '../../../Config';
+import {Config} from '../../../../Config';
 
 const TeamListItemModal = ({isModalVisible, onToggleModal, teamId}) => {
+  const teamInfoStatus = useCallback((status) => {
+    if (status === 'PENDING') {
+      return '멤버 구성중';
+    } else if (status === 'READY') {
+      return '준비 완료';
+    } else if (status === 'WATCHING'){
+      return '탐색중';
+    } else {
+      return '매칭 완료';
+    }
+  },[]);
+
   const onChangeTeamStatus = async (status) => {
     try {
       await authAPI.changeTeamStatus(
@@ -27,9 +39,7 @@ const TeamListItemModal = ({isModalVisible, onToggleModal, teamId}) => {
       trigger(`${Config.baseUrl}/api/teams/${teamId}`);
       Alert.alert(
         '팀 상태변경',
-        `팀 상태를 ${
-          status === 'PENDING' ? '멤버 구성중 ' : '준비 완료 '
-        }(으)로 변경했습니다`,
+        `팀 상태를 ${teamInfoStatus(status)}(으)로 변경했습니다`,
         [
           {
             text: '확인',
@@ -51,7 +61,7 @@ const TeamListItemModal = ({isModalVisible, onToggleModal, teamId}) => {
       isVisible={isModalVisible}
       onBackButtonPress={onToggleModal}
       onSwipeComplete={onToggleModal}
-      swipeDirection={['up', 'down']}>
+      swipeDirection={['down']}>
       <TouchableWithoutFeedback onPress={onToggleModal}>
         <View
           style={css`
@@ -65,7 +75,7 @@ const TeamListItemModal = ({isModalVisible, onToggleModal, teamId}) => {
         `}>
         <View
           style={css`
-            height: 100px;
+            height: 180px;
             justify-content: center;
             align-items: center;
             border-bottom-width: 0.5px;
@@ -108,6 +118,52 @@ const TeamListItemModal = ({isModalVisible, onToggleModal, teamId}) => {
                 font-family: AntDesign;
               `}>
               준비 완료
+            </Text>
+          </TouchableOpacity>
+          <View
+            style={css`
+              width: 100%;
+              border-bottom-width: 1px;
+              border-bottom-color: #cccccc;
+            `}
+          />
+          <TouchableOpacity
+            onPress={() => onChangeTeamStatus('MATCHED')}
+            style={css`
+              flex: 1;
+              width: 100%;
+              justify-content: center;
+              align-items: center;
+            `}>
+            <Text
+              style={css`
+                font-size: 16px;
+                font-family: AntDesign;
+              `}>
+              매칭 완료
+            </Text>
+          </TouchableOpacity>
+          <View
+            style={css`
+              width: 100%;
+              border-bottom-width: 1px;
+              border-bottom-color: #cccccc;
+            `}
+          />
+          <TouchableOpacity
+            onPress={() => onChangeTeamStatus('WATCHING')}
+            style={css`
+              flex: 1;
+              width: 100%;
+              justify-content: center;
+              align-items: center;
+            `}>
+            <Text
+              style={css`
+                font-size: 16px;
+                font-family: AntDesign;
+              `}>
+              탐색중
             </Text>
           </TouchableOpacity>
         </View>

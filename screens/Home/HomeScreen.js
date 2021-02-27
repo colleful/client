@@ -11,7 +11,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-community/async-storage';
 import * as authAPI from '../../lib/api';
 import ModalFilter from './ModalFilter';
-import TeamListItem from '../../components/TeamListItem';
+import TeamInfo from './TeamInfo';
 import {useDispatch} from 'react-redux';
 import {setLoginState} from '../../modules/auth';
 import { css } from '@emotion/native';
@@ -34,6 +34,14 @@ const HomeScreen = ({}) => {
 
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    onGetReadyTeam();
+  }, []);
+
+  useEffect(() => {
+    setNewTeam(team.filter((teams) => teams.teamName.indexOf(keyword) > -1));
+  }, [team, keyword]);
+  
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     wait(2000).then(() => {
@@ -42,14 +50,6 @@ const HomeScreen = ({}) => {
       setPageNumber(0);
     });
   }, []);
-
-  useEffect(() => {
-    onGetReadyTeam();
-  }, []);
-
-  useEffect(() => {
-    setNewTeam(team.filter((teams) => teams.teamName.indexOf(keyword) > -1));
-  }, [team, keyword]);
 
   const onGetReadyTeam = async () => {
     try {
@@ -64,6 +64,7 @@ const HomeScreen = ({}) => {
       } else {
         setPageNumber(pageNumber + 1);
       }
+      console.log(response.data)
       setTeam(team.concat(response.data.content));
       setImmutableTeam(team.concat(response.data.content));
       setLoading(false);
@@ -127,12 +128,13 @@ const HomeScreen = ({}) => {
             size={20}
             onPress={onToggleModal}
           />
-          <ModalFilter
+          
+          {isModalVisible && <ModalFilter
             setTeam={setTeam}
             isModalVisible={isModalVisible}
             setModalVisible={setModalVisible}
             immutableTeam={immutableTeam}
-          />
+          />}
         </View>
       </View>
 
@@ -159,7 +161,7 @@ const HomeScreen = ({}) => {
             <View
               style={[index === 0 && css`margin-top: 12px`, styles.item]}
               key={index}>
-              <TeamListItem team={item} />
+              <TeamInfo team={item} />
             </View>
           )}
           onEndReached={onEndReachedHandler}
@@ -172,7 +174,7 @@ const HomeScreen = ({}) => {
   );
 };
 
-export default React.memo(HomeScreen);
+export default HomeScreen;
 
 const styles = StyleSheet.create({
   item: {

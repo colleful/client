@@ -4,10 +4,38 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import ChatScreen from './Chat/ChatScreen';
 import HomeScreen from './Home/HomeScreen';
-
 import MypageNavigator from './MyPage/MypageNavigator';
 
-export default MainNavigator = () => {
+import AsyncStorage from '@react-native-community/async-storage';
+import useSWR from 'swr';
+import axios from 'axios';
+import {Config} from '../Config';
+
+const MainNavigator = () => {
+  const fetcher = async (url) => {
+    const response = await axios.get(url, {
+      headers: {
+        Authorization: await AsyncStorage.getItem('authorization'),
+      },
+    });
+    console.log('내 정보 /api/users', response.data);
+    return response.data;
+  };
+
+  const {data: userData = [], error} = useSWR(
+    `${Config.baseUrl}/api/users`,
+    fetcher,
+    {
+      onErrorRetry: (error, key, config, revalidate, {retryCount}) => {
+        if (error.response.status === 500) {
+          //탈퇴한 사용자의 토큰을 들고있을 경우
+          AsyncStorage.removeItem('authorization');
+          AsyncStorage.removeItem('userPassword');
+        }
+      },
+    },
+  );
+
   const getTabBarVisibility = (route) => {
     const routeName = route.state
       ? route.state.routes[route.state.index].name
@@ -20,6 +48,8 @@ export default MainNavigator = () => {
       routeName === '팀목록' ||
       routeName === '받은초대목록' ||
       routeName === '보낸초대목록' ||
+      routeName === '받은매칭요청' ||
+      routeName === '보낸매칭요청' ||
       routeName === '계정' ||
       routeName === '건의사항' ||
       routeName === '공지사항' ||
@@ -56,7 +86,26 @@ export default MainNavigator = () => {
           return <Ionicons name={iconName} size={size} color={color} />;
         },
       })}>
+      <Tab.Screen name="채팅목록" options={{tabBarBadge: 3}}>
+        {(props) => (
+          <ChatScreen {...props} userData={userData} />
+        )}
+      </Tab.Screen>
+      <Tab.Screen name="홈" component={HomeScreen} />
       <Tab.Screen
+        name="마이페이지"
+        options={({route}) => ({
+          tabBarVisible: getTabBarVisibility(route),
+        })}>
+        {(props) => (
+          <MypageNavigator
+            {...props}
+            userData={userData}
+          />
+        )}
+      </Tab.Screen>
+
+      {/* <Tab.Screen
         name="채팅목록"
         component={ChatScreen}
         options={{tabBarBadge: 3}}
@@ -68,7 +117,9 @@ export default MainNavigator = () => {
         options={({route}) => ({
           tabBarVisible: getTabBarVisibility(route),
         })}
-      />
+      /> */}
     </Tab.Navigator>
   );
 };
+
+export default MainNavigator;

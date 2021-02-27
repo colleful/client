@@ -3,15 +3,17 @@ import {createStackNavigator} from '@react-navigation/stack';
 
 import MyPageScreen from './MyPageScreen';
 import MessageScreen from './MyPageStack/MessageScreen';
-import TeamListScreen from './MyPageStack/TeamListScreen';
-import AccountScreen from './MyPageStack/AccountScreen';
+import TeamListScreen from './MyPageStack/TeamList/TeamListScreen';
+import AccountScreen from './MyPageStack/Account/AccountScreen';
 import SuggestionScreen from './MyPageStack/SuggestionScreen';
 import NoticeScreen from './MyPageStack/NoticeScreen';
 import SettingScreen from './MyPageStack/SettingScreen';
-import AddTeamScreen from './MyPageStack/AddTeamScreen';
-import InvitationScreen from './MyPageStack/InvitationScreen';
-import ReceivedInvitationListScreen from './MyPageStack/ReceivedInvitationListScreen';
-import SentInvitationListScreen from './MyPageStack/SentInvitationListScreen';
+import AddTeamScreen from './MyPageStack/AddTeam/AddTeamScreen';
+import InvitationScreen from './MyPageStack/TeamList/InvitationScreen';
+import ReceivedInvitationListScreen from './MyPageStack/ReceivedInvitationList/ReceivedInvitationListScreen';
+import SentInvitationListScreen from './MyPageStack/SentInvitationList/SentInvitationListScreen';
+import ReceivedMatchingLIstScreen from './MyPageStack/ReceivedMatchingList/ReceivedMatchingListScreen';
+import SentMatchingListScreen from './MyPageStack/SentMatchingList/SentMatchingListScreen';
 import ProfileScreen from './MyPageStack/ProfileScreen';
 
 import AsyncStorage from '@react-native-community/async-storage';
@@ -19,32 +21,32 @@ import useSWR from 'swr';
 import axios from 'axios';
 import {Config} from '../../Config';
 
-const MypageNavigator = ({navigation}) => {
+const MypageNavigator = ({navigation, userData}) => {
   const MyPageStack = createStackNavigator();
 
-  const fetcher = async (url) => {
-    const response = await axios.get(url, {
-      headers: {
-        Authorization: await AsyncStorage.getItem('authorization'),
-      },
-    });
-    console.log('내 정보 /api/users', response.data);
-    return response.data;
-  };
+  // const fetcher = async (url) => {
+  //   const response = await axios.get(url, {
+  //     headers: {
+  //       Authorization: await AsyncStorage.getItem('authorization'),
+  //     },
+  //   });
+  //   console.log('내 정보 /api/users', response.data);
+  //   return response.data;
+  // };
 
-  const {data: userData = [], error} = useSWR(
-    `${Config.baseUrl}/api/users`,
-    fetcher,
-    {
-      onErrorRetry: (error, key, config, revalidate, {retryCount}) => {
-        if (error.response.status === 500) {
-          //탈퇴한 사용자의 토큰을 들고있을 경우
-          AsyncStorage.removeItem('authorization');
-          AsyncStorage.removeItem('userPassword');
-        }
-      },
-    },
-  );
+  // const {data: userData = [], error} = useSWR(
+  //   `${Config.baseUrl}/api/users`,
+  //   fetcher,
+  //   {
+  //     onErrorRetry: (error, key, config, revalidate, {retryCount}) => {
+  //       if (error.response.status === 500) {
+  //         //탈퇴한 사용자의 토큰을 들고있을 경우
+  //         AsyncStorage.removeItem('authorization');
+  //         AsyncStorage.removeItem('userPassword');
+  //       }
+  //     },
+  //   },
+  // );
 
   return (
     <MyPageStack.Navigator
@@ -105,6 +107,24 @@ const MypageNavigator = ({navigation}) => {
       <MyPageStack.Screen name="보낸초대목록">
         {(props) => (
           <SentInvitationListScreen
+            {...props}
+            navigation={navigation}
+            teamId={userData.teamId}
+          />
+        )}
+      </MyPageStack.Screen>
+      <MyPageStack.Screen name="받은매칭요청">
+        {(props) => (
+          <ReceivedMatchingLIstScreen
+            {...props}
+            navigation={navigation}
+            teamId={userData.teamId}
+          />
+        )}
+      </MyPageStack.Screen>
+      <MyPageStack.Screen name="보낸매칭요청">
+        {(props) => (
+          <SentMatchingListScreen
             {...props}
             navigation={navigation}
             teamId={userData.teamId}

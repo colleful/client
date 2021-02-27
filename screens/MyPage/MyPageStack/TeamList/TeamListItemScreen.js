@@ -1,11 +1,11 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {View, Text, TouchableOpacity, Alert} from 'react-native';
-import MemberInfo from './MemberInfo';
+import MemberInfo from '../MemberInfo';
 import TeamListItemModal from './TeamListItemModal';
 import AsyncStorage from '@react-native-community/async-storage';
-import * as authAPI from '../../../lib/api';
+import * as authAPI from '../../../../lib/api';
 import {trigger} from 'swr';
-import {Config} from '../../../Config';
+import {Config} from '../../../../Config';
 import useSWR from 'swr';
 import axios from 'axios';
 import {css} from '@emotion/native';
@@ -104,6 +104,18 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
     });
   },[teamId])
 
+  const teamInfoStatus = useCallback(() => {
+    if (teamInfo.status === 'PENDING') {
+      return '멤버 구성중';
+    } else if (teamInfo.status === 'READY') {
+      return '준비 완료';
+    } else if (teamInfo.status === 'WATCHING'){
+      return '탐색중';
+    } else {
+      return '매칭 완료';
+    }
+  },[]);
+
   return (
     <>
       <View style={css`border-bottom-width: 1px; margin-vertical: 15px`} />
@@ -116,7 +128,7 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
             teamMember.map((member, index) => (
               <MemberInfo memberInfo={member} key={index} />
             ))}{'\n'}
-          팀상태 : {teamInfo.status === `PENDING` ? `멤버 구성중 ` : `준비 완료 `}
+          팀상태 : {teamInfoStatus()}
         </Text>
         <View
           style={css`

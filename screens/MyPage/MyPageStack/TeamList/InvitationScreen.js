@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, TextInput, TouchableOpacity, Alert} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import * as authAPI from '../../../lib/api';
+import * as authAPI from '../../../../lib/api';
 import {css} from '@emotion/native';
 
 const InvitationScreen = ({route}) => {

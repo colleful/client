@@ -3,6 +3,7 @@ import {View, Text, Image, ScrollView, TouchableOpacity} from 'react-native';
 import MyPageNavList from './MyPageNavList';
 import MyPageInfo from './MyPageInfo';
 import {css} from '@emotion/native';
+import {Gravatar} from 'react-native-gravatar';
 
 const MyPageScreen = ({navigation, myInfoData}) => {
   return (
@@ -19,18 +20,18 @@ const MyPageScreen = ({navigation, myInfoData}) => {
           border-bottom-color: #f0f0f0;
           padding: 20px;
         `}>
-        <Image
-          source={require('../../images/1.png')}
-          style={css`
-            width: 50px;
-            height: 50px;
-            border-radius: 10px;
-          `}
+        <Gravatar
+          options={{
+            email: myInfoData.email,
+            parameters: {s: '50', d: 'retro'},
+            secure: true,
+          }}
+          style={{borderRadius: 30, width: 60, height: 60}}
         />
         <View
           style={css`
             flex: 1;
-            margin-left: 20px;
+            margin-left: 15px;
             align-items: center;
             justify-content: space-between;
             flex-direction: row;
@@ -58,7 +59,7 @@ const MyPageScreen = ({navigation, myInfoData}) => {
       </View>
       <ScrollView
         style={css`
-          max-height: 475px;
+          max-height: 465px;
         `}
         showsVerticalScrollIndicator={false}>
         {/* maxHeight 대신 기기들마다 크기가 다르니까 tabbar의 크기를 변수화 시켜서 (폰의 높이 - tabbar의 크기) 로 바꾸기 */}
