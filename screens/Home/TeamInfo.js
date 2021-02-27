@@ -27,7 +27,7 @@ const TeamInfo = ({team}) => {
           `}>
           <Gravatar
             options={{
-              email: team.teamName + '@naver.com',
+              email: team.teamName,
               parameters: {s: '50', d: 'retro'},
               secure: true,
             }}
