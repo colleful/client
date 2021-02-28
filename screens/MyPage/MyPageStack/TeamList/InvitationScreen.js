@@ -40,14 +40,12 @@ const InvitationScreen = ({route}) => {
       setUserInfo(response.data[0]);
       setUserId(response.data[0].id);
     } catch (error) {
+      Alert.alert('에러발생', `${error.response.data.message}`, [
+        {
+          text: '확인',
+        },
+      ]);
       console.log({error});
-      if (error.response.status === 404) {
-        Alert.alert('검색결과', `${error.response.data.message}`, [
-          {
-            text: '확인',
-          },
-        ]);
-      }
     }
   };
 
@@ -72,19 +70,11 @@ const InvitationScreen = ({route}) => {
         );
       }
     } catch (error) {
-      if (error.response.status === 404) {
-        Alert.alert('에러', `${error.response.data.message}`, [
-          {
-            text: '확인',
-          },
-        ]);
-      } else if (error.response.status === 403) {
-        Alert.alert('에러', `${error.response.data.message}`, [
-          {
-            text: '확인',
-          },
-        ]);
-      }
+      Alert.alert('에러', `${error.response.data.message}`, [
+        {
+          text: '확인',
+        },
+      ]);
       console.log({error});
     }
   };

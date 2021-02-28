@@ -114,7 +114,9 @@ const LoginContainer = ({navigation}) => {
     const {email, password} = form;
     if ([email].includes('')) {
       Alert.alert('로그인 실패', '아이디를 입력해주세요', [
-        {text: '확인', onPress: () => console.log('아이디 입력하지않음')},
+        {
+          text: '확인',
+        },
       ]);
       return;
     }
@@ -130,7 +132,9 @@ const LoginContainer = ({navigation}) => {
     
     if ([password].includes('')) {
       Alert.alert('로그인 실패', '비밀번호를 입력해주세요', [
-        {text: '확인', onPress: () => console.log('비밀번호 입력하지않음')},
+        {
+          text: '확인',
+        },
       ]);
       return;
     }
@@ -142,13 +146,17 @@ const LoginContainer = ({navigation}) => {
     const {email, password, passwordConfirm} = forgetPassword;
     if([password].includes('')) {
       Alert.alert('비밀번호 변경 실패', '비밀번호를 입력해주세요', [
-        {text: '확인', onPress: () => console.log('비밀번호 변경 실패')},
+        {
+          text: '확인',
+        },
       ]);
       return;
     }
     if (password !== passwordConfirm) {
       Alert.alert('비밀번호 변경 실패', '비밀번호가 일치하지 않습니다. 다시 입력해주세요.', [
-        { text: '확인', onPress:() => console.log('비밀번호 불일치')},
+        { 
+          text: '확인', 
+        },
       ])
       dispatch(changeField({ form: 'forgetPassword', key: 'password', value: '' }));
       dispatch(changeField({ form: 'forgetPassword', key: 'passwordConfirm', value: '' }));
@@ -180,23 +188,13 @@ const LoginContainer = ({navigation}) => {
 
   useEffect(() => {
     if (authError) {
-      if (authError.response.status === 409) {
-        //비밀번호가 틀렸을때
-        Alert.alert('로그인 오류', `${authError.response.data.message}`, [
-          {text: '확인', onPress: console.log('비밀번호 불일치 오류')},
-        ]);
-        dispatch(initializeForm('authError'));
-        return;
-      } else if(authError.response.status === 404) {
-        //가입되지 않은 유저
-        Alert.alert('로그인 오류', `${authError.response.data.message}`, [
-          {text: '확인', onPress: console.log('가입되지 않은 유저')},
-        ]);
-        dispatch(initializeForm('authError'));
-        return;
-      }
-      console.log('오류 발생');
-      console.log(authError);
+      Alert.alert('로그인 오류', `${authError.response.data.message}`, [
+        {
+          text: '확인',
+        },
+      ]);
+      dispatch(initializeForm('authError'));
+      console.log({authError});
       return;
     }
     if(auth){
@@ -209,69 +207,58 @@ const LoginContainer = ({navigation}) => {
       }
     }
     if(passwordEmailAuthError) {
-      if(passwordEmailAuthError.response.status === 409) {
-        Alert.alert('이메일 인증 보내기 실패',`${passwordEmailAuthError.message}`, [
-          { text: '확인', onPress:() => console.log('이메일 인증 보내기 실패')},
-        ])
-        return;
-      } else if(passwordEmailAuthError.response.status === 404) {
-        Alert.alert('이메일 인증 보내기 실패',`${passwordEmailAuthError.message}`, [
-          { text: '확인', onPress:() => console.log('이메일 인증 보내기 실패(학교 웹메일만 인증 가능)')},
-        ])
-        return;
-      }
-      console.log('이메일인증 보내기 실패');
-      console.log(passwordEmailAuthError);
+      Alert.alert('이메일 인증 보내기 실패',`${passwordEmailAuthError.message}`, [
+        { 
+          text: '확인',
+        },
+      ]);
+      console.log({passwordEmailAuthError});
       return;
     }
     if(passwordEmailAuth === '') {
-      console.log('비밀번호 찾기 이메일 인증 보내기 성공');
       console.log(passwordEmailAuth)
       Alert.alert('이메일 인증 보내기 성공', '인증번호를 전송 했습니다. 메일함을 확인하고 인증번호를 입력해주세요', [
-        { text: '확인', onPress:() => dispatch(passwordEmailAuthInitialize(null))},
+        { 
+          text: '확인',
+        },
       ])
+      dispatch(passwordEmailAuthInitialize(null))
       return;
     }
     if(passwordConfirmEmailError) {
-      if(passwordConfirmEmailError.response.status === 409) {
-        Alert.alert('이메일 인증 실패', `${passwordConfirmEmailError.response.data.message}`, [
-          { text: '확인', onPress:() => console.log('비밀번호 찾기 이메일 인증 확인 실패')},
-        ])
-        return;
-      }
-      console.log('비밀번호 찾기 이메일 인증 확인 실패');
-      console.log(passwordConfirmEmailError);
+      Alert.alert('이메일 인증 실패', `${passwordConfirmEmailError.response.data.message}`, [
+        { 
+          text: '확인',
+        },
+      ])
+      console.log({passwordConfirmEmailError});
       return;
     }
     if(passwordConfirmEmail === '') {
-      console.log('이메일 인증 성공');
       Alert.alert('이메일 인증 성공', '이메일 인증에 성공했습니다. 변경할 비밀번호를 입력해주세요', [
-        { text: '확인', onPress:() => dispatch(emailValidstatus({form: 'isEmailvalidedAtPasswordFind', value: true}))},
+        { 
+          text: '확인',
+        },
       ])
+      dispatch(emailValidstatus({form: 'isEmailvalidedAtPasswordFind', value: true}))
       dispatch(confirmPasswordAuthEmailInitialize(null));
       return;
     }
     if(passwordChangeError) {
-      if(passwordChangeError.response.status === 500) {
-        Alert.alert('비밀번호 변경 실패', `${passwordChangeError.response.data.message}`, [
-          { text: '확인', onPress:() => console.log('비밀번호 변경 실패')},
-        ])
-        return;
-      } else if(passwordChangeError.response.status === 401) {
-        Alert.alert('비밀번호 변경 실패', `${passwordChangeError.response.data.message}`, [
-          { text: '확인', onPress:() => console.log('비밀번호 변경 실패')},
-        ])
-        return;
-      }
-      console.log('비밀번호 변경 실패');
-      console.log(passwordChangeError);
+      Alert.alert('비밀번호 변경 실패', `${passwordChangeError.response.data.message}`, [
+        { 
+          text: '확인',
+        },
+      ]);
+      console.log({passwordChangeError});
       return;
     }
     
     if(passwordChange === '') {
-      console.log('비밀번호 변경 성공');
       Alert.alert('비밀번호 변경 성공', '비밀번호가 정상적으로 변경되었습니다', [
-        { text: '확인', onPress:() => console.log("비밀번호 변경 성공")},
+        { 
+          text: '확인',
+        },
       ])
       dispatch(passwordChangeInitialize(null));
     }

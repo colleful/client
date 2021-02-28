@@ -1,4 +1,5 @@
 import React from 'react';
+import {Alert} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -31,7 +32,13 @@ const MainNavigator = () => {
           //탈퇴한 사용자의 토큰을 들고있을 경우
           AsyncStorage.removeItem('authorization');
           AsyncStorage.removeItem('userPassword');
+          return;
         }
+        Alert.alert('에러발생', `${error.response.data.message}`, [
+          {
+            text: '확인',
+          },
+        ]);
       },
     },
   );
@@ -104,20 +111,6 @@ const MainNavigator = () => {
           />
         )}
       </Tab.Screen>
-
-      {/* <Tab.Screen
-        name="채팅목록"
-        component={ChatScreen}
-        options={{tabBarBadge: 3}}
-      />
-      <Tab.Screen name="홈" component={HomeScreen} />
-      <Tab.Screen
-        name="마이페이지"
-        component={MypageNavigator}
-        options={({route}) => ({
-          tabBarVisible: getTabBarVisibility(route),
-        })}
-      /> */}
     </Tab.Navigator>
   );
 };

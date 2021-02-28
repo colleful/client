@@ -22,6 +22,11 @@ const ReceivedInvitationListItemScreen = ({receivedInvitationList}) => {
       });
       setInviterInfo(response.data);
     } catch (error) {
+      Alert.alert('에러', `${error.response.data.message}`, [
+        {
+          text: '확인',
+        },
+      ]);
       console.log({error});
     }
   }
@@ -51,7 +56,7 @@ const ReceivedInvitationListItemScreen = ({receivedInvitationList}) => {
         ],
       );
     } catch (error) {
-      Alert.alert('에러발생', `${error.response.data.message}`, [
+      Alert.alert('에러', `${error.response.data.message}`, [
         {
           text: '확인',
         },
@@ -87,7 +92,7 @@ const ReceivedInvitationListItemScreen = ({receivedInvitationList}) => {
         );
       }
     } catch (error) {
-      Alert.alert('에러발생', `${error.response.data.message}`, [
+      Alert.alert('에러', `${error.response.data.message}`, [
         {
           text: '확인',
         },

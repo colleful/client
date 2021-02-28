@@ -14,7 +14,9 @@ const AddTeamScreen = ({navigation}) => {
   const onCreateTeam = async () => {
     if (!teamName) {
       Alert.alert('팀생성 오류', '팀명은 최소 한 글자 이상 이여야 합니다.', [
-        {text: '확인', onPress: console.log('팀생성 오류')},
+        {
+          text: '확인'
+        },
       ]);
       return;
     }
@@ -60,16 +62,13 @@ const AddTeamScreen = ({navigation}) => {
       );
     }
     if (teamInfoError) {
-      if (teamInfoError.response.data.status == 500) {
-        Alert.alert('팀생성 오류', '이미 존재하는 팀명입니다.', [
-          {text: '확인', onPress: console.log('팀생성 오류')},
-        ]);
-      } else if (teamInfoError.response.data.status === 403) {
-        Alert.alert('팀생성 오류', '팀은 하나만 생성 가능합니다.', [
-          {text: '확인', onPress: console.log('팀생성 오류')},
-        ]);
-      }
+      Alert.alert('에러', `${teamInfoError.response.data.message}`, [
+        {
+          text: '확인',
+        },
+      ]);
       setTeamInfoError(0);
+      console.log({teamInfoError});
     }
   }, [teamInfo, teamInfoError]);
 

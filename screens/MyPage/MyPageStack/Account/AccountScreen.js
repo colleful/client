@@ -35,7 +35,12 @@ const AccountScreen = ({navigation, myInfoData}) => {
       setDepartmentData(response.data);
       setSortedDepartmentName(response.data.map(datas => datas.departmentName).sort());
     } catch (error) {
-      console.log(error);
+      Alert.alert('에러', `${error.response.data.message}`, [
+        {
+          text: '확인',
+        },
+      ]);
+      console.log({error});
     }
   }
 
@@ -53,7 +58,12 @@ const AccountScreen = ({navigation, myInfoData}) => {
       ]);
       return response;
     } catch (error) {
-      console.log(error);
+      Alert.alert('에러', `${error.response.data.message}`, [
+        {
+          text: '확인',
+        },
+      ]);
+      console.log({error});
     }
   };
 
@@ -95,6 +105,11 @@ const AccountScreen = ({navigation, myInfoData}) => {
         },
       ]);
     } catch (error) {
+      Alert.alert('에러', `${error.response.data.message}`, [
+        {
+          text: '확인',
+        },
+      ]);
       console.log({error});
     }
   };
@@ -148,6 +163,11 @@ const AccountScreen = ({navigation, myInfoData}) => {
       ]);
       trigger(`${Config.baseUrl}/api/users`);
     } catch (error) {
+      Alert.alert('에러', `${error.response.data.message}`, [
+        {
+          text: '확인',
+        },
+      ]);
       console.log({error});
     }
   };

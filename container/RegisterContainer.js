@@ -170,13 +170,17 @@ const RegisterContainer = ({navigation}) => {
     const { email, password, nickname, birthYear, gender, departmentId, selfIntroduction, passwordConfirm } = form;
     if ([email, password, nickname, birthYear, gender, departmentId, selfIntroduction, passwordConfirm].includes('')) {
       Alert.alert('회원가입 실패', '빈 칸을 모두 입력해주세요', [
-        { text: '확인', onPress:() => console.log('확인버튼 클릭됨')},
+        { 
+          text: '확인',
+        },
       ])
       return;
     }
     if (password !== passwordConfirm) {
       Alert.alert('회원가입 실패', '비밀번호가 일치하지 않습니다', [
-        { text: '확인', onPress:() => console.log('확인 버튼 클릭됨')},
+        { 
+          text: '확인',
+        },
       ])
       dispatch(changeField({ form: 'register', key: 'password', value: '' }));
       dispatch(changeField({ form: 'register', key: 'passwordConfirm', value: '' }));
@@ -184,7 +188,9 @@ const RegisterContainer = ({navigation}) => {
     }
     if (!isEmailvalided) {
       Alert.alert('회원가입 실패', '인증되지 않은 이메일입니다', [
-        { text: '확인', onPress:() => console.log('확인버튼 클릭됨')},
+        { 
+          text: '확인',
+        },
       ])
       return;
     }
@@ -198,19 +204,16 @@ const RegisterContainer = ({navigation}) => {
 
   useEffect(() => {
     if(authError) {
-      if(authError.response.status === 500) {
-        Alert.alert('회원가입 실패', `${authError.response.data.message}`, [
-          { text: '확인', onPress:() => console.log('확인 버튼 클릭됨')},
-        ])
-        dispatch(initializeForm('authError'));
-        return;
-      } 
-      console.log('회원가입 실패');
-      console.log(authError);
+      Alert.alert('회원가입 실패', `${authError.response.data.message}`, [
+        { 
+          text: '확인',
+        },
+      ])
+      dispatch(initializeForm('authError'));
+      console.log({authError});
       return;
     }
     if(auth) {
-      console.log('회원가입 성공');
       console.log(auth);
       dispatch(initializeForm('auth'));
       Alert.alert('회원가입 완료', '회원가입을 완료했습니다', [
@@ -218,37 +221,37 @@ const RegisterContainer = ({navigation}) => {
       ])
     }
     if(emailAuthError) {
-      if(emailAuthError.response.status === 409) {
-        Alert.alert('이메일 인증 보내기 실패', `${emailAuthError.response.data.message}`, [
-          { text: '확인', onPress:() => console.log(emailAuthError.response.data.message)},
-        ])
-        return;
-      }
-      console.log('이메일인증 보내기 실패');
-      console.log(emailAuthError);
+      Alert.alert('에러발생', `${emailAuthError.response.data.message}`, [
+        {
+          text: '확인',
+        },
+      ]);
+      console.log({emailAuthError});
       return;
     }
     if(emailAuth === '') {
       Alert.alert('이메일 인증 보내기 성공', '인증번호를 전송 했습니다. 메일함을 확인하고 인증번호를 입력해주세요', [
-        { text: '확인', onPress:() => console.log('회원가입용 이메일 인증 보내기 성공')},
+        { 
+          text: '확인',
+        },
       ])
       dispatch(authEmailInitialize(null));
       return;
     }
     if(confirmEmailError) {
-      if(confirmEmailError.response.status === 409) {
-        Alert.alert('이메일 인증 실패', `${confirmEmailError.response.data.message}`, [
-          { text: '확인', onPress:() => console.log('회원가입용 이메일 인증 확인 실패')},
-        ])
-        return;
-      }
-      console.log('회원가입용 이메일 인증 확인 실패');
-      console.log(confirmEmailError);
+      Alert.alert('이메일 인증 실패', `${confirmEmailError.response.data.message}`, [
+        { 
+          text: '확인',
+        },
+      ])
+      console.log({confirmEmailError});
       return;
     }
     if(confirmEmail === '') {
       Alert.alert('이메일 인증 성공', '이메일 인증에 성공했습니다', [
-        { text: '확인', onPress:() => console.log('회원가입용 이메일 인증 확인 성공')},
+        { 
+          text: '확인',
+        },
       ])
       dispatch(emailValidstatus({form: 'isEmailvalided', value: true}));
       dispatch(confirmAuthEmailInitialize(null));

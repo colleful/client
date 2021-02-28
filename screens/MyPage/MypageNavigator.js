@@ -16,37 +16,8 @@ import ReceivedMatchingLIstScreen from './MyPageStack/ReceivedMatchingList/Recei
 import SentMatchingListScreen from './MyPageStack/SentMatchingList/SentMatchingListScreen';
 import ProfileScreen from './MyPageStack/ProfileScreen';
 
-import AsyncStorage from '@react-native-community/async-storage';
-import useSWR from 'swr';
-import axios from 'axios';
-import {Config} from '../../Config';
-
 const MypageNavigator = ({navigation, userData}) => {
   const MyPageStack = createStackNavigator();
-
-  // const fetcher = async (url) => {
-  //   const response = await axios.get(url, {
-  //     headers: {
-  //       Authorization: await AsyncStorage.getItem('authorization'),
-  //     },
-  //   });
-  //   console.log('내 정보 /api/users', response.data);
-  //   return response.data;
-  // };
-
-  // const {data: userData = [], error} = useSWR(
-  //   `${Config.baseUrl}/api/users`,
-  //   fetcher,
-  //   {
-  //     onErrorRetry: (error, key, config, revalidate, {retryCount}) => {
-  //       if (error.response.status === 500) {
-  //         //탈퇴한 사용자의 토큰을 들고있을 경우
-  //         AsyncStorage.removeItem('authorization');
-  //         AsyncStorage.removeItem('userPassword');
-  //       }
-  //     },
-  //   },
-  // );
 
   return (
     <MyPageStack.Navigator
