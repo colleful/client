@@ -7,7 +7,7 @@ import styled, {css} from '@emotion/native';
 const ModalFilter = ({
   setTeam,
   isModalVisible,
-  setModalVisible,
+  onToggleModal,
   immutableTeam,
 }) => {
   const [filterList] = useState([
@@ -49,10 +49,6 @@ const ModalFilter = ({
 
     }
   }, [selectItem.selectedFilter]);
-
-  const onToggleModal = useCallback(() => {
-    setModalVisible(prev => !prev);
-  },[]);
 
   const onToggleModalAndSetFilter = useCallback(() => {
     onToggleModal();

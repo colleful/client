@@ -131,8 +131,8 @@ const HomeScreen = ({}) => {
           
           {isModalVisible && <ModalFilter
             setTeam={setTeam}
+            onToggleModal={onToggleModal}
             isModalVisible={isModalVisible}
-            setModalVisible={setModalVisible}
             immutableTeam={immutableTeam}
           />}
         </View>
