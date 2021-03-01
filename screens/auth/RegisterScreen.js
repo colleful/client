@@ -81,6 +81,13 @@ const RegisterScreen = ({form,getDepartmentId,getGender,getBirthYear,onSendAuthE
 
   const password = useRef();
   password.current = watch("password");
+
+  /**
+   * 리렌더링이 발생하는 곳은 picker, 이유는 onValueChange에서 함수를 계속 재생성해서 리렌더링이 발생함
+   */
+
+  // const count = useRef(0);
+  // console.log(`회원가입 렌더링횟수: ${count.current++}`);
   
   return (
     <>

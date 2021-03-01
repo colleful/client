@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet, Image} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import {css} from '@emotion/native';
 import FlipCard from 'react-native-flip-card';
 import {Gravatar} from 'react-native-gravatar';

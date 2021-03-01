@@ -69,4 +69,4 @@ const TeamInfo = ({team}) => {
   );
 };
 
-export default TeamInfo;
+export default React.memo(TeamInfo);

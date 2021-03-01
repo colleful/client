@@ -285,4 +285,4 @@ const LoginContainer = ({navigation}) => {
   );
 };
 
-export default LoginContainer;
+export default React.memo(LoginContainer);

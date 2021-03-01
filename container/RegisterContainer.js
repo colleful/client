@@ -282,4 +282,4 @@ const RegisterContainer = ({navigation}) => {
   );
 };
 
-export default RegisterContainer;
+export default React.memo(RegisterContainer);
