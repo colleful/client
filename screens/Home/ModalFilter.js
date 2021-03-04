@@ -3,11 +3,12 @@ import {View, Text, TouchableOpacity} from 'react-native';
 import {Picker} from '@react-native-community/picker';
 import Modal from 'react-native-modal';
 import styled, {css} from '@emotion/native';
+import ModalFilterPicker from './ModalFilterPicker';
 
 const ModalFilter = ({
   setTeam,
   isModalVisible,
-  onToggleModal,
+  setModalVisible,
   immutableTeam,
 }) => {
   const [filterList] = useState([
@@ -46,14 +47,17 @@ const ModalFilter = ({
     } else if (selectItem.selectedFilter === 'ALL') {
       setTeam(immutableTeam);
     } else if (selectItem.selectedFilter === 'MATCHABLE') {
-
     }
   }, [selectItem.selectedFilter]);
+
+  const onToggleModal = useCallback(() => {
+    setModalVisible((prev) => !prev);
+  }, []);
 
   const onToggleModalAndSetFilter = useCallback(() => {
     onToggleModal();
     setFilter();
-  },[onToggleModal, setFilter]);
+  }, [onToggleModal, setFilter]);
 
   return (
     <Modal isVisible={isModalVisible} onBackButtonPress={onToggleModal}>
@@ -92,20 +96,11 @@ const ModalFilter = ({
               justify-content: space-between;
               padding-bottom: 20px;
             `}>
-            <Picker
-              selectedValue={selectItem.selectedFilter}
-              onValueChange={(value) => setSelectItem({selectedFilter: value})}
-              mode="dialog">
-              {filterList.map((filterLists, index) => {
-                return (
-                  <Picker.Item
-                    label={filterLists.label}
-                    value={filterLists.value}
-                    key={index}
-                  />
-                );
-              })}
-            </Picker>
+            <ModalFilterPicker
+              selectItem={selectItem}
+              setSelectItem={setSelectItem}
+              filterList={filterList}
+            />
             <View
               style={css`
                 align-items: center;
