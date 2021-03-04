@@ -33,6 +33,7 @@ const AccountScreen = ({navigation, myInfoData}) => {
     try {
       const response = await authAPI.getDepartment();
       setDepartmentData(response.data);
+      console.log("response.data",response.data);
       setSortedDepartmentName(response.data.map(datas => datas.departmentName).sort());
     } catch (error) {
       Alert.alert('에러', `${error.response.data.message}`, [
@@ -46,7 +47,7 @@ const AccountScreen = ({navigation, myInfoData}) => {
 
   const DeleteUser = async () => {
     try {
-      const response = await authAPI.deleteUser({
+      await authAPI.deleteUser({
         headers: {
           'Authorization': await AsyncStorage.getItem('authorization'),
         },
@@ -54,9 +55,9 @@ const AccountScreen = ({navigation, myInfoData}) => {
       Alert.alert('회원 탈퇴', '회원 탈퇴를 정상적으로 처리했습니다.', [
         {
           text: '확인',
+          onPress: deleteUserHandler,
         },
       ]);
-      return response;
     } catch (error) {
       Alert.alert('에러', `${error.response.data.message}`, [
         {
@@ -138,6 +139,7 @@ const AccountScreen = ({navigation, myInfoData}) => {
     }
     if(selectedDepartment.item !== myInfoData.department){
       let pair = {departmentId: departmentData.find(data => data.departmentName === selectedDepartment.item).id};
+      console.log("pair", pair)
       changeData = {...changeData, ...pair};
     }
     return changeData;
@@ -179,12 +181,11 @@ const AccountScreen = ({navigation, myInfoData}) => {
   },[dispatch]);
 
   const deleteUserHandler = useCallback(() => {
-    DeleteUser();
     setTimeout(() => {
       AsyncStorage.removeItem('authorization');
     }, 2000);
     dispatch(setLoginState(false));
-  },[DeleteUser,dispatch])
+  },[dispatch])
 
   const logoutAlert = useCallback(() => {
     Alert.alert('LOGOUT', '로그아웃 하시겠습니까?', [
@@ -205,10 +206,10 @@ const AccountScreen = ({navigation, myInfoData}) => {
       },
       {
         text: '확인',
-        onPress: deleteUserHandler,
+        onPress: DeleteUser
       },
     ]);
-  },[deleteUserHandler]);
+  },[DeleteUser]);
 
   return (
     <>
