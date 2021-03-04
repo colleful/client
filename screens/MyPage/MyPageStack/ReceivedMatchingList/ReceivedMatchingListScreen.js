@@ -19,6 +19,7 @@ const ReceivedMatchingListScreen = () => {
   };
 
   const {data:receivedMatchingList = [], error} = useSWR(`${Config.baseUrl}/api/matching/received`, fetcher);
+  if (!receivedMatchingList) return <Text>loading..</Text>
   if (error) console.log({error});
 
   return (
@@ -32,7 +33,7 @@ const ReceivedMatchingListScreen = () => {
       <View style={css`border-bottom-width: 1px; margin-bottom: 20px`} />
         {( receivedMatchingList != null && typeof receivedMatchingList == "object" && !Object.keys(receivedMatchingList).length )
         ? <Text>받은 요청이 없습니다</Text> 
-        : <ReceivedMatchingList receivedMatchingList={receivedMatchingList} /> }
+        : receivedMatchingList && <ReceivedMatchingList receivedMatchingList={receivedMatchingList} /> }
       </ScrollView>
     </View>
   );

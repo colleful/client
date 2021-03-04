@@ -24,6 +24,8 @@ const SentInvitationListScreen = ({teamId}) => {
       if (error) console.log({error});
     },
   });
+  
+  if(!sentInvitationList) return <Text>loading..</Text>;
 
   return (
     <View style={css`flex: 1; padding-top: 100px; padding-horizontal: 25px`}>
@@ -36,7 +38,7 @@ const SentInvitationListScreen = ({teamId}) => {
       <View style={css`border-bottom-width: 1px; margin-bottom: 20px`} />
         {( sentInvitationList != null && typeof sentInvitationList == "object" && !Object.keys(sentInvitationList).length )
         ? <Text>보낸 초대가 없습니다</Text> 
-        : <SentInvitationList sentInvitationList={sentInvitationList} /> }
+        : sentInvitationList && <SentInvitationList sentInvitationList={sentInvitationList} /> }
       </ScrollView>
     </View>
   );
