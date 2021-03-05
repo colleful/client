@@ -114,7 +114,7 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
     } else {
       return '매칭 완료';
     }
-  },[]);
+  },[teamInfo.status]);
 
   return (
     <>
