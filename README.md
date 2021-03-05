@@ -1,17 +1,16 @@
 # 🌈 Colleful
-
+> Colleful은 React Native로 개발한 Restful API 기반 앱이다.  
 ## 🌻 개요
 
 전북대학교 과팅 매칭 플랫폼 Colleful의 client repository.    
-College와 Colorful의 합성어로, 다채로운 대학 생활을 제공해 주겠다는 의미이다.   
-Colleful은 React Native로 개발한 Restful API 기반 앱이다.    
+College와 Colorful의 합성어로, 다채로운 대학 생활을 제공해 주겠다는 의미이다.     
  
 ## 💡 기술 스택
 
-- React Native(함수형 컴포넌트 기반, Hooks API), react-navigation-v5
+- react-native(함수형 컴포넌트 기반, Hooks API), react-navigation-v5
 - emotion.js
-- Redux, Redux-thunk, Redux-saga
-- Axios, SWR
+- redux, redux-thunk, redux-saga
+- axios, SWR
 
 ## 🌴 브랜치 전략
 
@@ -151,25 +150,71 @@ Colleful은 React Native로 개발한 Restful API 기반 앱이다.
 |:---:|:---:|:---:|
 | <img src="https://user-images.githubusercontent.com/43921054/110078721-80f05800-7dcb-11eb-8c57-90482de5258e.jpg" width="100%"> | <img src="https://user-images.githubusercontent.com/43921054/110079683-c3fefb00-7dcc-11eb-844b-1be7d73f1b4d.jpg" width="100%">  | <img src="https://user-images.githubusercontent.com/43921054/110079788-e264f680-7dcc-11eb-8d4c-f6ff6d05a289.jpg" width="100%">  |
 
-| 채팅목록(매칭 x) | 채팅목록(매칭 완료) |
-|:---:|:---:|
-| <img src="https://user-images.githubusercontent.com/43921054/110077646-dd527800-7dc9-11eb-90a3-c19f70fa31f4.jpg" width="252px" height="448px"> | <img src="https://user-images.githubusercontent.com/43921054/110077658-e2172c00-7dc9-11eb-8a0c-bf5f63bd8853.jpg" width="252px" height="448px">  |
+<table>
+ <thead>
+  <tr>
+   <th align="center">채팅목록(매칭 x)</th>
+   <th align="center">채팅목록(매칭 완료)</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td width="279px" align="center"> <img src="https://user-images.githubusercontent.com/43921054/110077646-dd527800-7dc9-11eb-90a3-c19f70fa31f4.jpg" width="100%"></td>
+   <td width="279px" align="center"> <img src="https://user-images.githubusercontent.com/43921054/110077658-e2172c00-7dc9-11eb-8a0c-bf5f63bd8853.jpg" width="100%"></td>
+  </tr>
+ </tbody>
+</table>
 
-| 받은 초대목록 | 받은 초대목록 |
-|:---:|:---:|
-| <img src="https://user-images.githubusercontent.com/43921054/110080112-615a2f00-7dcd-11eb-852d-966c6ce2489f.jpg" width="252px" height="448px"> | <img src="https://user-images.githubusercontent.com/43921054/110080119-6323f280-7dcd-11eb-84e2-27b315a47485.jpg" width="252px" height="448px">  |
+<table>
+ <thead>
+  <tr>
+   <th align="center">받은 초대목록</th>
+   <th align="center">받은 초대목록</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td width="279px" align="center"> <img src="https://user-images.githubusercontent.com/43921054/110080112-615a2f00-7dcd-11eb-852d-966c6ce2489f.jpg" width="100%"></td>
+   <td width="279px" align="center"> <img src="https://user-images.githubusercontent.com/43921054/110080119-6323f280-7dcd-11eb-84e2-27b315a47485.jpg" width="100%"></td>
+  </tr>
+ </tbody>
+</table>
 
-| 보낸 초대목록 | 보낸 초대목록 |
-|:---:|:---:|
-| <img src="https://user-images.githubusercontent.com/43921054/110080167-75059580-7dcd-11eb-91d1-00f914b41e4c.jpg" width="252px" height="448px"> | <img src="https://user-images.githubusercontent.com/43921054/110080175-7767ef80-7dcd-11eb-9642-21c228aa3229.jpg" width="252px" height="448px">  |
+<table>
+ <thead>
+  <tr>
+   <th align="center">보낸 초대목록</th>
+   <th align="center">보낸 초대목록</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td width="279px" align="center"> <img src="https://user-images.githubusercontent.com/43921054/110080167-75059580-7dcd-11eb-91d1-00f914b41e4c.jpg" width="100%"></td>
+   <td width="279px" align="center"> <img src="https://user-images.githubusercontent.com/43921054/110080175-7767ef80-7dcd-11eb-9642-21c228aa3229.jpg" width="100%"></td>
+  </tr>
+ </tbody>
+</table>
 
 | 받은 매칭목록 | 받은 매칭목록 | 수락 |
 |:---:|:---:|:---:|
 | <img src="https://user-images.githubusercontent.com/43921054/110080230-85b60b80-7dcd-11eb-9cb8-2a937bb03633.jpg" width="100%"> | <img src="https://user-images.githubusercontent.com/43921054/110080237-88186580-7dcd-11eb-9615-197ea3f9d94c.jpg" width="100%">  | <img src="https://user-images.githubusercontent.com/43921054/110080455-d299e200-7dcd-11eb-84b9-42b072d17632.jpg" width="100%">  |
 
-| 보낸 매칭목록 | 보낸 매칭목록 |
-|:---:|:---:|
-| <img src="https://user-images.githubusercontent.com/43921054/110080294-96ff1800-7dcd-11eb-8fc4-3d77420e282f.jpg" width="285.594px" height="507.719px"> | <img src="https://user-images.githubusercontent.com/43921054/110080303-98c8db80-7dcd-11eb-85ba-2cbd90cff7f9.jpg" width="285.594px" height="507.719px">  |
+
+<table>
+ <thead>
+  <tr>
+   <th align="center">보낸 매칭목록</th>
+   <th align="center">보낸 매칭목록</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td width="279px" align="center"> <img src="https://user-images.githubusercontent.com/43921054/110080294-96ff1800-7dcd-11eb-8fc4-3d77420e282f.jpg" width="100%"></td>
+   <td width="279px" align="center"> <img src="https://user-images.githubusercontent.com/43921054/110080303-98c8db80-7dcd-11eb-85ba-2cbd90cff7f9.jpg" width="100%"></td>
+  </tr>
+ </tbody>
+</table>
+
 
 ## 👩🏻‍💻 기타
 - [Colleful server repo](https://github.com/colleful/server)
