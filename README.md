@@ -15,7 +15,9 @@ Colleful은 React Native로 개발한 Restful API 기반 앱이다.
 
 ## 🌴 브랜치 전략
 
-* Git-flow 사용
+- Git-flow 사용
+
+<br>
 
 ## 🚀 colleful 앱 시연 영상
 [![Video Label](https://user-images.githubusercontent.com/43921054/110058298-7327dc00-7da5-11eb-9272-91820cae6df4.png)](https://www.youtube.com/watch?v=_n_Q75iCp8A)
@@ -23,89 +25,93 @@ Colleful은 React Native로 개발한 Restful API 기반 앱이다.
 - 시연 순서 :   
 회원가입 - 로그인 - 자동 로그인 테스트 - 팀생성 - 팀초대 - 보낸 초대 확인 - 계정 인증 - 로그아웃 - 초대받은 계정 로그인 - 받은 초대 확인(수락) - 내 정보 수정 - 로그아웃 - 다른 계정 로그인 - 팀상태 변경(준비완료) - 홈화면에 팀 갱신 - 계정 비밀번호 변경 - 여자 계정으로 로그인 - 팀생성 - 팀상태 변경(준비완료) - 홈화면에 팀 갱신 - 필터 선택 - 찾고싶은 팀 검색 - 팀원 자기소개 본 후 매칭 보내기 - 보낸 매칭 취소 테스트/확인 - 받은 팀 매칭 확인 - 채팅목록에 매칭된 팀끼리 채팅 공간이 생겼는지 확인 - 비밀번호 찾기/변경
 
+<br>
+
 ## 🗄 구조
 <details markdown="1">
 <summary>접기 / 펼치기</summary>
 
 📦client   
- ┣ 📂container   
- ┃  ┣ 📜LoginContainer.js   
- ┃  ┗ 📜RegisterContainer.js   
- ┃ 📂hooks   
+ ┣ 📂container &nbsp;&nbsp;`인증관련 컨테이너 컴포넌트`  
+ ┃  ┣ 📜LoginContainer.js        
+ ┃  ┗ 📜RegisterContainer.js     
+ ┃ 📂hooks &nbsp;&nbsp;`커스텀훅`   
  ┃  ┗ 📜useInterval.js   
  ┃ 📂lib   
- ┃  ┣ 📜api.js   
- ┃  ┣ 📜createRequestAuthSaga.js   
- ┃  ┗ 📜createRequestSaga.js   
- ┃ 📂modules   
- ┃  ┣ 📜auth.js   
- ┃  ┣ 📜index.js   
- ┃  ┣ 📜loading.js   
+ ┃  ┣ 📜api.js &nbsp;&nbsp;`API 함수화한 컴포넌트`     
+ ┃  ┣ 📜createRequestAuthSaga.js &nbsp;&nbsp;`인증용 API를 위한 saga`     
+ ┃  ┗ 📜createRequestSaga.js &nbsp;&nbsp;`API를 위한 saga`    
+ ┃ 📂modules &nbsp;&nbsp;`리덕스`     
+ ┃  ┣ 📜auth.js  &nbsp;&nbsp;`인증관련`    
+ ┃  ┣ 📜index.js  &nbsp;&nbsp;`리듀서를 하나로 합쳐주는 루트 리듀서`     
+ ┃  ┣ 📜loading.js  &nbsp;&nbsp;`로딩관련`   
  ┃  ┣ 📜team.js   
- ┃  ┗ 📜user.js   
+ ┃  ┗ 📜user.js   &nbsp;&nbsp;`유저관련`   
  ┃ 📂screens  
- ┃  ┣ 📂auth  
- ┃  ┃ ┣ 📜[1.LoginScreen.js](#인증-관련-화면)  
+ ┃  ┣ 📂auth  &nbsp;&nbsp;`인증관련 프레젠테이셔널 컴포넌트`   
+ ┃  ┃ ┣ 📜LoginScreen.js   
  ┃  ┃ ┗ 📜RegisterScreen.js  
- ┃  ┣ 📂Chat  
+ ┃  ┣ 📂Chat  &nbsp;&nbsp;`채팅목록`   
  ┃  ┃ ┗ 📜ChatScreen.js  
- ┃  ┣ 📂Home  
- ┃  ┃ ┣ 📜HomeScreen.js  
- ┃  ┃ ┣ 📜ModalFilter.js  
- ┃  ┃ ┣ 📜TeamInfo.js  
- ┃  ┃ ┣ 📜TeamInfoModal.js  
+ ┃  ┣ 📂Home  &nbsp;&nbsp;`홈`   
+ ┃  ┃ ┣ 📜HomeScreen.js    
+ ┃  ┃ ┣ 📜ModalFilter.js &nbsp;&nbsp;`홈 필터`    
+ ┃  ┃ ┣ 📜TeamInfo.js &nbsp;&nbsp;`팀 정보 보여주기`    
+ ┃  ┃ ┣ 📜TeamInfoModal.js  &nbsp;&nbsp;`팀 매칭 전 유저 정보 보기`   
  ┃  ┃ ┣ 📜TeamInfoModalList.js  
  ┃  ┃ ┗ 📜TeamInfoModalListItem.js  
  ┃  ┣ 📂MyPage  
  ┃  ┃ ┣ 📂MyPageStack  
- ┃  ┃ ┃ ┣ 📂Account  
+ ┃  ┃ ┃ ┣ 📂Account  &nbsp;&nbsp;`계정`   
  ┃  ┃ ┃ ┃ ┗ 📜AccountScreen.js  
- ┃  ┃ ┃ ┣ 📂AddTeam  
+ ┃  ┃ ┃ ┣ 📂AddTeam  &nbsp;&nbsp;`팀추가`   
  ┃  ┃ ┃ ┃ ┗ 📜AddTeamScreen.js  
- ┃  ┃ ┃ ┣ 📂ReceivedInvitationList  
+ ┃  ┃ ┃ ┣ 📂ReceivedInvitationList &nbsp;&nbsp;`받은 초대 목록`    
  ┃  ┃ ┃ ┃ ┣ 📜ReceivedInvitationList.js  
  ┃  ┃ ┃ ┃ ┣ 📜ReceivedInvitationListItemScreen.js  
  ┃  ┃ ┃ ┃ ┗ 📜ReceivedInvitationListScreen.js  
- ┃  ┃ ┃ ┣ 📂ReceivedMatchingList  
+ ┃  ┃ ┃ ┣ 📂ReceivedMatchingList  &nbsp;&nbsp;`받은 매칭요청 목록`   
  ┃  ┃ ┃ ┃ ┣ 📜ReceivedMatchingList.js  
  ┃  ┃ ┃ ┃ ┣ 📜ReceivedMatchingListItemScreen.js  
  ┃  ┃ ┃ ┃ ┗ 📜ReceivedMatchingListScreen.js  
- ┃  ┃ ┃ ┣ 📂SentInvitationList  
+ ┃  ┃ ┃ ┣ 📂SentInvitationList  &nbsp;&nbsp;`보낸 초대 목록`   
  ┃  ┃ ┃ ┃ ┣ 📜SentInvitationList.js  
  ┃  ┃ ┃ ┃ ┣ 📜SentInvitationListItemScreen.js  
  ┃  ┃ ┃ ┃ ┗ 📜SentInvitationListScreen.js  
- ┃  ┃ ┃ ┣ 📂SentMatchingList  
+ ┃  ┃ ┃ ┣ 📂SentMatchingList  &nbsp;&nbsp;`보낸 매칭요청 목록`   
  ┃  ┃ ┃ ┃ ┣ 📜SentMatchingList.js  
  ┃  ┃ ┃ ┃ ┣ 📜SentMatchingListItemScreen.js  
  ┃  ┃ ┃ ┃ ┗ 📜SentMatchingListScreen.js  
- ┃  ┃ ┃ ┣ 📂TeamList  
- ┃  ┃ ┃ ┃ ┣ 📜InvitationScreen.js  
- ┃  ┃ ┃ ┃ ┣ 📜TeamListItemModal.js  
- ┃  ┃ ┃ ┃ ┣ 📜TeamListItemScreen.js  
- ┃  ┃ ┃ ┃ ┗ 📜TeamListScreen.js  
- ┃  ┃ ┃ ┣ 📜MemberInfo.js  
- ┃  ┃ ┃ ┣ 📜MessageScreen.js  
- ┃  ┃ ┃ ┣ 📜NoticeScreen.js  
- ┃  ┃ ┃ ┣ 📜ProfileScreen.js  
+ ┃  ┃ ┃ ┣ 📂TeamList  &nbsp;&nbsp;`팀초대, 팀목록`   
+ ┃  ┃ ┃ ┃ ┣ 📜InvitationScreen.js  &nbsp;&nbsp;`팀초대`   
+ ┃  ┃ ┃ ┃ ┣ 📜TeamListItemModal.js  &nbsp;&nbsp;`팀상태 변경`   
+ ┃  ┃ ┃ ┃ ┣ 📜TeamListItemScreen.js  &nbsp;&nbsp;`팀삭제, 팀나가기, 팀정보 보여주기`   
+ ┃  ┃ ┃ ┃ ┗ 📜TeamListScreen.js  &nbsp;&nbsp;`팀목록`   
+ ┃  ┃ ┃ ┣ 📜MemberInfo.js &nbsp;&nbsp;`마이페이지에서 프로필`   
+ ┃  ┃ ┃ ┣ 📜MessageScreen.js    
+ ┃  ┃ ┃ ┣ 📜NoticeScreen.js   
+ ┃  ┃ ┃ ┣ 📜ProfileScreen.js  &nbsp;&nbsp;`프로필 변경`   
  ┃  ┃ ┃ ┣ 📜SettingScreen.js  
  ┃  ┃ ┃ ┗ 📜SuggestionScreen.js  
  ┃  ┃ ┣ 📜MyPageInfo.js  
- ┃  ┃ ┣ 📜MypageNavigator.js  
- ┃  ┃ ┣ 📜MyPageNavList.js  
+ ┃  ┃ ┣ 📜MypageNavigator.js  &nbsp;&nbsp;`마이페이지 스택 네비게이터`   
+ ┃  ┃ ┣ 📜MyPageNavList.js   
  ┃  ┃ ┣ 📜MyPageNavListItem.js  
  ┃  ┃ ┗ 📜MyPageScreen.js  
- ┃  ┣ 📜MainNavigator.js  
- ┃  ┣ 📜SplashScreen.js  
- ┃  ┗ 📜SwitchNavigator.js  
- ┃ 📂utils  
- ┃  ┗ 📜GetTimeFromNow.js    
- ┣ 📜App.js `Routing역할`   
+ ┃  ┣ 📜MainNavigator.js  &nbsp;&nbsp;`바텀탭 네비게이터`   
+ ┃  ┣ 📜SplashScreen.js  &nbsp;&nbsp;`스플래시 페이지`   
+ ┃  ┗ 📜SwitchNavigator.js  &nbsp;&nbsp;`로그인 토큰 검증 라우터 (스플래시 페이지, 자동로그인 관련)`   
+ ┃ 📂utils    
+ ┃  ┗ 📜GetTimeFromNow.js &nbsp;&nbsp;`생성시간 보여주기`     
+ ┣ 📜App.js &nbsp;&nbsp;`Routing, 자동로그인, 스토어 역할`   
  ┣ 📜index.js   
- ┣ 📜Config.js  
+ ┣ 📜Config.js  &nbsp;&nbsp;`엔드포인트`   
  ┣ 📜package-lock.json   
  ┗ 📜package.json     
 
 </details>
+
+<br>
 
 ## 📱 화면 구성
 
@@ -113,53 +119,53 @@ Colleful은 React Native로 개발한 Restful API 기반 앱이다.
 
 | 로그인 | 회원가입 | 회원가입 |
 |:---:|:---:|:---:|
-| <img src="https://user-images.githubusercontent.com/43921054/110070525-8777d300-7dbd-11eb-8c09-8015cf830687.jpg" width="285.594px" height="507.719px"> | <img src="https://user-images.githubusercontent.com/43921054/110075238-d6296b00-7dc5-11eb-8def-157ac0b523ea.jpg" width="285.594px" height="507.719px">  | <img src="https://user-images.githubusercontent.com/43921054/110075241-d75a9800-7dc5-11eb-8554-78d3558edbcb.jpg" width="285.594px" height="507.719px">  |
+| <img src="https://user-images.githubusercontent.com/43921054/110070525-8777d300-7dbd-11eb-8c09-8015cf830687.jpg" width="100%" > | <img src="https://user-images.githubusercontent.com/43921054/110075238-d6296b00-7dc5-11eb-8def-157ac0b523ea.jpg" width="100%" >  | <img src="https://user-images.githubusercontent.com/43921054/110075241-d75a9800-7dc5-11eb-8554-78d3558edbcb.jpg" width="100%">  |
 
 | 비밀번호 찾기/변경 | 이메일 인증 성공후 비밀번호 변경  | 변경 성공 |
 |:---:|:---:|:---:|
-| <img src="https://user-images.githubusercontent.com/43921054/110080848-68357180-7dce-11eb-8b40-aba38c1c16e6.jpg" width="285.594px" height="507.719px"> | <img src="https://user-images.githubusercontent.com/43921054/110080864-6cfa2580-7dce-11eb-8924-4c0527d302ad.jpg" width="285.594px" height="507.719px">  | <img src="https://user-images.githubusercontent.com/43921054/110080880-72577000-7dce-11eb-9d4e-44516bf277fe.jpg" width="285.594px" height="507.719px">  |
+| <img src="https://user-images.githubusercontent.com/43921054/110080848-68357180-7dce-11eb-8b40-aba38c1c16e6.jpg" width="100%"> | <img src="https://user-images.githubusercontent.com/43921054/110080864-6cfa2580-7dce-11eb-8924-4c0527d302ad.jpg" width="100%" >  | <img src="https://user-images.githubusercontent.com/43921054/110080880-72577000-7dce-11eb-9d4e-44516bf277fe.jpg" width="100%" >  |
 
 ### 로그인 후
 
 | 홈 | 홈 (팀 필터) | 홈 (팀 검색) |
 |:---:|:---:|:---:|
-| <img src="https://user-images.githubusercontent.com/43921054/110076457-daef1e80-7dc7-11eb-97ac-59d1ba2dc563.jpg" width="285.594px" height="507.719px"> | <img src="https://user-images.githubusercontent.com/43921054/110076571-0f62da80-7dc8-11eb-88d9-7aecfc7fa98c.jpg" width="285.594px" height="507.719px">  | <img src="https://user-images.githubusercontent.com/43921054/110077340-47b6e880-7dc9-11eb-9bdd-265c7e1da749.jpg" width="285.594px" height="507.719px">  |
+| <img src="https://user-images.githubusercontent.com/43921054/110076457-daef1e80-7dc7-11eb-97ac-59d1ba2dc563.jpg" width="100%"> | <img src="https://user-images.githubusercontent.com/43921054/110076571-0f62da80-7dc8-11eb-88d9-7aecfc7fa98c.jpg" width="100%">  | <img src="https://user-images.githubusercontent.com/43921054/110077340-47b6e880-7dc9-11eb-9bdd-265c7e1da749.jpg" width="100%">  |
 
 | 팀 매칭 전 유저정보 보기 (이미지) | 팀 매칭 전 유저정보 보기 (자기소개) | 매칭 신청 |
 |:---:|:---:|:---:|
-| <img src="https://user-images.githubusercontent.com/43921054/110081015-a6329580-7dce-11eb-928a-d22ec8c29066.jpg" width="285.594px" height="507.719px"> | <img src="https://user-images.githubusercontent.com/43921054/110081023-a894ef80-7dce-11eb-90be-952445dc05f6.jpg" width="285.594px" height="507.719px">  | <img src="https://user-images.githubusercontent.com/43921054/110081027-aaf74980-7dce-11eb-8f5e-a91ee6cf1bb8.jpg" width="285.594px" height="507.719px">  |
+| <img src="https://user-images.githubusercontent.com/43921054/110081015-a6329580-7dce-11eb-928a-d22ec8c29066.jpg" width="100%"> | <img src="https://user-images.githubusercontent.com/43921054/110081023-a894ef80-7dce-11eb-90be-952445dc05f6.jpg" width="100%">  | <img src="https://user-images.githubusercontent.com/43921054/110081027-aaf74980-7dce-11eb-8f5e-a91ee6cf1bb8.jpg" width="100%">  |
 
 | 마이페이지 | 계정 (본인 인증) | 계정(회원정보 수정, 로그아웃, 회원탈퇴) |
 |:---:|:---:|:---:|
-| <img src="https://user-images.githubusercontent.com/43921054/110077964-623d9180-7dca-11eb-9dc6-8eebfdcb8999.jpg" width="285.594px" height="507.719px"> | <img src="https://user-images.githubusercontent.com/43921054/110078283-dd9f4300-7dca-11eb-81ba-12ef95f52bfa.jpg" width="285.594px" height="507.719px">  | <img src="https://user-images.githubusercontent.com/43921054/110078288-e09a3380-7dca-11eb-9507-5985fb9bc114.jpg" width="285.594px" height="507.719px">  |
+| <img src="https://user-images.githubusercontent.com/43921054/110077964-623d9180-7dca-11eb-9dc6-8eebfdcb8999.jpg" width="100%"> | <img src="https://user-images.githubusercontent.com/43921054/110078283-dd9f4300-7dca-11eb-81ba-12ef95f52bfa.jpg" width="100%">  | <img src="https://user-images.githubusercontent.com/43921054/110078288-e09a3380-7dca-11eb-9507-5985fb9bc114.jpg" width="100%">  |
 
 | 프로필 관리 | 프로필 변경 선택 | 프로필 변경 |
 |:---:|:---:|:---:|
-| <img src="https://user-images.githubusercontent.com/43921054/110082671-03c7e180-7dd1-11eb-8cce-a8411f7ac247.jpg" width="285.594px" height="507.719px"> | <img src="https://user-images.githubusercontent.com/43921054/110082682-06c2d200-7dd1-11eb-94ab-1577f48524ee.jpg" width="285.594px" height="507.719px">  | <img src="https://user-images.githubusercontent.com/43921054/110082689-088c9580-7dd1-11eb-9021-777ba3d65c22.jpg" width="285.594px" height="507.719px">  |
+| <img src="https://user-images.githubusercontent.com/43921054/110082671-03c7e180-7dd1-11eb-8cce-a8411f7ac247.jpg" width="100%"> | <img src="https://user-images.githubusercontent.com/43921054/110082682-06c2d200-7dd1-11eb-94ab-1577f48524ee.jpg" width="100%">  | <img src="https://user-images.githubusercontent.com/43921054/110082689-088c9580-7dd1-11eb-9021-777ba3d65c22.jpg" width="100%">  |
 
 | 팀생성 | 팀생성 | 팀초대 |
 |:---:|:---:|:---:|
-| <img src="https://user-images.githubusercontent.com/43921054/110078702-7a61e080-7dcb-11eb-980e-28d8208f8b33.jpg" width="285.594px" height="507.719px"> | <img src="https://user-images.githubusercontent.com/43921054/110078712-7d5cd100-7dcb-11eb-893a-04d1db869783.jpg" width="285.594px" height="507.719px">  | <img src="https://user-images.githubusercontent.com/43921054/110079012-e2182b80-7dcb-11eb-81ef-2303fe57e6f4.jpg" width="285.594px" height="507.719px">  |
+| <img src="https://user-images.githubusercontent.com/43921054/110078702-7a61e080-7dcb-11eb-980e-28d8208f8b33.jpg" width="100%"> | <img src="https://user-images.githubusercontent.com/43921054/110078712-7d5cd100-7dcb-11eb-893a-04d1db869783.jpg" width="100%">  | <img src="https://user-images.githubusercontent.com/43921054/110079012-e2182b80-7dcb-11eb-81ef-2303fe57e6f4.jpg" width="100%">  |
 
 | 팀목록 | 팀 상태변경 | 팀 상태변경 |
 |:---:|:---:|:---:|
-| <img src="https://user-images.githubusercontent.com/43921054/110078721-80f05800-7dcb-11eb-8c57-90482de5258e.jpg" width="285.594px" height="507.719px"> | <img src="https://user-images.githubusercontent.com/43921054/110079683-c3fefb00-7dcc-11eb-844b-1be7d73f1b4d.jpg" width="285.594px" height="507.719px">  | <img src="https://user-images.githubusercontent.com/43921054/110079788-e264f680-7dcc-11eb-8d4c-f6ff6d05a289.jpg" width="285.594px" height="507.719px">  |
+| <img src="https://user-images.githubusercontent.com/43921054/110078721-80f05800-7dcb-11eb-8c57-90482de5258e.jpg" width="100%"> | <img src="https://user-images.githubusercontent.com/43921054/110079683-c3fefb00-7dcc-11eb-844b-1be7d73f1b4d.jpg" width="100%">  | <img src="https://user-images.githubusercontent.com/43921054/110079788-e264f680-7dcc-11eb-8d4c-f6ff6d05a289.jpg" width="100%">  |
 
 | 채팅목록(매칭 x) | 채팅목록(매칭 완료) |
 |:---:|:---:|
-| <img src="https://user-images.githubusercontent.com/43921054/110077646-dd527800-7dc9-11eb-90a3-c19f70fa31f4.jpg" width="285.594px" height="507.719px"> | <img src="https://user-images.githubusercontent.com/43921054/110077658-e2172c00-7dc9-11eb-8a0c-bf5f63bd8853.jpg" width="285.594px" height="507.719px">  |
+| <img src="https://user-images.githubusercontent.com/43921054/110077646-dd527800-7dc9-11eb-90a3-c19f70fa31f4.jpg" width="252px" height="448px"> | <img src="https://user-images.githubusercontent.com/43921054/110077658-e2172c00-7dc9-11eb-8a0c-bf5f63bd8853.jpg" width="252px" height="448px">  |
 
 | 받은 초대목록 | 받은 초대목록 |
 |:---:|:---:|
-| <img src="https://user-images.githubusercontent.com/43921054/110080112-615a2f00-7dcd-11eb-852d-966c6ce2489f.jpg" width="285.594px" height="507.719px"> | <img src="https://user-images.githubusercontent.com/43921054/110080119-6323f280-7dcd-11eb-84e2-27b315a47485.jpg" width="285.594px" height="507.719px">  |
+| <img src="https://user-images.githubusercontent.com/43921054/110080112-615a2f00-7dcd-11eb-852d-966c6ce2489f.jpg" width="252px" height="448px"> | <img src="https://user-images.githubusercontent.com/43921054/110080119-6323f280-7dcd-11eb-84e2-27b315a47485.jpg" width="252px" height="448px">  |
 
 | 보낸 초대목록 | 보낸 초대목록 |
 |:---:|:---:|
-| <img src="https://user-images.githubusercontent.com/43921054/110080167-75059580-7dcd-11eb-91d1-00f914b41e4c.jpg" width="285.594px" height="507.719px"> | <img src="https://user-images.githubusercontent.com/43921054/110080175-7767ef80-7dcd-11eb-9642-21c228aa3229.jpg" width="285.594px" height="507.719px">  |
+| <img src="https://user-images.githubusercontent.com/43921054/110080167-75059580-7dcd-11eb-91d1-00f914b41e4c.jpg" width="252px" height="448px"> | <img src="https://user-images.githubusercontent.com/43921054/110080175-7767ef80-7dcd-11eb-9642-21c228aa3229.jpg" width="252px" height="448px">  |
 
 | 받은 매칭목록 | 받은 매칭목록 | 수락 |
 |:---:|:---:|:---:|
-| <img src="https://user-images.githubusercontent.com/43921054/110080230-85b60b80-7dcd-11eb-9cb8-2a937bb03633.jpg" width="285.594px" height="507.719px"> | <img src="https://user-images.githubusercontent.com/43921054/110080237-88186580-7dcd-11eb-9615-197ea3f9d94c.jpg" width="285.594px" height="507.719px">  | <img src="https://user-images.githubusercontent.com/43921054/110080455-d299e200-7dcd-11eb-84b9-42b072d17632.jpg" width="285.594px" height="507.719px">  |
+| <img src="https://user-images.githubusercontent.com/43921054/110080230-85b60b80-7dcd-11eb-9cb8-2a937bb03633.jpg" width="100%"> | <img src="https://user-images.githubusercontent.com/43921054/110080237-88186580-7dcd-11eb-9615-197ea3f9d94c.jpg" width="100%">  | <img src="https://user-images.githubusercontent.com/43921054/110080455-d299e200-7dcd-11eb-84b9-42b072d17632.jpg" width="100%">  |
 
 | 보낸 매칭목록 | 보낸 매칭목록 |
 |:---:|:---:|
