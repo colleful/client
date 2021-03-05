@@ -3,6 +3,7 @@ import {View, Text, Alert, TouchableOpacity, Image} from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {css} from '@emotion/native';
+import {Gravatar} from 'react-native-gravatar';
 
 const ProfileScreen = ({navigation, myInfoData}) => {
   const [imageSource, setImageSource] = useState('');
@@ -75,9 +76,13 @@ const ProfileScreen = ({navigation, myInfoData}) => {
             <Ionicons name="camera" size={16} color='gray'/>
           </View>
           {imageSource === '' ? (
-            <Image
-              source={require('../../../images/1.png')}
-              style={css`width: 100px; height: 100px; border-radius: 100px`}
+            <Gravatar
+              options={{
+                email: myInfoData.email,
+                parameters: {s: '100', d: 'retro'},
+                secure: true,
+              }}
+              style={{borderRadius: 50, width: 100, height: 100}}
             />
           ) : (
             <Image
