@@ -54,15 +54,36 @@ const [
 ] = createRequestActionTypes('auth/CONFIRM_PASSWORD_AUTH_EMAIL');
 
 //액션 함수 생성
+
 export const setLoginState = createAction(
   SET_LOGIN_STATE,
   (isLoggedIn) => isLoggedIn,
 );
-export const changeField = createAction(CHANGE_FIELD, ({form, key, value}) => ({
-  form, // register , login
-  key, // email, password, passwordConfirm
-  value, // 실제 바꾸려는 값
-}));
+
+// 위 코드와 동일
+// export const setLoginState = (isLoggedIn) => ({
+//   type: SET_LOGIN_STATE,
+//   payload: isLoggedIn,
+// });
+
+export const changeField = (payload) => ({
+  // createAction을 사용하지 않았을 때
+  type: CHANGE_FIELD,
+  payload,
+});
+
+// 위 코드와 동일
+// export const changeField = ({form, key, value}) => ({
+//   type: CHANGE_FIELD,
+//   payload: {form, key, value},
+// });
+
+// export const changeField = createAction(CHANGE_FIELD, ({form, key, value}) => ({
+//   form, // register , login
+//   key, // email, password, passwordConfirm
+//   value, // 실제 바꾸려는 값
+// }));
+
 export const initializeForm = createAction(INITIALIZE_FORM, (form) => form);
 export const authEmailInitialize = createAction(AUTH_EMAIL_INITIALIZE);
 export const confirmAuthEmailInitialize = createAction(
@@ -74,7 +95,7 @@ export const confirmPasswordAuthEmailInitialize = createAction(
 export const passwordChangeInitialize = createAction(
   PASSWORD_CHANGE_INITIALIZE,
 );
-export const emailValidstatus = createAction(EMAIL_VALID_STATUS);
+export const emailValidStatus = createAction(EMAIL_VALID_STATUS);
 export const passwordEmailAuthInitialize = createAction(
   PASSWORD_EMAIL_AUTH_INITIALIZE,
 );
@@ -215,7 +236,6 @@ const initialState = {
   passwordChangeError: null,
 
   isEmailvalided: false, // 회원가입용 이메일 인증 했는지 (view mode)
-  isEmailvalidedAtPasswordFind: false, // 비밀번호 찾기 이메일 인증 했는지 (view mode)
 };
 
 //리듀서
@@ -229,12 +249,23 @@ const auth = handleActions(
       produce(state, (draft) => {
         draft[form][key] = value;
       }),
-    [INITIALIZE_FORM]: (state, {payload: form}) => ({
-      ...state,
-      [form]: initialState[form],
-      isEmailvalided: false,
-      authError: null, // 폼 전환 시 회원 인증 에러 초기화
-    }),
+    // [CHANGE_FIELD]: (state, action) =>
+    //   produce(state, (draft) => {
+    //     draft[action.payload.form][action.payload.key] = action.payload.value;
+    // }),
+    [INITIALIZE_FORM]: (state, action) =>
+      produce(state, (draft) => {
+        draft[action.payload.form] = initialState[action.payload.form];
+        draft.isEmailvalided = false;
+        draft.authError = null; // 폼 전환 시 회원 인증 에러 초기화
+      }),
+      
+    // [INITIALIZE_FORM]: (state, {payload: form}) => ({
+    //   ...state,
+    //   [form]: initialState[form],
+    //   isEmailvalided: false,
+    //   authError: null, // 폼 전환 시 회원 인증 에러 초기화
+    // }),
     // 회원가입 성공
     [REGISTER_SUCCESS]: (state, {payload: auth}) => ({
       ...state,

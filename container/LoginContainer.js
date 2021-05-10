@@ -1,7 +1,7 @@
 import React, {useEffect, useCallback} from 'react';
 import {Alert} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {changeField, initializeForm, login, setLoginState, sendAuthEmailForPasswordChange, emailValidstatus, changePassword, confirmPasswordAuthEmail, confirmPasswordAuthEmailInitialize, passwordEmailAuthInitialize, passwordChangeInitialize} from '../modules/auth';
+import {changeField, initializeForm, login, setLoginState, sendAuthEmailForPasswordChange, emailValidStatus, changePassword, confirmPasswordAuthEmail, confirmPasswordAuthEmailInitialize, passwordEmailAuthInitialize, passwordChangeInitialize} from '../reducers/auth';
 import LoginScreen from '../screens/auth/LoginScreen';
 import AsyncStorage from '@react-native-community/async-storage';
 // import * as Keychain from 'react-native-keychain'; AsyncStorage은 안전하지않음, keychain 적용해야 안전
@@ -21,18 +21,25 @@ const LoginContainer = ({navigation}) => {
     passwordChangeError: auth.passwordChangeError,
   }));
 
-  const dispatch = useDispatch();
+  // const {
+  //   form,
+  //   password,
+  //   forgetPassword,
+  //   auth,
+  //   authError,
+  //   passwordConfirmEmail,
+  //   passwordConfirmEmailError,
+  //   passwordEmailAuth,
+  //   passwordEmailAuthError,
+  //   passwordChange,
+  //   passwordChangeError,
+  // } = useSelector(({auth}) => ({
+  //   form: auth.login,
+  //   password: auth.login.password,
+  //   ...auth,
+  // }));
 
-  const onCreateAddress = useCallback((text) => {
-    dispatch(
-      changeField({
-        form: 'login',
-        key: 'email',
-        value: text === '@jbnu.ac.kr' ? '' : text
-      })
-    );
-  },[dispatch]);
-  //비밀번호 찾기에서도 하려면 form: 'forgetPassword'
+  const dispatch = useDispatch();
 
   const onChangeLoginEmail = useCallback((e) => {
     const {text} = e.nativeEvent;
@@ -139,7 +146,7 @@ const LoginContainer = ({navigation}) => {
       return;
     }
     dispatch(login({email, password}));
-    dispatch(emailValidstatus({form: 'isEmailvalidedAtPasswordFind', value: false}));
+    dispatch(emailValidStatus({form: 'emailValidAtPasswordFind', value: false}));
   },[dispatch, form]);
 
   const onSubmitChangePassword = useCallback(() => {
@@ -240,7 +247,7 @@ const LoginContainer = ({navigation}) => {
           text: '확인',
         },
       ])
-      dispatch(emailValidstatus({form: 'isEmailvalidedAtPasswordFind', value: true}))
+      dispatch(emailValidStatus({form: 'emailValidAtPasswordFind', value: true}))
       dispatch(confirmPasswordAuthEmailInitialize(null));
       return;
     }
@@ -270,7 +277,6 @@ const LoginContainer = ({navigation}) => {
       navigation={navigation}
       form={form}
       forgetPassword={forgetPassword}
-      onCreateAddress={onCreateAddress}
       onChangeLoginEmail={onChangeLoginEmail}
       onChangeLoginPassword={onChangeLoginPassword}
       onSubmitLogin={onSubmitLogin}

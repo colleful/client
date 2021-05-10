@@ -4,12 +4,14 @@ import AsyncStorage from '@react-native-community/async-storage';
 import SwitchNavigator from './screens/SwitchNavigator';
 import {createStore, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
-import rootReducer, {rootSaga} from './modules';
+// import rootReducer, {rootSaga} from './modules';
+import rootReducer from './reducers';
+import rootSaga from './sagas';
 import createSagaMiddleware from 'redux-saga';
-import ReduxThunk from 'redux-thunk';
+// import ReduxThunk from 'redux-thunk';
 import {composeWithDevTools} from 'redux-devtools-extension';
 import {NavigationContainer} from '@react-navigation/native';
-import {setLoginState} from './modules/auth';
+import {setLoginState} from './reducers/auth';
 import {
   setCustomText,
 } from 'react-native-global-props';
@@ -17,7 +19,7 @@ import {
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(
   rootReducer,
-  composeWithDevTools(applyMiddleware(ReduxThunk, sagaMiddleware)),
+  composeWithDevTools(applyMiddleware(sagaMiddleware)),
 );
 
 const loadToken = async () => {

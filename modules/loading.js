@@ -34,3 +34,35 @@ const loading = handleActions(
 );
 
 export default loading;
+
+// import produce from 'immer';
+
+// export const initialState = {
+//   isLoading: false,
+// };
+
+// export const START_LOADING = 'START_LOADING';
+// export const FINISH_LOADING = 'FINISH_LOADING';
+
+// export const startLoading = () => ({
+//   type: START_LOADING,
+// });
+
+// export const finishLoading = () => ({
+//   type: FINISH_LOADING,
+// });
+
+// const reducer = (state = initialState, action) => {
+//   produce(state, (draft) => {
+//     switch (action.type) {
+//       case START_LOADING:
+//         draft.isLoading = true;
+//         break;
+//       case FINISH_LOADING:
+//         draft.isLoading = false;
+//         break;
+//     }
+//   });
+// };
+
+// export default reducer;

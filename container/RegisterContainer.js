@@ -1,13 +1,13 @@
 import React, { useEffect, useCallback } from 'react';
 import {Alert} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {changeField, initializeForm, register, sendAuthEmail, confirmAuthEmail, authEmailInitialize, confirmAuthEmailInitialize, emailValidstatus} from '../modules/auth';
+import {changeField, initializeForm, register, sendAuthEmail, confirmAuthEmail, authEmailInitialize, confirmAuthEmailInitialize, emailValidStatus} from '../reducers/auth';
 import RegisterScreen from '../screens/auth/RegisterScreen';
 
 const RegisterContainer = ({navigation}) => {
   const dispatch = useDispatch();
-  const { isEmailvalided, form, auth, authError, emailAuth, emailAuthError, confirmEmail, confirmEmailError } = useSelector(({ auth }) => ({
-    isEmailvalided: auth.isEmailvalided,
+  const { emailValid, form, auth, authError, emailAuth, emailAuthError, confirmEmail, confirmEmailError } = useSelector(({ auth }) => ({
+    emailValid: auth.emailValid,
     form: auth.register,
     auth: auth.auth,
     authError: auth.authError,
@@ -186,7 +186,7 @@ const RegisterContainer = ({navigation}) => {
       dispatch(changeField({ form: 'register', key: 'passwordConfirm', value: '' }));
       return;
     }
-    if (!isEmailvalided) {
+    if (!emailValid) {
       Alert.alert('회원가입 실패', '인증되지 않은 이메일입니다', [
         { 
           text: '확인',
@@ -195,7 +195,7 @@ const RegisterContainer = ({navigation}) => {
       return;
     }
     dispatch(register({ email, password, nickname, birthYear, gender, departmentId, selfIntroduction }));
-    dispatch(emailValidstatus({form: 'isEmailvalided', value: false}));
+    dispatch(emailValidStatus({form: 'emailValid', value: false}));
   },[dispatch, form]);
 
   useEffect(() => {
@@ -231,7 +231,7 @@ const RegisterContainer = ({navigation}) => {
     }
     if(emailAuth === '') {
       Alert.alert('이메일 인증 보내기 성공', '인증번호를 전송 했습니다. 메일함을 확인하고 인증번호를 입력해주세요', [
-        { 
+        {
           text: '확인',
         },
       ])
@@ -253,7 +253,7 @@ const RegisterContainer = ({navigation}) => {
           text: '확인',
         },
       ])
-      dispatch(emailValidstatus({form: 'isEmailvalided', value: true}));
+      dispatch(emailValidStatus({form: 'emailValid', value: true}));
       dispatch(confirmAuthEmailInitialize(null));
       return;
     }
