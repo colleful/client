@@ -1,7 +1,6 @@
 import React,{useState, useEffect, useCallback, useMemo, useRef} from 'react';
 import {View, ScrollView, Text, TextInput, TouchableOpacity, ActivityIndicator, StyleSheet} from 'react-native';
 import {useSelector} from 'react-redux';
-import loading from "../../modules/loading";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Picker} from '@react-native-community/picker';
 import * as authAPI from '../../lib/api';
@@ -26,9 +25,7 @@ const RegisterScreen = ({form,getDepartmentId,getGender,getBirthYear,onSendAuthE
   const [departmentData, setDepartmentData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
 
-  const {isLoading} = useSelector(({loading}) => ({
-    isLoading: loading.isLoading
-  }));
+  const {authLoading, emailAuthLoading, confirmEmailLoading} = useSelector(state => state.auth);
 
   useEffect(() => {
     getDepartments();
@@ -91,7 +88,41 @@ const RegisterScreen = ({form,getDepartmentId,getGender,getBirthYear,onSendAuthE
   
   return (
     <>
-      {isLoading && (
+      {authLoading && (
+        <View
+        style={css`
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: 0;
+          bottom: 0;
+          opacity: 0.5;
+          background-color: gray;
+          align-items: center;
+          justify-content: center;
+          z-index: 999;
+        `}>
+          <ActivityIndicator size="large" color="#0000ff" />
+        </View>
+      )}
+      {emailAuthLoading && (
+        <View
+        style={css`
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: 0;
+          bottom: 0;
+          opacity: 0.5;
+          background-color: gray;
+          align-items: center;
+          justify-content: center;
+          z-index: 999;
+        `}>
+          <ActivityIndicator size="large" color="#0000ff" />
+        </View>
+      )}
+      {confirmEmailLoading && (
         <View
         style={css`
           position: absolute;

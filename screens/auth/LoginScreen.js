@@ -10,7 +10,7 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modal';
 import {useSelector, useDispatch} from 'react-redux';
-import {emailValidstatus} from '../../modules/auth';
+import {emailValidStatus} from '../../reducers/auth';
 import {useForm, Controller} from 'react-hook-form';
 import { css } from '@emotion/native';
 
@@ -18,7 +18,6 @@ const LoginScreen = ({
   navigation,
   form,
   forgetPassword,
-  onCreateAddress,
   onChangeLoginEmail,
   onChangeLoginPassword,
   onSubmitLogin,
@@ -33,22 +32,9 @@ const LoginScreen = ({
   const [isPasswordVisible, setPasswordVisible] = useState(true);
   const [isModalVisible, setModalVisible] = useState(false);
 
-  const {isEmailvalidedAtPasswordFind} = useSelector(({auth}) => ({
-    isEmailvalidedAtPasswordFind: auth.isEmailvalidedAtPasswordFind,
-  }));
-  const {isLoading} = useSelector(({loading}) => ({
-    isLoading: loading.isLoading,
-  }));
+  const {emailValidAtPasswordFind, authLoading} = useSelector(state => state.auth);
 
   const dispatch = useDispatch();
-
-  const addToBehindText = useCallback((e) => {
-    onCreateAddress(
-      e.nativeEvent.text.includes('@')
-        ? e.nativeEvent.text
-        : `${e.nativeEvent.text}@jbnu.ac.kr`,
-    );
-  },[]);
 
   const visibleText = useCallback(() => {
     setPasswordVisible(prev => !prev);
@@ -70,8 +56,8 @@ const LoginScreen = ({
   const changePasswordHandler = useCallback(() => {
     onSubmitChangePassword();
     dispatch(
-      emailValidstatus({
-        form: 'isEmailvalidedAtPasswordFind',
+      emailValidStatus({
+        form: 'emailValidAtPasswordFind',
         value: false,
       }),
     );
@@ -81,8 +67,8 @@ const LoginScreen = ({
   const exitChangePasswordHandler = useCallback(() => {
     toggleModal();
     dispatch(
-      emailValidstatus({
-        form: 'isEmailvalidedAtPasswordFind',
+      emailValidStatus({
+        form: 'emailValidAtPasswordFind',
         value: false,
       }),
     );
@@ -93,7 +79,7 @@ const LoginScreen = ({
 
   return (
     <>
-      {isLoading && (
+      {authLoading && (
         <View
           style={css`
             position: absolute;
@@ -125,7 +111,6 @@ const LoginScreen = ({
                 onChangeText={(value) => onChange(value)}
                 value={(form.email, value)}
                 onChange={onChangeLoginEmail}
-                onEndEditing={addToBehindText}
               />
             )}
             name="email"
@@ -213,23 +198,6 @@ const LoginScreen = ({
                 height: 250px;
                 borderRadius: 5px;
               `}>
-              {isLoading && (
-                <View
-                style={css`
-                  position: absolute;
-                  left: 0;
-                  right: 0;
-                  top: 0;
-                  bottom: 0;
-                  opacity: 0.5;
-                  background-color: gray;
-                  align-items: center;
-                  justify-content: center;
-                  z-index: 999;
-                `}>
-                  <ActivityIndicator size="large" color="#0000ff" />
-                </View>
-              )}
               <View
                 style={css`
                   height: 50px;
@@ -238,7 +206,7 @@ const LoginScreen = ({
                   border-bottom-width: 0.5px;
                   border-color: gray;
                 `}>
-                {isEmailvalidedAtPasswordFind ? (
+                {emailValidAtPasswordFind ? (
                   <Text style={css`font-size: 18px`}>비밀번호 변경</Text>
                 ) : (
                   <>
@@ -258,7 +226,7 @@ const LoginScreen = ({
                 `}>
                 <Text>나가기</Text>
               </TouchableOpacity>
-              {isEmailvalidedAtPasswordFind ? (
+              {emailValidAtPasswordFind ? (
                 <View
                   style={css`
                     align-items: center;
@@ -334,7 +302,6 @@ const LoginScreen = ({
                       `}
                       value={forgetPassword.email}
                       onChange={onChangeFindEmail}
-                      onEndEditing={addToBehindText}
                     />
                     <TouchableOpacity
                       style={css`

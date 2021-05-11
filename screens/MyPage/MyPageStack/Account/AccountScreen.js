@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {View, Text, TextInput, TouchableOpacity, Alert, ScrollView} from 'react-native';
 import {useDispatch} from 'react-redux';
-import {setLoginState} from '../../../../modules/auth';
+import {setLoginState} from '../../../../reducers/auth';
 import AsyncStorage from '@react-native-community/async-storage';
 import {Picker} from '@react-native-community/picker';
 import * as authAPI from '../../../../lib/api';
@@ -33,7 +33,6 @@ const AccountScreen = ({navigation, myInfoData}) => {
     try {
       const response = await authAPI.getDepartment();
       setDepartmentData(response.data);
-      console.log("response.data",response.data);
       setSortedDepartmentName(response.data.map(datas => datas.departmentName).sort());
     } catch (error) {
       Alert.alert('에러', `${error.response.data.message}`, [

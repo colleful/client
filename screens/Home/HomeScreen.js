@@ -13,7 +13,7 @@ import * as authAPI from '../../lib/api';
 import ModalFilter from './ModalFilter';
 import TeamInfo from './TeamInfo';
 import {useDispatch} from 'react-redux';
-import {setLoginState} from '../../modules/auth';
+import {setLoginState} from '../../reducers/auth';
 import { css } from '@emotion/native';
 
 const wait = (timeout) => {
@@ -64,7 +64,7 @@ const HomeScreen = ({}) => {
       } else {
         setPageNumber(pageNumber + 1);
       }
-      console.log(response.data)
+      console.log("준비된 팀 data",response.data)
       setTeam(team.concat(response.data.content));
       setImmutableTeam(team.concat(response.data.content));
       setLoading(false);
@@ -131,8 +131,8 @@ const HomeScreen = ({}) => {
           
           {isModalVisible && <ModalFilter
             setTeam={setTeam}
-            onToggleModal={onToggleModal}
             isModalVisible={isModalVisible}
+            setModalVisible={setModalVisible}
             immutableTeam={immutableTeam}
           />}
         </View>
@@ -153,6 +153,8 @@ const HomeScreen = ({}) => {
       </View>
       <View style={css`background-color: #fafafa`}>
         <FlatList
+          // onEndReached={onEndReachedHandler}
+          // onEndReachedThreshold={0.3}
           disableVirtualization={false} //비정상적인 스크롤 동작을 방지하려고
           style={css`height: 400px`}
           keyExtractor={(item, index) => index.toString()}
@@ -164,8 +166,6 @@ const HomeScreen = ({}) => {
               <TeamInfo team={item} />
             </View>
           )}
-          onEndReached={onEndReachedHandler}
-          onEndReachedThreshold={0.3}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }></FlatList>
