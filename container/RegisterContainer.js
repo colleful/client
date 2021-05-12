@@ -1,20 +1,14 @@
 import React, { useEffect, useCallback } from 'react';
 import {Alert} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {changeField, initializeForm, register, sendAuthEmail, confirmAuthEmail, authEmailInitialize, confirmAuthEmailInitialize, emailValidStatus} from '../reducers/auth';
+import {changeField, initializeForm, register, sendAuthEmail, confirmAuthEmail} from '../reducers/auth';
 import RegisterScreen from '../screens/auth/RegisterScreen';
 
 const RegisterContainer = ({navigation}) => {
   const dispatch = useDispatch();
-  const { emailValid, form, auth, authError, emailAuth, emailAuthError, confirmEmail, confirmEmailError } = useSelector(({ auth }) => ({
-    emailValid: auth.emailValid,
+  const {form, auth, authError, emailAuth, emailAuthError, confirmEmail, confirmEmailError } = useSelector(({ auth }) => ({
     form: auth.register,
-    auth: auth.auth,
-    authError: auth.authError,
-    emailAuth: auth.emailAuth,
-    emailAuthError: auth.emailAuthError,
-    confirmEmail: auth.confirmEmail,
-    confirmEmailError: auth.confirmEmailError
+    ...auth,
   }));
 
   const onCreateAddress = useCallback((text) => {
@@ -186,7 +180,7 @@ const RegisterContainer = ({navigation}) => {
       dispatch(changeField({ form: 'register', key: 'passwordConfirm', value: '' }));
       return;
     }
-    if (!emailValid) {
+    if (confirmEmail !== '') {
       Alert.alert('회원가입 실패', '인증되지 않은 이메일입니다', [
         { 
           text: '확인',
@@ -195,7 +189,7 @@ const RegisterContainer = ({navigation}) => {
       return;
     }
     dispatch(register({ email, password, nickname, birthYear, gender, departmentId, selfIntroduction }));
-    dispatch(emailValidStatus({form: 'emailValid', value: false}));
+    dispatch(initializeForm('confirmEmail'));
   },[dispatch, form]);
 
   useEffect(() => {
@@ -219,6 +213,7 @@ const RegisterContainer = ({navigation}) => {
       Alert.alert('회원가입 완료', '회원가입을 완료했습니다', [
         { text: '확인', onPress:() => navigation.navigate('LoginContainer')},
       ])
+      return;
     }
     if(emailAuthError) {
       Alert.alert('에러발생', `${emailAuthError.response.data.message}`, [
@@ -235,7 +230,7 @@ const RegisterContainer = ({navigation}) => {
           text: '확인',
         },
       ])
-      dispatch(authEmailInitialize(null));
+      dispatch(initializeForm('emailAuth'));
       return;
     }
     if(confirmEmailError) {
@@ -253,8 +248,6 @@ const RegisterContainer = ({navigation}) => {
           text: '확인',
         },
       ])
-      dispatch(emailValidStatus({form: 'emailValid', value: true}));
-      dispatch(confirmAuthEmailInitialize(null));
       return;
     }
   }, [auth, authError, emailAuthError, emailAuth, confirmEmailError, confirmEmail]);

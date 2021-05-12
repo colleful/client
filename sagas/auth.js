@@ -131,7 +131,7 @@ function* changePassword(action) {
   }
 }
 
-// 이벤트 리스너 같은 역할, 리듀서에서 request 액션을 감지하고 change
+// 이벤트 리스너 역할
 
 function* watchRegister() {
   yield takeLatest(REGISTER_REQUEST, register);

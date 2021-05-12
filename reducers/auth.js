@@ -29,43 +29,31 @@ const initialState = {
   authLoading: false,
   authError: null,
 
-  emailAuth: null, // 회원가입용 이메일 인증 보내기 api 데이터
+  emailAuth: null, // 회원가입용 이메일 인증 보내기 성공하면 '', 아니면 null
   emailAuthLoading: false,
   emailAuthError: null,
 
-  confirmEmail: null, // 회원가입용 이메일 인증 확인 api 데이터
+  confirmEmail: null, // 회원가입용 이메일 인증 확인 성공하면 '', 아니면 null
   confirmEmailLoading: false,
   confirmEmailError: null,
 
-  passwordEmailAuth: null, // 비밀번호 찾기 이메일 인증 보내기 api 데이터
+  passwordEmailAuth: null, // 비밀번호 찾기 이메일 인증 보내기 성공하면 '', 아니면 null
   passwordEmailAuthLoading: false,
   passwordEmailAuthError: null,
 
-  passwordConfirmEmail: null, // 비밀번호 찾기 이메일 인증 확인 api 데이터
+  passwordConfirmEmail: null, // 비밀번호 찾기 이메일 인증 확인 성공하면 '', 아니면 null
   passwordConfirmEmailLoading: false,
   passwordConfirmEmailError: null,
 
-  passwordChange: null, // 비밀번호 변경 api 데이터
+  passwordChange: null, // 비밀번호 변경 성공하면 '', 아니면 null
   passwordChangeLoading: false,
   passwordChangeError: null,
-
-  emailValid: false, // 회원가입용 이메일 인증 했는지 (view mode)
-
-  emailValidAtPasswordFind: false, // 비밀번호 찾기 이메일 인증 했는지 (view mode)
 };
 
 // 액션
 export const SET_LOGIN_STATE = 'SET_LOGIN_STATE';
 export const CHANGE_FIELD = 'CHANGE_FIELD';
 export const INITIALIZE_FORM = 'INITIALIZE_FORM';
-
-export const AUTH_EMAIL_INITIALIZE = 'AUTH_EMAIL_INITIALIZE';
-export const CONFIRM_AUTH_EMAIL_INITIALIZE = 'CONFIRM_AUTH_EMAIL_INITIALIZE';
-export const CONFIRM_PASSWORD_AUTH_EMAIL_INITIALIZE =
-  'CONFIRM_PASSWORD_AUTH_EMAIL_INITIALIZE';
-export const PASSWORD_EMAIL_AUTH_INITIALIZE = 'PASSWORD_EMAIL_AUTH_INITIALIZE';
-export const PASSWORD_CHANGE_INITIALIZE = 'PASSWORD_CHANGE_INITIALIZE';
-export const EMAIL_VALID_STATUS = 'EMAIL_VALID_STATUS';
 
 // API 액션
 export const REGISTER_REQUEST = 'REGISTER_REQUEST';
@@ -115,25 +103,8 @@ export const initializeForm = (data) => ({
   type: INITIALIZE_FORM,
   data,
 });
-export const authEmailInitialize = () => ({
-  type: AUTH_EMAIL_INITIALIZE,
-});
 
-export const confirmAuthEmailInitialize = () => ({
-  type: CONFIRM_AUTH_EMAIL_INITIALIZE,
-});
-export const confirmPasswordAuthEmailInitialize = () => ({
-  type: CONFIRM_PASSWORD_AUTH_EMAIL_INITIALIZE,
-});
-export const passwordChangeInitialize = () => ({
-  type: PASSWORD_CHANGE_INITIALIZE,
-});
-export const emailValidStatus = (data) => ({type: EMAIL_VALID_STATUS, data});
-export const passwordEmailAuthInitialize = () => ({
-  type: PASSWORD_EMAIL_AUTH_INITIALIZE,
-});
-
-//API 액션 생성 함수  - 이걸 request로 불러오기를 할까 아니면 액션 생성 함수로 만들어서 불러올까 선택하다가 이렇게함
+//API 액션 생성 함수
 export const register = (data) => ({
   type: REGISTER_REQUEST,
   data,
@@ -155,7 +126,7 @@ export const confirmPasswordAuthEmail = (data) => ({
   data,
 });
 export const sendAuthEmailForPasswordChange = (data) => ({
-  type: SEND_AUTH_EMAIL_FOR_PASSWORD_CHANGE_REQUEST_REQUEST,
+  type: SEND_AUTH_EMAIL_FOR_PASSWORD_CHANGE_REQUEST,
   data,
 });
 export const changePassword = (data) => ({
@@ -174,7 +145,7 @@ const reducer = (state = initialState, action) =>
         draft[action.data.form][action.data.key] = action.data.value;
         break;
       case INITIALIZE_FORM:
-        draft[action.data.form] = initialState[action.data.form];
+        draft[action.data] = initialState[action.data];
         draft.emailValid = false;
         draft.authError = null;
         break;
@@ -220,9 +191,6 @@ const reducer = (state = initialState, action) =>
         draft.emailAuthLoading = false;
         draft.emailAuthError = action.error;
         break;
-      case AUTH_EMAIL_INITIALIZE:
-        draft.emailAuth = action.data;
-        break;
       case CONFIRM_AUTH_EMAIL_REQUEST:
         draft.confirmEmailLoading = true;
         draft.confirmEmail = null;
@@ -244,7 +212,7 @@ const reducer = (state = initialState, action) =>
         break;
       case CONFIRM_PASSWORD_AUTH_EMAIL_SUCCESS:
         draft.passwordConfirmEmailLoading = false;
-        draft.passwordConfirmEmail = action.data;
+        draft.passwordConfirmEmail = action.data; // 성공하면 ''이 들어옴
         draft.passwordConfirmEmailError = null;
         break;
       case CONFIRM_PASSWORD_AUTH_EMAIL_FAILURE:
@@ -278,21 +246,6 @@ const reducer = (state = initialState, action) =>
       case CHANGE_PASSWORD_FAILURE:
         draft.passwordChangeLoading = false;
         draft.passwordChangeError = action.error;
-        break;
-      case PASSWORD_EMAIL_AUTH_INITIALIZE:
-        draft.passwordEmailAuth = action.data;
-        break;
-      case CONFIRM_AUTH_EMAIL_INITIALIZE:
-        draft.confirmEmail = action.data;
-        break;
-      case CONFIRM_PASSWORD_AUTH_EMAIL_INITIALIZE:
-        draft.passwordConfirmEmail = action.data;
-        break;
-      case PASSWORD_CHANGE_INITIALIZE:
-        draft.passwordChange = action.data;
-        break;
-      case EMAIL_VALID_STATUS:
-        draft[action.data.form] = action.data.value;
         break;
       default:
         break;

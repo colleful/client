@@ -1,43 +1,29 @@
 import React, {useEffect, useCallback} from 'react';
 import {Alert} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {changeField, initializeForm, login, setLoginState, sendAuthEmailForPasswordChange, emailValidStatus, changePassword, confirmPasswordAuthEmail, confirmPasswordAuthEmailInitialize, passwordEmailAuthInitialize, passwordChangeInitialize} from '../reducers/auth';
+import {changeField, initializeForm, login, setLoginState, sendAuthEmailForPasswordChange, changePassword, confirmPasswordAuthEmail} from '../reducers/auth';
 import LoginScreen from '../screens/auth/LoginScreen';
 import AsyncStorage from '@react-native-community/async-storage';
 // import * as Keychain from 'react-native-keychain'; AsyncStorage은 안전하지않음, keychain 적용해야 안전
 // 계정페이지에서 본인인증을 하기위해 또 다시 패스워드를 칠때 password를 asyncstorage에 저장했는데,, 문제될거같음. 다시한번 생각해보기
 const LoginContainer = ({navigation}) => {
-  const { form, password, forgetPassword, auth, authError, passwordConfirmEmail, passwordConfirmEmailError, passwordEmailAuth, passwordEmailAuthError, passwordChange, passwordChangeError} = useSelector(({auth}) => ({
+  const {
+    form,
+    password,
+    forgetPassword,
+    auth,
+    authError,
+    passwordConfirmEmail,
+    passwordConfirmEmailError,
+    passwordEmailAuth,
+    passwordEmailAuthError,
+    passwordChange,
+    passwordChangeError,
+  } = useSelector(({auth}) => ({
     form: auth.login,
     password: auth.login.password,
-    forgetPassword: auth.forgetPassword,
-    auth: auth.auth,
-    authError: auth.authError,
-    passwordConfirmEmail: auth.passwordConfirmEmail,
-    passwordConfirmEmailError: auth.passwordConfirmEmailError,
-    passwordEmailAuth: auth.passwordEmailAuth,
-    passwordEmailAuthError: auth.passwordEmailAuthError,
-    passwordChange: auth.passwordChange,
-    passwordChangeError: auth.passwordChangeError,
+    ...auth,
   }));
-
-  // const {
-  //   form,
-  //   password,
-  //   forgetPassword,
-  //   auth,
-  //   authError,
-  //   passwordConfirmEmail,
-  //   passwordConfirmEmailError,
-  //   passwordEmailAuth,
-  //   passwordEmailAuthError,
-  //   passwordChange,
-  //   passwordChangeError,
-  // } = useSelector(({auth}) => ({
-  //   form: auth.login,
-  //   password: auth.login.password,
-  //   ...auth,
-  // }));
 
   const dispatch = useDispatch();
 
@@ -146,7 +132,6 @@ const LoginContainer = ({navigation}) => {
       return;
     }
     dispatch(login({email, password}));
-    dispatch(emailValidStatus({form: 'emailValidAtPasswordFind', value: false}));
   },[dispatch, form]);
 
   const onSubmitChangePassword = useCallback(() => {
@@ -170,6 +155,8 @@ const LoginContainer = ({navigation}) => {
       return;
     }
     dispatch(changePassword({email, password}));
+    dispatch(initializeForm('forgetPassword'));
+    dispatch(initializeForm('passwordConfirmEmail'))
   },[dispatch, forgetPassword]);
 
   const storeToken = async (value) => {
@@ -189,11 +176,6 @@ const LoginContainer = ({navigation}) => {
   };
 
   useEffect(() => {
-    dispatch(initializeForm('login'));
-    dispatch(initializeForm('forgetPassword'));
-  }, [dispatch]);
-
-  useEffect(() => {
     if (authError) {
       Alert.alert('로그인 오류', `${authError.response.data.message}`, [
         {
@@ -205,12 +187,14 @@ const LoginContainer = ({navigation}) => {
       return;
     }
     if(auth){
-      if (auth.hasOwnProperty('authorization')) { // auth.hasOwnProperty('token') 해준이유 : auth를 공용자원으로 사용중, 회원가입하면 login의 auth까지 사용돼서 여기에 씀. 위 if문에 && 연산자로 같이 쓰면 이미 hasOwnProperty는 null이 되기떄문에 안됨 
-        console.log('로그인 성공');
+      if (auth.hasOwnProperty('authorization')) { 
         storeToken(auth.authorization); // auth === response.data
         storePassword(password);
+        console.log(password);
         dispatch(setLoginState(true));
         dispatch(initializeForm('auth'));
+        dispatch(initializeForm('login'));
+        console.log('로그인 성공');
       }
     }
     if(passwordEmailAuthError) {
@@ -223,13 +207,12 @@ const LoginContainer = ({navigation}) => {
       return;
     }
     if(passwordEmailAuth === '') {
-      console.log(passwordEmailAuth)
       Alert.alert('이메일 인증 보내기 성공', '인증번호를 전송 했습니다. 메일함을 확인하고 인증번호를 입력해주세요', [
         { 
           text: '확인',
         },
       ])
-      dispatch(passwordEmailAuthInitialize(null))
+      dispatch(initializeForm('passwordEmailAuth'));
       return;
     }
     if(passwordConfirmEmailError) {
@@ -247,8 +230,6 @@ const LoginContainer = ({navigation}) => {
           text: '확인',
         },
       ])
-      dispatch(emailValidStatus({form: 'emailValidAtPasswordFind', value: true}))
-      dispatch(confirmPasswordAuthEmailInitialize(null));
       return;
     }
     if(passwordChangeError) {
@@ -267,7 +248,6 @@ const LoginContainer = ({navigation}) => {
           text: '확인',
         },
       ])
-      dispatch(passwordChangeInitialize(null));
     }
 
   }, [auth, authError, passwordConfirmEmail, passwordConfirmEmailError, passwordEmailAuth, passwordEmailAuthError, passwordChange, passwordChangeError, dispatch]);

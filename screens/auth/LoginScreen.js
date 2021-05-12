@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {
   View,
   Text,
@@ -10,7 +10,7 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modal';
 import {useSelector, useDispatch} from 'react-redux';
-import {emailValidStatus} from '../../reducers/auth';
+import {initializeForm} from '../../reducers/auth';
 import {useForm, Controller} from 'react-hook-form';
 import { css } from '@emotion/native';
 
@@ -31,10 +31,22 @@ const LoginScreen = ({
 }) => {
   const [isPasswordVisible, setPasswordVisible] = useState(true);
   const [isModalVisible, setModalVisible] = useState(false);
-
-  const {emailValidAtPasswordFind, authLoading} = useSelector(state => state.auth);
-
+  const {
+    passwordConfirmEmail,
+    authLoading,
+    passwordEmailAuthLoading,
+    passwordConfirmEmailLoading,
+    passwordChangeLoading,
+    passwordChange
+  } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if(passwordChange === ''){
+      dispatch(initializeForm('passwordChange'));
+      toggleModal();
+    }
+  },[passwordChange]);
 
   const visibleText = useCallback(() => {
     setPasswordVisible(prev => !prev);
@@ -53,25 +65,10 @@ const LoginScreen = ({
     navigation.navigate('RegisterContainer');
   },[]);
 
-  const changePasswordHandler = useCallback(() => {
-    onSubmitChangePassword();
-    dispatch(
-      emailValidStatus({
-        form: 'emailValidAtPasswordFind',
-        value: false,
-      }),
-    );
-    toggleModal();
-  },[dispatch, onSubmitChangePassword, toggleModal]);
-
   const exitChangePasswordHandler = useCallback(() => {
     toggleModal();
-    dispatch(
-      emailValidStatus({
-        form: 'emailValidAtPasswordFind',
-        value: false,
-      }),
-    );
+    dispatch(initializeForm('passwordConfirmEmail'))
+    dispatch(initializeForm('forgetPassword'));
   },[dispatch, toggleModal]);
 
   const {control, handleSubmit, trigger, watch, errors} = useForm({ mode: 'onChange' });
@@ -198,6 +195,23 @@ const LoginScreen = ({
                 height: 250px;
                 borderRadius: 5px;
               `}>
+              {(passwordEmailAuthLoading || passwordConfirmEmailLoading || passwordChangeLoading) && (
+                <View
+                  style={css`
+                    position: absolute;
+                    left: 0;
+                    right: 0;
+                    top: 0;
+                    bottom: 0;
+                    opacity: 0.5;
+                    background-color: gray;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 99999;
+                  `}>
+                  <ActivityIndicator size="large" color="#0000ff" />
+                </View>
+              )}
               <View
                 style={css`
                   height: 50px;
@@ -206,7 +220,7 @@ const LoginScreen = ({
                   border-bottom-width: 0.5px;
                   border-color: gray;
                 `}>
-                {emailValidAtPasswordFind ? (
+                {passwordConfirmEmail === '' ? (
                   <Text style={css`font-size: 18px`}>비밀번호 변경</Text>
                 ) : (
                   <>
@@ -226,7 +240,7 @@ const LoginScreen = ({
                 `}>
                 <Text>나가기</Text>
               </TouchableOpacity>
-              {emailValidAtPasswordFind ? (
+              {passwordConfirmEmail === '' ? (
                 <View
                   style={css`
                     align-items: center;
@@ -273,7 +287,7 @@ const LoginScreen = ({
                       margin-top: 5px;
                       width: 66px;
                     `}
-                    onPress={changePasswordHandler}
+                    onPress={onSubmitChangePassword}
                     >
                     <Text style={css`color: white; text-align: center`}>변경하기</Text>
                   </TouchableOpacity>

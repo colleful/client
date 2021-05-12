@@ -176,7 +176,7 @@ const AccountScreen = ({navigation, myInfoData}) => {
   const logoutHandler = useCallback(() => {
     AsyncStorage.removeItem('authorization');
     AsyncStorage.removeItem('userPassword');
-    dispatch(setLoginState(false)); // dispatch로 token값 변경하면 구독한 listener(SwitchNavigator)에 가서 바뀐 token값을 변경
+    dispatch(setLoginState(false));
   },[dispatch]);
 
   const deleteUserHandler = useCallback(() => {
