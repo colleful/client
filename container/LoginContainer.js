@@ -105,7 +105,7 @@ const LoginContainer = ({navigation}) => {
 
   const onSubmitLogin = useCallback(() => {
     const {email, password} = form;
-    if ([email].includes('')) {
+    if (!email || !email.trim()) {
       Alert.alert('로그인 실패', '아이디를 입력해주세요', [
         {
           text: '확인',
@@ -123,7 +123,7 @@ const LoginContainer = ({navigation}) => {
     //   return;
     // }
     
-    if ([password].includes('')) {
+    if (!password || !password.trim()) {
       Alert.alert('로그인 실패', '비밀번호를 입력해주세요', [
         {
           text: '확인',
@@ -136,7 +136,7 @@ const LoginContainer = ({navigation}) => {
 
   const onSubmitChangePassword = useCallback(() => {
     const {email, password, passwordConfirm} = forgetPassword;
-    if([password].includes('')) {
+    if(!password || !password.trim()) {
       Alert.alert('비밀번호 변경 실패', '비밀번호를 입력해주세요', [
         {
           text: '확인',

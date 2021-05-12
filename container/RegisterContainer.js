@@ -162,7 +162,9 @@ const RegisterContainer = ({navigation}) => {
 
   const onSubmitRegister = useCallback(() => {
     const { email, password, nickname, birthYear, gender, departmentId, selfIntroduction, passwordConfirm } = form;
-    if ([email, password, nickname, birthYear, gender, departmentId, selfIntroduction, passwordConfirm].includes('')) {
+    if ([email, password, nickname, birthYear, gender, departmentId, selfIntroduction, passwordConfirm].includes('')
+        || !email.trim() || !password.trim() || !nickname.trim() || !selfIntroduction.trim()|| !passwordConfirm.trim()) 
+    {
       Alert.alert('회원가입 실패', '빈 칸을 모두 입력해주세요', [
         { 
           text: '확인',
