@@ -13,6 +13,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import {initializeForm} from '../../reducers/auth';
 import {useForm, Controller} from 'react-hook-form';
 import { css } from '@emotion/native';
+import LoadingScreen from '../../components/LoadingScreen';
 
 const LoginScreen = ({
   navigation,
@@ -76,23 +77,6 @@ const LoginScreen = ({
 
   return (
     <>
-      {authLoading && (
-        <View
-          style={css`
-            position: absolute;
-            left: 0;
-            right: 0;
-            top: 0;
-            bottom: 0;
-            opacity: 0.5;
-            background-color: gray;
-            align-items: center;
-            justify-content: center;
-            z-index: 999;
-          `}>
-          <ActivityIndicator size="large" color="#0000ff" />
-        </View>
-      )}
       <View style={css`flex: 1; justify-content: center; align-items: center`}>
         <View style={css`align-items: center; margin-bottom: 15px`}>
           <Text style={css`align-self: flex-start; margin-bottom: 5px`}>
@@ -195,23 +179,9 @@ const LoginScreen = ({
                 height: 250px;
                 borderRadius: 5px;
               `}>
-              {(passwordEmailAuthLoading || passwordConfirmEmailLoading || passwordChangeLoading) && (
-                <View
-                  style={css`
-                    position: absolute;
-                    left: 0;
-                    right: 0;
-                    top: 0;
-                    bottom: 0;
-                    opacity: 0.5;
-                    background-color: gray;
-                    align-items: center;
-                    justify-content: center;
-                    z-index: 99999;
-                  `}>
-                  <ActivityIndicator size="large" color="#0000ff" />
-                </View>
-              )}
+              {(passwordEmailAuthLoading ||
+                passwordConfirmEmailLoading ||
+                passwordChangeLoading) && <LoadingScreen />}
               <View
                 style={css`
                   height: 50px;
@@ -388,6 +358,7 @@ const LoginScreen = ({
           </TouchableOpacity>
         </View>
       </View>
+      {authLoading && <LoadingScreen />}
     </>
   );
 };
