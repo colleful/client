@@ -10,18 +10,10 @@ import LoadingScreen from '../../../components/LoadingScreen';
 
 const RegisterScreen = ({form,getDepartmentId,getGender,getBirthYear,onSendAuthEmail, onCreateAddress, onChangeEmail, onChangePassword, onChangePasswordConfirm, onChangeNickname, onChangeSelfIntroduction,onChangeCode,onConfirmAuthEmail, onSubmitRegister, error}) => {
   const [visible, setVisible] = useState(true);
-  const [selectedDid, setSelectedDid] = useState({ //Did => DepartmentId
-    item: ''
-  });
-  const [selectedGender, setSelectedGender] = useState({
-    item: ''
-  })
-  const [selectedBirthYear, setSelectedBirthYear] = useState({
-    item: ''
-  })
-  const [selectedCollege, setSelectedCollege] = useState({
-    item: ''
-  })
+  const [selectedDepartmentId, setSelectedDepartmentId] = useState({});
+  const [selectedGender, setSelectedGender] = useState({})
+  const [selectedBirthYear, setSelectedBirthYear] = useState({})
+  const [selectedCollege, setSelectedCollege] = useState({})
   const [collegeData, setCollegeData] = useState([]);
   const [departmentData, setDepartmentData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
@@ -56,10 +48,10 @@ const RegisterScreen = ({form,getDepartmentId,getGender,getBirthYear,onSendAuthE
     // onCreateAddress(e.nativeEvent.text)
   }
 
-  let today = useRef(new Date().getFullYear()).current;
-  let yearData = useRef([]).current;
+  const today = useRef(new Date().getFullYear()).current;
+  const yearData = useRef([]).current;
   
-  const setYearData = (today,yearData) => {
+  const setYearData = (today, yearData) => {
     for(let i=today-20; i>=today-30; i--){
       yearData.push(String(i));
     }
@@ -89,7 +81,6 @@ const RegisterScreen = ({form,getDepartmentId,getGender,getBirthYear,onSendAuthE
   
   return (
     <>
-      {(authLoading || emailAuthLoading || confirmEmailLoading) && <LoadingScreen />}
       <ScrollView style={css`flex: 1`}>
         <View style={css`justify-content: center; align-items: center; margin-top: 20px`}>
           <View style={css`align-items:center`}>
@@ -283,11 +274,11 @@ const RegisterScreen = ({form,getDepartmentId,getGender,getBirthYear,onSendAuthE
             </Picker>
 
             <Picker
-              selectedValue={selectedDid.item}
+              selectedValue={selectedDepartmentId.item}
               style={css`height: 50px; width: 200px`}
               onValueChange={(itemValue, itemIndex) => { 
-                setSelectedDid({item: itemValue}); 
-                getDepartmentId(selectedDid.item);
+                setSelectedDepartmentId({item: itemValue}); 
+                getDepartmentId(selectedDepartmentId.item);
               }}
               mode="dropdown"
               >
@@ -358,6 +349,7 @@ const RegisterScreen = ({form,getDepartmentId,getGender,getBirthYear,onSendAuthE
 
         </View>
       </ScrollView>
+      {(authLoading || emailAuthLoading || confirmEmailLoading) && <LoadingScreen />}
     </>
   );
 };

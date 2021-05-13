@@ -14,10 +14,7 @@ const AccountScreen = ({navigation, myInfoData}) => {
   const [passwordForAuth, setPasswordForAuth] = useState();
   const [passwordForChange, setPasswordForChange] = useState();
   const [passwordForConfirm, setPasswordForConfirm] = useState();
-
-  const [selectedDepartment, setSelectedDepartment] = useState({
-    item: ''
-  });
+  const [selectedDepartment, setSelectedDepartment] = useState({});
   const [departmentData,setDepartmentData] = useState([]);
   const [sortedDepartmentName, setSortedDepartmentName] = useState([]);
   const [nicknameForChange, setNicknameForChange] = useState('');
