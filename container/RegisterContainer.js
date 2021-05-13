@@ -2,7 +2,7 @@ import React, { useEffect, useCallback } from 'react';
 import {Alert} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {changeField, initializeForm, register, sendAuthEmail, confirmAuthEmail} from '../reducers/auth';
-import RegisterScreen from '../screens/auth/RegisterScreen';
+import RegisterScreen from '../screens/auth/RegisterScreen/index';
 
 const RegisterContainer = ({navigation}) => {
   const dispatch = useDispatch();

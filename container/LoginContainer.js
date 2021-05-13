@@ -9,10 +9,9 @@ import AsyncStorage from '@react-native-community/async-storage';
 const LoginContainer = ({navigation}) => {
   const {
     form,
-    password,
-    forgetPassword,
     auth,
     authError,
+    forgetPassword,
     passwordConfirmEmail,
     passwordConfirmEmailError,
     passwordEmailAuth,
@@ -21,7 +20,6 @@ const LoginContainer = ({navigation}) => {
     passwordChangeError,
   } = useSelector(({auth}) => ({
     form: auth.login,
-    password: auth.login.password,
     ...auth,
   }));
 
@@ -189,8 +187,8 @@ const LoginContainer = ({navigation}) => {
     if(auth){
       if (auth.hasOwnProperty('authorization')) { 
         storeToken(auth.authorization); // auth === response.data
-        storePassword(password);
-        console.log(password);
+        storePassword(form.password);
+        console.log(form.password);
         dispatch(setLoginState(true));
         dispatch(initializeForm('auth'));
         dispatch(initializeForm('login'));
@@ -255,8 +253,6 @@ const LoginContainer = ({navigation}) => {
   return (
     <LoginScreen
       navigation={navigation}
-      form={form}
-      forgetPassword={forgetPassword}
       onChangeLoginEmail={onChangeLoginEmail}
       onChangeLoginPassword={onChangeLoginPassword}
       onSubmitLogin={onSubmitLogin}
