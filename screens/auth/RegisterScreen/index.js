@@ -1,12 +1,12 @@
 import React,{useState, useEffect, useCallback, useMemo, useRef} from 'react';
-import {View, ScrollView, Text, TextInput, TouchableOpacity, ActivityIndicator, StyleSheet} from 'react-native';
+import {View, ScrollView, Text, TextInput, TouchableOpacity, StyleSheet} from 'react-native';
 import {useSelector} from 'react-redux';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Picker} from '@react-native-community/picker';
-import * as authAPI from '../../lib/api';
+import * as authAPI from '../../../lib/api';
 import { useForm, Controller } from 'react-hook-form';
 import styled, { css } from '@emotion/native';
-import LoadingScreen from '../../components/LoadingScreen';
+import LoadingScreen from '../../../components/LoadingScreen';
 
 const RegisterScreen = ({form,getDepartmentId,getGender,getBirthYear,onSendAuthEmail, onCreateAddress, onChangeEmail, onChangePassword, onChangePasswordConfirm, onChangeNickname, onChangeSelfIntroduction,onChangeCode,onConfirmAuthEmail, onSubmitRegister, error}) => {
   const [visible, setVisible] = useState(true);
