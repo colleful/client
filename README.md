@@ -3,13 +3,17 @@
 ## 🌻 개요
 
 전북대학교 과팅 매칭 플랫폼 Colleful의 client repository.    
-College와 Colorful의 합성어로, 다채로운 대학 생활을 제공해 주겠다는 의미이다.     
- 
+College와 Colorful의 합성어로, 다채로운 대학 생활을 제공해 주겠다는 의미이다.
+
+## 📱 최적화 테스트 디바이스
+- **Android** (Samsung Galaxy S7)
+- ~IOS~ (맥북이 없어서 테스트를 하지 못함)
+
 ## 💡 기술 스택
 
-- react-native(함수형 컴포넌트 기반, Hooks API), react-navigation-v5
-- emotion.js
-- redux, redux-thunk, redux-saga
+- react-native(함수형 컴포넌트 기반), react-navigation-v5
+- emotion.js (BEM 방법론 적용)
+- redux, redux-saga
 - axios, SWR
 
 ## 🌴 브랜치 전략
@@ -30,8 +34,10 @@ College와 Colorful의 합성어로, 다채로운 대학 생활을 제공해 주
 <details markdown="1">
 <summary>접기 / 펼치기</summary>
 
+## (2021-05~ ) 구조 개선 후 다 바꿀 예정 🛠🛠🛠🛠
+
 📦client   
- ┣ 📂container &nbsp;&nbsp;`인증관련 컨테이너 컴포넌트`  
+ ┣ 📂container &nbsp;&nbsp;`인증관련 컨테이너 컴포넌트` 
  ┃  ┣ 📜LoginContainer.js        
  ┃  ┗ 📜RegisterContainer.js     
  ┃ 📂hooks &nbsp;&nbsp;`커스텀훅`   
