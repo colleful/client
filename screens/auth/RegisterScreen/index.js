@@ -1,21 +1,23 @@
 import React, {useState, useEffect, useCallback, useMemo, useRef} from 'react';
+import {View} from 'react-native';
 import {useSelector} from 'react-redux';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Picker} from '@react-native-community/picker';
+import {css} from '@emotion/native';
 import * as authAPI from '../../../lib/api';
 import {useForm, Controller} from 'react-hook-form';
 import LoadingScreen from '../../../components/LoadingScreen';
 import {RegisterWrapper, RegisterForm} from './style';
 import {
-  AuthForm_inputTitle,
-  AuthForm_inputContainer,
-  AuthForm_input,
-  AuthForm_errorMessage,
-  AuthForm_button,
-  AuthForm_buttonText,
-  AuthForm_pickerContainer,
-  AuthForm__marginBottom15,
-} from '../LoginScreen/style';
+  InputForm_title,
+  InputForm_container__borderWidth05,
+  InputForm_input,
+  InputForm_inputWithIcon,
+  InputForm_errorMessage,
+  InputForm_button,
+  InputForm_buttonText,
+  InputForm_pickerContainer,
+} from '../../../assets/css/InputForm';
 
 const RegisterScreen = ({
   getDepartmentId,
@@ -120,81 +122,85 @@ const RegisterScreen = ({
     <>
       <RegisterWrapper>
         <RegisterForm>
-          <AuthForm_inputTitle>이메일</AuthForm_inputTitle>
-          <AuthForm_inputContainer>
-            <Controller
-              control={control}
-              render={({value, onBlur, onChange}) => (
-                <AuthForm_input
-                  name="email"
-                  onBlur={onBlur}
-                  onChangeText={(value) => onChange(value)}
-                  value={(form.email, value)}
-                  onChange={onChangeEmail}
-                  onEndEditing={addToBehindText}
-                />
-              )}
-              name="email"
-              rules={{required: true, pattern: /^\S+@\S+$/i}}
-              defaultValue=""
-            />
-          </AuthForm_inputContainer>
+          <InputForm_title>이메일</InputForm_title>
+          <Controller
+            control={control}
+            render={({value, onBlur, onChange}) => (
+              <InputForm_input
+                name="email"
+                onBlur={onBlur}
+                onChangeText={(value) => onChange(value)}
+                value={(form.email, value)}
+                onChange={onChangeEmail}
+                onEndEditing={addToBehindText}
+              />
+            )}
+            name="email"
+            rules={{required: true, pattern: /^\S+@\S+$/i}}
+            defaultValue=""
+          />
           {errors.email && errors.email.type === 'required' && (
-            <AuthForm_errorMessage>
+            <InputForm_errorMessage>
               이메일을 입력해 주세요
-            </AuthForm_errorMessage>
+            </InputForm_errorMessage>
           )}
           {errors.email && errors.email.type === 'pattern' && (
-            <AuthForm_errorMessage>
+            <InputForm_errorMessage>
               이메일 형식에 맞게 작성 해주세요
-            </AuthForm_errorMessage>
+            </InputForm_errorMessage>
           )}
 
-          <AuthForm_button onPress={onSendAuthEmail}>
-            <AuthForm_buttonText>인증메일 전송</AuthForm_buttonText>
-          </AuthForm_button>
+          <InputForm_button onPress={onSendAuthEmail}>
+            <InputForm_buttonText>인증메일 전송</InputForm_buttonText>
+          </InputForm_button>
 
-          <AuthForm__marginBottom15 />
+          <View
+            style={css`
+              margin-bottom: 15px;
+            `}
+          />
 
-          <AuthForm_inputTitle>인증번호</AuthForm_inputTitle>
-          <AuthForm_inputContainer>
-            <Controller
-              control={control}
-              render={({value, onBlur, onChange}) => (
-                <AuthForm_input
-                  name="emailAuth"
-                  onBlur={onBlur}
-                  onChangeText={(value) => onChange(value)}
-                  value={(form.code, value)}
-                  onChange={onChangeCode}
-                />
-              )}
-              name="emailAuth"
-              rules={{required: true, pattern: /^[0-9]/g}}
-              defaultValue=""
-            />
-          </AuthForm_inputContainer>
+          <InputForm_title>인증번호</InputForm_title>
+          <Controller
+            control={control}
+            render={({value, onBlur, onChange}) => (
+              <InputForm_input
+                name="emailAuth"
+                onBlur={onBlur}
+                onChangeText={(value) => onChange(value)}
+                value={(form.code, value)}
+                onChange={onChangeCode}
+              />
+            )}
+            name="emailAuth"
+            rules={{required: true, pattern: /^[0-9]/g}}
+            defaultValue=""
+          />
           {errors.emailAuth && errors.emailAuth.type === 'required' && (
-            <AuthForm_errorMessage>
+            <InputForm_errorMessage>
               인증번호를 입력 해주세요
-            </AuthForm_errorMessage>
+            </InputForm_errorMessage>
           )}
           {errors.emailAuth && errors.emailAuth.type === 'pattern' && (
-            <AuthForm_errorMessage>숫자만 입력해주세요</AuthForm_errorMessage>
+            <InputForm_errorMessage>숫자만 입력해주세요</InputForm_errorMessage>
           )}
-          <AuthForm_button onPress={onConfirmAuthEmail}>
-            <AuthForm_buttonText>인증하기</AuthForm_buttonText>
-          </AuthForm_button>
+          <InputForm_button onPress={onConfirmAuthEmail}>
+            <InputForm_buttonText>인증하기</InputForm_buttonText>
+          </InputForm_button>
 
-          <AuthForm__marginBottom15 />
+          <View
+            style={css`
+              margin-bottom: 15px;
+            `}
+          />
 
-          <AuthForm_inputTitle>비밀번호</AuthForm_inputTitle>
+          <InputForm_title>비밀번호</InputForm_title>
 
-          <AuthForm_inputContainer>
+          <InputForm_container__borderWidth05>
             <Controller
               control={control}
               render={({value, onBlur, onChange}) => (
-                <AuthForm_input
+                <InputForm_inputWithIcon
                   name="password"
                   onBlur={onBlur}
                   onChangeText={(value) => onChange(value)}
@@ -216,23 +222,27 @@ const RegisterScreen = ({
             ) : (
               <Ionicons name="eye-outline" size={20} onPress={visibleText} />
             )}
-          </AuthForm_inputContainer>
+          </InputForm_container__borderWidth05>
 
           {errors.password && (
-            <AuthForm_errorMessage>
+            <InputForm_errorMessage>
               비밀번호를 입력해 주세요
-            </AuthForm_errorMessage>
+            </InputForm_errorMessage>
           )}
 
-          <AuthForm__marginBottom15 />
+          <View
+            style={css`
+              margin-bottom: 15px;
+            `}
+          />
 
-          <AuthForm_inputTitle>비밀번호확인</AuthForm_inputTitle>
+          <InputForm_title>비밀번호확인</InputForm_title>
 
-          <AuthForm_inputContainer>
+          <InputForm_container__borderWidth05>
             <Controller
               control={control}
               render={({value, onBlur, onChange}) => (
-                <AuthForm_input
+                <InputForm_inputWithIcon
                   name="passwordConfirm"
                   onBlur={onBlur}
                   onChangeText={(value) => onChange(value)}
@@ -254,152 +264,176 @@ const RegisterScreen = ({
             ) : (
               <Ionicons name="eye-outline" size={20} onPress={visibleText} />
             )}
-          </AuthForm_inputContainer>
+          </InputForm_container__borderWidth05>
           {errors.passwordConfirm && (
-            <AuthForm_errorMessage>
+            <InputForm_errorMessage>
               비밀번호를 입력해 주세요
-            </AuthForm_errorMessage>
+            </InputForm_errorMessage>
           )}
 
-          <AuthForm__marginBottom15 />
+          <View
+            style={css`
+              margin-bottom: 15px;
+            `}
+          />
 
-          <AuthForm_inputTitle>닉네임</AuthForm_inputTitle>
+          <InputForm_title>닉네임</InputForm_title>
 
-          <AuthForm_inputContainer>
-            <Controller
-              control={control}
-              render={({value, onBlur, onChange}) => (
-                <AuthForm_input
-                  onBlur={onBlur}
-                  onChangeText={(value) => onChange(value)}
-                  value={(form.nickname, value)}
-                  onChange={onChangeNickname}
-                />
-              )}
-              name="nickname"
-              rules={{required: true, maxLength: 10}}
-              defaultValue=""
-            />
-          </AuthForm_inputContainer>
+          <Controller
+            control={control}
+            render={({value, onBlur, onChange}) => (
+              <InputForm_input
+                onBlur={onBlur}
+                onChangeText={(value) => onChange(value)}
+                value={(form.nickname, value)}
+                onChange={onChangeNickname}
+              />
+            )}
+            name="nickname"
+            rules={{required: true, maxLength: 10}}
+            defaultValue=""
+          />
           {errors.nickname && errors.nickname.type === 'required' && (
-            <AuthForm_errorMessage>
+            <InputForm_errorMessage>
               닉네임을 입력 해주세요
-            </AuthForm_errorMessage>
+            </InputForm_errorMessage>
           )}
           {errors.nickname && errors.nickname.type === 'maxLength' && (
-            <AuthForm_errorMessage>
+            <InputForm_errorMessage>
               닉네임은 최대 10자까지 가능합니다
-            </AuthForm_errorMessage>
+            </InputForm_errorMessage>
           )}
 
-          <AuthForm__marginBottom15 />
+          <View
+            style={css`
+              margin-bottom: 15px;
+            `}
+          />
 
-          <AuthForm_inputTitle>출생연도</AuthForm_inputTitle>
+          <InputForm_title>출생연도</InputForm_title>
 
-          <AuthForm_pickerContainer
-            selectedValue={selectedBirthYear.item}
-            onValueChange={(itemValue, itemIndex) => {
-              setSelectedBirthYear({item: itemValue});
-              getBirthYear(selectedBirthYear.item);
-            }}
-            mode="dropdown">
-            <Picker.Item label="출생연도" />
-            {yearList.map((datas) => (
-              <Picker.Item label={datas} value={datas} key={datas} />
-            ))}
-          </AuthForm_pickerContainer>
+          <InputForm_container__borderWidth05>
+            <InputForm_pickerContainer
+              selectedValue={selectedBirthYear.item}
+              onValueChange={(itemValue, itemIndex) => {
+                setSelectedBirthYear({item: itemValue});
+                getBirthYear(selectedBirthYear.item);
+              }}
+              mode="dropdown">
+              <Picker.Item label="출생연도" />
+              {yearList.map((datas) => (
+                <Picker.Item label={datas} value={datas} key={datas} />
+              ))}
+            </InputForm_pickerContainer>
+          </InputForm_container__borderWidth05>
 
-          <AuthForm__marginBottom15 />
+          <View
+            style={css`
+              margin-bottom: 15px;
+            `}
+          />
 
-          <AuthForm_inputTitle>소속학과</AuthForm_inputTitle>
+          <InputForm_title>소속학과</InputForm_title>
 
-          <AuthForm_pickerContainer
-            selectedValue={selectedCollege.item}
-            onValueChange={(itemValue, itemIndex) => {
-              setSelectedCollege({item: itemValue});
-              setFilteredData(
-                departmentData.filter(
-                  (datas) => datas.collegeName === selectedCollege.item,
-                ),
-              );
-            }}
-            mode="dropdown">
-            <Picker.Item label="단과대학" />
-            {collegeData.map((datas) => (
-              <Picker.Item label={datas} value={datas} key={datas} />
-            ))}
-          </AuthForm_pickerContainer>
+          <InputForm_container__borderWidth05>
+            <InputForm_pickerContainer
+              selectedValue={selectedCollege.item}
+              onValueChange={(itemValue, itemIndex) => {
+                setSelectedCollege({item: itemValue});
+                setFilteredData(
+                  departmentData.filter(
+                    (datas) => datas.collegeName === selectedCollege.item,
+                  ),
+                );
+              }}
+              mode="dropdown">
+              <Picker.Item label="단과대학" />
+              {collegeData.map((datas) => (
+                <Picker.Item label={datas} value={datas} key={datas} />
+              ))}
+            </InputForm_pickerContainer>
+          </InputForm_container__borderWidth05>
 
-          <AuthForm_pickerContainer
-            selectedValue={selectedDepartmentId.item}
-            onValueChange={(itemValue, itemIndex) => {
-              setSelectedDepartmentId({item: itemValue});
-              getDepartmentId(selectedDepartmentId.item);
-            }}
-            mode="dropdown">
-            {selectedCollege.item ? (
-              <Picker.Item label="소속학과 선택" />
-            ) : (
-              <Picker.Item label="단과대학을 먼저 선택해주세요" />
-            )}
-            {filteredData.map((datas) => (
-              <Picker.Item
-                label={datas.departmentName}
-                value={datas.id}
-                key={datas.id}
-              />
-            ))}
-          </AuthForm_pickerContainer>
-
-          <AuthForm__marginBottom15 />
-
-          <AuthForm_inputTitle>성별</AuthForm_inputTitle>
-
-          <AuthForm_pickerContainer
-            selectedValue={selectedGender.item}
-            onValueChange={(itemValue, itemIndex) => {
-              setSelectedGender({item: itemValue});
-              getGender(selectedGender.item);
-            }}
-            mode="dialog">
-            <Picker.Item label="성별" />
-            <Picker.Item label="남자" value="MALE" />
-            <Picker.Item label="여자" value="FEMALE" />
-          </AuthForm_pickerContainer>
-
-          <AuthForm__marginBottom15 />
-
-          <AuthForm_inputTitle>자기소개</AuthForm_inputTitle>
-
-          <AuthForm_inputContainer>
-            <Controller
-              control={control}
-              render={({value, onBlur, onChange}) => (
-                <AuthForm_input
-                  name="selfIntroduction"
-                  onBlur={onBlur}
-                  onChangeText={(value) => onChange(value)}
-                  value={(form.selfIntroduction, value)}
-                  onChange={onChangeSelfIntroduction}
-                  textAlignVertical={'top'}
-                  multiline
-                />
+          <InputForm_container__borderWidth05>
+            <InputForm_pickerContainer
+              selectedValue={selectedDepartmentId.item}
+              onValueChange={(itemValue, itemIndex) => {
+                setSelectedDepartmentId({item: itemValue});
+                getDepartmentId(selectedDepartmentId.item);
+              }}
+              mode="dropdown">
+              {selectedCollege.item ? (
+                <Picker.Item label="소속학과 선택" />
+              ) : (
+                <Picker.Item label="단과대학을 먼저 선택해주세요" />
               )}
-              name="selfIntroduction"
-              rules={{required: true}}
-              defaultValue=""
-            />
-          </AuthForm_inputContainer>
+              {filteredData.map((datas) => (
+                <Picker.Item
+                  label={datas.departmentName}
+                  value={datas.id}
+                  key={datas.id}
+                />
+              ))}
+            </InputForm_pickerContainer>
+          </InputForm_container__borderWidth05>
+
+          <View
+            style={css`
+              margin-bottom: 15px;
+            `}
+          />
+
+          <InputForm_title>성별</InputForm_title>
+
+          <InputForm_container__borderWidth05>
+            <InputForm_pickerContainer
+              selectedValue={selectedGender.item}
+              onValueChange={(itemValue, itemIndex) => {
+                setSelectedGender({item: itemValue});
+                getGender(selectedGender.item);
+              }}
+              mode="dialog">
+              <Picker.Item label="성별" />
+              <Picker.Item label="남자" value="MALE" />
+              <Picker.Item label="여자" value="FEMALE" />
+            </InputForm_pickerContainer>
+          </InputForm_container__borderWidth05>
+
+          <View
+            style={css`
+              margin-bottom: 15px;
+            `}
+          />
+
+          <InputForm_title>자기소개</InputForm_title>
+
+          <Controller
+            control={control}
+            render={({value, onBlur, onChange}) => (
+              <InputForm_input
+                name="selfIntroduction"
+                onBlur={onBlur}
+                onChangeText={(value) => onChange(value)}
+                value={(form.selfIntroduction, value)}
+                onChange={onChangeSelfIntroduction}
+                textAlignVertical={'top'}
+                multiline
+              />
+            )}
+            name="selfIntroduction"
+            rules={{required: true}}
+            defaultValue=""
+          />
 
           {errors.selfIntroduction && (
-            <AuthForm_errorMessage>
+            <InputForm_errorMessage>
               닉네임을 입력 해주세요
-            </AuthForm_errorMessage>
+            </InputForm_errorMessage>
           )}
 
-          <AuthForm_button onPress={registerHandler}>
-            <AuthForm_buttonText>🎉회원가입🎉</AuthForm_buttonText>
-          </AuthForm_button>
+          <InputForm_button onPress={registerHandler}>
+            <InputForm_buttonText>🎉회원가입🎉</InputForm_buttonText>
+          </InputForm_button>
         </RegisterForm>
       </RegisterWrapper>
 

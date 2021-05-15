@@ -4,7 +4,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import MyPageScreen from './MyPageScreen';
 import MessageScreen from './MyPageStack/MessageScreen';
 import TeamListScreen from './MyPageStack/TeamList/TeamListScreen';
-import AccountScreen from './MyPageStack/Account/AccountScreen';
+import AccountScreen from './MyPageStack/Account/index';
 import SuggestionScreen from './MyPageStack/SuggestionScreen';
 import NoticeScreen from './MyPageStack/NoticeScreen';
 import SettingScreen from './MyPageStack/SettingScreen';

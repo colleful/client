@@ -44,7 +44,7 @@ export const ModalForm_input = styled.TextInput`
 `;
 
 export const ModalForm_button = styled.TouchableOpacity`
-  background-color: #5e5e5e;
+  background-color: #5e5e5e; 
   border-radius: 5px;
   width: 100%;
   margin-bottom: 10px;
