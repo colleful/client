@@ -10,7 +10,7 @@ import NoticeScreen from './MyPageStack/NoticeScreen';
 import SettingScreen from './MyPageStack/SettingScreen';
 import AddTeamScreen from './MyPageStack/AddTeam/AddTeamScreen';
 import InvitationScreen from './MyPageStack/TeamList/InvitationScreen';
-import ReceivedInvitationListScreen from './MyPageStack/ReceivedInvitationList/ReceivedInvitationListScreen';
+import ReceivedInvitationScreen from './MyPageStack/ReceivedInvitationList/ReceivedInvitationScreen/index';
 import SentInvitationListScreen from './MyPageStack/SentInvitationList/SentInvitationListScreen';
 import ReceivedMatchingLIstScreen from './MyPageStack/ReceivedMatchingList/ReceivedMatchingListScreen';
 import SentMatchingListScreen from './MyPageStack/SentMatchingList/SentMatchingListScreen';
@@ -72,7 +72,7 @@ const MypageNavigator = ({navigation, userData}) => {
       </MyPageStack.Screen>
       <MyPageStack.Screen name="받은초대목록">
         {(props) => (
-          <ReceivedInvitationListScreen {...props} navigation={navigation} />
+          <ReceivedInvitationScreen {...props} navigation={navigation} />
         )}
       </MyPageStack.Screen>
       <MyPageStack.Screen name="보낸초대목록">

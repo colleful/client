@@ -1,14 +1,22 @@
 import React, {useEffect, useCallback} from 'react';
-import {View, Text, TouchableOpacity, Alert} from 'react-native';
+import {Alert} from 'react-native';
 import {trigger} from 'swr';
-import {Config} from '../../../../Config';
-import {css} from '@emotion/native';
+import {Config} from '../../../../../Config';
 import {useDispatch, useSelector} from 'react-redux';
-import {LOAD_USER_REQUEST} from '../../../../reducers/user';
+import {LOAD_USER_REQUEST} from '../../../../../reducers/user';
 import {
   ACCEPT_INVITATION_REQUEST,
   REFUSE_INVITATION_REQUEST,
-} from '../../../../reducers/invite';
+} from '../../../../../reducers/invite';
+
+import {
+  InvitationList_buttonWrapper,
+  InvitationList_button,
+  InvitationList_buttonText,
+  InvitationList_content,
+} from './style';
+
+import {InvitationList_boundary} from '../ReceivedInvitationScreen/style';
 
 const ReceivedInvitationListItemScreen = ({receivedInvitationList}) => {
   const dispatch = useDispatch();
@@ -103,70 +111,29 @@ const ReceivedInvitationListItemScreen = ({receivedInvitationList}) => {
       type: REFUSE_INVITATION_REQUEST,
       data: receivedInvitationList.id,
     });
-  },[dispatch]);
+  }, [dispatch]);
 
   return (
     <>
       {inviterInfo && (
-        <Text
-          style={css`
-            font-size: 19px;
-            line-height: 30px;
-          `}>
+        <InvitationList_content>
           팀명 : {receivedInvitationList.team.teamName} {'\n'}리더 :{' '}
           {inviterInfo.nickname} {'( '}
           {inviterInfo.age}
           {', '}
           {inviterInfo.department}
           {' )'}
-        </Text>
+        </InvitationList_content>
       )}
-      <View
-        style={css`
-          flex-direction: row;
-          justify-content: center;
-          margin-top: 20px;
-        `}>
-        <TouchableOpacity
-          onPress={onAcceptInvitation}
-          style={css`
-            background-color: #5e5e5e;
-            border-radius: 5px;
-            margin-right: 20px;
-            padding: 10px 18px;
-            width: 61px;
-          `}>
-          <Text
-            style={css`
-              color: #fff;
-              font-weight: 500;
-            `}>
-            수락
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={onRefuseInvitation}
-          style={css`
-            background-color: #5e5e5e;
-            border-radius: 5px;
-            padding: 10px 18px;
-            width: 61px;
-          `}>
-          <Text
-            style={css`
-              color: #fff;
-              font-weight: 500;
-            `}>
-            거절
-          </Text>
-        </TouchableOpacity>
-      </View>
-      <View
-        style={css`
-          border-bottom-width: 1px;
-          margin-vertical: 20px;
-        `}
-      />
+      <InvitationList_buttonWrapper>
+        <InvitationList_button onPress={onAcceptInvitation}>
+          <InvitationList_buttonText>수락</InvitationList_buttonText>
+        </InvitationList_button>
+        <InvitationList_button onPress={onRefuseInvitation}>
+          <InvitationList_buttonText>거절</InvitationList_buttonText>
+        </InvitationList_button>
+      </InvitationList_buttonWrapper>
+      <InvitationList_boundary />
     </>
   );
 };
