@@ -7,9 +7,9 @@ import {
   LOAD_USER_FAILURE,
 } from '../reducers/user';
 
-function* loadUser() {
+function* loadUser(action) {
   try {
-    const result = yield call(authAPI.getUserInfo);
+    const result = yield call(authAPI.getUserInfo, action.data);
     yield put({
       type: LOAD_USER_SUCCESS,
       data: result.data,

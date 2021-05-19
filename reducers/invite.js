@@ -26,7 +26,7 @@ const reducer = (state = initialState, action) =>
         break;
       case ACCEPT_INVITATION_SUCCESS:
         draft.acceptInvitationLoading = false;
-        draft.acceptInvitationDone = action.data;
+        draft.acceptInvitationDone = true;
         draft.acceptInvitationError = null;
         break;
       case ACCEPT_INVITATION_FAILURE:
@@ -41,7 +41,7 @@ const reducer = (state = initialState, action) =>
         break;
       case REFUSE_INVITATION_SUCCESS:
         draft.refuseInvitationLoading = false;
-        draft.refuseInvitationDone = action.data;
+        draft.refuseInvitationDone = true;
         draft.refuseInvitationError = null;
         break;
       case REFUSE_INVITATION_FAILURE:

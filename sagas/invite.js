@@ -10,7 +10,7 @@ import {
   REFUSE_INVITATION_FAILURE,
 } from '../reducers/invite';
 
-function* acceptInvitation() {
+function* acceptInvitation(action) {
   try {
     const result = yield call(authAPI.acceptInvitation, action.data);
     yield put({
@@ -25,7 +25,7 @@ function* acceptInvitation() {
   }
 }
 
-function* refuseInvitation() {
+function* refuseInvitation(action) {
   try {
     const result = yield call(authAPI.refuseInvitation, action.data);
     yield put({
