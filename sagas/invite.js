@@ -8,6 +8,12 @@ import {
   REFUSE_INVITATION_REQUEST,
   REFUSE_INVITATION_SUCCESS,
   REFUSE_INVITATION_FAILURE,
+  SEARCH_USER_BY_NICKNAME_REQUEST,
+  SEARCH_USER_BY_NICKNAME_SUCCESS,
+  SEARCH_USER_BY_NICKNAME_FAILURE,
+  INVITE_TEAM_REQUEST,
+  INVITE_TEAM_SUCCESS,
+  INVITE_TEAM_FAILURE,
 } from '../reducers/invite';
 
 function* acceptInvitation(action) {
@@ -40,6 +46,36 @@ function* refuseInvitation(action) {
   }
 }
 
+function* inviteTeam(action) {
+  try {
+    const result = yield call(authAPI.inviteTeam, action.data);
+    yield put({
+      type: INVITE_TEAM_SUCCESS,
+      data: result.data,
+    });
+  } catch (error) {
+    yield put({
+      type: INVITE_TEAM_FAILURE,
+      error,
+    });
+  }
+}
+
+function* searchUserByNickname(action) {
+  try {
+    const result = yield call(authAPI.searchUserByNickname, action.data);
+    yield put({
+      type: SEARCH_USER_BY_NICKNAME_SUCCESS,
+      data: result.data,
+    });
+  } catch (error) {
+    yield put({
+      type: SEARCH_USER_BY_NICKNAME_FAILURE,
+      error,
+    });
+  }
+}
+
 function* watchAcceptInvitation() {
   yield takeLatest(ACCEPT_INVITATION_REQUEST, acceptInvitation);
 }
@@ -48,6 +84,19 @@ function* watchRefuseInvitation() {
   yield takeLatest(REFUSE_INVITATION_REQUEST, refuseInvitation);
 }
 
+function* watchInviteTeam() {
+  yield takeLatest(INVITE_TEAM_REQUEST, inviteTeam);
+}
+
+function* watchSearchUserByNickname() {
+  yield takeLatest(SEARCH_USER_BY_NICKNAME_REQUEST, searchUserByNickname);
+}
+
 export default function* inviteSaga() {
-  yield all([fork(watchAcceptInvitation), fork(watchRefuseInvitation)]);
+  yield all([
+    fork(watchAcceptInvitation),
+    fork(watchRefuseInvitation),
+    fork(watchSearchUserByNickname),
+    fork(watchInviteTeam),
+  ]);
 }

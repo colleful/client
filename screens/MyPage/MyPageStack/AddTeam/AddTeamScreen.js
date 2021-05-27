@@ -11,11 +11,15 @@ const AddTeamScreen = ({navigation}) => {
   const [teamInfo, setTeamInfo] = useState('');
   const [teamInfoError, setTeamInfoError] = useState(0);
 
+  useEffect(() => {
+    console.log('teamInfo', teamInfo);
+  }, [teamInfo]);
+
   const onCreateTeam = async () => {
-    if (!teamName) {
+    if (!teamName || !teamName.trim()) {
       Alert.alert('팀생성 오류', '팀명은 최소 한 글자 이상 이여야 합니다.', [
         {
-          text: '확인'
+          text: '확인',
         },
       ]);
       return;
@@ -29,6 +33,7 @@ const AddTeamScreen = ({navigation}) => {
           },
         },
       );
+      console.log(response);
       setTeamInfo(response.data);
     } catch (error) {
       setTeamInfoError(error);
