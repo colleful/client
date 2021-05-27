@@ -9,7 +9,7 @@ import SuggestionScreen from './MyPageStack/SuggestionScreen';
 import NoticeScreen from './MyPageStack/NoticeScreen';
 import SettingScreen from './MyPageStack/SettingScreen';
 import AddTeamScreen from './MyPageStack/AddTeam/AddTeamScreen';
-import InvitationScreen from './MyPageStack/TeamList/InvitationScreen';
+import InvitationScreen from './MyPageStack/InvitationList/InvitationScreen';
 import ReceivedInvitationScreen from './MyPageStack/ReceivedInvitationList/ReceivedInvitationScreen/index';
 import SentInvitationListScreen from './MyPageStack/SentInvitationList/SentInvitationListScreen';
 import ReceivedMatchingLIstScreen from './MyPageStack/ReceivedMatchingList/ReceivedMatchingListScreen';
