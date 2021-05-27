@@ -4,7 +4,7 @@ import {css} from '@emotion/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   SEARCH_USER_BY_NICKNAME_REQUEST,
-  INVITE_TEAM_REQUEST,
+  INITAILIZE_STATE,
 } from '../../../../reducers/invite';
 import LoadingScreen from '../../../../components/LoadingScreen';
 import InvitationListScreen from './InvitationListScreen';
@@ -21,8 +21,10 @@ const InvitationScreen = () => {
   } = useSelector(({invite}) => invite);
 
   useEffect(() => {
-    console.log("userNickname",userNickname)
-  }, [userNickname])
+    return () => {
+      dispatch({type: INITAILIZE_STATE});
+    };
+  }, []);
 
   useEffect(() => {
     if (searchUserByNicknameDone && !searchUserInfo.length) {

@@ -38,6 +38,8 @@ export const INVITE_TEAM_REQUEST = 'INVITE_TEAM_REQUEST';
 export const INVITE_TEAM_SUCCESS = 'INVITE_TEAM_SUCCESS';
 export const INVITE_TEAM_FAILURE = 'INVITE_TEAM_FAILURE';
 
+export const INITAILIZE_STATE = 'INITAILIZE_STATE';
+
 const reducer = (state = initialState, action) =>
   produce(state, (draft) => {
     switch (action.type) {
@@ -102,6 +104,13 @@ const reducer = (state = initialState, action) =>
         draft.inviteTeamLoading = false;
         draft.inviteTeamDone = false;
         draft.inviteTeamError = action.error;
+        break;
+
+      case INITAILIZE_STATE:
+        Object.keys(draft).map((v) => (draft[v] = initialState[v]));
+        // draft['searchUserInfo'] = initialState['searchUserInfo'];
+        // draft['acceptInvitationLoading'] = initialState['acceptInvitationLoading'];
+        // ... 하나하나씩 초기화 해주는 방법, 결국 initialState를 초기화 시켜주는 방법이다.
         break;
       default:
         break;
