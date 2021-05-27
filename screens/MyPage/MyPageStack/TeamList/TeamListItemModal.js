@@ -6,8 +6,6 @@ import {
   Alert,
   TouchableWithoutFeedback,
 } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
-import * as authAPI from '../../../../lib/api';
 import Modal from 'react-native-modal';
 import {css} from '@emotion/native';
 import {trigger} from 'swr';
@@ -17,12 +15,15 @@ import {
   CHANGE_TEAM_STATUS_READY_REQUEST,
   CHANGE_TEAM_STATUS_WATCHING_REQUEST,
   FINISH_TEAM_MATCHING_REQUEST,
-  CHANGE_TEAM_STATUS_READY_INITIALIZE,
-  CHANGE_TEAM_STATUS_WATCHING_INITIALIZE,
-  FINISH_TEAM_MATCHING_INITIALIZE,
+  CHANGE_VALUE,
 } from '../../../../reducers/team';
 
-const TeamListItemModal = ({isModalVisible, onToggleModal, teamId}) => {
+const TeamListItemModal = ({
+  isModalVisible,
+  onToggleModal,
+  teamId,
+  teamInfo,
+}) => {
   const dispatch = useDispatch();
   const {
     changeTeamStatusReadyDone,
@@ -39,7 +40,12 @@ const TeamListItemModal = ({isModalVisible, onToggleModal, teamId}) => {
       Alert.alert('팀 상태변경', `팀 상태를 준비 완료로 변경했습니다`, [
         {
           text: '확인',
-          onPress: onToggleModal,
+          onPress: () =>
+            dispatch({
+              type: CHANGE_VALUE,
+              key: "changeTeamStatusReadyDone",
+              value: false,
+            }),
         },
       ]);
     }
@@ -48,7 +54,12 @@ const TeamListItemModal = ({isModalVisible, onToggleModal, teamId}) => {
       Alert.alert('팀 상태변경', `팀 상태를 탐색 중으로 변경했습니다`, [
         {
           text: '확인',
-          onPress: onToggleModal,
+          onPress: () =>
+            dispatch({
+              type: CHANGE_VALUE,
+              key: "changeTeamStatusWatchingDone",
+              value: false,
+            }),
         },
       ]);
     }
@@ -57,7 +68,12 @@ const TeamListItemModal = ({isModalVisible, onToggleModal, teamId}) => {
       Alert.alert('매칭 종료', `매칭을 종료했습니다.`, [
         {
           text: '확인',
-          onPress: onToggleModal,
+          onPress: () =>
+            dispatch({
+              type: CHANGE_VALUE,
+              key: "finishTeamMatchingDone",
+              value: false,
+            }),
         },
       ]);
     }
@@ -68,14 +84,16 @@ const TeamListItemModal = ({isModalVisible, onToggleModal, teamId}) => {
         [
           {
             text: '확인',
-            onPress: onToggleModal,
+            onPress: () =>
+              dispatch({
+                type: CHANGE_VALUE,
+                key: "changeTeamStatusReadyError",
+                value: null,
+              }),
           },
         ],
       );
       console.log({changeTeamStatusReadyError});
-      dispatch({
-        type: CHANGE_TEAM_STATUS_READY_INITIALIZE,
-      });
     }
     if (changeTeamStatusWatchingError) {
       Alert.alert(
@@ -84,26 +102,30 @@ const TeamListItemModal = ({isModalVisible, onToggleModal, teamId}) => {
         [
           {
             text: '확인',
-            onPress: onToggleModal,
+            onPress: () =>
+              dispatch({
+                type: CHANGE_VALUE,
+                key: "changeTeamStatusWatchingError",
+                value: null,
+              }),
           },
         ],
       );
       console.log({changeTeamStatusWatchingError});
-      dispatch({
-        type: CHANGE_TEAM_STATUS_WATCHING_INITIALIZE,
-      });
     }
     if (finishTeamMatchingError) {
       Alert.alert('에러', `${finishTeamMatchingError.response.data.message}`, [
         {
           text: '확인',
-          onPress: onToggleModal,
+          onPress: () =>
+            dispatch({
+              type: CHANGE_VALUE,
+              key: "finishTeamMatchingError",
+              value: null,
+            }),
         },
       ]);
       console.log({finishTeamMatchingError});
-      dispatch({
-        type: FINISH_TEAM_MATCHING_INITIALIZE,
-      });
     }
   }, [
     changeTeamStatusReadyDone,
@@ -116,6 +138,7 @@ const TeamListItemModal = ({isModalVisible, onToggleModal, teamId}) => {
 
   const onChangeTeamStatusToReady = () => {
     // PENDING -> READY
+    onToggleModal();
     dispatch({
       type: CHANGE_TEAM_STATUS_READY_REQUEST,
     });
@@ -123,6 +146,7 @@ const TeamListItemModal = ({isModalVisible, onToggleModal, teamId}) => {
 
   const onChangeTeamStatusToWatching = () => {
     // PENDING -> WATCHING
+    onToggleModal();
     dispatch({
       type: CHANGE_TEAM_STATUS_WATCHING_REQUEST,
     });
@@ -130,6 +154,7 @@ const TeamListItemModal = ({isModalVisible, onToggleModal, teamId}) => {
 
   const onFinishTeamMatching = () => {
     // MATCHED -> PENDING
+    onToggleModal();
     dispatch({
       type: FINISH_TEAM_MATCHING_REQUEST,
     });
@@ -148,40 +173,15 @@ const TeamListItemModal = ({isModalVisible, onToggleModal, teamId}) => {
     ]);
   };
 
-  return (
-    <Modal
-      style={css`
-        justify-content: flex-end;
-        margin: 0;
-      `}
-      isVisible={isModalVisible}
-      onBackButtonPress={onToggleModal}
-      onSwipeComplete={onToggleModal}
-      swipeDirection={['down']}>
-      <TouchableWithoutFeedback onPress={onToggleModal}>
-        <View
-          style={css`
-            flex: 1;
-          `}
-        />
-      </TouchableWithoutFeedback>
-      <View
-        style={css`
-          background-color: white;
-        `}>
-        <View
-          style={css`
-            height: 180px;
-            justify-content: center;
-            align-items: center;
-            border-bottom-width: 0.5px;
-            border-color: gray;
-          `}>
+  const renderTeamStatus = () => {
+    if (teamInfo.status === 'PENDING') {
+      return (
+        <>
           <TouchableOpacity
             onPress={onChangeTeamStatusToReady}
             style={css`
               flex: 1;
-              width: 100%;
+              width: ${teamInfo.status === 'MATCHED' ? '180px' : '100px'};
               justify-content: center;
               align-items: center;
             `}>
@@ -223,22 +223,81 @@ const TeamListItemModal = ({isModalVisible, onToggleModal, teamId}) => {
               border-bottom-color: #cccccc;
             `}
           />
-          <TouchableOpacity
-            onPress={onAskBackFinishMatching}
+        </>
+      );
+    }
+    if (teamInfo.status === 'WATCHING' || teamInfo.status === 'READY') {
+      return (
+        <TouchableOpacity
+          onPress={onToggleModal}
+          style={css`
+            flex: 1;
+            width: 100%;
+            justify-content: center;
+            align-items: center;
+          `}>
+          <Text
             style={css`
-              flex: 1;
-              width: 100%;
-              justify-content: center;
-              align-items: center;
+              font-size: 16px;
+              font-family: AntDesign;
             `}>
-            <Text
-              style={css`
-                font-size: 16px;
-                font-family: AntDesign;
-              `}>
-              매칭 끝내기
-            </Text>
-          </TouchableOpacity>
+            바꿀 수 있는 상태가 없습니다.
+          </Text>
+        </TouchableOpacity>
+      );
+    }
+    if (teamInfo.status === 'MATCHED') {
+      return (
+        <TouchableOpacity
+          onPress={onAskBackFinishMatching}
+          style={css`
+            flex: 1;
+            width: 100%;
+            justify-content: center;
+            align-items: center;
+          `}>
+          <Text
+            style={css`
+              font-size: 16px;
+              font-family: AntDesign;
+            `}>
+            매칭 끝내기
+          </Text>
+        </TouchableOpacity>
+      );
+    }
+  };
+
+  return (
+    <Modal
+      style={css`
+        justify-content: flex-end;
+        margin: 0;
+      `}
+      isVisible={isModalVisible}
+      onBackButtonPress={onToggleModal}
+      onSwipeComplete={onToggleModal}
+      swipeDirection={['down']}>
+      <TouchableWithoutFeedback onPress={onToggleModal}>
+        <View
+          style={css`
+            flex: 1;
+          `}
+        />
+      </TouchableWithoutFeedback>
+      <View
+        style={css`
+          background-color: white;
+        `}>
+        <View
+          style={css`
+            height: ${teamInfo.status === 'PENDING' ? '100px' : '50px'};
+            justify-content: center;
+            align-items: center;
+            border-bottom-width: 0.5px;
+            border-color: gray;
+          `}>
+          {renderTeamStatus()}
         </View>
       </View>
     </Modal>

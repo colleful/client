@@ -27,8 +27,6 @@ export const CHANGE_TEAM_STATUS_READY_SUCCESS =
   'CHANGE_TEAM_STATUS_READY_SUCCESS';
 export const CHANGE_TEAM_STATUS_READY_FAILURE =
   'CHANGE_TEAM_STATUS_READY_FAILURE';
-export const CHANGE_TEAM_STATUS_READY_INITIALIZE =
-  'CHANGE_TEAM_STATUS_READY_INITIALIZE';
 
 export const CHANGE_TEAM_STATUS_WATCHING_REQUEST =
   'CHANGE_TEAM_STATUS_WATCHING_REQUEST';
@@ -36,14 +34,10 @@ export const CHANGE_TEAM_STATUS_WATCHING_SUCCESS =
   'CHANGE_TEAM_STATUS_WATCHING_SUCCESS';
 export const CHANGE_TEAM_STATUS_WATCHING_FAILURE =
   'CHANGE_TEAM_STATUS_WATCHING_FAILURE';
-export const CHANGE_TEAM_STATUS_WATCHING_INITIALIZE =
-  'CHANGE_TEAM_STATUS_WATCHING_INITIALIZE';
 
 export const FINISH_TEAM_MATCHING_REQUEST = 'FINISH_TEAM_MATCHING_REQUEST';
 export const FINISH_TEAM_MATCHING_SUCCESS = 'FINISH_TEAM_MATCHING_SUCCESS';
 export const FINISH_TEAM_MATCHING_FAILURE = 'FINISH_TEAM_MATCHING_FAILURE';
-export const FINISH_TEAM_MATCHING_INITIALIZE =
-  'FINISH_TEAM_MATCHING_INITIALIZE';
 
 export const DELETE_TEAM_REQUEST = 'DELETE_TEAM_REQUEST';
 export const DELETE_TEAM_SUCCESS = 'DELETE_TEAM_SUCCESS';
@@ -52,6 +46,8 @@ export const DELETE_TEAM_FAILURE = 'DELETE_TEAM_FAILURE';
 export const EXIT_TEAM_REQUEST = 'EXIT_TEAM_REQUEST';
 export const EXIT_TEAM_SUCCESS = 'EXIT_TEAM_SUCCESS';
 export const EXIT_TEAM_FAILURE = 'EXIT_TEAM_FAILURE';
+
+export const CHANGE_VALUE = 'CHANGE_VALUE';
 
 const reducer = (state = initialState, action) =>
   produce(state, (draft) => {
@@ -71,11 +67,6 @@ const reducer = (state = initialState, action) =>
         draft.changeTeamStatusReadyDone = false;
         draft.changeTeamStatusReadyError = action.error;
         break;
-      case CHANGE_TEAM_STATUS_READY_INITIALIZE:
-        draft.changeTeamStatusReadyLoading = false;
-        draft.changeTeamStatusReadyDone = false;
-        draft.changeTeamStatusReadyError = null;
-        break;
 
       case CHANGE_TEAM_STATUS_WATCHING_REQUEST:
         draft.changeTeamStatusWatchingLoading = true;
@@ -92,11 +83,6 @@ const reducer = (state = initialState, action) =>
         draft.changeTeamStatusWatchingDone = false;
         draft.changeTeamStatusWatchingError = action.error;
         break;
-      case CHANGE_TEAM_STATUS_WATCHING_INITIALIZE:
-        draft.changeTeamStatusWatchingLoading = false;
-        draft.changeTeamStatusWatchingDone = false;
-        draft.changeTeamStatusWatchingError = null;
-        break;
 
       case FINISH_TEAM_MATCHING_REQUEST:
         draft.finishTeamMatchingLoading = true;
@@ -112,11 +98,6 @@ const reducer = (state = initialState, action) =>
         draft.finishTeamMatchingLoading = false;
         draft.finishTeamMatchingDone = false;
         draft.finishTeamMatchingError = action.error;
-        break;
-      case FINISH_TEAM_MATCHING_INITIALIZE:
-        draft.finishTeamMatchingLoading = false;
-        draft.finishTeamMatchingDone = false;
-        draft.finishTeamMatchingError = null;
         break;
 
       case DELETE_TEAM_REQUEST:
@@ -149,6 +130,10 @@ const reducer = (state = initialState, action) =>
         draft.exitTeamLoading = false;
         draft.exitTeamDone = false;
         draft.exitTeamError = action.error;
+        break;
+
+      case CHANGE_VALUE:
+        draft[action.key] = action.value;
         break;
       default:
         break;

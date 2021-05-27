@@ -12,6 +12,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {
   DELETE_TEAM_REQUEST,
   EXIT_TEAM_REQUEST,
+  CHANGE_VALUE,
 } from '../../../../reducers/team';
 
 const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
@@ -37,7 +38,10 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
       Alert.alert('팀 삭제', '팀 삭제를 완료했습니다.', [
         {
           text: '확인',
-          onPress: () => trigger(`${Config.baseUrl}/api/users`),
+          onPress: () => {
+            trigger(`${Config.baseUrl}/api/users`);
+            dispatch({type: CHANGE_VALUE, key: 'deleteTeamDone', value: false});
+          },
         },
       ]);
     }
@@ -45,7 +49,10 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
       Alert.alert('팀 탈퇴', '팀 나가기를 완료했습니다.', [
         {
           text: '확인',
-          onPress: () => trigger(`${Config.baseUrl}/api/users`),
+          onPress: () => {
+            trigger(`${Config.baseUrl}/api/users`);
+            dispatch({type: CHANGE_VALUE, key: 'exitTeamDone', value: false});
+          },
         },
       ]);
     }
@@ -53,7 +60,10 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
       Alert.alert('에러', `${currentError.response.data.message}`, [
         {
           text: '확인',
-          onPress: onToggleModal,
+          onPress: () => {
+            onToggleModal();
+            dispatch({type: CHANGE_VALUE, key: 'currentError', value: null});
+          },
         },
       ]);
       console.log({currentError});
@@ -238,6 +248,7 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
         isModalVisible={isModalVisible}
         onToggleModal={onToggleModal}
         teamId={teamId}
+        teamInfo={teamInfo}
       />
     </>
   );
