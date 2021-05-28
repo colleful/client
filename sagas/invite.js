@@ -14,9 +14,6 @@ import {
   INVITE_TEAM_REQUEST,
   INVITE_TEAM_SUCCESS,
   INVITE_TEAM_FAILURE,
-  LOAD_USER_REQUEST,
-  LOAD_USER_SUCCESS,
-  LOAD_USER_FAILURE,
   DELETE_INVITATION_REQUEST,
   DELETE_INVITATION_SUCCESS,
   DELETE_INVITATION_FAILURE,
@@ -97,21 +94,6 @@ function* searchUserByNickname(action) {
   }
 }
 
-function* loadUser(action) {
-  try {
-    const result = yield call(authAPI.getUserInfo, action.data);
-    yield put({
-      type: LOAD_USER_SUCCESS,
-      data: result.data,
-    });
-  } catch (error) {
-    yield put({
-      type: LOAD_USER_FAILURE,
-      error,
-    });
-  }
-}
-
 function* watchAcceptInvitation() {
   yield takeLatest(ACCEPT_INVITATION_REQUEST, acceptInvitation);
 }
@@ -132,10 +114,6 @@ function* watchSearchUserByNickname() {
   yield takeLatest(SEARCH_USER_BY_NICKNAME_REQUEST, searchUserByNickname);
 }
 
-function* watchLoadUser() {
-  yield takeLatest(LOAD_USER_REQUEST, loadUser);
-}
-
 export default function* inviteSaga() {
   yield all([
     fork(watchAcceptInvitation),
@@ -143,6 +121,5 @@ export default function* inviteSaga() {
     fork(watchDeleteInvitation),
     fork(watchSearchUserByNickname),
     fork(watchInviteTeam),
-    fork(watchLoadUser),
   ]);
 }

@@ -11,9 +11,6 @@ import {
   DELETE_MATCHING_REQUEST,
   DELETE_MATCHING_SUCCESS,
   DELETE_MATCHING_FAILURE,
-  LOAD_USER_REQUEST,
-  LOAD_USER_SUCCESS,
-  LOAD_USER_FAILURE,
 } from '../reducers/matching';
 
 function* acceptMatching(action) {
@@ -61,21 +58,6 @@ function* deleteMatching(action) {
   }
 }
 
-function* loadUser(action) {
-  try {
-    const result = yield call(authAPI.getUserInfo, action.data);
-    yield put({
-      type: LOAD_USER_SUCCESS,
-      data: result.data,
-    });
-  } catch (error) {
-    yield put({
-      type: LOAD_USER_FAILURE,
-      error,
-    });
-  }
-}
-
 function* watchAcceptMatching() {
   yield takeLatest(ACCEPT_MATCHING_REQUEST, acceptMatching);
 }
@@ -88,15 +70,10 @@ function* watchDeleteMatching() {
   yield takeLatest(DELETE_MATCHING_REQUEST, deleteMatching);
 }
 
-function* watchLoadUser() {
-  yield takeLatest(LOAD_USER_REQUEST, loadUser);
-}
-
 export default function* matchingSaga() {
   yield all([
     fork(watchAcceptMatching),
     fork(watchRefuseMatching),
     fork(watchDeleteMatching),
-    fork(watchLoadUser),
   ]);
 }

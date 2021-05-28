@@ -4,16 +4,13 @@ import {trigger} from 'swr';
 import {Config} from '../../../../Config';
 import {css} from '@emotion/native';
 import {useDispatch, useSelector} from 'react-redux';
-import {
-  DELETE_INVITATION_REQUEST,
-  INITAILIZE_STATE,
-  LOAD_USER_REQUEST,
-} from '../../../../reducers/invite';
+import {DELETE_INVITATION_REQUEST} from '../../../../reducers/invite';
+import {LOAD_USER_REQUEST, INITAILIZE_STATE} from '../../../../reducers/user';
 
 const SentInvitationListItemScreen = ({sentInvitationList}) => {
   const dispatch = useDispatch();
+  const {userInfo} = useSelector(({user}) => user);
   const {
-    senderInfo,
     loadUserError,
     deleteInvitationDone,
     deleteInvitationError,
@@ -75,7 +72,7 @@ const SentInvitationListItemScreen = ({sentInvitationList}) => {
           font-size: 19px;
           line-height: 30px;
         `}>
-        보낸사람 : {senderInfo.nickname}
+        보낸사람 : {userInfo.nickname}
         {' \n'}
         받는사람 : {sentInvitationList.user.nickname}{' '}
       </Text>

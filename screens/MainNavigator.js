@@ -26,22 +26,21 @@ const MainNavigator = () => {
   const {data: userData = [], error} = useSWR(
     `${Config.baseUrl}/api/users`,
     fetcher,
-    {
-      onErrorRetry: (error, key, config, revalidate, {retryCount}) => {
-        if (error.response.status === 500) {
-          //탈퇴한 사용자의 토큰을 들고있을 경우
-          AsyncStorage.removeItem('authorization');
-          AsyncStorage.removeItem('userPassword');
-          return;
-        }
-        Alert.alert('에러발생', `${error.response.data.message}`, [
-          {
-            text: '확인',
-          },
-        ]);
-      },
-    },
   );
+
+  if (error?.response.status === 500) {
+    AsyncStorage.removeItem('authorization');
+    AsyncStorage.removeItem('userPassword');
+    return;
+  }
+
+  if (error) {
+    Alert.alert('에러', `${error.response.data.message}`, [
+      {
+        text: '확인',
+      },
+    ]);
+  }
 
   const getTabBarVisibility = (route) => {
     const routeName = route.state
@@ -94,9 +93,7 @@ const MainNavigator = () => {
         },
       })}>
       <Tab.Screen name="채팅목록" options={{tabBarBadge: 3}}>
-        {(props) => (
-          <ChatScreen {...props} userData={userData} />
-        )}
+        {(props) => <ChatScreen {...props} userData={userData} />}
       </Tab.Screen>
       <Tab.Screen name="홈" component={HomeScreen} />
       <Tab.Screen
@@ -104,12 +101,7 @@ const MainNavigator = () => {
         options={({route}) => ({
           tabBarVisible: getTabBarVisibility(route),
         })}>
-        {(props) => (
-          <MypageNavigator
-            {...props}
-            userData={userData}
-          />
-        )}
+        {(props) => <MypageNavigator {...props} userData={userData} />}
       </Tab.Screen>
     </Tab.Navigator>
   );

@@ -1,5 +1,5 @@
-import React, {useState, useEffect, useCallback} from 'react';
-import {View, Text, TextInput, TouchableOpacity, Alert} from 'react-native';
+import React, {useEffect, useCallback} from 'react';
+import {View, Text, TouchableOpacity, Alert} from 'react-native';
 import {css} from '@emotion/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {INVITE_TEAM_REQUEST} from '../../../../reducers/invite';

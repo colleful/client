@@ -2,7 +2,6 @@ import produce from 'immer';
 
 const initialState = {
   searchUserInfo: [],
-  senderInfo: [],
 
   acceptInvitationLoading: false,
   acceptInvitationDone: false,
@@ -23,10 +22,6 @@ const initialState = {
   searchUserByNicknameLoading: false,
   searchUserByNicknameDone: false,
   searchUserByNicknameError: null,
-
-  loadUserLoading: false,
-  loadUserDone: false,
-  loadUserError: null,
 };
 export const ACCEPT_INVITATION_REQUEST = 'ACCEPT_INVITATION_REQUEST';
 export const ACCEPT_INVITATION_SUCCESS = 'ACCEPT_INVITATION_SUCCESS';
@@ -50,10 +45,6 @@ export const SEARCH_USER_BY_NICKNAME_SUCCESS =
   'SEARCH_USER_BY_NICKNAME_SUCCESS';
 export const SEARCH_USER_BY_NICKNAME_FAILURE =
   'SEARCH_USER_BY_NICKNAME_FAILURE';
-
-export const LOAD_USER_REQUEST = 'LOAD_USER_REQUEST';
-export const LOAD_USER_SUCCESS = 'LOAD_USER_SUCCESS';
-export const LOAD_USER_FAILURE = 'LOAD_USER_FAILURE';
 
 export const INITAILIZE_STATE = 'INITAILIZE_STATE';
 
@@ -137,23 +128,6 @@ const reducer = (state = initialState, action) =>
         draft.searchUserByNicknameLoading = false;
         draft.searchUserByNicknameDone = false;
         draft.searchUserByNicknameError = action.error;
-
-      case LOAD_USER_REQUEST:
-        draft.loadUserLoading = true;
-        draft.loadUserDone = false;
-        draft.loadUserError = null;
-        break;
-      case LOAD_USER_SUCCESS:
-        draft.loadUserLoading = false;
-        draft.loadUserDone = true;
-        draft.inviterInfo = action.data;
-        draft.loadUserError = null;
-        break;
-      case LOAD_USER_FAILURE:
-        draft.loadUserLoading = false;
-        draft.loadUserDone = false;
-        draft.loadUserError = action.error;
-        break;
 
       case INITAILIZE_STATE:
         Object.keys(draft).map((v) => (draft[v] = initialState[v]));

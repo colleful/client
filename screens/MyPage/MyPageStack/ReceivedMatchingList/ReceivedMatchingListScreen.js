@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, Text, ScrollView} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import {Config} from '../../../../Config';
@@ -9,7 +9,8 @@ import axios from 'axios';
 import {useSelector} from 'react-redux';
 import LoadingScreen from '../../../../components/LoadingScreen';
 
-const ReceivedMatchingListScreen = () => {
+const ReceivedMatchingListScreen = ({teamId}) => {
+  const [isLoading, setLoading] = useState(false);
   const {
     acceptMatchingLoading,
     refuseMatchingLoading,
@@ -17,19 +18,21 @@ const ReceivedMatchingListScreen = () => {
   } = useSelector(({matching}) => matching);
 
   const fetcher = async (url) => {
+    setLoading((prev) => !prev);
     const response = await axios.get(url, {
       headers: {
         Authorization: await AsyncStorage.getItem('authorization'),
       },
     });
+    setLoading((prev) => !prev);
     return response.data;
   };
 
   const {data: receivedMatchingList = [], error} = useSWR(
-    `${Config.baseUrl}/api/matching/received`,
+    teamId === null ? null : `${Config.baseUrl}/api/matching/received`,
     fetcher,
   );
-  if (!receivedMatchingList && !error) {
+  if (!error && !receivedMatchingList.length && isLoading) {
     return <LoadingScreen />;
   }
   if (error) console.log({error});

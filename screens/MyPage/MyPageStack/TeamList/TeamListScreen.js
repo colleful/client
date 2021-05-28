@@ -10,6 +10,7 @@ import {useSelector} from 'react-redux';
 import LoadingScreen from '../../../../components/LoadingScreen';
 
 const TeamListScreen = ({navigation, teamId, userId}) => {
+  const [isLoading, setLoading] = useState(false);
   const {deleteTeamLoading, exitTeamLoading} = useSelector(({team}) => team);
 
   useEffect(() => {
@@ -17,19 +18,21 @@ const TeamListScreen = ({navigation, teamId, userId}) => {
   }, [teamInfo]);
 
   const fetcher = async (url) => {
+    setLoading((prev) => !prev);
     const response = await axios.get(url, {
       headers: {
         Authorization: await AsyncStorage.getItem('authorization'),
       },
     });
-    return {...response.data};
+    setLoading((prev) => !prev);
+    return response.data;
   };
 
   const {data: teamInfo = {}, error} = useSWR(
     teamId === null ? null : `${Config.baseUrl}/api/teams/${teamId}`,
     fetcher,
   );
-  if (!error && !teamInfo.hasOwnProperty('id')) {
+  if (!error && !teamInfo.hasOwnProperty('id') && isLoading) {
     return <LoadingScreen />;
   }
   if (error) console.log({error});

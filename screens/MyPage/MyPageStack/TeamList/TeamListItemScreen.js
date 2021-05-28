@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {View, Text, TouchableOpacity, Alert} from 'react-native';
-import MemberInfo from '../MemberInfo';
+import MemberInfo from './MemberInfo';
 import TeamListItemModal from './TeamListItemModal';
 import AsyncStorage from '@react-native-community/async-storage';
 import {trigger} from 'swr';
@@ -69,7 +69,7 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
       ]);
       console.log({currentError});
     }
-  }, [deleteTeamDone, deleteTeamError, currentError]);
+  }, [exitTeamDone, deleteTeamDone, currentError]);
 
   const fetcher = async (url) => {
     const response = await axios.get(url, {

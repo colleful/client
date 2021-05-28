@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Text, ScrollView} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import ReceivedInvitationListScreen from '../ReceivedInvitationListScreen/index';
@@ -10,6 +10,7 @@ import LoadingScreen from '../../../../../components/LoadingScreen';
 import {Wrapper, InvitationList_title, InvitationList_boundary} from './style';
 
 const ReceivedInvitationScreen = () => {
+  const [isLoading, setLoading] = useState(false);
   const {
     acceptInvitationLoading,
     refuseInvitationLoading,
@@ -17,11 +18,13 @@ const ReceivedInvitationScreen = () => {
   } = useSelector(({invite}) => invite);
 
   const fetcher = async (url) => {
+    setLoading((prev) => !prev);
     const response = await axios.get(url, {
       headers: {
         Authorization: await AsyncStorage.getItem('authorization'),
       },
     });
+    setLoading((prev) => !prev);
     return response.data;
   };
 
@@ -29,7 +32,7 @@ const ReceivedInvitationScreen = () => {
     `${Config.baseUrl}/api/invitations/received`,
     fetcher,
   );
-  if (!error && !receivedInvitationList) {
+  if (!error && !receivedInvitationList.length && isLoading) {
     return <LoadingScreen />;
   }
   if (error) console.log({error});

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, Text, ScrollView} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import {css} from '@emotion/native';
@@ -10,16 +10,19 @@ import {useSelector} from 'react-redux';
 import LoadingScreen from '../../../../components/LoadingScreen';
 
 const SentInvitationListScreen = ({teamId}) => {
+  const [isLoading, setLoading] = useState(false);
   const {deleteInvitationLoading, loadUserLoading} = useSelector(
     ({invite}) => invite,
   );
 
   const fetcher = async (url) => {
+    setLoading((prev) => !prev);
     const response = await axios.get(url, {
       headers: {
         Authorization: await AsyncStorage.getItem('authorization'),
       },
     });
+    setLoading((prev) => !prev);
     return response.data;
   };
 
@@ -27,7 +30,7 @@ const SentInvitationListScreen = ({teamId}) => {
     teamId === null ? null : `${Config.baseUrl}/api/invitations/sent`,
     fetcher,
   );
-  if (!sentInvitationList && !error) {
+  if (!error && !sentInvitationList.length && isLoading) {
     return <LoadingScreen />;
   }
   if (error) console.log({error});

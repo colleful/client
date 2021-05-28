@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useEffect, useCallback} from 'react';
 import {View, Text, TouchableOpacity, Alert} from 'react-native';
 import {Config} from '../../../../Config';
 import {trigger} from 'swr';
@@ -7,13 +7,13 @@ import {useDispatch, useSelector} from 'react-redux';
 import {
   ACCEPT_MATCHING_REQUEST,
   REFUSE_MATCHING_REQUEST,
-  LOAD_USER_REQUEST,
 } from '../../../../reducers/matching';
+import {LOAD_USER_REQUEST, INITAILIZE_STATE} from '../../../../reducers/user';
 
 const ReceivedMatchingListItemScreen = ({receivedMatchingList}) => {
   const dispatch = useDispatch();
+  const {userInfo} = useSelector(({user}) => user);
   const {
-    matcherInfo,
     acceptMatchingDone,
     acceptMatchingError,
     refuseMatchingDone,
@@ -25,6 +25,9 @@ const ReceivedMatchingListItemScreen = ({receivedMatchingList}) => {
       type: LOAD_USER_REQUEST,
       data: receivedMatchingList.sentTeam.leaderId,
     });
+    return () => {
+      dispatch({type: INITAILIZE_STATE});
+    };
   }, []);
 
   useEffect(() => {
@@ -98,10 +101,10 @@ const ReceivedMatchingListItemScreen = ({receivedMatchingList}) => {
           line-height: 30px;
         `}>
         팀명 : {receivedMatchingList.sentTeam.teamName} {'\n'}리더 :{' '}
-        {matcherInfo.nickname} {'( '}
-        {matcherInfo.age}
+        {userInfo.nickname} {'( '}
+        {userInfo.age}
         {', '}
-        {matcherInfo.department}
+        {userInfo.department}
         {' )'}
       </Text>
       <View
@@ -154,4 +157,4 @@ const ReceivedMatchingListItemScreen = ({receivedMatchingList}) => {
   );
 };
 
-export default React.memo(ReceivedMatchingListItemScreen);
+export default ReceivedMatchingListItemScreen;

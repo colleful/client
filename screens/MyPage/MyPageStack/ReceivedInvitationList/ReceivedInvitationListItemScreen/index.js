@@ -6,9 +6,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import {
   ACCEPT_INVITATION_REQUEST,
   REFUSE_INVITATION_REQUEST,
-  LOAD_USER_REQUEST,
-  INITAILIZE_STATE,
 } from '../../../../../reducers/invite';
+import {LOAD_USER_REQUEST, INITAILIZE_STATE} from '../../../../../reducers/user';
 
 import {
   InvitationList_buttonWrapper,
@@ -21,13 +20,13 @@ import {InvitationList_boundary} from '../ReceivedInvitationScreen/style';
 
 const ReceivedInvitationListItemScreen = ({receivedInvitationList}) => {
   const dispatch = useDispatch();
+  const {userInfo} = useSelector(({user}) => user);
   const {
-    senderInfo,
-    loadUserError,
     acceptInvitationDone,
-    acceptInvitationError,
     refuseInvitationDone,
+    acceptInvitationError,
     refuseInvitationError,
+    loadUserError,
   } = useSelector(({invite}) => invite);
 
   useEffect(() => {
@@ -38,7 +37,7 @@ const ReceivedInvitationListItemScreen = ({receivedInvitationList}) => {
     return () => {
       dispatch({type: INITAILIZE_STATE});
     };
-  }, []);
+  }, [receivedInvitationList]);
 
   useEffect(() => {
     if (loadUserError) {
@@ -109,24 +108,24 @@ const ReceivedInvitationListItemScreen = ({receivedInvitationList}) => {
       type: ACCEPT_INVITATION_REQUEST,
       data: receivedInvitationList.id,
     });
-  }, [dispatch]);
+  }, [dispatch, receivedInvitationList]);
 
   const onRefuseInvitation = useCallback(() => {
     dispatch({
       type: REFUSE_INVITATION_REQUEST,
       data: receivedInvitationList.id,
     });
-  }, [dispatch]);
+  }, [dispatch, receivedInvitationList]);
 
   return (
     <>
-      {senderInfo && (
+      {userInfo && (
         <InvitationList_content>
           팀명 : {receivedInvitationList.team.teamName} {'\n'}리더 :{' '}
-          {senderInfo.nickname} {'( '}
-          {senderInfo.age}
+          {userInfo.nickname} {'( '}
+          {userInfo.age}
           {', '}
-          {senderInfo.department}
+          {userInfo.department}
           {' )'}
         </InvitationList_content>
       )}
@@ -143,4 +142,4 @@ const ReceivedInvitationListItemScreen = ({receivedInvitationList}) => {
   );
 };
 
-export default React.memo(ReceivedInvitationListItemScreen);
+export default ReceivedInvitationListItemScreen;

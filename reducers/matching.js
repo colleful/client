@@ -1,8 +1,6 @@
 import produce from 'immer';
 
 const initialState = {
-  matcherInfo: [],
-
   acceptMatchingLoading: false,
   acceptMatchingDone: false,
   acceptMatchingError: null,
@@ -26,10 +24,6 @@ export const REFUSE_MATCHING_FAILURE = 'REFUSE_MATCHING_FAILURE';
 export const DELETE_MATCHING_REQUEST = 'DELETE_MATCHING_REQUEST';
 export const DELETE_MATCHING_SUCCESS = 'DELETE_MATCHING_SUCCESS';
 export const DELETE_MATCHING_FAILURE = 'DELETE_MATCHING_FAILURE';
-
-export const LOAD_USER_REQUEST = 'LOAD_USER_REQUEST';
-export const LOAD_USER_SUCCESS = 'LOAD_USER_SUCCESS';
-export const LOAD_USER_FAILURE = 'LOAD_USER_FAILURE';
 
 export const INITAILIZE_STATE = 'INITAILIZE_STATE';
 
@@ -82,23 +76,6 @@ const reducer = (state = initialState, action) =>
         draft.deleteMatchingLoading = false;
         draft.deleteMatchingDone = false;
         draft.deleteMatchingError = action.error;
-        break;
-
-      case LOAD_USER_REQUEST:
-        draft.loadUserLoading = true;
-        draft.loadUserDone = false;
-        draft.loadUserError = null;
-        break;
-      case LOAD_USER_SUCCESS:
-        draft.loadUserLoading = false;
-        draft.loadUserDone = true;
-        draft.matcherInfo = action.data;
-        draft.loadUserError = null;
-        break;
-      case LOAD_USER_FAILURE:
-        draft.loadUserLoading = false;
-        draft.loadUserDone = false;
-        draft.loadUserError = action.error;
         break;
 
       case INITAILIZE_STATE:
