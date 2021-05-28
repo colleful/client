@@ -1,48 +1,27 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {View, Text, TextInput, TouchableOpacity, Alert} from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
-import * as authAPI from '../../../../lib/api';
 import {trigger} from 'swr';
 import {Config} from '../../../../Config';
 import {css} from '@emotion/native';
+import {useDispatch, useSelector} from 'react-redux';
+import {CREATE_TEAM_REQUEST, INITAILIZE_STATE} from '../../../../reducers/team';
+import LoadingScreen from '../../../../components/LoadingScreen';
 
 const AddTeamScreen = ({navigation}) => {
+  const dispatch = useDispatch();
   const [teamName, setTeamName] = useState('');
-  const [teamInfo, setTeamInfo] = useState('');
-  const [teamInfoError, setTeamInfoError] = useState(0);
+  const {createTeamLoading, createTeamDone, createTeamError} = useSelector(
+    ({team}) => team,
+  );
 
   useEffect(() => {
-    console.log('teamInfo', teamInfo);
-  }, [teamInfo]);
-
-  const onCreateTeam = async () => {
-    if (!teamName || !teamName.trim()) {
-      Alert.alert('팀생성 오류', '팀명은 최소 한 글자 이상 이여야 합니다.', [
-        {
-          text: '확인',
-        },
-      ]);
-      return;
-    }
-    try {
-      const response = await authAPI.createTeam(
-        {teamName: teamName},
-        {
-          headers: {
-            Authorization: await AsyncStorage.getItem('authorization'),
-          },
-        },
-      );
-      console.log(response);
-      setTeamInfo(response.data);
-    } catch (error) {
-      setTeamInfoError(error);
-      console.log({error});
-    }
-  };
+    return () => {
+      dispatch({type: INITAILIZE_STATE});
+    };
+  }, []);
 
   useEffect(() => {
-    if (teamInfo) {
+    if (createTeamDone) {
       Alert.alert(
         '완료',
         '팀 생성이 완료되었습니다. 이어서 팀 초대를 하시겠습니까? ( 나중에 팀목록 -> 팀초대로 팀을 초대할 수 있습니다 )',
@@ -51,9 +30,7 @@ const AddTeamScreen = ({navigation}) => {
             text: '팀 초대',
             onPress: () => {
               trigger(`${Config.baseUrl}/api/users`);
-              navigation.navigate('팀초대', {
-                teamId: teamInfo.id,
-              });
+              navigation.navigate('팀초대');
             },
           },
           {
@@ -66,16 +43,27 @@ const AddTeamScreen = ({navigation}) => {
         ],
       );
     }
-    if (teamInfoError) {
-      Alert.alert('에러', `${teamInfoError.response.data.message}`, [
+    if (createTeamError) {
+      Alert.alert('에러', `${createTeamError.response.data.message}`, [
         {
           text: '확인',
         },
       ]);
-      setTeamInfoError(0);
-      console.log({teamInfoError});
+      console.log({createTeamError});
     }
-  }, [teamInfo, teamInfoError]);
+  }, [createTeamDone, createTeamError]);
+
+  const onCreateTeam = useCallback(() => {
+    if (!teamName || !teamName.trim()) {
+      Alert.alert('팀생성 오류', '팀명은 최소 한 글자 이상 이여야 합니다.', [
+        {
+          text: '확인',
+        },
+      ]);
+      return;
+    }
+    dispatch({type: CREATE_TEAM_REQUEST, data: {teamName: teamName}});
+  }, [dispatch, teamName]);
 
   return (
     <View
@@ -92,6 +80,7 @@ const AddTeamScreen = ({navigation}) => {
         팀 이름을 입력해주세요
       </Text>
       <TextInput
+        onChangeText={(text) => setTeamName(text)}
         style={css`
           width: 150px;
           height: 50px;
@@ -99,7 +88,6 @@ const AddTeamScreen = ({navigation}) => {
           margin-bottom: 15px;
           font-size: 16px;
         `}
-        onChangeText={(text) => setTeamName(text)}
       />
 
       <TouchableOpacity
@@ -119,6 +107,7 @@ const AddTeamScreen = ({navigation}) => {
           생성
         </Text>
       </TouchableOpacity>
+      {createTeamLoading && <LoadingScreen />}
     </View>
   );
 };

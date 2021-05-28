@@ -14,6 +14,7 @@ import {
   EXIT_TEAM_REQUEST,
   CHANGE_VALUE,
 } from '../../../../reducers/team';
+import LoadingScreen from '../../../../components/LoadingScreen';
 
 const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
   const [isLeader, setLeader] = useState(false);
@@ -80,15 +81,10 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
   };
 
   const {data: teamMember = [], error} = useSWR(
-    `${Config.baseUrl}/api/teams/${teamId}/members`,
+    teamId === null ? null : `${Config.baseUrl}/api/teams/${teamId}/members`,
     fetcher,
-    {
-      onErrorRetry: (error, key, config, revalidate, {retryCount}) => {
-        if (teamId === null) return;
-        if (error) console.log({error});
-      },
-    },
   );
+  if (error) console.log({error});
 
   const onToggleModal = useCallback(() => {
     setModalVisible((prev) => !prev);
@@ -137,6 +133,10 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
       return '탐색중';
     }
   }, [teamInfo.status]);
+
+  if (!error && !teamMember.length) {
+    return <LoadingScreen />;
+  }
 
   return (
     <>

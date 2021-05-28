@@ -1,38 +1,39 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useEffect, useCallback} from 'react';
 import {View, Text, TouchableOpacity, Alert} from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
-import * as authAPI from '../../../../lib/api';
 import {Config} from '../../../../Config';
-import useSWR, {trigger} from 'swr';
+import {trigger} from 'swr';
 import {css} from '@emotion/native';
+import {useDispatch, useSelector} from 'react-redux';
+import {DELETE_MATCHING_REQUEST} from '../../../../reducers/matching';
 
 const SentMatchingListItemScreen = ({sentMatchingList}) => {
-  useEffect(() => {
-    console.log('sentMatchingList', sentMatchingList);
-  }, [sentMatchingList]);
+  const dispatch = useDispatch();
+  const {deleteMatchingDone, deleteMatchingError} = useSelector(
+    ({matching}) => matching,
+  );
 
-  const onDeleteMatching = async () => {
-    try {
-      await authAPI.deleteMatching(sentMatchingList.id, {
-        headers: {
-          Authorization: await AsyncStorage.getItem('authorization'),
-        },
-      });
+  useEffect(() => {
+    if (deleteMatchingDone) {
       Alert.alert('완료', `요청을 취소하였습니다.`, [
         {
           text: '확인',
           onPress: () => trigger(`${Config.baseUrl}/api/matching/sent`),
         },
       ]);
-    } catch (error) {
-      Alert.alert('에러발생', `${error.response.data.message}`, [
+    }
+    if (deleteMatchingError) {
+      Alert.alert('에러', `${deleteMatchingError.response.data.message}`, [
         {
           text: '확인',
         },
       ]);
-      console.log({error});
+      console.log({deleteMatchingError});
     }
-  };
+  }, [deleteMatchingDone, deleteMatchingError]);
+
+  const onDeleteMatching = useCallback(() => {
+    dispatch({type: DELETE_MATCHING_REQUEST, data: sentMatchingList.id});
+  }, [dispatch, sentMatchingList]);
 
   const onPressDeleteMatching = useCallback(() => {
     Alert.alert(
@@ -43,7 +44,7 @@ const SentMatchingListItemScreen = ({sentMatchingList}) => {
         {text: '확인', onPress: onDeleteMatching},
       ],
     );
-  }, []);
+  }, [sentMatchingList]);
 
   return (
     <>

@@ -3,7 +3,14 @@ import authSaga from './auth';
 import userSaga from './user';
 import inviteSaga from './invite';
 import teamSaga from './team';
+import matchingSaga from './matching';
 
 export default function* rootSaga() {
-  yield all([fork(authSaga), fork(userSaga), fork(inviteSaga), fork(teamSaga)]);
+  yield all([
+    fork(authSaga),
+    fork(userSaga),
+    fork(inviteSaga),
+    fork(teamSaga),
+    fork(matchingSaga),
+  ]);
 }

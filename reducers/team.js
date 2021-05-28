@@ -20,6 +20,10 @@ const initialState = {
   exitTeamLoading: false,
   exitTeamDone: false,
   exitTeamError: null,
+
+  createTeamLoading: false,
+  createTeamDone: false,
+  createTeamError: null,
 };
 export const CHANGE_TEAM_STATUS_READY_REQUEST =
   'CHANGE_TEAM_STATUS_READY_REQUEST';
@@ -47,7 +51,12 @@ export const EXIT_TEAM_REQUEST = 'EXIT_TEAM_REQUEST';
 export const EXIT_TEAM_SUCCESS = 'EXIT_TEAM_SUCCESS';
 export const EXIT_TEAM_FAILURE = 'EXIT_TEAM_FAILURE';
 
+export const CREATE_TEAM_REQUEST = 'CREATE_TEAM_REQUEST';
+export const CREATE_TEAM_SUCCESS = 'CREATE_TEAM_SUCCESS';
+export const CREATE_TEAM_FAILURE = 'CREATE_TEAM_FAILURE';
+
 export const CHANGE_VALUE = 'CHANGE_VALUE';
+export const INITAILIZE_STATE = 'INITAILIZE_STATE';
 
 const reducer = (state = initialState, action) =>
   produce(state, (draft) => {
@@ -132,8 +141,30 @@ const reducer = (state = initialState, action) =>
         draft.exitTeamError = action.error;
         break;
 
+      case CREATE_TEAM_REQUEST:
+        draft.createTeamLoading = true;
+        draft.createTeamDone = false;
+        draft.createTeamError = null;
+        break;
+      case CREATE_TEAM_SUCCESS:
+        draft.createTeamLoading = false;
+        draft.createTeamDone = true;
+        draft.createTeamError = null;
+        break;
+      case CREATE_TEAM_FAILURE:
+        draft.createTeamLoading = false;
+        draft.createTeamDone = false;
+        draft.createTeamError = action.error;
+        break;
+
       case CHANGE_VALUE:
         draft[action.key] = action.value;
+        break;
+      case INITAILIZE_STATE:
+        Object.keys(draft).map((v) => (draft[v] = initialState[v]));
+        // draft['searchUserInfo'] = initialState['searchUserInfo'];
+        // draft['acceptInvitationLoading'] = initialState['acceptInvitationLoading'];
+        // ... 하나하나씩 초기화 해주는 방법, 결국 initialState를 초기화 시켜주는 방법이다.
         break;
       default:
         break;

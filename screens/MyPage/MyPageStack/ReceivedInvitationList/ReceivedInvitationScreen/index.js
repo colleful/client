@@ -10,10 +10,11 @@ import LoadingScreen from '../../../../../components/LoadingScreen';
 import {Wrapper, InvitationList_title, InvitationList_boundary} from './style';
 
 const ReceivedInvitationScreen = () => {
-  const {loadUserLoading} = useSelector(({user}) => user);
-  const {acceptInvitationLoading, refuseInvitationLoading} = useSelector(
-    ({invite}) => invite,
-  );
+  const {
+    acceptInvitationLoading,
+    refuseInvitationLoading,
+    loadUserLoading,
+  } = useSelector(({invite}) => invite);
 
   const fetcher = async (url) => {
     const response = await axios.get(url, {
@@ -28,6 +29,9 @@ const ReceivedInvitationScreen = () => {
     `${Config.baseUrl}/api/invitations/received`,
     fetcher,
   );
+  if (!error && !data) {
+    return <LoadingScreen />;
+  }
   if (error) console.log({error});
 
   return (

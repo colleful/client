@@ -13,8 +13,8 @@ const TeamListScreen = ({navigation, teamId, userId}) => {
   const {deleteTeamLoading, exitTeamLoading} = useSelector(({team}) => team);
 
   useEffect(() => {
-    console.log("teamInfo",teamInfo);
-  }, [teamInfo])
+    console.log('teamInfo', teamInfo);
+  }, [teamInfo]);
 
   const fetcher = async (url) => {
     const response = await axios.get(url, {
@@ -28,12 +28,11 @@ const TeamListScreen = ({navigation, teamId, userId}) => {
   const {data: teamInfo = {}, error} = useSWR(
     teamId === null ? null : `${Config.baseUrl}/api/teams/${teamId}`,
     fetcher,
-    {
-      onErrorRetry: (error, key, config, revalidate, {retryCount}) => {
-        if (error) console.log({error});
-      },
-    },
   );
+  if (!error && !teamInfo.hasOwnProperty('id')) {
+    return <LoadingScreen />;
+  }
+  if (error) console.log({error});
 
   return (
     <>

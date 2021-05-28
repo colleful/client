@@ -1,57 +1,65 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useEffect, useCallback} from 'react';
 import {View, Text, TouchableOpacity, Alert} from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
-import * as authAPI from '../../../../lib/api';
-import useSWR, {trigger} from 'swr';
+import {trigger} from 'swr';
 import {Config} from '../../../../Config';
 import {css} from '@emotion/native';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  DELETE_INVITATION_REQUEST,
+  INITAILIZE_STATE,
+  LOAD_USER_REQUEST,
+} from '../../../../reducers/invite';
 
 const SentInvitationListItemScreen = ({sentInvitationList}) => {
-  const [senderData, setSenderData] = useState([]);
+  const dispatch = useDispatch();
+  const {
+    senderInfo,
+    loadUserError,
+    deleteInvitationDone,
+    deleteInvitationError,
+  } = useSelector(({invite}) => invite);
 
   useEffect(() => {
-    onGetSenderData();
-    console.log('senderData', senderData);
+    dispatch({type: LOAD_USER_REQUEST, data: sentInvitationList.team.leaderId});
+    return () => {
+      dispatch({type: INITAILIZE_STATE});
+    };
   }, []);
 
-  const onGetSenderData = async () => {
-    try {
-      const response = await authAPI.getUserInfo(
-        sentInvitationList.team.leaderId,
+  useEffect(() => {
+    if (loadUserError) {
+      Alert.alert('에러', `${loadUserError.response.data.message}`, [
         {
-          headers: {
-            Authorization: await AsyncStorage.getItem('authorization'),
-          },
+          text: '확인',
         },
-      );
-      setSenderData(response.data);
-    } catch (error) {
-      console.log({error});
+      ]);
+      console.log({loadUserError});
     }
-  };
-
-  const onDeleteInvitation = async () => {
-    try {
-      await authAPI.deleteInvitation(sentInvitationList.id, {
-        headers: {
-          Authorization: await AsyncStorage.getItem('authorization'),
-        },
-      });
+    if (deleteInvitationDone) {
       Alert.alert('완료', `초대를 취소하였습니다.`, [
         {
           text: '확인',
           onPress: () => trigger(`${Config.baseUrl}/api/invitations/sent`),
         },
       ]);
-    } catch (error) {
-      Alert.alert('에러발생', `${error.response.data.message}`, [
-        {
-          text: '확인',
-        },
-      ]);
-      console.log({error});
     }
-  };
+    if (deleteInvitationError) {
+      Alert.alert(
+        '에러발생',
+        `${deleteInvitationError.response.data.message}`,
+        [
+          {
+            text: '확인',
+          },
+        ],
+      );
+      console.log({deleteInvitationError});
+    }
+  }, [loadUserError, deleteInvitationDone, deleteInvitationError]);
+
+  const onDeleteInvitation = useCallback(() => {
+    dispatch({type: DELETE_INVITATION_REQUEST, data: sentInvitationList.id});
+  }, [dispatch, sentInvitationList]);
 
   const onPressDeleteInvitation = useCallback(() => {
     Alert.alert(
@@ -62,7 +70,7 @@ const SentInvitationListItemScreen = ({sentInvitationList}) => {
         {text: '확인', onPress: onDeleteInvitation},
       ],
     );
-  }, []);
+  }, [sentInvitationList]);
 
   return (
     <>
@@ -71,11 +79,9 @@ const SentInvitationListItemScreen = ({sentInvitationList}) => {
           font-size: 19px;
           line-height: 30px;
         `}>
-        보낸사람 : {senderData.nickname}{' '}
-        {/* {`( ${senderData.age}, ${senderData.department} )`} */}{'\n'}
+        보낸사람 : {senderInfo.nickname}
+        {' \n'}
         받는사람 : {sentInvitationList.user.nickname}{' '}
-        {/* {`( ${sentInvitationList.user.age}, ${sentInvitationList.user.department} )`}{' '}
-        {'\n'} */}
       </Text>
       <View
         style={css`

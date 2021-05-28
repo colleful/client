@@ -23,10 +23,7 @@ function* loadUser(action) {
 }
 
 function* watchLoadUser() {
-  yield takeLatest(
-    LOAD_USER_REQUEST,
-    loadUser,
-  );
+  yield takeLatest(LOAD_USER_REQUEST, loadUser);
 }
 
 export default function* userSaga() {

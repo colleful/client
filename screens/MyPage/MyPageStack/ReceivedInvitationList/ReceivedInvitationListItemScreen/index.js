@@ -3,10 +3,11 @@ import {Alert} from 'react-native';
 import {trigger} from 'swr';
 import {Config} from '../../../../../Config';
 import {useDispatch, useSelector} from 'react-redux';
-import {LOAD_USER_REQUEST} from '../../../../../reducers/user';
 import {
   ACCEPT_INVITATION_REQUEST,
   REFUSE_INVITATION_REQUEST,
+  LOAD_USER_REQUEST,
+  INITAILIZE_STATE,
 } from '../../../../../reducers/invite';
 
 import {
@@ -20,8 +21,9 @@ import {InvitationList_boundary} from '../ReceivedInvitationScreen/style';
 
 const ReceivedInvitationListItemScreen = ({receivedInvitationList}) => {
   const dispatch = useDispatch();
-  const {inviterInfo, loadUserError} = useSelector(({user}) => user);
   const {
+    senderInfo,
+    loadUserError,
     acceptInvitationDone,
     acceptInvitationError,
     refuseInvitationDone,
@@ -33,6 +35,9 @@ const ReceivedInvitationListItemScreen = ({receivedInvitationList}) => {
       type: LOAD_USER_REQUEST,
       data: receivedInvitationList.team.leaderId,
     });
+    return () => {
+      dispatch({type: INITAILIZE_STATE});
+    };
   }, []);
 
   useEffect(() => {
@@ -115,13 +120,13 @@ const ReceivedInvitationListItemScreen = ({receivedInvitationList}) => {
 
   return (
     <>
-      {inviterInfo && (
+      {senderInfo && (
         <InvitationList_content>
           팀명 : {receivedInvitationList.team.teamName} {'\n'}리더 :{' '}
-          {inviterInfo.nickname} {'( '}
-          {inviterInfo.age}
+          {senderInfo.nickname} {'( '}
+          {senderInfo.age}
           {', '}
-          {inviterInfo.department}
+          {senderInfo.department}
           {' )'}
         </InvitationList_content>
       )}

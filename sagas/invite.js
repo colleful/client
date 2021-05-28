@@ -14,6 +14,12 @@ import {
   INVITE_TEAM_REQUEST,
   INVITE_TEAM_SUCCESS,
   INVITE_TEAM_FAILURE,
+  LOAD_USER_REQUEST,
+  LOAD_USER_SUCCESS,
+  LOAD_USER_FAILURE,
+  DELETE_INVITATION_REQUEST,
+  DELETE_INVITATION_SUCCESS,
+  DELETE_INVITATION_FAILURE,
 } from '../reducers/invite';
 
 function* acceptInvitation(action) {
@@ -41,6 +47,21 @@ function* refuseInvitation(action) {
   } catch (error) {
     yield put({
       type: REFUSE_INVITATION_FAILURE,
+      error,
+    });
+  }
+}
+
+function* deleteInvitation(action) {
+  try {
+    const result = yield call(authAPI.deleteInvitation, action.data);
+    yield put({
+      type: DELETE_INVITATION_SUCCESS,
+      data: result.data,
+    });
+  } catch (error) {
+    yield put({
+      type: DELETE_INVITATION_FAILURE,
       error,
     });
   }
@@ -76,12 +97,31 @@ function* searchUserByNickname(action) {
   }
 }
 
+function* loadUser(action) {
+  try {
+    const result = yield call(authAPI.getUserInfo, action.data);
+    yield put({
+      type: LOAD_USER_SUCCESS,
+      data: result.data,
+    });
+  } catch (error) {
+    yield put({
+      type: LOAD_USER_FAILURE,
+      error,
+    });
+  }
+}
+
 function* watchAcceptInvitation() {
   yield takeLatest(ACCEPT_INVITATION_REQUEST, acceptInvitation);
 }
 
 function* watchRefuseInvitation() {
   yield takeLatest(REFUSE_INVITATION_REQUEST, refuseInvitation);
+}
+
+function* watchDeleteInvitation() {
+  yield takeLatest(DELETE_INVITATION_REQUEST, deleteInvitation);
 }
 
 function* watchInviteTeam() {
@@ -92,11 +132,17 @@ function* watchSearchUserByNickname() {
   yield takeLatest(SEARCH_USER_BY_NICKNAME_REQUEST, searchUserByNickname);
 }
 
+function* watchLoadUser() {
+  yield takeLatest(LOAD_USER_REQUEST, loadUser);
+}
+
 export default function* inviteSaga() {
   yield all([
     fork(watchAcceptInvitation),
     fork(watchRefuseInvitation),
+    fork(watchDeleteInvitation),
     fork(watchSearchUserByNickname),
     fork(watchInviteTeam),
+    fork(watchLoadUser),
   ]);
 }

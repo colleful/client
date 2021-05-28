@@ -1,46 +1,34 @@
-import React, {useState, useEffect} from 'react';
-import {View, Text, TouchableOpacity,Alert} from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
-import * as authAPI from '../../../../lib/api';
+import React, {useState, useEffect, useCallback} from 'react';
+import {View, Text, TouchableOpacity, Alert} from 'react-native';
 import {Config} from '../../../../Config';
 import {trigger} from 'swr';
 import {css} from '@emotion/native';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  ACCEPT_MATCHING_REQUEST,
+  REFUSE_MATCHING_REQUEST,
+  LOAD_USER_REQUEST,
+} from '../../../../reducers/matching';
 
 const ReceivedMatchingListItemScreen = ({receivedMatchingList}) => {
-  const [MatcherInfo, setMatchingInfo] = useState('');
+  const dispatch = useDispatch();
+  const {
+    matcherInfo,
+    acceptMatchingDone,
+    acceptMatchingError,
+    refuseMatchingDone,
+    refuseMatchingError,
+  } = useSelector(({matching}) => matching);
 
   useEffect(() => {
-    onGetUserInfo();
+    dispatch({
+      type: LOAD_USER_REQUEST,
+      data: receivedMatchingList.sentTeam.leaderId,
+    });
   }, []);
 
   useEffect(() => {
-    console.log("receivedMatchingList",receivedMatchingList);
-  }, [receivedMatchingList])
-
-  const onGetUserInfo = async () => {
-    try {
-      const response = await authAPI.getUserInfo(receivedMatchingList.sentTeam.leaderId,{
-        headers: {
-          Authorization: await AsyncStorage.getItem('authorization'),
-        }
-      });
-      setMatchingInfo(response.data);
-    } catch (error) {
-      console.log({error});
-    }
-  }
-
-  const onAcceptMatching = async () => {
-    try {
-      await authAPI.acceptMatching(
-        receivedMatchingList.id,
-        {},
-        {
-          headers: {
-            Authorization: await AsyncStorage.getItem('authorization'),
-          },
-        },
-      );
+    if (acceptMatchingDone) {
       Alert.alert(
         '완료',
         `${receivedMatchingList.sentTeam.teamName}팀 매칭 요청을 수락했습니다.`,
@@ -50,61 +38,71 @@ const ReceivedMatchingListItemScreen = ({receivedMatchingList}) => {
             onPress: () => {
               trigger(`${Config.baseUrl}/api/matching/received`);
               trigger(`${Config.baseUrl}/api/users`);
-            }
+            },
           },
         ],
       );
-    } catch (error) {
-      Alert.alert('에러발생', `${error.response.data.message}`, [
+    }
+    if (acceptMatchingError) {
+      Alert.alert('에러', `${acceptMatchingError.response.data.message}`, [
         {
           text: '확인',
         },
       ]);
-      console.log({error});
+      console.log({acceptMatchingError});
     }
-  };
 
-  const onRefuseMatching = async () => {
-    try {
-      const response = await authAPI.refuseMatching(
-        receivedMatchingList.id,
-        {},
-        {
-          headers: {
-            Authorization: await AsyncStorage.getItem('authorization'),
-          },
-        },
-      );
-      if (response.status === 200) {
-        Alert.alert(
-          '완료',
-          `${receivedMatchingList.sentTeam.teamName}팀의 매칭 요청을 거절했습니다.`,
-          [
-            {
-              text: '확인',
-              onPress: () => {
-                trigger(`${Config.baseUrl}/api/matching/received`);
-                trigger(`${Config.baseUrl}/api/users`);
-              }
+    if (refuseMatchingDone) {
+      Alert.alert(
+        '완료',
+        `${receivedMatchingList.sentTeam.teamName}팀의 매칭 요청을 거절했습니다.`,
+        [
+          {
+            text: '확인',
+            onPress: () => {
+              trigger(`${Config.baseUrl}/api/matching/received`);
+              trigger(`${Config.baseUrl}/api/users`);
             },
-          ],
-        );
-      }
-    } catch (error) {
-      Alert.alert('에러발생', `${error.response.data.message}`, [
+          },
+        ],
+      );
+    }
+    if (refuseMatchingError) {
+      Alert.alert('에러', `${refuseMatchingError.response.data.message}`, [
         {
           text: '확인',
         },
       ]);
-      console.log({error});
+      console.log({refuseMatchingError});
     }
-  };
+  }, [
+    acceptMatchingDone,
+    acceptMatchingError,
+    refuseMatchingDone,
+    refuseMatchingError,
+  ]);
+
+  const onAcceptMatching = useCallback(() => {
+    dispatch({type: ACCEPT_MATCHING_REQUEST, data: receivedMatchingList.id});
+  }, [dispatch, receivedMatchingList]);
+
+  const onRefuseMatching = useCallback(() => {
+    dispatch({type: REFUSE_MATCHING_REQUEST, data: receivedMatchingList.id});
+  }, [dispatch, receivedMatchingList]);
 
   return (
     <>
-      <Text style={css`font-size: 19px; line-height: 30px`}>
+      <Text
+        style={css`
+          font-size: 19px;
+          line-height: 30px;
+        `}>
         팀명 : {receivedMatchingList.sentTeam.teamName} {'\n'}리더 :{' '}
-        {MatcherInfo.nickname} {'( '}{MatcherInfo.age}{', '}{MatcherInfo.department}{' )'}
+        {matcherInfo.nickname} {'( '}
+        {matcherInfo.age}
+        {', '}
+        {matcherInfo.department}
+        {' )'}
       </Text>
       <View
         style={css`
@@ -121,7 +119,13 @@ const ReceivedMatchingListItemScreen = ({receivedMatchingList}) => {
             padding: 10px 18px;
             width: 61px;
           `}>
-          <Text style={css`color: #fff; font-weight: 500`}>수락</Text>
+          <Text
+            style={css`
+              color: #fff;
+              font-weight: 500;
+            `}>
+            수락
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={onRefuseMatching}
@@ -131,10 +135,21 @@ const ReceivedMatchingListItemScreen = ({receivedMatchingList}) => {
             padding: 10px 18px;
             width: 61px;
           `}>
-          <Text style={css`color: #fff; font-weight: 500`}>거절</Text>
+          <Text
+            style={css`
+              color: #fff;
+              font-weight: 500;
+            `}>
+            거절
+          </Text>
         </TouchableOpacity>
       </View>
-      <View style={css`border-bottom-width: 1px; margin-vertical: 20px`} />
+      <View
+        style={css`
+          border-bottom-width: 1px;
+          margin-vertical: 20px;
+        `}
+      />
     </>
   );
 };
