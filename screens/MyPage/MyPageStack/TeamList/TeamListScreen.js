@@ -69,10 +69,10 @@ const TeamListScreen = ({navigation, teamId, userId}) => {
             font-size: 32px;
             font-weight: 500;
           `}>
-          내 팀 목록
+          내 팀 정보
         </Text>
         <ScrollView showsVerticalScrollIndicator={false}>
-          {typeof teamInfo == 'object' && !Object.keys(teamInfo).length ? (
+          {!teamInfo.hasOwnProperty('id') ? (
             <>
               <View
                 style={css`

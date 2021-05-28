@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {View, Text, ScrollView} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import {css} from '@emotion/native';
@@ -24,13 +24,11 @@ const SentMatchingListScreen = ({teamId}) => {
   const {data: sentMatchingList = [], error} = useSWR(
     teamId === null ? null : `${Config.baseUrl}/api/matching/sent`,
     fetcher,
-    {
-      onErrorRetry: (error, key, config, revalidate, {retryCount}) => {
-        if (error.response.status === 403) return; //팀이 없는데 받은초대목록페이지가 마운트 될 때
-        if (error) console.log({error});
-      },
-    },
   );
+  if (!sentMatchingList && !error) {
+    return <LoadingScreen />;
+  }
+  if (error) console.log({error});
 
   return (
     <View
@@ -57,9 +55,7 @@ const SentMatchingListScreen = ({teamId}) => {
             margin-bottom: 20px;
           `}
         />
-        {sentMatchingList != null &&
-        typeof sentMatchingList == 'object' &&
-        !Object.keys(sentMatchingList).length ? (
+        {!sentMatchingList.length ? (
           <Text>보낸 요청이 없습니다</Text>
         ) : (
           <SentMatchingList sentMatchingList={sentMatchingList} />

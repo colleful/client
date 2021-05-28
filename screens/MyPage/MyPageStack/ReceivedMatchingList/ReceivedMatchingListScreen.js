@@ -59,9 +59,7 @@ const ReceivedMatchingListScreen = () => {
             margin-bottom: 20px;
           `}
         />
-        {receivedMatchingList != null &&
-        typeof receivedMatchingList == 'object' &&
-        !Object.keys(receivedMatchingList).length ? (
+        {!receivedMatchingList.length ? (
           <Text>받은 요청이 없습니다</Text>
         ) : (
           receivedMatchingList && (

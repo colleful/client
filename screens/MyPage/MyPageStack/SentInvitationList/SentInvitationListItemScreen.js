@@ -27,14 +27,6 @@ const SentInvitationListItemScreen = ({sentInvitationList}) => {
   }, []);
 
   useEffect(() => {
-    if (loadUserError) {
-      Alert.alert('에러', `${loadUserError.response.data.message}`, [
-        {
-          text: '확인',
-        },
-      ]);
-      console.log({loadUserError});
-    }
     if (deleteInvitationDone) {
       Alert.alert('완료', `초대를 취소하였습니다.`, [
         {
@@ -43,17 +35,21 @@ const SentInvitationListItemScreen = ({sentInvitationList}) => {
         },
       ]);
     }
+    if (loadUserError) {
+      Alert.alert('에러', `${loadUserError.response.data.message}`, [
+        {
+          text: '확인',
+        },
+      ]);
+      console.log({loadUserError});
+    }
     if (deleteInvitationError) {
-      Alert.alert(
-        '에러발생',
-        `${deleteInvitationError.response.data.message}`,
-        [
-          {
-            text: '확인',
-          },
-        ],
-      );
-      console.log({deleteInvitationError});
+      Alert.alert('에러', `${loadUserError.response.data.message}`, [
+        {
+          text: '확인',
+        },
+      ]);
+      console.log({loadUserError});
     }
   }, [loadUserError, deleteInvitationDone, deleteInvitationError]);
 

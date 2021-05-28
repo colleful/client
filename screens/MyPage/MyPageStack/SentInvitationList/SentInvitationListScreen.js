@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {View, Text, ScrollView} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import {css} from '@emotion/native';
@@ -26,15 +26,11 @@ const SentInvitationListScreen = ({teamId}) => {
   const {data: sentInvitationList = [], error} = useSWR(
     teamId === null ? null : `${Config.baseUrl}/api/invitations/sent`,
     fetcher,
-    {
-      onErrorRetry: (error, key, config, revalidate, {retryCount}) => {
-        if (error.response.status === 403) return; //팀이 없는데 받은초대목록페이지가 마운트 될 때
-        if (error) console.log({error});
-      },
-    },
   );
-
-  if (!sentInvitationList) return <Text>loading..</Text>;
+  if (!sentInvitationList && !error) {
+    return <LoadingScreen />;
+  }
+  if (error) console.log({error});
 
   return (
     <View
@@ -61,9 +57,7 @@ const SentInvitationListScreen = ({teamId}) => {
             margin-bottom: 20px;
           `}
         />
-        {sentInvitationList != null &&
-        typeof sentInvitationList == 'object' &&
-        !Object.keys(sentInvitationList).length ? (
+        {!sentInvitationList.length ? (
           <Text>보낸 초대가 없습니다</Text>
         ) : (
           sentInvitationList && (

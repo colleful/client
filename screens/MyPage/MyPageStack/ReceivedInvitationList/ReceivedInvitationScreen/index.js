@@ -29,7 +29,7 @@ const ReceivedInvitationScreen = () => {
     `${Config.baseUrl}/api/invitations/received`,
     fetcher,
   );
-  if (!error && !data) {
+  if (!error && !receivedInvitationList) {
     return <LoadingScreen />;
   }
   if (error) console.log({error});
@@ -40,9 +40,7 @@ const ReceivedInvitationScreen = () => {
         <InvitationList_title>받은 초대목록</InvitationList_title>
         <InvitationList_boundary />
         <ScrollView showsVerticalScrollIndicator={false}>
-          {receivedInvitationList != null &&
-          typeof receivedInvitationList == 'object' &&
-          !Object.keys(receivedInvitationList).length ? (
+          {!receivedInvitationList.length ? (
             <Text>받은 초대가 없습니다</Text>
           ) : (
             <ReceivedInvitationListScreen
