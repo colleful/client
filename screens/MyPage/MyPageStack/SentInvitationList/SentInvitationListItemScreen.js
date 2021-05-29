@@ -15,6 +15,7 @@ const SentInvitationListItemScreen = ({sentInvitationList}) => {
     deleteInvitationDone,
     deleteInvitationError,
   } = useSelector(({invite}) => invite);
+  const currentError = loadUserError || deleteInvitationError;
 
   useEffect(() => {
     dispatch({type: LOAD_USER_REQUEST, data: sentInvitationList.team.leaderId});
@@ -32,23 +33,15 @@ const SentInvitationListItemScreen = ({sentInvitationList}) => {
         },
       ]);
     }
-    if (loadUserError) {
-      Alert.alert('에러', `${loadUserError.response.data.message}`, [
+    if (currentError) {
+      Alert.alert('에러', `${currentError.response.data.message}`, [
         {
           text: '확인',
         },
       ]);
-      console.log({loadUserError});
+      console.log({currentError});
     }
-    if (deleteInvitationError) {
-      Alert.alert('에러', `${loadUserError.response.data.message}`, [
-        {
-          text: '확인',
-        },
-      ]);
-      console.log({loadUserError});
-    }
-  }, [loadUserError, deleteInvitationDone, deleteInvitationError]);
+  }, [deleteInvitationDone, currentError]);
 
   const onDeleteInvitation = useCallback(() => {
     dispatch({type: DELETE_INVITATION_REQUEST, data: sentInvitationList.id});

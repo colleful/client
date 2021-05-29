@@ -19,6 +19,8 @@ const ReceivedMatchingListItemScreen = ({receivedMatchingList}) => {
     refuseMatchingDone,
     refuseMatchingError,
   } = useSelector(({matching}) => matching);
+  const currentError = acceptMatchingError || refuseMatchingError;
+  const currentDone = acceptMatchingDone || refuseMatchingDone;
 
   useEffect(() => {
     dispatch({
@@ -28,13 +30,15 @@ const ReceivedMatchingListItemScreen = ({receivedMatchingList}) => {
     return () => {
       dispatch({type: INITAILIZE_STATE});
     };
-  }, []);
+  }, [receivedMatchingList.sentTeam.leaderId]);
 
   useEffect(() => {
-    if (acceptMatchingDone) {
+    if (currentDone) {
       Alert.alert(
         '완료',
-        `${receivedMatchingList.sentTeam.teamName}팀 매칭 요청을 수락했습니다.`,
+        `${receivedMatchingList.sentTeam.teamName}팀 매칭 요청을 ${
+          acceptMatchingDone ? '수락' : '거절'
+        }했습니다.`,
         [
           {
             text: '확인',
@@ -46,44 +50,15 @@ const ReceivedMatchingListItemScreen = ({receivedMatchingList}) => {
         ],
       );
     }
-    if (acceptMatchingError) {
-      Alert.alert('에러', `${acceptMatchingError.response.data.message}`, [
+    if (currentError) {
+      Alert.alert('에러', `${currentError.response.data.message}`, [
         {
           text: '확인',
         },
       ]);
-      console.log({acceptMatchingError});
+      console.log({currentError});
     }
-
-    if (refuseMatchingDone) {
-      Alert.alert(
-        '완료',
-        `${receivedMatchingList.sentTeam.teamName}팀의 매칭 요청을 거절했습니다.`,
-        [
-          {
-            text: '확인',
-            onPress: () => {
-              trigger(`${Config.baseUrl}/api/matching/received`);
-              trigger(`${Config.baseUrl}/api/users`);
-            },
-          },
-        ],
-      );
-    }
-    if (refuseMatchingError) {
-      Alert.alert('에러', `${refuseMatchingError.response.data.message}`, [
-        {
-          text: '확인',
-        },
-      ]);
-      console.log({refuseMatchingError});
-    }
-  }, [
-    acceptMatchingDone,
-    acceptMatchingError,
-    refuseMatchingDone,
-    refuseMatchingError,
-  ]);
+  }, [currentDone, currentError]);
 
   const onAcceptMatching = useCallback(() => {
     dispatch({type: ACCEPT_MATCHING_REQUEST, data: receivedMatchingList.id});

@@ -7,7 +7,10 @@ import {
   ACCEPT_INVITATION_REQUEST,
   REFUSE_INVITATION_REQUEST,
 } from '../../../../../reducers/invite';
-import {LOAD_USER_REQUEST, INITAILIZE_STATE} from '../../../../../reducers/user';
+import {
+  LOAD_USER_REQUEST,
+  INITAILIZE_STATE,
+} from '../../../../../reducers/user';
 
 import {
   InvitationList_buttonWrapper,
@@ -28,6 +31,9 @@ const ReceivedInvitationListItemScreen = ({receivedInvitationList}) => {
     refuseInvitationError,
     loadUserError,
   } = useSelector(({invite}) => invite);
+  const currentError =
+    loadUserError || acceptInvitationError || refuseInvitationError;
+  const currentDone = acceptInvitationDone || refuseInvitationDone;
 
   useEffect(() => {
     dispatch({
@@ -37,38 +43,15 @@ const ReceivedInvitationListItemScreen = ({receivedInvitationList}) => {
     return () => {
       dispatch({type: INITAILIZE_STATE});
     };
-  }, [receivedInvitationList]);
+  }, [receivedInvitationList.team.leaderId]);
 
   useEffect(() => {
-    if (loadUserError) {
-      Alert.alert('에러', `${loadUserError.response.data.message}`, [
-        {
-          text: '확인',
-        },
-      ]);
-      console.log({loadUserError});
-    }
-    if (acceptInvitationError) {
-      Alert.alert('에러', `${acceptInvitationError.response.data.message}`, [
-        {
-          text: '확인',
-        },
-      ]);
-      console.log({acceptInvitationError});
-    }
-    if (refuseInvitationError) {
-      Alert.alert('에러', `${refuseInvitationError.response.data.message}`, [
-        {
-          text: '확인',
-        },
-      ]);
-      console.log({refuseInvitationError});
-    }
-
-    if (acceptInvitationDone) {
+    if (currentDone) {
       Alert.alert(
         '완료',
-        `${receivedInvitationList.team.teamName}팀 초대를 수락했습니다.`,
+        `${receivedInvitationList.team.teamName}팀 초대를 ${
+          acceptInvitationDone ? '수락' : '거절'
+        }했습니다.`,
         [
           {
             text: '확인',
@@ -80,42 +63,29 @@ const ReceivedInvitationListItemScreen = ({receivedInvitationList}) => {
         ],
       );
     }
-    if (refuseInvitationDone) {
-      Alert.alert(
-        '완료',
-        `${receivedInvitationList.team.teamName}팀 초대를 거절했습니다.`,
-        [
-          {
-            text: '확인',
-            onPress: () => {
-              trigger(`${Config.baseUrl}/api/invitations/received`);
-              trigger(`${Config.baseUrl}/api/users`);
-            },
-          },
-        ],
-      );
+    if (currentError) {
+      Alert.alert('에러', `${currentError.response.data.message}`, [
+        {
+          text: '확인',
+        },
+      ]);
+      console.log({currentError});
     }
-  }, [
-    loadUserError,
-    acceptInvitationError,
-    refuseInvitationError,
-    acceptInvitationDone,
-    refuseInvitationDone,
-  ]);
+  }, [currentError, currentDone]);
 
   const onAcceptInvitation = useCallback(() => {
     dispatch({
       type: ACCEPT_INVITATION_REQUEST,
       data: receivedInvitationList.id,
     });
-  }, [dispatch, receivedInvitationList]);
+  }, [dispatch, receivedInvitationList.id]);
 
   const onRefuseInvitation = useCallback(() => {
     dispatch({
       type: REFUSE_INVITATION_REQUEST,
       data: receivedInvitationList.id,
     });
-  }, [dispatch, receivedInvitationList]);
+  }, [dispatch, receivedInvitationList.id]);
 
   return (
     <>

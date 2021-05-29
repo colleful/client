@@ -4,13 +4,22 @@ import {Config} from '../../../../Config';
 import {trigger} from 'swr';
 import {css} from '@emotion/native';
 import {useDispatch, useSelector} from 'react-redux';
-import {DELETE_MATCHING_REQUEST} from '../../../../reducers/matching';
+import {
+  DELETE_MATCHING_REQUEST,
+  INITAILIZE_STATE,
+} from '../../../../reducers/matching';
 
 const SentMatchingListItemScreen = ({sentMatchingList}) => {
   const dispatch = useDispatch();
   const {deleteMatchingDone, deleteMatchingError} = useSelector(
     ({matching}) => matching,
   );
+
+  useEffect(() => {
+    return () => {
+      dispatch({type: INITAILIZE_STATE});
+    };
+  }, []);
 
   useEffect(() => {
     if (deleteMatchingDone) {

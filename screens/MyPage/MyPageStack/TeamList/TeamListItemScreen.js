@@ -12,13 +12,14 @@ import {useDispatch, useSelector} from 'react-redux';
 import {
   DELETE_TEAM_REQUEST,
   EXIT_TEAM_REQUEST,
-  CHANGE_VALUE,
+  INITAILIZE_STATE,
 } from '../../../../reducers/team';
 import LoadingScreen from '../../../../components/LoadingScreen';
 
 const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
   const [isLeader, setLeader] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
+  const dispatch = useDispatch();
   const {
     deleteTeamDone,
     deleteTeamError,
@@ -26,50 +27,40 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
     exitTeamError,
   } = useSelector(({team}) => team);
   const currentError = deleteTeamError || exitTeamError;
-  const dispatch = useDispatch();
+  const currentDone = deleteTeamDone || exitTeamDone;
 
   useEffect(() => {
     if (userId === teamInfo.leaderId) {
       setLeader(true);
     }
-  }, []);
+    return () => {
+      dispatch({type: INITAILIZE_STATE});
+    };
+  }, [userId, teamInfo.leaderId]);
 
   useEffect(() => {
-    if (deleteTeamDone) {
-      Alert.alert('팀 삭제', '팀 삭제를 완료했습니다.', [
-        {
-          text: '확인',
-          onPress: () => {
-            trigger(`${Config.baseUrl}/api/users`);
-            dispatch({type: CHANGE_VALUE, key: 'deleteTeamDone', value: false});
+    if (currentDone) {
+      Alert.alert(
+        '완료',
+        `팀 ${deleteTeamDone ? '삭제' : '나가기'}를 완료했습니다.`,
+        [
+          {
+            text: '확인',
+            onPress: () => trigger(`${Config.baseUrl}/api/users`),
           },
-        },
-      ]);
-    }
-    if (exitTeamDone) {
-      Alert.alert('팀 탈퇴', '팀 나가기를 완료했습니다.', [
-        {
-          text: '확인',
-          onPress: () => {
-            trigger(`${Config.baseUrl}/api/users`);
-            dispatch({type: CHANGE_VALUE, key: 'exitTeamDone', value: false});
-          },
-        },
-      ]);
+        ],
+      );
     }
     if (currentError) {
       Alert.alert('에러', `${currentError.response.data.message}`, [
         {
           text: '확인',
-          onPress: () => {
-            onToggleModal();
-            dispatch({type: CHANGE_VALUE, key: 'currentError', value: null});
-          },
+          onPress: onToggleModal,
         },
       ]);
       console.log({currentError});
     }
-  }, [exitTeamDone, deleteTeamDone, currentError]);
+  }, [currentDone, currentError]);
 
   const fetcher = async (url) => {
     const response = await axios.get(url, {
@@ -90,18 +81,18 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
     setModalVisible((prev) => !prev);
   }, []);
 
-  const onDeleteTeam = () => {
+  const onDeleteTeam = useCallback(() => {
     dispatch({
       type: DELETE_TEAM_REQUEST,
     });
-  };
+  }, [dispatch]);
 
-  const onExitTeam = () => {
+  const onExitTeam = useCallback(() => {
     dispatch({
       type: EXIT_TEAM_REQUEST,
       data: teamInfo.teamName,
     });
-  };
+  }, [dispatch, teamInfo.teamName]);
 
   const onAskBackDeleteTeam = useCallback(() => {
     Alert.alert(
@@ -122,7 +113,7 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
     navigation.navigate('팀초대', {
       teamId: teamInfo.id,
     });
-  }, [teamId]);
+  }, [teamInfo.id]);
 
   const teamInfoStatus = useCallback(() => {
     if (teamInfo.status === 'PENDING') {

@@ -2,7 +2,10 @@ import React, {useEffect, useCallback} from 'react';
 import {View, Text, TouchableOpacity, Alert} from 'react-native';
 import {css} from '@emotion/native';
 import {useDispatch, useSelector} from 'react-redux';
-import {INVITE_TEAM_REQUEST} from '../../../../reducers/invite';
+import {
+  INITAILIZE_STATE,
+  INVITE_TEAM_REQUEST,
+} from '../../../../reducers/invite';
 
 const InvitationListItemScreen = ({searchUserInfo}) => {
   const dispatch = useDispatch();
@@ -11,6 +14,13 @@ const InvitationListItemScreen = ({searchUserInfo}) => {
     inviteTeamDone,
     inviteTeamError,
   } = useSelector(({invite}) => invite);
+  const currentError = searchUserByNicknameError || inviteTeamError;
+
+  useEffect(() => {
+    return () => {
+      dispatch({type: INITAILIZE_STATE});
+    };
+  }, []);
 
   useEffect(() => {
     if (inviteTeamDone) {
@@ -24,32 +34,19 @@ const InvitationListItemScreen = ({searchUserInfo}) => {
         ],
       );
     }
-    if (searchUserByNicknameError) {
-      Alert.alert(
-        '에러',
-        `${searchUserByNicknameError.response.data.message}`,
-        [
-          {
-            text: '확인',
-          },
-        ],
-      );
-      console.log({searchUserByNicknameError});
-    }
-
-    if (inviteTeamError) {
-      Alert.alert('에러', `${inviteTeamError.response.data.message}`, [
+    if (currentError) {
+      Alert.alert('에러', `${currentError.response.data.message}`, [
         {
           text: '확인',
         },
       ]);
-      console.log({inviteTeamError});
+      console.log({currentError});
     }
-  }, [searchUserByNicknameError, inviteTeamDone, inviteTeamError]);
+  }, [inviteTeamDone, currentError]);
 
   const onInviteTeam = useCallback(() => {
     dispatch({type: INVITE_TEAM_REQUEST, data: {userId: searchUserInfo.id}});
-  }, [dispatch, searchUserInfo]);
+  }, [dispatch, searchUserInfo.id]);
 
   return (
     <View
