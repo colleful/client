@@ -1,19 +1,15 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {View, Text, Alert} from 'react-native';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {setLoginState} from '../../../../reducers/auth';
 import AsyncStorage from '@react-native-community/async-storage';
-import {Picker} from '@react-native-community/picker';
-import * as authAPI from '../../../../lib/api';
 import {css} from '@emotion/native';
 import {trigger} from 'swr';
 import {Config} from '../../../../Config';
 import {
   InputForm_title,
-  InputForm_container__borderWidth05,
   InputForm_input,
   InputForm_buttonText,
-  InputForm_pickerContainer,
 } from '../../../../assets/css/InputForm';
 import {
   Wrapper,
@@ -25,65 +21,94 @@ import {
   AccountForm_container,
   AccountForm_buttonContainer,
 } from './style';
+import {
+  CHANGE_USER_INFO_REQUEST,
+  CHANGE_USER_PASSWORD_REQUEST,
+  DELETE_USER_REQUEST,
+  INITAILIZE_STATE,
+} from '../../../../reducers/user';
+import LoadingScreen from '../../../../components/LoadingScreen';
 
 const AccountScreen = ({navigation, myInfoData}) => {
   const [isSuccessIdentification, setSuccessIdentification] = useState(false);
   const [passwordForAuth, setPasswordForAuth] = useState();
   const [passwordForChange, setPasswordForChange] = useState();
   const [passwordForConfirm, setPasswordForConfirm] = useState();
-  const [selectedDepartment, setSelectedDepartment] = useState({});
-  const [departmentData, setDepartmentData] = useState([]);
-  const [sortedDepartmentName, setSortedDepartmentName] = useState([]);
   const [nicknameForChange, setNicknameForChange] = useState('');
   const [selfIntroductionForChange, setSelfIntroductionForChange] = useState(
     '',
   );
 
   const dispatch = useDispatch();
+  const {
+    changeUserInfoLoading,
+    changeUserInfoDone,
+    changeUserInfoError,
+    deleteUserLoading,
+    deleteUserDone,
+    deleteUserError,
+    changeUserPasswordLoading,
+    changeUserPasswordDone,
+    changeUserPasswordError,
+  } = useSelector(({user}) => user);
+  const currentError =
+    changeUserInfoError || deleteUserError || changeUserPasswordError;
 
   useEffect(() => {
-    getDepartments();
+    return () => {
+      dispatch({type: INITAILIZE_STATE});
+    };
   }, []);
 
-  const getDepartments = async () => {
-    try {
-      const response = await authAPI.getDepartment();
-      setDepartmentData(response.data);
-      setSortedDepartmentName(
-        response.data.map((datas) => datas.departmentName).sort(),
-      );
-    } catch (error) {
-      Alert.alert('에러', `${error.response.data.message}`, [
-        {
-          text: '확인',
-        },
-      ]);
-      console.log({error});
-    }
-  };
-
-  const DeleteUser = async () => {
-    try {
-      await authAPI.deleteUser({
-        headers: {
-          Authorization: await AsyncStorage.getItem('authorization'),
-        },
-      });
-      Alert.alert('회원 탈퇴', '회원 탈퇴를 정상적으로 처리했습니다.', [
+  useEffect(() => {
+    if (deleteUserDone) {
+      Alert.alert('완료', '회원 탈퇴를 정상적으로 처리했습니다.', [
         {
           text: '확인',
           onPress: deleteUserHandler,
         },
       ]);
-    } catch (error) {
-      Alert.alert('에러', `${error.response.data.message}`, [
+    }
+    if (changeUserPasswordDone) {
+      Alert.alert('완료', '비밀번호 변경을 성공했습니다.', [
+        {
+          text: '확인',
+          onPress: () => {
+            AsyncStorage.setItem('userPassword', passwordForChange);
+            navigation.navigate('유저정보');
+          },
+        },
+      ]);
+    }
+    if (changeUserInfoDone) {
+      Alert.alert('완료', '회원정보 수정을 완료했습니다.', [
+        {
+          text: '확인',
+          onPress: () => {
+            trigger(`${Config.baseUrl}/api/users`);
+            navigation.navigate('유저정보');
+          },
+        },
+      ]);
+    }
+    if (currentError) {
+      Alert.alert('에러', `${currentError.response.data.message}`, [
         {
           text: '확인',
         },
       ]);
-      console.log({error});
+      console.log({currentError});
     }
-  };
+  }, [
+    deleteUserDone,
+    changeUserPasswordDone,
+    changeUserInfoDone,
+    currentError,
+  ]);
+
+  const DeleteUser = useCallback(() => {
+    dispatch({type: DELETE_USER_REQUEST});
+  }, [dispatch]);
 
   const confirmUser = useCallback(async () => {
     const userPassword = await AsyncStorage.getItem('userPassword');
@@ -103,34 +128,12 @@ const AccountScreen = ({navigation, myInfoData}) => {
     }
   }, [passwordForAuth, setSuccessIdentification]);
 
-  const onChangeUserPassword = async () => {
-    try {
-      await authAPI.changeUserPassword(
-        {password: passwordForChange},
-        {
-          headers: {
-            Authorization: await AsyncStorage.getItem('authorization'),
-          },
-        },
-      );
-      Alert.alert('변경 성공', '비밀번호 변경을 완료했습니다.', [
-        {
-          text: '확인',
-          onPress: () => {
-            navigation.navigate('유저정보'),
-              AsyncStorage.setItem('userPassword', passwordForChange);
-          },
-        },
-      ]);
-    } catch (error) {
-      Alert.alert('에러', `${error.response.data.message}`, [
-        {
-          text: '확인',
-        },
-      ]);
-      console.log({error});
-    }
-  };
+  const onChangeUserPassword = useCallback(() => {
+    dispatch({
+      type: CHANGE_USER_PASSWORD_REQUEST,
+      data: {password: passwordForChange},
+    });
+  }, [dispatch, passwordForChange]);
 
   const ConfirmToChangePassword = useCallback(() => {
     if (passwordForChange !== passwordForConfirm) {
@@ -145,62 +148,25 @@ const AccountScreen = ({navigation, myInfoData}) => {
   }, [passwordForChange, passwordForConfirm, onChangeUserPassword]);
 
   const userData = useCallback(() => {
-    let changeData = {};
     if (nicknameForChange !== myInfoData.nickname && nicknameForChange !== '') {
-      let pair = {nickname: nicknameForChange};
-      changeData = {...changeData, ...pair};
+      return {nickname: nicknameForChange};
     }
     if (
       selfIntroductionForChange !== myInfoData.selfIntroduction &&
       selfIntroductionForChange !== ''
     ) {
-      let pair = {selfIntroduction: selfIntroductionForChange};
-      changeData = {...changeData, ...pair};
+      return {selfIntroduction: selfIntroductionForChange};
     }
-    if (selectedDepartment.item !== myInfoData.department) {
-      let pair = {
-        departmentId: departmentData.find(
-          (data) => data.departmentName === selectedDepartment.item,
-        ).id,
-      };
-      console.log('pair', pair);
-      changeData = {...changeData, ...pair};
-    }
-    return changeData;
   }, [
     nicknameForChange,
     selfIntroductionForChange,
-    selectedDepartment,
     myInfoData.nickname,
     myInfoData.selfIntroduction,
-    myInfoData.department,
   ]);
 
-  const onChangeUserInfo = async () => {
-    try {
-      await authAPI.changeUserInfo(userData(), {
-        headers: {
-          Authorization: await AsyncStorage.getItem('authorization'),
-        },
-      });
-      Alert.alert('변경 성공', '회원정보 수정을 완료했습니다.', [
-        {
-          text: '확인',
-          onPress: () => {
-            navigation.navigate('유저정보');
-          },
-        },
-      ]);
-      trigger(`${Config.baseUrl}/api/users`);
-    } catch (error) {
-      Alert.alert('에러', `${error.response.data.message}`, [
-        {
-          text: '확인',
-        },
-      ]);
-      console.log({error});
-    }
-  };
+  const onChangeUserInfo = useCallback(() => {
+    dispatch({type: CHANGE_USER_INFO_REQUEST, data: userData()});
+  }, [dispatch, userData]);
 
   const logoutHandler = useCallback(() => {
     AsyncStorage.removeItem('authorization');
@@ -254,33 +220,6 @@ const AccountScreen = ({navigation, myInfoData}) => {
                 onChangeText={(text) => setNicknameForChange(text)}
                 defaultValue={myInfoData.nickname}
               />
-              <View
-                style={css`
-                  margin-bottom: 15px;
-                `}
-              />
-
-              <InputForm_title>단과대학</InputForm_title>
-              <InputForm_container__borderWidth05>
-                <InputForm_pickerContainer
-                  selectedValue={selectedDepartment.item}
-                  mode="dropdown"
-                  onValueChange={(itemValue) => {
-                    setSelectedDepartment({item: itemValue});
-                  }}
-                  itemStyle={{fontSize: 15}} //ios만 지원됨 ㅋㅋ
-                >
-                  <Picker.Item
-                    label={myInfoData.department}
-                    value={myInfoData.department}
-                  />
-                  {sortedDepartmentName.map((datas) => {
-                    return (
-                      <Picker.Item label={datas} value={datas} key={datas} />
-                    );
-                  })}
-                </InputForm_pickerContainer>
-              </InputForm_container__borderWidth05>
               <View
                 style={css`
                   margin-bottom: 15px;
@@ -369,6 +308,9 @@ const AccountScreen = ({navigation, myInfoData}) => {
           </Button__dark__width100>
         </AccountForm_container>
       )}
+      {(changeUserInfoLoading ||
+        deleteUserLoading ||
+        changeUserPasswordLoading) && <LoadingScreen />}
     </>
   );
 };
