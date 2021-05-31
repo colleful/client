@@ -5,16 +5,17 @@
 전북대학교 과팅 매칭 플랫폼 Colleful의 client repository.    
 College와 Colorful의 합성어로, 다채로운 대학 생활을 제공해 주겠다는 의미이다.
 
-## 📱 최적화 테스트 디바이스
+## 📱 최적화 디바이스
 - **Android** (Samsung Galaxy S7)
-- ~IOS~ (맥북이 없어서 테스트를 하지 못함)
 
-## 💡 기술 스택
+## 💡 사용 기술 스택
 
-- react-native(함수형 컴포넌트 기반), react-navigation-v5
-- emotion.js (BEM 방법론 적용)
-- redux, redux-saga
-- axios, SWR
+- **크로스 플랫폼 앱** : React Native (함수 컴포넌트 기반)
+- **페이지 라우터** : React-navigation-v5
+- **CSS** : emotion.js
+- **상태관리 및 미들웨어** : Redux, Redux-saga
+- **AJAX 요청** : Axios, SWR
+- **협업** : Github, Slack
 
 ## 🌴 브랜치 전략
 
@@ -33,86 +34,7 @@ College와 Colorful의 합성어로, 다채로운 대학 생활을 제공해 주
 ## 🗄 구조
 <details markdown="1">
 <summary>접기 / 펼치기</summary>
-
-## (2021-05~ ) 구조 개선 후 다 바꿀 예정 🛠🛠🛠🛠
-
-📦client   
- ┣ 📂container &nbsp;&nbsp;`인증관련 컨테이너 컴포넌트` 
- ┃  ┣ 📜LoginContainer.js        
- ┃  ┗ 📜RegisterContainer.js     
- ┃ 📂hooks &nbsp;&nbsp;`커스텀훅`   
- ┃  ┗ 📜useInterval.js   
- ┃ 📂lib   
- ┃  ┣ 📜api.js &nbsp;&nbsp;`API 함수화한 컴포넌트`     
- ┃  ┣ 📜createRequestAuthSaga.js &nbsp;&nbsp;`인증용 API를 위한 saga`     
- ┃  ┗ 📜createRequestSaga.js &nbsp;&nbsp;`API를 위한 saga`    
- ┃ 📂modules &nbsp;&nbsp;`리덕스`     
- ┃  ┣ 📜auth.js  &nbsp;&nbsp;`인증관련`    
- ┃  ┣ 📜index.js  &nbsp;&nbsp;`리듀서를 하나로 합쳐주는 루트 리듀서`     
- ┃  ┣ 📜loading.js  &nbsp;&nbsp;`로딩관련`   
- ┃  ┣ 📜team.js   
- ┃  ┗ 📜user.js   &nbsp;&nbsp;`유저관련`   
- ┃ 📂screens  
- ┃  ┣ 📂auth  &nbsp;&nbsp;`인증관련 프레젠테이셔널 컴포넌트`   
- ┃  ┃ ┣ 📜LoginScreen.js   
- ┃  ┃ ┗ 📜RegisterScreen.js  
- ┃  ┣ 📂Chat  &nbsp;&nbsp;`채팅목록`   
- ┃  ┃ ┗ 📜ChatScreen.js  
- ┃  ┣ 📂Home  &nbsp;&nbsp;`홈`   
- ┃  ┃ ┣ 📜HomeScreen.js    
- ┃  ┃ ┣ 📜ModalFilter.js &nbsp;&nbsp;`홈 필터`    
- ┃  ┃ ┣ 📜TeamInfo.js &nbsp;&nbsp;`팀 정보 보여주기`    
- ┃  ┃ ┣ 📜TeamInfoModal.js  &nbsp;&nbsp;`팀 매칭 전 유저 정보 보기`   
- ┃  ┃ ┣ 📜TeamInfoModalList.js  
- ┃  ┃ ┗ 📜TeamInfoModalListItem.js  
- ┃  ┣ 📂MyPage  
- ┃  ┃ ┣ 📂MyPageStack  
- ┃  ┃ ┃ ┣ 📂Account  &nbsp;&nbsp;`계정`   
- ┃  ┃ ┃ ┃ ┗ 📜AccountScreen.js  
- ┃  ┃ ┃ ┣ 📂AddTeam  &nbsp;&nbsp;`팀추가`   
- ┃  ┃ ┃ ┃ ┗ 📜AddTeamScreen.js  
- ┃  ┃ ┃ ┣ 📂ReceivedInvitationList &nbsp;&nbsp;`받은 초대 목록`    
- ┃  ┃ ┃ ┃ ┣ 📜ReceivedInvitationList.js  
- ┃  ┃ ┃ ┃ ┣ 📜ReceivedInvitationListItemScreen.js  
- ┃  ┃ ┃ ┃ ┗ 📜ReceivedInvitationListScreen.js  
- ┃  ┃ ┃ ┣ 📂ReceivedMatchingList  &nbsp;&nbsp;`받은 매칭요청 목록`   
- ┃  ┃ ┃ ┃ ┣ 📜ReceivedMatchingList.js  
- ┃  ┃ ┃ ┃ ┣ 📜ReceivedMatchingListItemScreen.js  
- ┃  ┃ ┃ ┃ ┗ 📜ReceivedMatchingListScreen.js  
- ┃  ┃ ┃ ┣ 📂SentInvitationList  &nbsp;&nbsp;`보낸 초대 목록`   
- ┃  ┃ ┃ ┃ ┣ 📜SentInvitationList.js  
- ┃  ┃ ┃ ┃ ┣ 📜SentInvitationListItemScreen.js  
- ┃  ┃ ┃ ┃ ┗ 📜SentInvitationListScreen.js  
- ┃  ┃ ┃ ┣ 📂SentMatchingList  &nbsp;&nbsp;`보낸 매칭요청 목록`   
- ┃  ┃ ┃ ┃ ┣ 📜SentMatchingList.js  
- ┃  ┃ ┃ ┃ ┣ 📜SentMatchingListItemScreen.js  
- ┃  ┃ ┃ ┃ ┗ 📜SentMatchingListScreen.js  
- ┃  ┃ ┃ ┣ 📂TeamList  &nbsp;&nbsp;`팀초대, 팀목록`   
- ┃  ┃ ┃ ┃ ┣ 📜InvitationScreen.js  &nbsp;&nbsp;`팀초대`   
- ┃  ┃ ┃ ┃ ┣ 📜TeamListItemModal.js  &nbsp;&nbsp;`팀상태 변경`   
- ┃  ┃ ┃ ┃ ┣ 📜TeamListItemScreen.js  &nbsp;&nbsp;`팀삭제, 팀나가기, 팀정보 보여주기`   
- ┃  ┃ ┃ ┃ ┗ 📜TeamListScreen.js  &nbsp;&nbsp;`팀목록`   
- ┃  ┃ ┃ ┣ 📜MemberInfo.js &nbsp;&nbsp;`마이페이지에서 프로필`   
- ┃  ┃ ┃ ┣ 📜MessageScreen.js    
- ┃  ┃ ┃ ┣ 📜NoticeScreen.js   
- ┃  ┃ ┃ ┣ 📜ProfileScreen.js  &nbsp;&nbsp;`프로필 변경`   
- ┃  ┃ ┃ ┣ 📜SettingScreen.js  
- ┃  ┃ ┃ ┗ 📜SuggestionScreen.js  
- ┃  ┃ ┣ 📜MyPageInfo.js  
- ┃  ┃ ┣ 📜MypageNavigator.js  &nbsp;&nbsp;`마이페이지 스택 네비게이터`   
- ┃  ┃ ┣ 📜MyPageNavList.js   
- ┃  ┃ ┣ 📜MyPageNavListItem.js  
- ┃  ┃ ┗ 📜MyPageScreen.js  
- ┃  ┣ 📜MainNavigator.js  &nbsp;&nbsp;`바텀탭 네비게이터`   
- ┃  ┣ 📜SplashScreen.js  &nbsp;&nbsp;`스플래시 페이지`   
- ┃  ┗ 📜SwitchNavigator.js  &nbsp;&nbsp;`로그인 토큰 검증 라우터 (스플래시 페이지, 자동로그인 관련)`   
- ┃ 📂utils    
- ┃  ┗ 📜GetTimeFromNow.js &nbsp;&nbsp;`생성시간 보여주기`     
- ┣ 📜App.js &nbsp;&nbsp;`Routing, 자동로그인, 스토어 역할`   
- ┣ 📜index.js   
- ┣ 📜Config.js  &nbsp;&nbsp;`엔드포인트`   
- ┣ 📜package-lock.json   
- ┗ 📜package.json     
+ 
 
 </details>
 
