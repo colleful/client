@@ -1,11 +1,12 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {View, Text, TextInput, TouchableOpacity, Alert} from 'react-native';
+import {Alert} from 'react-native';
 import {trigger} from 'swr';
 import {Config} from '../../../../Config';
-import {css} from '@emotion/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {CREATE_TEAM_REQUEST, INITAILIZE_STATE} from '../../../../reducers/team';
 import LoadingScreen from '../../../../components/LoadingScreen';
+import * as P from '../../../../assets/css/InputForm';
+import * as ATS from './style';
 
 const AddTeamScreen = ({navigation}) => {
   const dispatch = useDispatch();
@@ -66,49 +67,14 @@ const AddTeamScreen = ({navigation}) => {
   }, [dispatch, teamName]);
 
   return (
-    <View
-      style={css`
-        flex: 1;
-        justify-content: center;
-        align-items: center;
-      `}>
-      <Text
-        style={css`
-          font-size: 25px;
-          margin-bottom: 15px;
-        `}>
-        팀 이름을 입력해주세요
-      </Text>
-      <TextInput
-        onChangeText={(text) => setTeamName(text)}
-        style={css`
-          width: 150px;
-          height: 50px;
-          border-bottom-width: 1px;
-          margin-bottom: 15px;
-          font-size: 16px;
-        `}
-      />
-
-      <TouchableOpacity
-        onPress={onCreateTeam}
-        style={css`
-          background-color: #5e5e5e;
-          border-radius: 5px;
-          padding: 13px 18px;
-          margin-vertical: 20px;
-          width: 70px;
-        `}>
-        <Text
-          style={css`
-            color: white;
-            text-align: center;
-          `}>
-          생성
-        </Text>
-      </TouchableOpacity>
+    <ATS.Wrapper>
+      <ATS.Title>팀 이름을 입력해주세요</ATS.Title>
+      <P.Input onChangeText={(text) => setTeamName(text)} />
+      <P.Button onPress={onCreateTeam}>
+        <P.ButtonText>생성</P.ButtonText>
+      </P.Button>
       {createTeamLoading && <LoadingScreen />}
-    </View>
+    </ATS.Wrapper>
   );
 };
 

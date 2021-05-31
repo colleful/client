@@ -3,20 +3,8 @@ import {Text} from 'react-native';
 import Modal from 'react-native-modal';
 import {useSelector, useDispatch} from 'react-redux';
 import {initializeForm} from '../../../reducers/auth';
-import {css} from '@emotion/native';
 import LoadingScreen from '../../../components/LoadingScreen';
-import {
-  Wrapper,
-  ModalForm,
-  ModalForm_title,
-  ModalForm_title__fontSize12,
-  ModalForm_title__fontSize18,
-  ModalForm_content,
-  ModalForm_input,
-  ModalForm_button,
-  ModalForm_buttonText,
-  ModalForm_exitButton,
-} from './style';
+import * as FPM from './style';
 
 const FindPasswordModal = ({
   isModalVisible,
@@ -50,78 +38,72 @@ const FindPasswordModal = ({
 
   return (
     <Modal isVisible={isModalVisible} onBackButtonPress={toggleModal}>
-      <Wrapper>
-        <ModalForm>
+      <FPM.Wrapper>
+        <FPM.WrapperInner>
           {(passwordEmailAuthLoading ||
             passwordConfirmEmailLoading ||
             passwordChangeLoading) && <LoadingScreen />}
-          <ModalForm_title>
+          <FPM.Header>
             {passwordConfirmEmail === '' ? (
-              <ModalForm_title__fontSize18>
-                비밀번호 변경
-              </ModalForm_title__fontSize18>
+              <FPM.Title large>비밀번호 변경</FPM.Title>
             ) : (
               <>
-                <ModalForm_title__fontSize12>
-                  이메일 인증을 통한
-                </ModalForm_title__fontSize12>
-                <ModalForm_title__fontSize18>
-                  비밀번호 찾기
-                </ModalForm_title__fontSize18>
+                <FPM.Title>이메일 인증을 통한</FPM.Title>
+                <FPM.Title large>비밀번호 찾기</FPM.Title>
               </>
             )}
-          </ModalForm_title>
+          </FPM.Header>
 
-          <ModalForm_content>
+          <FPM.Content>
             {passwordConfirmEmail === '' ? (
               <>
-                <ModalForm_input
+                <FPM.Input
                   placeholder="새로운 비밀번호"
                   placeholderTextColor="black"
                   value={forgetPassword.password}
                   onChange={onChangeFindPassword}
                   secureTextEntry
                 />
-                <ModalForm_input
+                <FPM.Input
                   placeholder="새로운 비밀번호 확인"
                   placeholderTextColor="black"
                   value={forgetPassword.passwordConfirm}
                   onChange={onChangeFindPasswordConfirm}
                   secureTextEntry
                 />
-                <ModalForm_button onPress={onSubmitChangePassword}>
-                  <ModalForm_buttonText>변경하기</ModalForm_buttonText>
-                </ModalForm_button>
+                <FPM.Button onPress={onSubmitChangePassword}>
+                  <FPM.ButtonText>변경하기</FPM.ButtonText>
+                </FPM.Button>
               </>
             ) : (
               <>
-                <ModalForm_input
+                <FPM.Input
                   placeholder="학교이메일"
                   placeholderTextColor="black"
                   value={forgetPassword.email}
                   onChange={onChangeFindEmail}
                 />
-                <ModalForm_button onPress={onSendAuthEmailForPasswordChange}>
-                  <ModalForm_buttonText>보내기</ModalForm_buttonText>
-                </ModalForm_button>
+                <FPM.Button onPress={onSendAuthEmailForPasswordChange}>
+                  <FPM.ButtonText>보내기</FPM.ButtonText>
+                </FPM.Button>
 
-                <ModalForm_input
+                <FPM.Input
                   placeholder="인증번호"
                   placeholderTextColor="black"
                   value={forgetPassword.code}
                   onChange={onChangeFindCode}
                 />
-                <ModalForm_button onPress={onConfirmAuthEmail}>
-                  <ModalForm_buttonText>인증하기</ModalForm_buttonText>
-                </ModalForm_button>
+                <FPM.Button onPress={onConfirmAuthEmail}>
+                  <FPM.ButtonText>인증하기</FPM.ButtonText>
+                </FPM.Button>
               </>
             )}
-            <ModalForm_exitButton onPress={exitChangePasswordHandler}>
+            <FPM.ExitButton onPress={exitChangePasswordHandler}>
               <Text>나가기</Text>
-            </ModalForm_exitButton>
-          </ModalForm_content>
-        </ModalForm>
-      </Wrapper>
+            </FPM.ExitButton>
+          </FPM.Content>
+        </FPM.WrapperInner>
+      </FPM.Wrapper>
     </Modal>
   );
 };

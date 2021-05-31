@@ -7,13 +7,13 @@ export const Wrapper = styled.View`
   align-items: center;
 `;
 
-export const ModalForm = styled.View`
+export const WrapperInner = styled.View`
   background-color: white;
   width: 250px;
   border-radius: 5px;
 `;
 
-export const ModalForm_title = styled.View`
+export const Header = styled.View`
   height: 50px;
   justify-content: center;
   align-items: center;
@@ -21,19 +21,16 @@ export const ModalForm_title = styled.View`
   border-color: gray;
 `;
 
-export const ModalForm_title__fontSize18 = styled.Text`
-  font-size: 18px;
+export const Title = styled.Text`
+  font-size: ${(props) => (props.large ? '18px' : '12px')};
 `;
+// large: 18px , small: 12px;
 
-export const ModalForm_title__fontSize12 = styled.Text`
-  font-size: 12px;
-`;
-
-export const ModalForm_content = styled.View`
+export const Content = styled.View`
   padding: 20px 20px 10px;
 `;
 
-export const ModalForm_input = styled.TextInput`
+export const Input = styled.TextInput`
   border: 1px solid gray;
   border-radius: 4px;
   width: 100%;
@@ -43,20 +40,20 @@ export const ModalForm_input = styled.TextInput`
   opacity: 0.5;
 `;
 
-export const ModalForm_button = styled.TouchableOpacity`
-  background-color: #5e5e5e; 
+export const Button = styled.TouchableOpacity`
+  background-color: #5e5e5e;
   border-radius: 5px;
   width: 100%;
   margin-bottom: 10px;
   padding: 12px;
 `;
 
-export const ModalForm_buttonText = styled.Text`
+export const ButtonText = styled.Text`
   color: white;
   text-align: center;
 `;
 
-export const ModalForm_exitButton = styled.TouchableOpacity`
+export const ExitButton = styled.TouchableOpacity`
   align-items: flex-end;
   justify-content: center;
   height: 30px;

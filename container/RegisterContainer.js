@@ -256,7 +256,6 @@ const RegisterContainer = ({navigation}) => {
 
   return (
     <RegisterScreen
-      form={form}
       getDepartmentId={getDepartmentId}
       getGender={getGender}
       getBirthYear={getBirthYear}

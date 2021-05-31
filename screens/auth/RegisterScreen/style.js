@@ -1,9 +1,9 @@
 import styled from '@emotion/native';
 
-export const RegisterWrapper = styled.ScrollView`
+export const Wrapper = styled.ScrollView`
   flex: 1;
 `;
-export const RegisterForm = styled.View`
+export const WrapperInner = styled.View`
   justify-content: center;
   align-items: center;
   padding: 20px;

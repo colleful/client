@@ -6,11 +6,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import {css} from '@emotion/native';
 import {trigger} from 'swr';
 import {Config} from '../../../../Config';
-import {
-  InputForm_title,
-  InputForm_input,
-  InputForm_buttonText,
-} from '../../../../assets/css/InputForm';
+import * as P from '../../../../assets/css/InputForm';
 import {
   Wrapper,
   Inner,
@@ -215,8 +211,8 @@ const AccountScreen = ({navigation, myInfoData}) => {
               style={css`
                 align-items: center;
               `}>
-              <InputForm_title>닉네임</InputForm_title>
-              <InputForm_input
+              <P.Title>닉네임</P.Title>
+              <P.Input
                 onChangeText={(text) => setNicknameForChange(text)}
                 defaultValue={myInfoData.nickname}
               />
@@ -226,14 +222,14 @@ const AccountScreen = ({navigation, myInfoData}) => {
                 `}
               />
 
-              <InputForm_title>자기소개</InputForm_title>
-              <InputForm_input
+              <P.Title>자기소개</P.Title>
+              <P.Input
                 onChangeText={(text) => setSelfIntroductionForChange(text)}
                 defaultValue={myInfoData.selfIntroduction}
               />
               <Button__dark__width100__marginVertical20
                 onPress={onChangeUserInfo}>
-                <InputForm_buttonText>수정</InputForm_buttonText>
+                <P.ButtonText>수정</P.ButtonText>
               </Button__dark__width100__marginVertical20>
             </View>
 
@@ -245,8 +241,8 @@ const AccountScreen = ({navigation, myInfoData}) => {
               `}
             />
 
-            <InputForm_title>비밀번호 변경</InputForm_title>
-            <InputForm_input
+            <P.Title>비밀번호 변경</P.Title>
+            <P.Input
               placeholder="비밀번호"
               onChangeText={(text) => setPasswordForChange(text)}
               secureTextEntry
@@ -257,8 +253,8 @@ const AccountScreen = ({navigation, myInfoData}) => {
               `}
             />
 
-            <InputForm_title>비밀번호 확인</InputForm_title>
-            <InputForm_input
+            <P.Title>비밀번호 확인</P.Title>
+            <P.Input
               placeholder="비밀번호"
               onChangeText={(text) => setPasswordForConfirm(text)}
               secureTextEntry
@@ -266,7 +262,7 @@ const AccountScreen = ({navigation, myInfoData}) => {
 
             <Button__dark__width100__marginVertical20
               onPress={ConfirmToChangePassword}>
-              <InputForm_buttonText>수정</InputForm_buttonText>
+              <P.ButtonText>수정</P.ButtonText>
             </Button__dark__width100__marginVertical20>
 
             <View
@@ -279,10 +275,10 @@ const AccountScreen = ({navigation, myInfoData}) => {
 
             <AccountForm_buttonContainer>
               <Button__dark onPress={logoutAlert}>
-                <InputForm_buttonText>로그아웃</InputForm_buttonText>
+                <P.ButtonText>로그아웃</P.ButtonText>
               </Button__dark>
               <Button__dark onPress={userDeleteAlert}>
-                <InputForm_buttonText>회원 탈퇴</InputForm_buttonText>
+                <P.ButtonText>회원 탈퇴</P.ButtonText>
               </Button__dark>
             </AccountForm_buttonContainer>
           </Inner>
@@ -297,14 +293,14 @@ const AccountScreen = ({navigation, myInfoData}) => {
             본인인증 확인
           </Text>
 
-          <InputForm_title>비밀번호</InputForm_title>
-          <InputForm_input
+          <P.Title>비밀번호</P.Title>
+          <P.Input
             onChangeText={(text) => setPasswordForAuth(text)}
             placeholder="비밀번호"
             secureTextEntry
           />
           <Button__dark__width100 onPress={confirmUser}>
-            <InputForm_buttonText>확인</InputForm_buttonText>
+            <P.ButtonText>확인</P.ButtonText>
           </Button__dark__width100>
         </AccountForm_container>
       )}

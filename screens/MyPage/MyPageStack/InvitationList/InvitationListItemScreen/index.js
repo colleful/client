@@ -1,11 +1,11 @@
 import React, {useEffect, useCallback} from 'react';
-import {View, Text, TouchableOpacity, Alert} from 'react-native';
-import {css} from '@emotion/native';
+import {Alert} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   INITAILIZE_STATE,
   INVITE_TEAM_REQUEST,
-} from '../../../../reducers/invite';
+} from '../../../../../reducers/invite';
+import * as ILS from './style';
 
 const InvitationListItemScreen = ({searchUserInfo}) => {
   const dispatch = useDispatch();
@@ -49,42 +49,16 @@ const InvitationListItemScreen = ({searchUserInfo}) => {
   }, [dispatch, searchUserInfo.id]);
 
   return (
-    <View
-      style={css`
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        border-radius: 10px;
-        margin-bottom: 5px;
-        padding: 10px;
-        background-color: #e5e5e5;
-      `}>
-      <Text
-        style={css`
-          font-size: 16px;
-          margin-right: 15px;
-        `}>
+    <ILS.Wrapper>
+      <ILS.Content>
         {searchUserInfo?.nickname} {searchUserInfo?.age}
         {' / '}
         {searchUserInfo?.gender === 'MALE' ? '남' : '여'}
-      </Text>
-      <TouchableOpacity
-        onPress={onInviteTeam}
-        style={css`
-          background-color: #5e5e5e;
-          border-radius: 5px;
-          padding: 10px 15px;
-          width: 56px;
-        `}>
-        <Text
-          style={css`
-            color: #fff;
-            font-weight: 500;
-          `}>
-          초대
-        </Text>
-      </TouchableOpacity>
-    </View>
+      </ILS.Content>
+      <ILS.Button onPress={onInviteTeam}>
+        <ILS.ButtonText>초대</ILS.ButtonText>
+      </ILS.Button>
+    </ILS.Wrapper>
   );
 };
 

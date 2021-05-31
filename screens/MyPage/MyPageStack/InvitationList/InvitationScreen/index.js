@@ -1,13 +1,13 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {View, Text, TextInput, TouchableOpacity, Alert} from 'react-native';
-import {css} from '@emotion/native';
+import {Alert} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   SEARCH_USER_BY_NICKNAME_REQUEST,
   INITAILIZE_STATE,
-} from '../../../../reducers/invite';
-import LoadingScreen from '../../../../components/LoadingScreen';
-import InvitationListScreen from './InvitationListScreen';
+} from '../../../../../reducers/invite';
+import LoadingScreen from '../../../../../components/LoadingScreen';
+import InvitationListScreen from '../InvitationListScreen/index';
+import * as IS from './style';
 
 const InvitationScreen = () => {
   const [userNickname, setUserNickname] = useState('');
@@ -58,82 +58,28 @@ const InvitationScreen = () => {
   }, [dispatch, userNickname]);
 
   return (
-    <View
-      style={css`
-        flex: 1;
-        padding-top: 100px;
-        padding-horizontal: 20px;
-      `}>
-      <View
-        style={css`
-          margin-bottom: 30px;
-        `}>
-        <Text
-          style={css`
-            font-size: 32px;
-          `}>
-          {' '}
-          멤버 초대하기
-        </Text>
-      </View>
-      <View
-        style={css`
-          flex-direction: row;
-          justify-content: center;
-          margin-bottom: 40px;
-        `}>
-        <TextInput
+    <IS.Wrapper>
+      <IS.HeaderTitle>멤버 초대하기</IS.HeaderTitle>
+      <IS.InputFormContainer>
+        <IS.Input
           placeholder="초대할 멤버의 닉네임 입력"
           onChangeText={(text) => setUserNickname(text)}
           value={userNickname}
-          style={css`
-            margin-right: 15px;
-            padding-left: 15px;
-            width: 200px;
-            height: 40px;
-            border-width: 1px;
-            border-radius: 5px;
-            border-color: #5e5e5e;
-          `}
         />
-        <TouchableOpacity
-          onPress={onSearchUserByNickname}
-          style={css`
-            background-color: #5e5e5e;
-            border-radius: 5px;
-            padding: 11px 18px;
-            width: 61px;
-          `}>
-          <Text
-            style={css`
-              color: #fff;
-              font-weight: 500;
-            `}>
-            검색
-          </Text>
-        </TouchableOpacity>
-      </View>
+        <IS.Button onPress={onSearchUserByNickname}>
+          <IS.ButtonText>검색</IS.ButtonText>
+        </IS.Button>
+      </IS.InputFormContainer>
 
-      <View
-        style={css`
-          border-bottom-width: 1px;
-          margin-bottom: 20px;
-        `}
-      />
-      <Text
-        style={css`
-          font-size: 20px;
-          margin-bottom: 15px;
-        `}>
-        검색결과
-      </Text>
+      <IS.BorderLine />
+      <IS.ContentTitle>검색결과</IS.ContentTitle>
 
       {searchUserByNicknameDone && (
         <InvitationListScreen searchUserInfos={searchUserInfo} />
       )}
 
       {(searchUserByNicknameLoading || inviteTeamLoading) && <LoadingScreen />}
-    </View>
+    </IS.Wrapper>
   );
 };
 

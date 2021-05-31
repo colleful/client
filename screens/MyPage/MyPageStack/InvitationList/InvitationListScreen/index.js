@@ -1,5 +1,5 @@
 import React from 'react';
-import InvitationListItemScreen from './InvitationListItemScreen';
+import InvitationListItemScreen from '../InvitationListItemScreen/index';
 
 const InvitationListScreen = ({searchUserInfos}) => {
   return searchUserInfos?.map((searchUserInfo, index) => (

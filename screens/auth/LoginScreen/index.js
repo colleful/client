@@ -5,17 +5,8 @@ import {initializeForm} from '../../../reducers/auth';
 import {useForm, Controller} from 'react-hook-form';
 import LoadingScreen from '../../../components/LoadingScreen';
 import FindPasswordModal from '../FindPasswordModal/index';
-import {Wrapper, InputForm} from './style';
-import {
-  InputForm_title,
-  InputForm_container__borderWidth05,
-  InputForm_input,
-  InputForm_inputWithIcon,
-  InputForm_errorMessage,
-  InputForm_button,
-  InputForm_buttonText,
-  InputForm_passwordFindText,
-} from '../../../assets/css/InputForm';
+import {Wrapper, WrapperInner} from './style';
+import * as P from '../../../assets/css/InputForm';
 
 const LoginScreen = ({
   navigation,
@@ -67,12 +58,12 @@ const LoginScreen = ({
   return (
     <>
       <Wrapper>
-        <InputForm>
-          <InputForm_title>학교 웹메일</InputForm_title>
+        <WrapperInner>
+          <P.Title>학교 웹메일</P.Title>
           <Controller
             control={control}
             render={({value, onBlur, onChange}) => (
-              <InputForm_input
+              <P.Input
                 name="email"
                 onBlur={onBlur}
                 onChangeText={(value) => onChange(value)}
@@ -85,23 +76,19 @@ const LoginScreen = ({
             defaultValue=""
           />
           {errors.email && errors.email.type === 'required' && (
-            <InputForm_errorMessage>
-              이메일을 입력해 주세요
-            </InputForm_errorMessage>
+            <P.ErrorMessage>이메일을 입력해 주세요</P.ErrorMessage>
           )}
           {errors.email && errors.email.type === 'pattern' && (
-            <InputForm_errorMessage>
-              이메일 형식에 맞게 작성 해주세요
-            </InputForm_errorMessage>
+            <P.ErrorMessage>이메일 형식에 맞게 작성 해주세요</P.ErrorMessage>
           )}
 
-          <InputForm_title>비밀번호</InputForm_title>
+          <P.Title>비밀번호</P.Title>
 
-          <InputForm_container__borderWidth05>
+          <P.Container>
             <Controller
               control={control}
               render={({value, onBlur, onChange}) => (
-                <InputForm_inputWithIcon
+                <P.InputWithIcon
                   name="password"
                   onBlur={onBlur}
                   onChangeText={(value) => onChange(value)}
@@ -123,25 +110,23 @@ const LoginScreen = ({
             ) : (
               <Ionicons name="eye-outline" size={20} onPress={visibleText} />
             )}
-          </InputForm_container__borderWidth05>
+          </P.Container>
           {errors.password && (
-            <InputForm_errorMessage>
-              비밀번호를 입력해 주세요
-            </InputForm_errorMessage>
+            <P.ErrorMessage>비밀번호를 입력해 주세요</P.ErrorMessage>
           )}
 
-          <InputForm_button onPress={loginHandler}>
-            <InputForm_buttonText>로그인</InputForm_buttonText>
-          </InputForm_button>
+          <P.Button pink onPress={loginHandler}>
+            <P.ButtonText>로그인</P.ButtonText>
+          </P.Button>
 
-          <InputForm_button onPress={goToRegisterScreenHandler}>
-            <InputForm_buttonText>회원가입</InputForm_buttonText>
-          </InputForm_button>
+          <P.Button pink onPress={goToRegisterScreenHandler}>
+            <P.ButtonText>회원가입</P.ButtonText>
+          </P.Button>
 
-          <InputForm_passwordFindText onPress={toggleModal}>
+          <P.PasswordFindText onPress={toggleModal}>
             비밀번호 찾기
-          </InputForm_passwordFindText>
-        </InputForm>
+          </P.PasswordFindText>
+        </WrapperInner>
       </Wrapper>
 
       {isModalVisible && (
