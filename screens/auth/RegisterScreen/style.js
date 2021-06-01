@@ -8,3 +8,7 @@ export const WrapperInner = styled.View`
   align-items: center;
   padding: 20px;
 `;
+
+export const BorderLine = styled.View`
+  margin-bottom: 15px;
+`

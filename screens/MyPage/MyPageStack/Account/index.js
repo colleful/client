@@ -6,17 +6,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 import {css} from '@emotion/native';
 import {trigger} from 'swr';
 import {Config} from '../../../../Config';
-import * as P from '../../../../assets/css/InputForm';
-import {
-  Wrapper,
-  Inner,
-  Header,
-  Button__dark__width100__marginVertical20,
-  Button__dark__width100,
-  Button__dark,
-  AccountForm_container,
-  AccountForm_buttonContainer,
-} from './style';
+import * as P from '../../../../assets/css/common';
+import * as S from './style';
 import {
   CHANGE_USER_INFO_REQUEST,
   CHANGE_USER_PASSWORD_REQUEST,
@@ -204,105 +195,76 @@ const AccountScreen = ({navigation, myInfoData}) => {
   return (
     <>
       {isSuccessIdentification ? (
-        <Wrapper>
-          <Inner>
-            <Header>내 계정</Header>
+        <S.Wrapper>
+          <S.WrapperInner>
+            <S.Header>내 계정</S.Header>
             <View
               style={css`
                 align-items: center;
               `}>
-              <P.Title>닉네임</P.Title>
+              <P.FormTitle>닉네임</P.FormTitle>
               <P.Input
                 onChangeText={(text) => setNicknameForChange(text)}
                 defaultValue={myInfoData.nickname}
-              />
-              <View
-                style={css`
-                  margin-bottom: 15px;
-                `}
+                mb15
               />
 
-              <P.Title>자기소개</P.Title>
+              <P.FormTitle>자기소개</P.FormTitle>
               <P.Input
                 onChangeText={(text) => setSelfIntroductionForChange(text)}
                 defaultValue={myInfoData.selfIntroduction}
               />
-              <Button__dark__width100__marginVertical20
-                onPress={onChangeUserInfo}>
+              <S.Button mv20 md12 onPress={onChangeUserInfo}>
                 <P.ButtonText>수정</P.ButtonText>
-              </Button__dark__width100__marginVertical20>
+              </S.Button>
             </View>
 
-            <View
-              style={css`
-                width: 100%;
-                border: 0.3px solid gray;
-                margin-bottom: 20px;
-              `}
-            />
+            <S.BorderLine />
 
-            <P.Title>비밀번호 변경</P.Title>
+            <P.FormTitle>비밀번호 변경</P.FormTitle>
             <P.Input
               placeholder="비밀번호"
               onChangeText={(text) => setPasswordForChange(text)}
               secureTextEntry
-            />
-            <View
-              style={css`
-                margin-bottom: 15px;
-              `}
+              mb15
             />
 
-            <P.Title>비밀번호 확인</P.Title>
+            <P.FormTitle>비밀번호 확인</P.FormTitle>
             <P.Input
               placeholder="비밀번호"
               onChangeText={(text) => setPasswordForConfirm(text)}
               secureTextEntry
             />
 
-            <Button__dark__width100__marginVertical20
-              onPress={ConfirmToChangePassword}>
+            <S.Button mv20 md12 onPress={ConfirmToChangePassword}>
               <P.ButtonText>수정</P.ButtonText>
-            </Button__dark__width100__marginVertical20>
+            </S.Button>
 
-            <View
-              style={css`
-                width: 100%;
-                border: 0.3px solid gray;
-                margin-bottom: 20px;
-              `}
-            />
+            <S.BorderLine />
 
-            <AccountForm_buttonContainer>
-              <Button__dark onPress={logoutAlert}>
+            <S.ButtonContainer>
+              <S.Button onPress={logoutAlert}>
                 <P.ButtonText>로그아웃</P.ButtonText>
-              </Button__dark>
-              <Button__dark onPress={userDeleteAlert}>
+              </S.Button>
+              <S.Button onPress={userDeleteAlert}>
                 <P.ButtonText>회원 탈퇴</P.ButtonText>
-              </Button__dark>
-            </AccountForm_buttonContainer>
-          </Inner>
-        </Wrapper>
+              </S.Button>
+            </S.ButtonContainer>
+          </S.WrapperInner>
+        </S.Wrapper>
       ) : (
-        <AccountForm_container>
-          <Text
-            style={css`
-              font-size: 32px;
-              margin-bottom: 20px;
-            `}>
-            본인인증 확인
-          </Text>
-
-          <P.Title>비밀번호</P.Title>
+        <S.Container>
+          <S.Title>본인인증 확인</S.Title>
+          <P.FormTitle>비밀번호</P.FormTitle>
           <P.Input
             onChangeText={(text) => setPasswordForAuth(text)}
             placeholder="비밀번호"
             secureTextEntry
           />
-          <Button__dark__width100 onPress={confirmUser}>
+          <S.Button md12 onPress={confirmUser}>
             <P.ButtonText>확인</P.ButtonText>
-          </Button__dark__width100>
-        </AccountForm_container>
+          </S.Button>
+        </S.Container>
       )}
       {(changeUserInfoLoading ||
         deleteUserLoading ||

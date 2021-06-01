@@ -4,7 +4,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import ChatScreen from './Chat/ChatScreen';
-import HomeScreen from './Home/HomeScreen';
+import HomeScreen from './Home/HomeScreen/index';
 import MypageNavigator from './MyPage/MypageNavigator';
 
 import AsyncStorage from '@react-native-community/async-storage';

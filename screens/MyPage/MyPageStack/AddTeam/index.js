@@ -5,8 +5,8 @@ import {Config} from '../../../../Config';
 import {useDispatch, useSelector} from 'react-redux';
 import {CREATE_TEAM_REQUEST, INITAILIZE_STATE} from '../../../../reducers/team';
 import LoadingScreen from '../../../../components/LoadingScreen';
-import * as P from '../../../../assets/css/InputForm';
-import * as ATS from './style';
+import * as P from '../../../../assets/css/common';
+import * as S from './style';
 
 const AddTeamScreen = ({navigation}) => {
   const dispatch = useDispatch();
@@ -67,14 +67,14 @@ const AddTeamScreen = ({navigation}) => {
   }, [dispatch, teamName]);
 
   return (
-    <ATS.Wrapper>
-      <ATS.Title>팀 이름을 입력해주세요</ATS.Title>
+    <S.Wrapper>
+      <S.Title>팀 이름을 입력해주세요</S.Title>
       <P.Input onChangeText={(text) => setTeamName(text)} />
       <P.Button onPress={onCreateTeam}>
         <P.ButtonText>생성</P.ButtonText>
       </P.Button>
       {createTeamLoading && <LoadingScreen />}
-    </ATS.Wrapper>
+    </S.Wrapper>
   );
 };
 

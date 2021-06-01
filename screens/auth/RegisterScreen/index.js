@@ -1,14 +1,12 @@
 import React, {useState, useEffect, useCallback, useMemo, useRef} from 'react';
-import {View} from 'react-native';
 import {useSelector} from 'react-redux';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Picker} from '@react-native-community/picker';
-import {css} from '@emotion/native';
-import * as authAPI from '../../../lib/api';
 import {useForm, Controller} from 'react-hook-form';
 import LoadingScreen from '../../../components/LoadingScreen';
-import {Wrapper, WrapperInner} from './style';
-import * as P from '../../../assets/css/InputForm';
+import * as authAPI from '../../../lib/api';
+import * as P from '../../../assets/css/common';
+import * as S from './style';
 
 const RegisterScreen = ({
   getDepartmentId,
@@ -110,9 +108,9 @@ const RegisterScreen = ({
   // console.log(`회원가입 렌더링횟수: ${count.current++}`);
 
   return (
-    <Wrapper>
-      <WrapperInner>
-        <P.Title>이메일</P.Title>
+    <S.Wrapper>
+      <S.WrapperInner>
+        <P.FormTitle>이메일</P.FormTitle>
         <Controller
           control={control}
           render={({value, onBlur, onChange}) => (
@@ -140,13 +138,9 @@ const RegisterScreen = ({
           <P.ButtonText>인증메일 전송</P.ButtonText>
         </P.Button>
 
-        <View
-          style={css`
-            margin-bottom: 15px;
-          `}
-        />
+        <S.BorderLine />
 
-        <P.Title>인증번호</P.Title>
+        <P.FormTitle>인증번호</P.FormTitle>
         <Controller
           control={control}
           render={({value, onBlur, onChange}) => (
@@ -172,13 +166,9 @@ const RegisterScreen = ({
           <P.ButtonText>인증하기</P.ButtonText>
         </P.Button>
 
-        <View
-          style={css`
-            margin-bottom: 15px;
-          `}
-        />
+        <S.BorderLine />
 
-        <P.Title>비밀번호</P.Title>
+        <P.FormTitle>비밀번호</P.FormTitle>
 
         <P.Container>
           <Controller
@@ -208,13 +198,9 @@ const RegisterScreen = ({
           <P.ErrorMessage>비밀번호를 입력해 주세요</P.ErrorMessage>
         )}
 
-        <View
-          style={css`
-            margin-bottom: 15px;
-          `}
-        />
+        <S.BorderLine />
 
-        <P.Title>비밀번호확인</P.Title>
+        <P.FormTitle>비밀번호확인</P.FormTitle>
 
         <P.Container>
           <Controller
@@ -243,13 +229,9 @@ const RegisterScreen = ({
           <P.ErrorMessage>비밀번호를 입력해 주세요</P.ErrorMessage>
         )}
 
-        <View
-          style={css`
-            margin-bottom: 15px;
-          `}
-        />
+        <S.BorderLine />
 
-        <P.Title>닉네임</P.Title>
+        <P.FormTitle>닉네임</P.FormTitle>
 
         <Controller
           control={control}
@@ -272,13 +254,9 @@ const RegisterScreen = ({
           <P.ErrorMessage>닉네임은 최대 10자까지 가능합니다</P.ErrorMessage>
         )}
 
-        <View
-          style={css`
-            margin-bottom: 15px;
-          `}
-        />
+        <S.BorderLine />
 
-        <P.Title>출생연도</P.Title>
+        <P.FormTitle>출생연도</P.FormTitle>
 
         <P.Container>
           <P.PickerContainer
@@ -295,13 +273,9 @@ const RegisterScreen = ({
           </P.PickerContainer>
         </P.Container>
 
-        <View
-          style={css`
-            margin-bottom: 15px;
-          `}
-        />
+        <S.BorderLine />
 
-        <P.Title>소속학과</P.Title>
+        <P.FormTitle>소속학과</P.FormTitle>
 
         <P.Container>
           <P.PickerContainer
@@ -345,13 +319,9 @@ const RegisterScreen = ({
           </P.PickerContainer>
         </P.Container>
 
-        <View
-          style={css`
-            margin-bottom: 15px;
-          `}
-        />
+        <S.BorderLine />
 
-        <P.Title>성별</P.Title>
+        <P.FormTitle>성별</P.FormTitle>
 
         <P.Container>
           <P.PickerContainer
@@ -367,13 +337,9 @@ const RegisterScreen = ({
           </P.PickerContainer>
         </P.Container>
 
-        <View
-          style={css`
-            margin-bottom: 15px;
-          `}
-        />
+        <S.BorderLine />
 
-        <P.Title>자기소개</P.Title>
+        <P.FormTitle>자기소개</P.FormTitle>
 
         <Controller
           control={control}
@@ -400,12 +366,12 @@ const RegisterScreen = ({
         <P.Button pink onPress={registerHandler}>
           <P.ButtonText>🎉회원가입🎉</P.ButtonText>
         </P.Button>
-      </WrapperInner>
+      </S.WrapperInner>
 
       {(authLoading || emailAuthLoading || confirmEmailLoading) && (
         <LoadingScreen />
       )}
-    </Wrapper>
+    </S.Wrapper>
   );
 };
 

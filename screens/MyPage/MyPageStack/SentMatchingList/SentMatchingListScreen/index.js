@@ -1,21 +1,17 @@
 import React, {useState} from 'react';
 import {Text, ScrollView} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import ReceivedInvitationListScreen from '../ReceivedInvitationListScreen/index';
 import {Config} from '../../../../../Config';
 import useSWR from 'swr';
 import axios from 'axios';
+import SentMatchingList from '../SentMatchingList/index';
 import {useSelector} from 'react-redux';
 import LoadingScreen from '../../../../../components/LoadingScreen';
 import * as L from '../../../../../assets/css/InvitationMatchingListLayout';
 
-const ReceivedInvitationScreen = () => {
+const SentMatchingListScreen = ({teamId}) => {
   const [isLoading, setLoading] = useState(false);
-  const {
-    acceptInvitationLoading,
-    refuseInvitationLoading,
-    loadUserLoading,
-  } = useSelector(({invite}) => invite);
+  const {deleteMatchingLoading} = useSelector(({matching}) => matching);
 
   const fetcher = async (url) => {
     setLoading((prev) => !prev);
@@ -28,33 +24,29 @@ const ReceivedInvitationScreen = () => {
     return response.data;
   };
 
-  const {data: receivedInvitationList = [], error} = useSWR(
-    `${Config.baseUrl}/api/invitations/received`,
+  const {data: sentMatchingList = [], error} = useSWR(
+    teamId === null ? null : `${Config.baseUrl}/api/matching/sent`,
     fetcher,
   );
-  if (!error && !receivedInvitationList.length && isLoading) {
+  if (!error && !sentMatchingList.length && isLoading) {
     return <LoadingScreen />;
   }
   if (error) console.log({error});
 
   return (
     <L.Wrapper>
-      <L.HeaderTitle>받은 초대목록</L.HeaderTitle>
+      <L.HeaderTitle>보낸 매칭요청 목록</L.HeaderTitle>
       <L.BorderLine />
       <ScrollView showsVerticalScrollIndicator={false}>
-        {!receivedInvitationList.length ? (
-          <Text>받은 초대가 없습니다</Text>
+        {!sentMatchingList.length ? (
+          <Text>보낸 요청이 없습니다</Text>
         ) : (
-          <ReceivedInvitationListScreen
-            receivedInvitationList={receivedInvitationList}
-          />
+          <SentMatchingList sentMatchingList={sentMatchingList} />
         )}
       </ScrollView>
-      {(loadUserLoading ||
-        acceptInvitationLoading ||
-        refuseInvitationLoading) && <LoadingScreen />}
+      {deleteMatchingLoading && <LoadingScreen />}
     </L.Wrapper>
   );
 };
 
-export default ReceivedInvitationScreen;
+export default SentMatchingListScreen;

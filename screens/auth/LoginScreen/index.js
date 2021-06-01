@@ -5,8 +5,8 @@ import {initializeForm} from '../../../reducers/auth';
 import {useForm, Controller} from 'react-hook-form';
 import LoadingScreen from '../../../components/LoadingScreen';
 import FindPasswordModal from '../FindPasswordModal/index';
-import {Wrapper, WrapperInner} from './style';
-import * as P from '../../../assets/css/InputForm';
+import * as P from '../../../assets/css/common';
+import * as S from './style';
 
 const LoginScreen = ({
   navigation,
@@ -57,9 +57,9 @@ const LoginScreen = ({
 
   return (
     <>
-      <Wrapper>
-        <WrapperInner>
-          <P.Title>학교 웹메일</P.Title>
+      <S.Wrapper>
+        <S.WrapperInner>
+          <P.FormTitle>학교 웹메일</P.FormTitle>
           <Controller
             control={control}
             render={({value, onBlur, onChange}) => (
@@ -82,7 +82,7 @@ const LoginScreen = ({
             <P.ErrorMessage>이메일 형식에 맞게 작성 해주세요</P.ErrorMessage>
           )}
 
-          <P.Title>비밀번호</P.Title>
+          <P.FormTitle>비밀번호</P.FormTitle>
 
           <P.Container>
             <Controller
@@ -126,8 +126,8 @@ const LoginScreen = ({
           <P.PasswordFindText onPress={toggleModal}>
             비밀번호 찾기
           </P.PasswordFindText>
-        </WrapperInner>
-      </Wrapper>
+        </S.WrapperInner>
+      </S.Wrapper>
 
       {isModalVisible && (
         <FindPasswordModal

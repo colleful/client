@@ -22,9 +22,8 @@ export const Header = styled.View`
 `;
 
 export const Title = styled.Text`
-  font-size: ${(props) => (props.large ? '18px' : '12px')};
+  font-size: ${(props) => (props.f18 ? '18px' : '12px')};
 `;
-// large: 18px , small: 12px;
 
 export const Content = styled.View`
   padding: 20px 20px 10px;
@@ -49,7 +48,7 @@ export const Button = styled.TouchableOpacity`
 `;
 
 export const ButtonText = styled.Text`
-  color: white;
+  color: #fff;
   text-align: center;
 `;
 

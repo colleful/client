@@ -1,54 +1,52 @@
 import React, {useEffect, useCallback} from 'react';
 import {Alert} from 'react-native';
-import {trigger} from 'swr';
 import {Config} from '../../../../../Config';
+import {trigger} from 'swr';
 import {useDispatch, useSelector} from 'react-redux';
 import {
-  ACCEPT_INVITATION_REQUEST,
-  REFUSE_INVITATION_REQUEST,
-} from '../../../../../reducers/invite';
+  ACCEPT_MATCHING_REQUEST,
+  REFUSE_MATCHING_REQUEST,
+} from '../../../../../reducers/matching';
 import {
   LOAD_USER_REQUEST,
   INITAILIZE_STATE,
 } from '../../../../../reducers/user';
 import * as L from '../../../../../assets/css/InvitationMatchingListLayout';
 
-const ReceivedInvitationListItemScreen = ({receivedInvitationList}) => {
+const ReceivedMatchingListItemScreen = ({receivedMatchingList}) => {
   const dispatch = useDispatch();
   const {userInfo} = useSelector(({user}) => user);
   const {
-    acceptInvitationDone,
-    refuseInvitationDone,
-    acceptInvitationError,
-    refuseInvitationError,
-    loadUserError,
-  } = useSelector(({invite}) => invite);
-  const currentError =
-    loadUserError || acceptInvitationError || refuseInvitationError;
-  const currentDone = acceptInvitationDone || refuseInvitationDone;
+    acceptMatchingDone,
+    acceptMatchingError,
+    refuseMatchingDone,
+    refuseMatchingError,
+  } = useSelector(({matching}) => matching);
+  const currentError = acceptMatchingError || refuseMatchingError;
+  const currentDone = acceptMatchingDone || refuseMatchingDone;
 
   useEffect(() => {
     dispatch({
       type: LOAD_USER_REQUEST,
-      data: receivedInvitationList.team.leaderId,
+      data: receivedMatchingList.sentTeam.leaderId,
     });
     return () => {
       dispatch({type: INITAILIZE_STATE});
     };
-  }, [receivedInvitationList.team.leaderId]);
+  }, [receivedMatchingList.sentTeam.leaderId]);
 
   useEffect(() => {
     if (currentDone) {
       Alert.alert(
         '완료',
-        `${receivedInvitationList.team.teamName}팀 초대를 ${
-          acceptInvitationDone ? '수락' : '거절'
+        `${receivedMatchingList.sentTeam.teamName}팀 매칭 요청을 ${
+          acceptMatchingDone ? '수락' : '거절'
         }했습니다.`,
         [
           {
             text: '확인',
             onPress: () => {
-              trigger(`${Config.baseUrl}/api/invitations/received`);
+              trigger(`${Config.baseUrl}/api/matching/received`);
               trigger(`${Config.baseUrl}/api/users`);
             },
           },
@@ -63,27 +61,21 @@ const ReceivedInvitationListItemScreen = ({receivedInvitationList}) => {
       ]);
       console.log({currentError});
     }
-  }, [currentError, currentDone]);
+  }, [currentDone, currentError]);
 
-  const onAcceptInvitation = useCallback(() => {
-    dispatch({
-      type: ACCEPT_INVITATION_REQUEST,
-      data: receivedInvitationList.id,
-    });
-  }, [dispatch, receivedInvitationList.id]);
+  const onAcceptMatching = useCallback(() => {
+    dispatch({type: ACCEPT_MATCHING_REQUEST, data: receivedMatchingList.id});
+  }, [dispatch, receivedMatchingList]);
 
-  const onRefuseInvitation = useCallback(() => {
-    dispatch({
-      type: REFUSE_INVITATION_REQUEST,
-      data: receivedInvitationList.id,
-    });
-  }, [dispatch, receivedInvitationList.id]);
+  const onRefuseMatching = useCallback(() => {
+    dispatch({type: REFUSE_MATCHING_REQUEST, data: receivedMatchingList.id});
+  }, [dispatch, receivedMatchingList]);
 
   return (
     <>
       {userInfo && (
         <L.Content>
-          팀명 : {receivedInvitationList.team.teamName} {'\n'}리더 :{' '}
+          팀명 : {receivedMatchingList.sentTeam.teamName} {'\n'}리더 :{' '}
           {userInfo.nickname} {'( '}
           {userInfo.age}
           {', '}
@@ -92,10 +84,10 @@ const ReceivedInvitationListItemScreen = ({receivedInvitationList}) => {
         </L.Content>
       )}
       <L.ButtonWrapper>
-        <L.Button onPress={onAcceptInvitation}>
+        <L.Button onPress={onAcceptMatching}>
           <L.ButtonText>수락</L.ButtonText>
         </L.Button>
-        <L.Button onPress={onRefuseInvitation}>
+        <L.Button onPress={onRefuseMatching}>
           <L.ButtonText>거절</L.ButtonText>
         </L.Button>
       </L.ButtonWrapper>
@@ -104,4 +96,4 @@ const ReceivedInvitationListItemScreen = ({receivedInvitationList}) => {
   );
 };
 
-export default ReceivedInvitationListItemScreen;
+export default ReceivedMatchingListItemScreen;
