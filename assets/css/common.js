@@ -1,7 +1,7 @@
 import styled from '@emotion/native';
 import {Picker} from '@react-native-community/picker';
 
-export const Title = styled.Text`
+export const FormTitle = styled.Text`
   align-self: flex-start;
   margin-bottom: 5px;
 `;
@@ -9,7 +9,7 @@ export const Container = styled.View`
   align-items: center;
   flex-direction: row;
   width: 100%;
-  border: ${(props) => (props.borderWidth1 ? '1px' : '0.5px')} solid black;
+  border: ${(props) => (props.bw1 ? '1px' : '0.5px')} solid black;
   height: 40px;
   margin-bottom: 5px;
   border-radius: 4px;
@@ -22,6 +22,7 @@ export const Input = styled.TextInput`
   border: 0.5px solid black;
   height: 40px;
   margin-bottom: 5px;
+  ${(props) => props.mb15 && 'margin-bottom: 15px'};
   border-radius: 4px;
   padding: 10px;
 `;
