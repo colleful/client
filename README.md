@@ -31,12 +31,21 @@ College와 Colorful의 합성어로, 다채로운 대학 생활을 제공해 주
 
 <br>
 
-## 🗄 구조
-<details markdown="1">
-<summary>접기 / 펼치기</summary>
- 
+## CSS 규칙
 
-</details>
+- 모두 styled-components로 작성
+- 네이밍은 모두 CamelCase로 작성 
+- 네이밍 컨벤션으로는 독립적인 컴포넌트 스타일이면 S,   
+   - 재사용 될 스타일이면 `assets/css/commons.js`사용, 별칭은 P,    
+   - 받은매칭목록, 보낸초대목록 등 목록 레이아웃은 `assets/css/InvitationMatchingListLayout.js` 사용, 별칭은 L   
+   - 독립적인 컴포넌트 스타일은 엘리먼트 속성을 쉽게 파악할 수 있는 이름으로 통일   
+   - Wrapper는 컴포넌트를 감싸는 영역, WrapperInner는 컴포넌트 영역을 표시할 때, Container는 엘리먼트들을 감싸는 영역을 나타냄   
+   - 모듈을 감쌀땐 Styled[모듈이름]으로 통일   
+- CSS 속성 기술 순서는 NHN 코딩컨벤션을 따름
+
+<img src="https://user-images.githubusercontent.com/43921054/119236369-fcafa480-bb71-11eb-8230-49201cc3741a.png" width="75%" >
+
+> 출처 : https://nuli.navercorp.com/data/convention/NHN_Coding_Conventions_for_Markup_Languages.pdf
 
 <br>
 
