@@ -110,7 +110,7 @@ const RegisterScreen = ({
   return (
     <S.Wrapper>
       <S.WrapperInner>
-        <P.FormTitle>이메일</P.FormTitle>
+        <P.InputTitle>이메일</P.InputTitle>
         <Controller
           control={control}
           render={({value, onBlur, onChange}) => (
@@ -140,7 +140,7 @@ const RegisterScreen = ({
 
         <S.BorderLine />
 
-        <P.FormTitle>인증번호</P.FormTitle>
+        <P.InputTitle>인증번호</P.InputTitle>
         <Controller
           control={control}
           render={({value, onBlur, onChange}) => (
@@ -168,7 +168,7 @@ const RegisterScreen = ({
 
         <S.BorderLine />
 
-        <P.FormTitle>비밀번호</P.FormTitle>
+        <P.InputTitle>비밀번호</P.InputTitle>
 
         <P.Container>
           <Controller
@@ -200,7 +200,7 @@ const RegisterScreen = ({
 
         <S.BorderLine />
 
-        <P.FormTitle>비밀번호확인</P.FormTitle>
+        <P.InputTitle>비밀번호확인</P.InputTitle>
 
         <P.Container>
           <Controller
@@ -231,7 +231,7 @@ const RegisterScreen = ({
 
         <S.BorderLine />
 
-        <P.FormTitle>닉네임</P.FormTitle>
+        <P.InputTitle>닉네임</P.InputTitle>
 
         <Controller
           control={control}
@@ -256,7 +256,7 @@ const RegisterScreen = ({
 
         <S.BorderLine />
 
-        <P.FormTitle>출생연도</P.FormTitle>
+        <P.InputTitle>출생연도</P.InputTitle>
 
         <P.Container>
           <P.PickerContainer
@@ -275,7 +275,7 @@ const RegisterScreen = ({
 
         <S.BorderLine />
 
-        <P.FormTitle>소속학과</P.FormTitle>
+        <P.InputTitle>소속학과</P.InputTitle>
 
         <P.Container>
           <P.PickerContainer
@@ -321,7 +321,7 @@ const RegisterScreen = ({
 
         <S.BorderLine />
 
-        <P.FormTitle>성별</P.FormTitle>
+        <P.InputTitle>성별</P.InputTitle>
 
         <P.Container>
           <P.PickerContainer
@@ -339,7 +339,7 @@ const RegisterScreen = ({
 
         <S.BorderLine />
 
-        <P.FormTitle>자기소개</P.FormTitle>
+        <P.InputTitle>자기소개</P.InputTitle>
 
         <Controller
           control={control}

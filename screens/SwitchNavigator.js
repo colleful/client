@@ -1,6 +1,9 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import {useSelector} from 'react-redux';
-import {createStackNavigator} from '@react-navigation/stack';
+import {
+  CardStyleInterpolators,
+  createStackNavigator,
+} from '@react-navigation/stack';
 import LoginContainer from '../container/LoginContainer';
 import RegisterContainer from '../container/RegisterContainer';
 import MainNavigator from './MainNavigator';
@@ -14,12 +17,19 @@ const SwitchNavigator = () => {
   const SwitchNavStack = createStackNavigator();
   const isLoggedIn = useSelector(({auth}) => auth.isLoggedIn);
 
+
   return (
     <>
       {isLoggedIn ? (
         <MainNavigator />
       ) : (
-        <SwitchNavStack.Navigator screenOptions={{headerShown: false}}>
+        <SwitchNavStack.Navigator
+          screenOptions={{
+            headerShown: false,
+            gestureEnabled: true,
+            gestureDirection: 'horizontal',
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          }}>
           <SwitchNavStack.Screen
             name="LoginContainer"
             component={LoginContainer}

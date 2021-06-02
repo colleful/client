@@ -37,7 +37,11 @@ const ProfileScreen = ({navigation, myInfoData}) => {
   };
 
   return (
-    <View style={css`flex: 1; background-color: #fff`}>
+    <View
+      style={css`
+        flex: 1;
+        background-color: #fff;
+      `}>
       <View
         style={css`
           flex-direction: row;
@@ -48,14 +52,32 @@ const ProfileScreen = ({navigation, myInfoData}) => {
           border-color: #cccccc;
           margin-bottom: 20px;
         `}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('유저정보')}>
-          <Text style={css`font-family: AntDesign`}>닫기</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('유저정보')}>
+          <Text
+            style={css`
+              font-family: AntDesign;
+            `}>
+            닫기
+          </Text>
         </TouchableOpacity>
-        <Text style={css`font-size: 16px; font-family: AntDesign`}>프로필 설정</Text>
-        <Text style={css`font-family: AntDesign`}>완료</Text>
+        <Text
+          style={css`
+            font-size: 16px;
+            font-family: AntDesign;
+          `}>
+          프로필 설정
+        </Text>
+        <Text
+          style={css`
+            font-family: AntDesign;
+          `}>
+          완료
+        </Text>
       </View>
-      <View style={css`align-items: center`}>
+      <View
+        style={css`
+          align-items: center;
+        `}>
         <TouchableOpacity onPress={showImagePicker}>
           <View
             style={css`
@@ -71,9 +93,9 @@ const ProfileScreen = ({navigation, myInfoData}) => {
               border-width: 1px;
               border-color: #c0c0c0;
               justify-content: center;
-              align-items: center
+              align-items: center;
             `}>
-            <Ionicons name="camera" size={16} color='gray'/>
+            <Ionicons name="camera" size={16} color="gray" />
           </View>
           {imageSource === '' ? (
             <Gravatar
@@ -87,11 +109,18 @@ const ProfileScreen = ({navigation, myInfoData}) => {
           ) : (
             <Image
               source={{uri: imageSource}}
-              style={css`width: 100px; height: 100px; border-radius: 100px`}
+              style={css`
+                width: 100px;
+                height: 100px;
+                border-radius: 100px;
+              `}
             />
           )}
         </TouchableOpacity>
-        <View style={css`margin-vertical: 20px`}>
+        <View
+          style={css`
+            margin-vertical: 20px;
+          `}>
           <Text>
             {' '}
             {myInfoData.nickname} {myInfoData.age} {myInfoData.department}{' '}

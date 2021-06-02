@@ -1,6 +1,8 @@
 import React from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
-
+import {
+  CardStyleInterpolators,
+  createStackNavigator,
+} from '@react-navigation/stack';
 import MyPageScreen from './MyPageScreen';
 import MessageScreen from './MyPageStack/MessageScreen';
 import TeamListScreen from './MyPageStack/TeamList/TeamListScreen/index';
@@ -21,7 +23,12 @@ const MypageNavigator = ({navigation, userData}) => {
 
   return (
     <MyPageStack.Navigator
-      screenOptions={{headerShown: false}}
+      screenOptions={{
+        headerShown: false,
+        gestureEnabled: true,
+        gestureDirection: 'vertical',
+        cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
+      }}
       tabBarOptions={{
         keyboardHidesTabBar: true,
         style: {

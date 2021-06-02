@@ -59,7 +59,7 @@ const LoginScreen = ({
     <>
       <S.Wrapper>
         <S.WrapperInner>
-          <P.FormTitle>학교 웹메일</P.FormTitle>
+          <P.InputTitle>학교 웹메일</P.InputTitle>
           <Controller
             control={control}
             render={({value, onBlur, onChange}) => (
@@ -82,7 +82,7 @@ const LoginScreen = ({
             <P.ErrorMessage>이메일 형식에 맞게 작성 해주세요</P.ErrorMessage>
           )}
 
-          <P.FormTitle>비밀번호</P.FormTitle>
+          <P.InputTitle>비밀번호</P.InputTitle>
 
           <P.Container>
             <Controller
@@ -114,6 +114,8 @@ const LoginScreen = ({
           {errors.password && (
             <P.ErrorMessage>비밀번호를 입력해 주세요</P.ErrorMessage>
           )}
+
+          <P.BorderLine />
 
           <P.Button pink onPress={loginHandler}>
             <P.ButtonText>로그인</P.ButtonText>
