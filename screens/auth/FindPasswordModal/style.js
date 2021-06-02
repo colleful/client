@@ -35,7 +35,7 @@ export const Input = styled.TextInput`
   width: 100%;
   height: 40px;
   padding: 10px;
-  margin-bottom: 5px;
+  margin-bottom: ${props => props.mb10 ? '10px': '5px'};
   opacity: 0.5;
 `;
 

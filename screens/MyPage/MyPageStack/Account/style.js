@@ -2,6 +2,7 @@ import styled from '@emotion/native';
 
 export const Wrapper = styled.ScrollView`
   flex: 1;
+  background-color: #fff;
 `;
 
 export const WrapperInner = styled.View`
@@ -18,6 +19,7 @@ export const Container = styled.View`
   justify-content: center;
   align-items: center;
   padding: 50px;
+  background-color: #fff;
 `;
 
 export const InputContainer = styled.View`

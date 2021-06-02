@@ -14,6 +14,7 @@ export const WrapperInner = styled.View`
 export const TeamInfoContainer = styled.View`
   flex: 0.85;
   flex-flow: row wrap;
+  width: 300px;
   align-items: stretch;
 `;
 

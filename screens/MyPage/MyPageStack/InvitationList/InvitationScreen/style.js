@@ -3,6 +3,7 @@ import styled from '@emotion/native';
 export const Wrapper = styled.View`
   flex: 1;
   padding: 100px 20px;
+  background-color: #fff;
 `;
 
 export const HeaderTitle = styled.Text`

@@ -70,6 +70,7 @@ const FindPasswordModal = ({
                   value={forgetPassword.passwordConfirm}
                   onChange={onChangeFindPasswordConfirm}
                   secureTextEntry
+                  mb10
                 />
                 <S.Button onPress={onSubmitChangePassword}>
                   <S.ButtonText>변경하기</S.ButtonText>
