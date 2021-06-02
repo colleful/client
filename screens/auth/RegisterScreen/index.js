@@ -1,12 +1,13 @@
 import React, {useState, useEffect, useCallback, useMemo, useRef} from 'react';
-import {useSelector} from 'react-redux';
+import {Alert} from 'react-native';
+import {useSelector, useDispatch} from 'react-redux';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Picker} from '@react-native-community/picker';
 import {useForm, Controller} from 'react-hook-form';
 import LoadingScreen from '../../../components/LoadingScreen';
-import * as authAPI from '../../../lib/api';
 import * as P from '../../../assets/css/common';
 import * as S from './style';
+import {GET_DEPARTMENT_REQUEST} from '../../../reducers/department';
 
 const RegisterScreen = ({
   getDepartmentId,
@@ -28,9 +29,8 @@ const RegisterScreen = ({
   const [selectedGender, setSelectedGender] = useState({});
   const [selectedBirthYear, setSelectedBirthYear] = useState({});
   const [selectedCollege, setSelectedCollege] = useState({});
-  const [collegeData, setCollegeData] = useState([]);
-  const [departmentData, setDepartmentData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
+  const dispatch = useDispatch();
   const {
     form,
     authLoading,
@@ -41,34 +41,34 @@ const RegisterScreen = ({
     ...auth,
   }));
 
+  const {
+    departmentData,
+    collegeData,
+    getDepartmentLoading,
+    getDepartmentError,
+  } = useSelector(({department}) => department);
+
   useEffect(() => {
-    getDepartments();
+    dispatch({type: GET_DEPARTMENT_REQUEST});
   }, []);
 
-  const getDepartments = async () => {
-    try {
-      const response = await authAPI.getDepartment();
-      setDepartmentData(response.data);
-      let collegeList = [
-        ...new Set(response.data.map((datas) => datas.collegeName)),
-      ];
-      console.log(collegeList);
-      setCollegeData(collegeList);
-    } catch (error) {
-      console.log(error);
+  useEffect(() => {
+    if (getDepartmentError) {
+      Alert.alert('에러', `${getDepartmentError.response.data.message}`, [
+        {
+          text: '확인',
+        },
+      ]);
+      console.log({getDepartmentError});
     }
-  };
+  }, [getDepartmentError]);
+
   const visibleText = useCallback(() => {
     setVisible((prev) => !prev);
   }, []);
 
   const addToBehindText = (e) => {
-    onCreateAddress(
-      e.nativeEvent.text.includes('@')
-        ? e.nativeEvent.text
-        : `${e.nativeEvent.text}@jbnu.ac.kr`,
-    );
-    // onCreateAddress(e.nativeEvent.text)
+    onCreateAddress(e.nativeEvent.text);
   };
 
   const today = useRef(new Date().getFullYear()).current;
@@ -368,9 +368,10 @@ const RegisterScreen = ({
         </P.Button>
       </S.WrapperInner>
 
-      {(authLoading || emailAuthLoading || confirmEmailLoading) && (
-        <LoadingScreen />
-      )}
+      {(authLoading ||
+        emailAuthLoading ||
+        confirmEmailLoading ||
+        getDepartmentLoading) && <LoadingScreen />}
     </S.Wrapper>
   );
 };

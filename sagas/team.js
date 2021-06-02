@@ -19,6 +19,9 @@ import {
   CREATE_TEAM_REQUEST,
   CREATE_TEAM_SUCCESS,
   CREATE_TEAM_FAILURE,
+  GET_READY_TEAM_REQUEST,
+  GET_READY_TEAM_SUCCESS,
+  GET_READY_TEAM_FAILURE,
 } from '../reducers/team';
 
 function* changeTeamStatusToReady() {
@@ -111,6 +114,21 @@ function* createTeam(action) {
   }
 }
 
+function* getReadyTeam(action) {
+  try {
+    const result = yield call(authAPI.getReadyTeam, action.data);
+    yield put({
+      type: GET_READY_TEAM_SUCCESS,
+      data: result.data,
+    });
+  } catch (error) {
+    yield put({
+      type: GET_READY_TEAM_FAILURE,
+      error,
+    });
+  }
+}
+
 function* watchChangeTeamStatusToReady() {
   yield takeLatest(CHANGE_TEAM_STATUS_READY_REQUEST, changeTeamStatusToReady);
 }
@@ -138,6 +156,10 @@ function* watchCreateTeam() {
   yield takeLatest(CREATE_TEAM_REQUEST, createTeam);
 }
 
+function* watchGetReadyTeam() {
+  yield takeLatest(GET_READY_TEAM_REQUEST, getReadyTeam);
+}
+
 export default function* teamSaga() {
   yield all([
     fork(watchChangeTeamStatusToReady),
@@ -146,5 +168,6 @@ export default function* teamSaga() {
     fork(watchDeleteTeam),
     fork(watchExitTeam),
     fork(watchCreateTeam),
+    fork(watchGetReadyTeam),
   ]);
 }

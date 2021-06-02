@@ -1,4 +1,5 @@
 import styled from '@emotion/native';
+import {Gravatar} from 'react-native-gravatar';
 
 export const Wrapper = styled.TouchableOpacity`
   flex: 1;
@@ -9,6 +10,12 @@ export const WrapperInner = styled.View`
   flex-direction: row;
   align-items: center;
   margin-left: 20px;
+`;
+
+export const StyledGravatar = styled(Gravatar)`
+  border-radius: 50px;
+  width: 60px;
+  height: 100%;
 `;
 
 export const ContentContainer = styled.View`

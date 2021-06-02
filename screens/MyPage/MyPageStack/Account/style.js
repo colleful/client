@@ -20,6 +20,10 @@ export const Container = styled.View`
   padding: 50px;
 `;
 
+export const InputContainer = styled.View`
+  align-items: center;
+`;
+
 export const Title = styled.Text`
   font-size: 32px;
   margin-bottom: 20px;

@@ -1,9 +1,12 @@
-import React from 'react';
+import React, {useEffect, useCallback} from 'react';
 import {Alert} from 'react-native';
 import Modal from 'react-native-modal';
 import TeamInfoModalList from '../TeamInfoModalList/index';
-import AsyncStorage from '@react-native-community/async-storage';
-import * as authAPI from '../../../lib/api';
+import {useSelector, useDispatch} from 'react-redux';
+import {
+  INITAILIZE_STATE,
+  SEND_MATCHING_REQUEST,
+} from '../../../reducers/matching';
 import * as S from './style';
 
 const TeamInfoModal = ({
@@ -11,31 +14,40 @@ const TeamInfoModal = ({
   isTeamListModalVisible,
   onToggleTeamListModal,
 }) => {
-  const onGetSendMatching = async () => {
-    try {
-      await authAPI.sendMatching(
-        {teamId: team.id},
-        {
-          headers: {
-            Authorization: await AsyncStorage.getItem('authorization'),
-          },
-        },
-      );
+  const dispatch = useDispatch();
+  const {
+    sendMatchingLoading,
+    sendMatchingDone,
+    sendMatchingError,
+  } = useSelector(({matching}) => matching);
+
+  useEffect(() => {
+    return () => {
+      dispatch({type: INITAILIZE_STATE});
+    };
+  }, []);
+
+  useEffect(() => {
+    if (sendMatchingDone) {
       Alert.alert('완료', `${team.teamName}팀에게 매칭 요청을 보냈습니다.`, [
         {
           text: '확인',
-          onPress: () => console.log('완료'),
         },
       ]);
-    } catch (error) {
-      Alert.alert('에러발생', `${error.response.data.message}`, [
+    }
+    if (sendMatchingError) {
+      Alert.alert('에러발생', `${sendMatchingError.response.data.message}`, [
         {
           text: '확인',
         },
       ]);
-      console.log({error});
+      console.log({sendMatchingError});
     }
-  };
+  }, [sendMatchingLoading, sendMatchingDone, sendMatchingError]);
+
+  const onGetSendMatching = useCallback(() => {
+    dispatch({type: SEND_MATCHING_REQUEST, data: {teamId: team.id}});
+  }, [dispatch, team.id]);
 
   return (
     <Modal

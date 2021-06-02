@@ -7,7 +7,7 @@ export const BorderLine = styled.View`
   border-bottom-color: #cccccc;
 `;
 
-export const Button = styled.View`
+export const Button = styled.TouchableOpacity`
   flex: 1;
   width: 100%;
   justify-content: center;

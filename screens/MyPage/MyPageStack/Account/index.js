@@ -1,9 +1,8 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {View, Text, Alert} from 'react-native';
+import {Alert} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {setLoginState} from '../../../../reducers/auth';
 import AsyncStorage from '@react-native-community/async-storage';
-import {css} from '@emotion/native';
 import {trigger} from 'swr';
 import {Config} from '../../../../Config';
 import * as P from '../../../../assets/css/common';
@@ -198,18 +197,15 @@ const AccountScreen = ({navigation, myInfoData}) => {
         <S.Wrapper>
           <S.WrapperInner>
             <S.Header>내 계정</S.Header>
-            <View
-              style={css`
-                align-items: center;
-              `}>
-              <P.FormTitle>닉네임</P.FormTitle>
+            <S.InputContainer>
+              <P.InputTitle>닉네임</P.InputTitle>
               <P.Input
                 onChangeText={(text) => setNicknameForChange(text)}
                 defaultValue={myInfoData.nickname}
                 mb15
               />
 
-              <P.FormTitle>자기소개</P.FormTitle>
+              <P.InputTitle>자기소개</P.InputTitle>
               <P.Input
                 onChangeText={(text) => setSelfIntroductionForChange(text)}
                 defaultValue={myInfoData.selfIntroduction}
@@ -217,11 +213,11 @@ const AccountScreen = ({navigation, myInfoData}) => {
               <S.Button mv20 md12 onPress={onChangeUserInfo}>
                 <P.ButtonText>수정</P.ButtonText>
               </S.Button>
-            </View>
+            </S.InputContainer>
 
             <S.BorderLine />
 
-            <P.FormTitle>비밀번호 변경</P.FormTitle>
+            <P.InputTitle>비밀번호 변경</P.InputTitle>
             <P.Input
               placeholder="비밀번호"
               onChangeText={(text) => setPasswordForChange(text)}
@@ -229,7 +225,7 @@ const AccountScreen = ({navigation, myInfoData}) => {
               mb15
             />
 
-            <P.FormTitle>비밀번호 확인</P.FormTitle>
+            <P.InputTitle>비밀번호 확인</P.InputTitle>
             <P.Input
               placeholder="비밀번호"
               onChangeText={(text) => setPasswordForConfirm(text)}
@@ -255,7 +251,7 @@ const AccountScreen = ({navigation, myInfoData}) => {
       ) : (
         <S.Container>
           <S.Title>본인인증 확인</S.Title>
-          <P.FormTitle>비밀번호</P.FormTitle>
+          <P.InputTitle>비밀번호</P.InputTitle>
           <P.Input
             onChangeText={(text) => setPasswordForAuth(text)}
             placeholder="비밀번호"

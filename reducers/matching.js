@@ -5,6 +5,10 @@ const initialState = {
   acceptMatchingDone: false,
   acceptMatchingError: null,
 
+  sendMatchingLoading: false,
+  sendMatchingDone: false,
+  sendMatchingError: null,
+
   refuseMatchingLoading: false,
   refuseMatchingDone: false,
   refuseMatchingError: null,
@@ -16,6 +20,10 @@ const initialState = {
 export const ACCEPT_MATCHING_REQUEST = 'ACCEPT_MATCHING_REQUEST';
 export const ACCEPT_MATCHING_SUCCESS = 'ACCEPT_MATCHING_SUCCESS';
 export const ACCEPT_MATCHING_FAILURE = 'ACCEPT_MATCHING_FAILURE';
+
+export const SEND_MATCHING_REQUEST = 'SEND_MATCHING_REQUEST';
+export const SEND_MATCHING_SUCCESS = 'SEND_MATCHING_SUCCESS';
+export const SEND_MATCHING_FAILURE = 'SEND_MATCHING_FAILURE';
 
 export const REFUSE_MATCHING_REQUEST = 'REFUSE_MATCHING_REQUEST';
 export const REFUSE_MATCHING_SUCCESS = 'REFUSE_MATCHING_SUCCESS';
@@ -44,6 +52,22 @@ const reducer = (state = initialState, action) =>
         draft.acceptMatchingLoading = false;
         draft.acceptMatchingDone = false;
         draft.acceptMatchingError = action.error;
+        break;
+
+      case SEND_MATCHING_REQUEST:
+        draft.sendMatchingLoading = true;
+        draft.sendMatchingDone = false;
+        draft.sendMatchingError = null;
+        break;
+      case SEND_MATCHING_SUCCESS:
+        draft.sendMatchingLoading = false;
+        draft.sendMatchingDone = true;
+        draft.sendMatchingError = null;
+        break;
+      case SEND_MATCHING_FAILURE:
+        draft.sendMatchingLoading = false;
+        draft.sendMatchingDone = false;
+        draft.sendMatchingError = action.error;
         break;
 
       case REFUSE_MATCHING_REQUEST:

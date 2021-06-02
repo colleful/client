@@ -24,6 +24,11 @@ const initialState = {
   createTeamLoading: false,
   createTeamDone: false,
   createTeamError: null,
+
+  ReadyTeamData: [],
+  getReadyTeamLoading: false,
+  getReadyTeamDone: false,
+  getReadyTeamError: null,
 };
 export const CHANGE_TEAM_STATUS_READY_REQUEST =
   'CHANGE_TEAM_STATUS_READY_REQUEST';
@@ -54,6 +59,10 @@ export const EXIT_TEAM_FAILURE = 'EXIT_TEAM_FAILURE';
 export const CREATE_TEAM_REQUEST = 'CREATE_TEAM_REQUEST';
 export const CREATE_TEAM_SUCCESS = 'CREATE_TEAM_SUCCESS';
 export const CREATE_TEAM_FAILURE = 'CREATE_TEAM_FAILURE';
+
+export const GET_READY_TEAM_REQUEST = 'GET_READY_TEAM_REQUEST';
+export const GET_READY_TEAM_SUCCESS = 'GET_READY_TEAM_SUCCESS';
+export const GET_READY_TEAM_FAILURE = 'GET_READY_TEAM_FAILURE';
 
 export const CHANGE_VALUE = 'CHANGE_VALUE';
 export const INITAILIZE_STATE = 'INITAILIZE_STATE';
@@ -155,6 +164,23 @@ const reducer = (state = initialState, action) =>
         draft.createTeamLoading = false;
         draft.createTeamDone = false;
         draft.createTeamError = action.error;
+        break;
+
+      case GET_READY_TEAM_REQUEST:
+        draft.getReadyTeamLoading = true;
+        draft.getReadyTeamDone = false;
+        draft.getReadyTeamError = null;
+        break;
+      case GET_READY_TEAM_SUCCESS:
+        draft.getReadyTeamLoading = false;
+        draft.getReadyTeamDone = true;
+        draft.ReadyTeamData = action.data;
+        draft.getReadyTeamError = null;
+        break;
+      case GET_READY_TEAM_FAILURE:
+        draft.getReadyTeamLoading = false;
+        draft.getReadyTeamDone = false;
+        draft.getReadyTeamError = action.error;
         break;
 
       case CHANGE_VALUE:

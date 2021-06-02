@@ -1,4 +1,5 @@
 import styled from '@emotion/native';
+import {Gravatar} from 'react-native-gravatar';
 
 export const Wrapper = styled.View`
   width: 50%;
@@ -12,4 +13,10 @@ export const CardContainer = styled.View`
 export const BorderLine = styled.View`
   width: 100px;
   border: 3px solid #fff;
+`;
+
+export const StyledGravatar = styled(Gravatar)`
+border-radius: 10px;
+width: 110px;
+height: 110px;
 `;

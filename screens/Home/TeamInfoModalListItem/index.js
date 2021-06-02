@@ -10,20 +10,13 @@ const TeamInfoModalListItem = ({teamMemberInfo}) => {
     <S.Wrapper>
       <FlipCard flip={false} flipHorizontal={true} flipVertical={false}>
         <S.CardContainer>
-          <Gravatar
+          <S.StyledGravatar
             options={{
               email: teamMemberInfo.email,
               parameters: {s: '200', d: 'retro'},
               secure: true,
             }}
-            style={
-              (styles.face,
-              css`
-                border-radius: 10px;
-                width: 110px;
-                height: 110px;
-              `)
-            }
+            style={styles.face}
           />
         </S.CardContainer>
         <Text style={styles.back}>

@@ -1,12 +1,11 @@
 import React, {useState, useCallback, useEffect} from 'react';
-import {View, Text, RefreshControl, StyleSheet} from 'react-native';
+import {View, Text, RefreshControl, StyleSheet,Alert} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import AsyncStorage from '@react-native-community/async-storage';
-import * as authAPI from '../../../lib/api';
 import ModalFilter from '../ModalFilter/index';
 import TeamInfo from '../TeamInfo/index';
-import {useDispatch} from 'react-redux';
-import {setLoginState} from '../../../reducers/auth';
+import {useDispatch, useSelector} from 'react-redux';
+import {GET_READY_TEAM_REQUEST} from '../../../reducers/team';
+import LoadingScreen from '../../../components/LoadingScreen';
 import * as S from './style';
 
 const wait = (timeout) => {
@@ -22,63 +21,78 @@ const HomeScreen = ({}) => {
   const [keyword, setKeyword] = useState('');
   const [isModalVisible, setModalVisible] = useState(false);
   const [immutableTeam, setImmutableTeam] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [pageNumber, setPageNumber] = useState(0);
+  const {
+    getReadyTeamLoading,
+    getReadyTeamDone,
+    getReadyTeamError,
+    ReadyTeamData,
+  } = useSelector(({team}) => team);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    onGetReadyTeam();
+    dispatch({type: GET_READY_TEAM_REQUEST, data: pageNumber});
   }, []);
 
   useEffect(() => {
     setNewTeam(team.filter((teams) => teams.teamName.indexOf(keyword) > -1));
   }, [team, keyword]);
 
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    wait(2000).then(() => {
-      setRefreshing(false);
-      onGetReadyTeam();
-      setPageNumber(0);
-    });
-  }, []);
-
-  const onGetReadyTeam = async () => {
-    try {
-      setLoading(true);
-      const response = await authAPI.getReadyTeam(pageNumber, {
-        headers: {
-          Authorization: await AsyncStorage.getItem('authorization'),
-        },
-      });
-      if (response.data.content === []) {
+  useEffect(() => {
+    if (getReadyTeamDone) {
+      if (ReadyTeamData.content === []) {
         setPageNumber(pageNumber);
       } else {
         setPageNumber(pageNumber + 1);
       }
-      console.log('준비된 팀 data', response.data);
-      setTeam(team.concat(response.data.content));
-      setImmutableTeam(team.concat(response.data.content));
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      if (error.response.data.status === 403) {
-        // 토큰 유효기간 지났을때
-        console.log('토큰 유효기간 지남');
-        AsyncStorage.removeItem('authorization');
-        AsyncStorage.removeItem('userPassword');
-        dispatch(setLoginState(false));
-      }
+      setTeam(team.concat(ReadyTeamData.content));
+      setImmutableTeam(team.concat(ReadyTeamData.content));
     }
-  };
+
+    if (getReadyTeamError) {
+      Alert.alert('에러', `${getReadyTeamError.response.data.message}`, [
+        {
+          text: '확인',
+        },
+      ]);
+      console.log({getReadyTeamError});
+    }
+  }, [getReadyTeamDone, getReadyTeamError]);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    wait(2000).then(() => {
+      setRefreshing(false);
+      dispatch({type: GET_READY_TEAM_REQUEST, data: pageNumber});
+      setPageNumber(0);
+    });
+  }, []);
+
+  // const onGetReadyTeam = async () => {
+  //   try {
+  //     // setLoading(true);
+  //     // const response = await authAPI.getReadyTeam(pageNumber, {
+  //     //   headers: {
+  //     //     Authorization: await AsyncStorage.getItem('authorization'),
+  //     //   },
+  //     // });
+  //     if (response.data.content === []) {
+  //       setPageNumber(pageNumber);
+  //     } else {
+  //       setPageNumber(pageNumber + 1);
+  //     }
+  //     setTeam(team.concat(response.data.content));
+  //     setImmutableTeam(team.concat(response.data.content));
+  //   } catch (error) {}
+  // };
 
   const onEndReachedHandler = useCallback(() => {
-    if (loading) {
+    if (getReadyTeamLoading) {
       return;
     }
-    onGetReadyTeam();
-  }, [loading]);
+    dispatch({type: GET_READY_TEAM_REQUEST, data: pageNumber});
+  }, [getReadyTeamLoading]);
 
   const onToggleModal = useCallback(() => {
     setModalVisible((prev) => !prev);
@@ -130,6 +144,7 @@ const HomeScreen = ({}) => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       />
+      {getReadyTeamLoading && <LoadingScreen />}
     </S.Wrapper>
   );
 };

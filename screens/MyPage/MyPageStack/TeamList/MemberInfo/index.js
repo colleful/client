@@ -3,7 +3,7 @@ import React from 'react';
 const MemberInfo = ({memberInfo, index}) => {
   return (
     <>
-      {memberInfo.nickname} {index != 0 && ', '}
+      {index != 0 && ','} {memberInfo.nickname}
       {/* {' ( '}
       {memberInfo.gender === 'MALE' ? '남' : '여'}
       {', '}

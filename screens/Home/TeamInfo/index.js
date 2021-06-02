@@ -1,8 +1,6 @@
 import React, {useState, useCallback} from 'react';
-import {css} from '@emotion/native';
 import GetTimeFromNow from '../../../utils/GetTimeFromNow';
 import TeamInfoModal from '../../../screens/Home/TeamInfoModal/index';
-import {Gravatar} from 'react-native-gravatar';
 import * as S from './style';
 
 const TeamInfo = ({team}) => {
@@ -15,17 +13,12 @@ const TeamInfo = ({team}) => {
   return (
     <S.Wrapper onPress={onToggleTeamListModal}>
       <S.WrapperInner>
-        <Gravatar
+        <S.StyledGravatar
           options={{
             email: team.teamName,
             parameters: {s: '50', d: 'retro'},
             secure: true,
           }}
-          style={css`
-            border-radius: 50px;
-            width: 60px;
-            height: 100%;
-          `}
         />
         <S.ContentContainer>
           <TeamInfoModal
