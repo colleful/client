@@ -75,8 +75,17 @@ const MainNavigator = () => {
         activeTintColor: '#e91e63',
         inactiveTintColor: 'gray',
         keyboardHidesTabBar: true,
+        tabStyle: {
+          paddingVertical: 7, //style에 쓰면 탭바가 숨을때 padding이 숨지못하고 나와있음
+        },
         style: {
-          position: 'absolute', //input 창에 글쓸때 keypad 위에 tabbar가 남아있는 현상 고치기 위한 솔루션
+          position: 'absolute', //키패드 위에 탭바가 남아있는 현상을 고치기 위한 솔루션
+          height: 60,
+        },
+        labelStyle: {
+          fontSize: 12,
+          margin: 0,
+          padding: 0,
         },
       }}
       screenOptions={({route}) => ({
@@ -92,7 +101,7 @@ const MainNavigator = () => {
           return <Ionicons name={iconName} size={size} color={color} />;
         },
       })}>
-      <Tab.Screen name="채팅목록" options={{tabBarBadge: 3}}>
+      <Tab.Screen name="채팅목록">
         {(props) => <ChatScreen {...props} userData={userData} />}
       </Tab.Screen>
       <Tab.Screen name="홈" component={HomeScreen} />

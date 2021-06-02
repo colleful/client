@@ -3,20 +3,20 @@ import {
   CardStyleInterpolators,
   createStackNavigator,
 } from '@react-navigation/stack';
-import MyPageScreen from './MyPageScreen';
-import MessageScreen from './MyPageStack/MessageScreen';
+import MyPageScreen from './MyPageScreen/index';
+import MessageScreen from './MyPageStack/MessageScreen/index';
 import TeamListScreen from './MyPageStack/TeamList/TeamListScreen/index';
 import AccountScreen from './MyPageStack/Account/index';
-import SuggestionScreen from './MyPageStack/SuggestionScreen';
-import NoticeScreen from './MyPageStack/NoticeScreen';
-import SettingScreen from './MyPageStack/SettingScreen';
+import SuggestionScreen from './MyPageStack/SuggestionScreen/index';
+import NoticeScreen from './MyPageStack/NoticeScreen/index';
+import SettingScreen from './MyPageStack/SettingScreen/index';
 import AddTeamScreen from './MyPageStack/AddTeam/index';
 import InvitationScreen from './MyPageStack/InvitationList/InvitationScreen/index';
 import ReceivedInvitationScreen from './MyPageStack/ReceivedInvitationList/ReceivedInvitationScreen/index';
 import SentInvitationListScreen from './MyPageStack/SentInvitationList/SentInvitationListScreen/index';
 import ReceivedMatchingLIstScreen from './MyPageStack/ReceivedMatchingList/ReceivedMatchingListScreen/index';
 import SentMatchingListScreen from './MyPageStack/SentMatchingList/SentMatchingListScreen/index';
-import ProfileScreen from './MyPageStack/ProfileScreen';
+import ProfileScreen from './MyPageStack/ProfileScreen/index';
 
 const MypageNavigator = ({navigation, userData}) => {
   const MyPageStack = createStackNavigator();

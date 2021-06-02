@@ -5,6 +5,10 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {css} from '@emotion/native';
 import {Gravatar} from 'react-native-gravatar';
 
+/**
+ *  아직 다 하지 않은 컴포넌트
+ */
+
 const ProfileScreen = ({navigation, myInfoData}) => {
   const [imageSource, setImageSource] = useState('');
 

@@ -1,11 +1,10 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {View, StyleSheet} from 'react-native';
-
-import MyPageNavListItem from './MyPageNavListItem';
+import MyPageNavListItem from '../MyPageNavListItem/index';
 import {css} from '@emotion/native';
 
 const MyPageNavList = ({navigation}) => {
-  const [navInfo, setNavInfo] = useState([
+  const navInfo = [
     [
       {
         iconName: 'person-circle-outline',
@@ -54,9 +53,17 @@ const MyPageNavList = ({navigation}) => {
         navName: '설정',
       },
     ],
-  ]);
+  ];
   return navInfo.map((navinfos, index) => (
-    <View style={[index === 0 && css`margin-top: 10px`, styles.item]} key={index}>
+    <View
+      style={[
+        index === 0 &&
+          css`
+            margin-top: 10px;
+          `,
+        styles.item,
+      ]}
+      key={index}>
       <MyPageNavListItem navigation={navigation} navInfo={navinfos} />
     </View>
   ));
