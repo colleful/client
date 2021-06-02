@@ -7,7 +7,7 @@ import {
 } from '../../../../../reducers/invite';
 import LoadingScreen from '../../../../../components/LoadingScreen';
 import InvitationListScreen from '../InvitationListScreen/index';
-import * as IS from './style';
+import * as S from './style';
 
 const InvitationScreen = () => {
   const [userNickname, setUserNickname] = useState('');
@@ -58,28 +58,28 @@ const InvitationScreen = () => {
   }, [dispatch, userNickname]);
 
   return (
-    <IS.Wrapper>
-      <IS.HeaderTitle>멤버 초대하기</IS.HeaderTitle>
-      <IS.InputFormContainer>
-        <IS.Input
+    <S.Wrapper>
+      <S.HeaderTitle>멤버 초대하기</S.HeaderTitle>
+      <S.InputFormContainer>
+        <S.Input
           placeholder="초대할 멤버의 닉네임 입력"
           onChangeText={(text) => setUserNickname(text)}
           value={userNickname}
         />
-        <IS.Button onPress={onSearchUserByNickname}>
-          <IS.ButtonText>검색</IS.ButtonText>
-        </IS.Button>
-      </IS.InputFormContainer>
+        <S.Button onPress={onSearchUserByNickname}>
+          <S.ButtonText>검색</S.ButtonText>
+        </S.Button>
+      </S.InputFormContainer>
 
-      <IS.BorderLine />
-      <IS.ContentTitle>검색결과</IS.ContentTitle>
+      <S.BorderLine />
+      <S.ContentTitle>검색결과</S.ContentTitle>
 
       {searchUserByNicknameDone && (
         <InvitationListScreen searchUserInfos={searchUserInfo} />
       )}
 
       {(searchUserByNicknameLoading || inviteTeamLoading) && <LoadingScreen />}
-    </IS.Wrapper>
+    </S.Wrapper>
   );
 };
 

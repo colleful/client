@@ -5,7 +5,7 @@ import {
   INITAILIZE_STATE,
   INVITE_TEAM_REQUEST,
 } from '../../../../../reducers/invite';
-import * as ILS from './style';
+import * as S from './style';
 
 const InvitationListItemScreen = ({searchUserInfo}) => {
   const dispatch = useDispatch();
@@ -49,16 +49,16 @@ const InvitationListItemScreen = ({searchUserInfo}) => {
   }, [dispatch, searchUserInfo.id]);
 
   return (
-    <ILS.Wrapper>
-      <ILS.Content>
+    <S.Wrapper>
+      <S.Content>
         {searchUserInfo?.nickname} {searchUserInfo?.age}
         {' / '}
         {searchUserInfo?.gender === 'MALE' ? '남' : '여'}
-      </ILS.Content>
-      <ILS.Button onPress={onInviteTeam}>
-        <ILS.ButtonText>초대</ILS.ButtonText>
-      </ILS.Button>
-    </ILS.Wrapper>
+      </S.Content>
+      <S.Button onPress={onInviteTeam}>
+        <S.ButtonText>초대</S.ButtonText>
+      </S.Button>
+    </S.Wrapper>
   );
 };
 

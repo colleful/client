@@ -70,11 +70,11 @@ const SentInvitationListItemScreen = ({sentInvitationList}) => {
           받는사람 : {sentInvitationList.user.nickname}{' '}
         </L.Content>
       )}
-      <L.ButtonWrapper>
+      <L.ButtonContainer>
         <L.Button onPress={onPressDeleteInvitation}>
           <L.ButtonText>초대 취소</L.ButtonText>
         </L.Button>
-      </L.ButtonWrapper>
+      </L.ButtonContainer>
       <L.BorderLine />
     </>
   );

@@ -83,14 +83,14 @@ const ReceivedMatchingListItemScreen = ({receivedMatchingList}) => {
           {' )'}
         </L.Content>
       )}
-      <L.ButtonWrapper>
+      <L.ButtonContainer>
         <L.Button onPress={onAcceptMatching}>
           <L.ButtonText>수락</L.ButtonText>
         </L.Button>
         <L.Button onPress={onRefuseMatching}>
           <L.ButtonText>거절</L.ButtonText>
         </L.Button>
-      </L.ButtonWrapper>
+      </L.ButtonContainer>
       <L.BorderLine />
     </>
   );

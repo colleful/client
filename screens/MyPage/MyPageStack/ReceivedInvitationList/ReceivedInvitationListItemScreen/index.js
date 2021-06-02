@@ -91,14 +91,14 @@ const ReceivedInvitationListItemScreen = ({receivedInvitationList}) => {
           {' )'}
         </L.Content>
       )}
-      <L.ButtonWrapper>
+      <L.ButtonContainer>
         <L.Button onPress={onAcceptInvitation}>
           <L.ButtonText>수락</L.ButtonText>
         </L.Button>
         <L.Button onPress={onRefuseInvitation}>
           <L.ButtonText>거절</L.ButtonText>
         </L.Button>
-      </L.ButtonWrapper>
+      </L.ButtonContainer>
       <L.BorderLine />
     </>
   );

@@ -64,11 +64,11 @@ const SentMatchingListItemScreen = ({sentMatchingList}) => {
           받는 팀 : {sentMatchingList.receivedTeam.teamName}
         </L.Content>
       )}
-      <L.ButtonWrapper>
+      <L.ButtonContainer>
         <L.Button onPress={onPressDeleteMatching}>
           <L.ButtonText>매칭 취소</L.ButtonText>
         </L.Button>
-      </L.ButtonWrapper>
+      </L.ButtonContainer>
       <L.BorderLine />
     </>
   );
