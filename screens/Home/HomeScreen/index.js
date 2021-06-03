@@ -1,11 +1,13 @@
 import React, {useState, useCallback, useEffect} from 'react';
-import {View, Text, RefreshControl, StyleSheet,Alert} from 'react-native';
+import {View, Text, RefreshControl, StyleSheet, Alert} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import ModalFilter from '../ModalFilter/index';
 import TeamInfo from '../TeamInfo/index';
-import {useDispatch, useSelector} from 'react-redux';
-import {GET_READY_TEAM_REQUEST} from '../../../reducers/team';
 import LoadingScreen from '../../../components/LoadingScreen';
+import {Config} from '../../../Config';
+import useSWR, {trigger} from 'swr';
+import AsyncStorage from '@react-native-community/async-storage';
+import axios from 'axios';
 import * as S from './style';
 
 const wait = (timeout) => {
@@ -18,85 +20,50 @@ const HomeScreen = ({}) => {
   const [refreshing, setRefreshing] = useState(false);
   const [team, setTeam] = useState([]);
   const [newTeam, setNewTeam] = useState([]);
+  const [immutableTeam, setImmutableTeam] = useState([]);
   const [keyword, setKeyword] = useState('');
   const [isModalVisible, setModalVisible] = useState(false);
-  const [immutableTeam, setImmutableTeam] = useState([]);
-  const [pageNumber, setPageNumber] = useState(0);
-  const {
-    getReadyTeamLoading,
-    getReadyTeamDone,
-    getReadyTeamError,
-    ReadyTeamData,
-  } = useSelector(({team}) => team);
+  const [pageIndex, setPageIndex] = useState(0);
 
-  const dispatch = useDispatch();
+  const fetcher = async (url) => {
+    const response = await axios.get(url, {
+      headers: {
+        Authorization: await AsyncStorage.getItem('authorization'),
+      },
+    });
+    return response.data;
+  };
 
-  useEffect(() => {
-    dispatch({type: GET_READY_TEAM_REQUEST, data: pageNumber});
-  }, []);
-
-  useEffect(() => {
-    setNewTeam(team.filter((teams) => teams.teamName.indexOf(keyword) > -1));
-  }, [team, keyword]);
+  const {data: readyTeamData = [], error} = useSWR(
+    `${Config.baseUrl}/api/teams?page=${pageIndex}`,
+    fetcher,
+  );
 
   useEffect(() => {
-    if (getReadyTeamDone) {
-      if (ReadyTeamData.content === []) {
-        setPageNumber(pageNumber);
-      } else {
-        setPageNumber(pageNumber + 1);
-      }
-      setTeam(team.concat(ReadyTeamData.content));
-      setImmutableTeam(team.concat(ReadyTeamData.content));
+    setNewTeam(team?.filter((teams) => teams.teamName.indexOf(keyword) > -1));
+  }, [keyword]);
+
+  useEffect(() => {
+    if (!readyTeamData.length) {
+      console.log('readyTeamData', readyTeamData);
+      setTeam(readyTeamData.content);
+      setImmutableTeam(readyTeamData.content);
     }
-
-    if (getReadyTeamError) {
-      Alert.alert('에러', `${getReadyTeamError.response.data.message}`, [
-        {
-          text: '확인',
-        },
-      ]);
-      console.log({getReadyTeamError});
-    }
-  }, [getReadyTeamDone, getReadyTeamError]);
+  }, [readyTeamData]);
 
   const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    wait(2000).then(() => {
-      setRefreshing(false);
-      dispatch({type: GET_READY_TEAM_REQUEST, data: pageNumber});
-      setPageNumber(0);
+    setRefreshing((prev) => !prev);
+    wait(1000).then(() => {
+      setRefreshing((prev) => !prev);
+      trigger(`${Config.baseUrl}/api/teams?page=0`);
     });
-  }, []);
-
-  // const onGetReadyTeam = async () => {
-  //   try {
-  //     // setLoading(true);
-  //     // const response = await authAPI.getReadyTeam(pageNumber, {
-  //     //   headers: {
-  //     //     Authorization: await AsyncStorage.getItem('authorization'),
-  //     //   },
-  //     // });
-  //     if (response.data.content === []) {
-  //       setPageNumber(pageNumber);
-  //     } else {
-  //       setPageNumber(pageNumber + 1);
-  //     }
-  //     setTeam(team.concat(response.data.content));
-  //     setImmutableTeam(team.concat(response.data.content));
-  //   } catch (error) {}
-  // };
-
-  const onEndReachedHandler = useCallback(() => {
-    if (getReadyTeamLoading) {
-      return;
-    }
-    dispatch({type: GET_READY_TEAM_REQUEST, data: pageNumber});
-  }, [getReadyTeamLoading]);
+  }, [pageIndex]);
 
   const onToggleModal = useCallback(() => {
     setModalVisible((prev) => !prev);
   }, []);
+
+  if (error) console.log({error});
 
   return (
     <S.Wrapper>
@@ -123,13 +90,17 @@ const HomeScreen = ({}) => {
           </S.Filter>
         </S.Header>
         <S.Result>
-          <Text>{keyword === '' ? team.length : newTeam.length}개의 결과</Text>
+          <Text>{keyword === '' ? team?.length : newTeam.length}개의 결과</Text>
         </S.Result>
       </S.WrapperInner>
 
       <S.FlatList
-        // onEndReached={onEndReachedHandler}
-        // onEndReachedThreshold={0.3}
+        onEndReached={({distanceFromEnd}) => {
+          if (distanceFromEnd >= 0 && readyTeamData.content !== []) {
+            setPageIndex((prev) => prev + 1);
+          }
+        }}
+        onEndReachedThreshold={0.5}
         disableVirtualization={false} //비정상적인 스크롤 동작을 방지
         keyExtractor={(_, index) => index.toString()}
         data={keyword === '' ? team : newTeam}
@@ -144,7 +115,6 @@ const HomeScreen = ({}) => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       />
-      {getReadyTeamLoading && <LoadingScreen />}
     </S.Wrapper>
   );
 };

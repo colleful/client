@@ -57,13 +57,11 @@ const SentMatchingListItemScreen = ({sentMatchingList}) => {
 
   return (
     <>
-      {userInfo && (
-        <L.Content>
-          보낸 팀 : {sentMatchingList.sentTeam.teamName}
-          {'\n'}
-          받는 팀 : {sentMatchingList.receivedTeam.teamName}
-        </L.Content>
-      )}
+      <L.Content>
+        보낸 팀 : {sentMatchingList.sentTeam.teamName}
+        {'\n'}
+        받는 팀 : {sentMatchingList.receivedTeam.teamName}
+      </L.Content>
       <L.ButtonContainer>
         <L.Button onPress={onPressDeleteMatching}>
           <L.ButtonText>매칭 취소</L.ButtonText>

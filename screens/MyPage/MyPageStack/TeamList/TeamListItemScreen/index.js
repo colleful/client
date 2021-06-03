@@ -46,7 +46,10 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
         [
           {
             text: '확인',
-            onPress: () => trigger(`${Config.baseUrl}/api/users`),
+            onPress: () => {
+              trigger(`${Config.baseUrl}/api/users`);
+              trigger(`${Config.baseUrl}/api/teams?page=0`);
+            },
           },
         ],
       );
@@ -122,6 +125,8 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
       return '준비 완료';
     } else if (teamInfo.status === 'WATCHING') {
       return '탐색중';
+    } else if (teamInfo.status === 'MATCHED') {
+      return '매칭 완료';
     }
   }, [teamInfo.status]);
 

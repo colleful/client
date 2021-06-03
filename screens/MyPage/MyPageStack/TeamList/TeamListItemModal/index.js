@@ -41,6 +41,7 @@ const TeamListItemModal = ({
   useEffect(() => {
     if (currentDone) {
       trigger(`${Config.baseUrl}/api/teams/${teamId}`);
+      trigger(`${Config.baseUrl}/api/teams?page=0`);
       Alert.alert(
         '완료',
         `팀 상태를 ${
@@ -69,7 +70,7 @@ const TeamListItemModal = ({
       ]);
       console.log({currentError});
     }
-  }, [currentDone, finishTeamMatchingDone, currentError]);
+  }, [currentDone, finishTeamMatchingDone, currentError, teamId]);
 
   const onChangeTeamStatusToReady = () => {
     // PENDING -> READY

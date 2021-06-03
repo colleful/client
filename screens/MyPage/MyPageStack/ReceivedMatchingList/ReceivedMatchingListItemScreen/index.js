@@ -48,6 +48,7 @@ const ReceivedMatchingListItemScreen = ({receivedMatchingList}) => {
             onPress: () => {
               trigger(`${Config.baseUrl}/api/matching/received`);
               trigger(`${Config.baseUrl}/api/users`);
+              trigger(`${Config.baseUrl}/api/teams?page=0`);
             },
           },
         ],
