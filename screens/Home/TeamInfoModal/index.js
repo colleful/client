@@ -23,7 +23,7 @@ const TeamInfoModal = ({
   } = useSelector(({matching}) => matching);
 
   useEffect(() => {
-    console.log(team)
+    // console.log(team)
     return () => {
       dispatch({type: INITAILIZE_STATE});
     };

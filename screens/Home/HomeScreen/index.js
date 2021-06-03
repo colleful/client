@@ -6,9 +6,11 @@ import TeamInfo from '../TeamInfo/index';
 import LoadingScreen from '../../../components/LoadingScreen';
 import {Config} from '../../../Config';
 import useSWR, {trigger} from 'swr';
+import {useSelector, useDispatch} from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
 import axios from 'axios';
 import * as S from './style';
+import {GET_READY_TEAM_REQUEST} from '../../../reducers/team';
 
 const wait = (timeout) => {
   return new Promise((resolve) => {
@@ -24,6 +26,10 @@ const HomeScreen = ({}) => {
   const [keyword, setKeyword] = useState('');
   const [isModalVisible, setModalVisible] = useState(false);
   const [pageIndex, setPageIndex] = useState(0);
+  const dispatch = useDispatch();
+  const {getReadyTeamDone, readyTeamList, getReadyTeamError} = useSelector(
+    ({team}) => team,
+  );
 
   const fetcher = async (url) => {
     const response = await axios.get(url, {
@@ -39,9 +45,31 @@ const HomeScreen = ({}) => {
     fetcher,
   );
 
+  // useEffect(() => {
+  //   console.log('team', team);
+  //   setNewTeam(team?.filter((teams) => teams.teamName.indexOf(keyword) > -1));
+  // }, [team, keyword]);
+
   useEffect(() => {
-    setNewTeam(team?.filter((teams) => teams.teamName.indexOf(keyword) > -1));
+    if (!keyword && !keyword.trim()) {
+      return;
+    }
+    dispatch({type: GET_READY_TEAM_REQUEST, data: keyword});
   }, [keyword]);
+
+  useEffect(() => {
+    if (getReadyTeamDone) {
+      setNewTeam(readyTeamList.content);
+    }
+    if (getReadyTeamError) {
+      Alert.alert('에러', `${getReadyTeamError.response.data.message}`, [
+        {
+          text: '확인',
+        },
+      ]);
+      console.log({getReadyTeamError});
+    }
+  }, [getReadyTeamDone]);
 
   useEffect(() => {
     if (!readyTeamData.length) {
@@ -90,7 +118,7 @@ const HomeScreen = ({}) => {
           </S.Filter>
         </S.Header>
         <S.Result>
-          <Text>{keyword === '' ? team?.length : newTeam.length}개의 결과</Text>
+          <Text>{!keyword && !keyword.trim() ? team?.length : newTeam.length}개의 결과</Text>
         </S.Result>
       </S.WrapperInner>
 
@@ -100,10 +128,10 @@ const HomeScreen = ({}) => {
             setPageIndex((prev) => prev + 1);
           }
         }}
-        onEndReachedThreshold={0.5}
+        onEndReachedThreshold={0.1}
         disableVirtualization={false} //비정상적인 스크롤 동작을 방지
         keyExtractor={(_, index) => index.toString()}
-        data={keyword === '' ? team : newTeam}
+        data={!keyword && !keyword.trim() ? team : newTeam}
         renderItem={({item, index}) => (
           <View
             style={[index === 0 && styles.firstItem, styles.item]}

@@ -25,7 +25,7 @@ const initialState = {
   createTeamDone: false,
   createTeamError: null,
 
-  ReadyTeamData: [],
+  readyTeamList: [],
   getReadyTeamLoading: false,
   getReadyTeamDone: false,
   getReadyTeamError: null,
@@ -174,7 +174,7 @@ const reducer = (state = initialState, action) =>
       case GET_READY_TEAM_SUCCESS:
         draft.getReadyTeamLoading = false;
         draft.getReadyTeamDone = true;
-        draft.ReadyTeamData = action.data;
+        draft.readyTeamList = action.data;
         draft.getReadyTeamError = null;
         break;
       case GET_READY_TEAM_FAILURE:

@@ -16,6 +16,7 @@ const initialState = {
   deleteMatchingLoading: false,
   deleteMatchingDone: false,
   deleteMatchingError: null,
+  matchingData: null,
 };
 export const ACCEPT_MATCHING_REQUEST = 'ACCEPT_MATCHING_REQUEST';
 export const ACCEPT_MATCHING_SUCCESS = 'ACCEPT_MATCHING_SUCCESS';
@@ -61,6 +62,7 @@ const reducer = (state = initialState, action) =>
         break;
       case SEND_MATCHING_SUCCESS:
         draft.sendMatchingLoading = false;
+        draft.matchingData = action.data;
         draft.sendMatchingDone = true;
         draft.sendMatchingError = null;
         break;
