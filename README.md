@@ -55,25 +55,25 @@ College와 Colorful의 합성어로, 다채로운 대학 생활을 제공해 주
 
 | 로그인 | 회원가입 | 회원가입 |
 |:---:|:---:|:---:|
-| <img src="https://user-images.githubusercontent.com/43921054/110070525-8777d300-7dbd-11eb-8c09-8015cf830687.jpg" width="100%" > | <img src="https://user-images.githubusercontent.com/43921054/110075238-d6296b00-7dc5-11eb-8def-157ac0b523ea.jpg" width="100%" >  | <img src="https://user-images.githubusercontent.com/43921054/110075241-d75a9800-7dc5-11eb-8554-78d3558edbcb.jpg" width="100%">  |
+| <img src="https://user-images.githubusercontent.com/43921054/120579304-40ec5000-c462-11eb-90d6-f38b4a83010e.jpg" width="100%" > | <img src="https://user-images.githubusercontent.com/43921054/120579361-56fa1080-c462-11eb-902c-bf6c711798fb.jpg" width="100%" >  | <img src="https://user-images.githubusercontent.com/43921054/120579388-65482c80-c462-11eb-8562-5bfd04908c36.jpg" width="100%">  |
 
 | 비밀번호 찾기/변경 | 이메일 인증 성공후 비밀번호 변경  | 변경 성공 |
 |:---:|:---:|:---:|
-| <img src="https://user-images.githubusercontent.com/43921054/110080848-68357180-7dce-11eb-8b40-aba38c1c16e6.jpg" width="100%"> | <img src="https://user-images.githubusercontent.com/43921054/110080864-6cfa2580-7dce-11eb-8924-4c0527d302ad.jpg" width="100%" >  | <img src="https://user-images.githubusercontent.com/43921054/110080880-72577000-7dce-11eb-9d4e-44516bf277fe.jpg" width="100%" >  |
+| <img src="https://user-images.githubusercontent.com/43921054/120579497-932d7100-c462-11eb-8ec1-3b8990e8d6b7.jpg" width="100%"> | <img src="https://user-images.githubusercontent.com/43921054/120579712-f5867180-c462-11eb-9df2-640fdc9de617.jpg" width="100%" >  | <img src="https://user-images.githubusercontent.com/43921054/120579767-0931d800-c463-11eb-990d-3d36b49dcad3.jpg" width="100%">  |
 
 ### 로그인 후
 
 | 홈 | 홈 (팀 필터) | 홈 (팀 검색) |
 |:---:|:---:|:---:|
-| <img src="https://user-images.githubusercontent.com/43921054/110076457-daef1e80-7dc7-11eb-97ac-59d1ba2dc563.jpg" width="100%"> | <img src="https://user-images.githubusercontent.com/43921054/110076571-0f62da80-7dc8-11eb-88d9-7aecfc7fa98c.jpg" width="100%">  | <img src="https://user-images.githubusercontent.com/43921054/110077340-47b6e880-7dc9-11eb-9bdd-265c7e1da749.jpg" width="100%">  |
+| <img src="https://user-images.githubusercontent.com/43921054/120579947-4b5b1980-c463-11eb-99a5-f4343ce737ea.jpg" width="100%"> | <img src="https://user-images.githubusercontent.com/43921054/120579978-557d1800-c463-11eb-8e5e-8669cbcc7063.jpg" width="100%">  | <img src="https://user-images.githubusercontent.com/43921054/120579991-57df7200-c463-11eb-9018-aedc2f72e4c6.jpg" width="100%">  |
 
 | 팀 매칭 전 유저정보 보기 (이미지) | 팀 매칭 전 유저정보 보기 (자기소개) | 매칭 신청 |
 |:---:|:---:|:---:|
-| <img src="https://user-images.githubusercontent.com/43921054/110081015-a6329580-7dce-11eb-928a-d22ec8c29066.jpg" width="100%"> | <img src="https://user-images.githubusercontent.com/43921054/110081023-a894ef80-7dce-11eb-90be-952445dc05f6.jpg" width="100%">  | <img src="https://user-images.githubusercontent.com/43921054/110081027-aaf74980-7dce-11eb-8f5e-a91ee6cf1bb8.jpg" width="100%">  |
+| <img src="https://user-images.githubusercontent.com/43921054/120580080-865d4d00-c463-11eb-8009-e3fcce9cc171.jpg" width="100%"> | <img src="https://user-images.githubusercontent.com/43921054/120580085-878e7a00-c463-11eb-937f-5d7206ea8bc2.jpg" width="100%">  | <img src="https://user-images.githubusercontent.com/43921054/120580094-89f0d400-c463-11eb-813c-0b86c21bafeb.jpg" width="100%">  |
 
 | 마이페이지 | 계정 (본인 인증) | 계정(회원정보 수정, 로그아웃, 회원탈퇴) |
 |:---:|:---:|:---:|
-| <img src="https://user-images.githubusercontent.com/43921054/110077964-623d9180-7dca-11eb-9dc6-8eebfdcb8999.jpg" width="100%"> | <img src="https://user-images.githubusercontent.com/43921054/110078283-dd9f4300-7dca-11eb-81ba-12ef95f52bfa.jpg" width="100%">  | <img src="https://user-images.githubusercontent.com/43921054/110078288-e09a3380-7dca-11eb-9507-5985fb9bc114.jpg" width="100%">  |
+| <img src="https://user-images.githubusercontent.com/43921054/120580514-49458a80-c464-11eb-9ddf-374ca7184411.jpg" width="100%"> | <img src="https://user-images.githubusercontent.com/43921054/120580518-4a76b780-c464-11eb-948f-6386ca1d7d53.jpg" width="100%">  | <img src="https://user-images.githubusercontent.com/43921054/120580521-4c407b00-c464-11eb-8da3-6e48cf39924b.jpg" width="100%">  |
 
 | 프로필 관리 | 프로필 변경 선택 | 프로필 변경 |
 |:---:|:---:|:---:|
@@ -81,11 +81,15 @@ College와 Colorful의 합성어로, 다채로운 대학 생활을 제공해 주
 
 | 팀생성 | 팀생성 | 팀초대 |
 |:---:|:---:|:---:|
-| <img src="https://user-images.githubusercontent.com/43921054/110078702-7a61e080-7dcb-11eb-980e-28d8208f8b33.jpg" width="100%"> | <img src="https://user-images.githubusercontent.com/43921054/110078712-7d5cd100-7dcb-11eb-893a-04d1db869783.jpg" width="100%">  | <img src="https://user-images.githubusercontent.com/43921054/110079012-e2182b80-7dcb-11eb-81ef-2303fe57e6f4.jpg" width="100%">  |
+| <img src="https://user-images.githubusercontent.com/43921054/120580581-65e1c280-c464-11eb-85b0-b5dc0dcfba37.jpg" width="100%"> | <img src="https://user-images.githubusercontent.com/43921054/120580586-6712ef80-c464-11eb-85f0-484b40eddb60.jpg" width="100%">  | <img src="https://user-images.githubusercontent.com/43921054/120580589-68441c80-c464-11eb-8d47-a3c5995bdb73.jpg" width="100%">  |
 
-| 팀목록 | 팀 상태변경 | 팀 상태변경 |
+| 팀목록 | 팀삭제 (팀원은 팀나가기) | 팀삭제 |
 |:---:|:---:|:---:|
-| <img src="https://user-images.githubusercontent.com/43921054/110078721-80f05800-7dcb-11eb-8c57-90482de5258e.jpg" width="100%"> | <img src="https://user-images.githubusercontent.com/43921054/110079683-c3fefb00-7dcc-11eb-844b-1be7d73f1b4d.jpg" width="100%">  | <img src="https://user-images.githubusercontent.com/43921054/110079788-e264f680-7dcc-11eb-8d4c-f6ff6d05a289.jpg" width="100%">  |
+| <img src="https://user-images.githubusercontent.com/43921054/120580730-a3465000-c464-11eb-9654-6a26a898f4c4.jpg" width="100%"> | <img src="https://user-images.githubusercontent.com/43921054/120581651-1dc39f80-c466-11eb-9e03-c9c9ecd17e19.jpg" width="100%">  | <img src="https://user-images.githubusercontent.com/43921054/120581655-2025f980-c466-11eb-93a7-04de0593720e.jpg" width="100%">  |
+
+| 팀 상태변경(매칭 완료) | 팀 상태변경(멤버 구성중) | 팀 상태변경(준비 완료) |
+|:---:|:---:|:---:|
+| <img src="https://user-images.githubusercontent.com/43921054/120581645-1a301880-c466-11eb-8efe-587edd826980.jpg" width="100%"> | <img src="https://user-images.githubusercontent.com/43921054/120580734-a4777d00-c464-11eb-8494-8fc5e733c8d6.jpg" width="100%">  | <img src="https://user-images.githubusercontent.com/43921054/120580963-fa4c2500-c464-11eb-9189-fac465c67e9e.jpg" width="100%">  |
 
 <table>
  <thead>
@@ -96,8 +100,8 @@ College와 Colorful의 합성어로, 다채로운 대학 생활을 제공해 주
  </thead>
  <tbody>
   <tr>
-   <td width="279px" align="center"> <img src="https://user-images.githubusercontent.com/43921054/110077646-dd527800-7dc9-11eb-90a3-c19f70fa31f4.jpg" width="100%"></td>
-   <td width="279px" align="center"> <img src="https://user-images.githubusercontent.com/43921054/110077658-e2172c00-7dc9-11eb-8a0c-bf5f63bd8853.jpg" width="100%"></td>
+   <td width="279px" align="center"> <img src="https://user-images.githubusercontent.com/43921054/120582509-86f7e280-c467-11eb-939c-f356ec8ffea1.jpg" width="100%"></td>
+   <td width="279px" align="center"> <img src="https://user-images.githubusercontent.com/43921054/120582513-88290f80-c467-11eb-9a32-2722f4d8a980.jpg" width="100%"></td>
   </tr>
  </tbody>
 </table>
@@ -111,8 +115,8 @@ College와 Colorful의 합성어로, 다채로운 대학 생활을 제공해 주
  </thead>
  <tbody>
   <tr>
-   <td width="279px" align="center"> <img src="https://user-images.githubusercontent.com/43921054/110080112-615a2f00-7dcd-11eb-852d-966c6ce2489f.jpg" width="100%"></td>
-   <td width="279px" align="center"> <img src="https://user-images.githubusercontent.com/43921054/110080119-6323f280-7dcd-11eb-84e2-27b315a47485.jpg" width="100%"></td>
+   <td width="279px" align="center"> <img src="https://user-images.githubusercontent.com/43921054/120582017-b823e300-c466-11eb-8762-90ecadaaded7.jpg" width="100%"></td>
+   <td width="279px" align="center"> <img src="https://user-images.githubusercontent.com/43921054/120582023-b9eda680-c466-11eb-98d4-1fef863fae5b.jpg" width="100%"></td>
   </tr>
  </tbody>
 </table>
@@ -126,16 +130,26 @@ College와 Colorful의 합성어로, 다채로운 대학 생활을 제공해 주
  </thead>
  <tbody>
   <tr>
-   <td width="279px" align="center"> <img src="https://user-images.githubusercontent.com/43921054/110080167-75059580-7dcd-11eb-91d1-00f914b41e4c.jpg" width="100%"></td>
-   <td width="279px" align="center"> <img src="https://user-images.githubusercontent.com/43921054/110080175-7767ef80-7dcd-11eb-9642-21c228aa3229.jpg" width="100%"></td>
+   <td width="279px" align="center"> <img src="https://user-images.githubusercontent.com/43921054/120582088-dab5fc00-c466-11eb-9e59-18331c6b138e.jpg" width="100%"></td>
+   <td width="279px" align="center"> <img src="https://user-images.githubusercontent.com/43921054/120582092-ddb0ec80-c466-11eb-9f24-eae19deb58c2.jpg" width="100%"></td>
   </tr>
  </tbody>
 </table>
 
-| 받은 매칭목록 | 받은 매칭목록 | 수락 |
-|:---:|:---:|:---:|
-| <img src="https://user-images.githubusercontent.com/43921054/110080230-85b60b80-7dcd-11eb-9cb8-2a937bb03633.jpg" width="100%"> | <img src="https://user-images.githubusercontent.com/43921054/110080237-88186580-7dcd-11eb-9615-197ea3f9d94c.jpg" width="100%">  | <img src="https://user-images.githubusercontent.com/43921054/110080455-d299e200-7dcd-11eb-84b9-42b072d17632.jpg" width="100%">  |
-
+<table>
+ <thead>
+  <tr>
+   <th align="center">받은 매칭목록</th>
+   <th align="center">받은 매칭목록</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td width="279px" align="center"> <img src="https://user-images.githubusercontent.com/43921054/120582169-fde0ab80-c466-11eb-8c03-e3db2e9181ed.jpg" width="100%"></td>
+   <td width="279px" align="center"> <img src="https://user-images.githubusercontent.com/43921054/120582183-03d68c80-c467-11eb-910d-8220a7cd3d01.jpg" width="100%"></td>
+  </tr>
+ </tbody>
+</table>
 
 <table>
  <thead>
@@ -146,8 +160,8 @@ College와 Colorful의 합성어로, 다채로운 대학 생활을 제공해 주
  </thead>
  <tbody>
   <tr>
-   <td width="279px" align="center"> <img src="https://user-images.githubusercontent.com/43921054/110080294-96ff1800-7dcd-11eb-8fc4-3d77420e282f.jpg" width="100%"></td>
-   <td width="279px" align="center"> <img src="https://user-images.githubusercontent.com/43921054/110080303-98c8db80-7dcd-11eb-85ba-2cbd90cff7f9.jpg" width="100%"></td>
+   <td width="279px" align="center"> <img src="https://user-images.githubusercontent.com/43921054/120582269-27013c00-c467-11eb-9649-92bda18bb88b.jpg" width="100%"></td>
+   <td width="279px" align="center"> <img src="https://user-images.githubusercontent.com/43921054/120582274-28326900-c467-11eb-97c8-a37b71e70110.jpg" width="100%"></td>
   </tr>
  </tbody>
 </table>
