@@ -32,17 +32,22 @@ College와 Colorful의 합성어로, 다채로운 대학 생활을 제공해 주
 
 <br>
 
-## CSS 규칙
-
-- 모두 styled-components로 작성
-- 네이밍은 모두 CamelCase로 작성 
-- 네이밍 컨벤션으로는 독립적인 컴포넌트 스타일이면 S,   
-   - 재사용 될 스타일이면 `assets/css/commons.js`사용, 별칭은 P,    
-   - 받은매칭목록, 보낸초대목록 등 목록 레이아웃은 `assets/css/InvitationMatchingListLayout.js` 사용, 별칭은 L   
-   - 독립적인 컴포넌트 스타일은 엘리먼트 속성을 쉽게 파악할 수 있는 이름으로 통일   
-   - Wrapper는 컴포넌트를 감싸는 영역, WrapperInner는 컴포넌트 영역을 표시할 때, Container는 엘리먼트들을 감싸는 영역을 나타냄   
-   - 모듈을 감쌀땐 Styled[모듈이름]으로 통일   
-- CSS 속성 기술 순서는 NHN 코딩컨벤션을 따름
+## 🛠 리팩토링
+- 리액트는 View를 중점적으로 다루는 라이브러리이기 때문에 컴포넌트 안에는 View에 대한 책임만 갖도록 View에 관련된 로직만 넣었습니다.
+- 이렇게 네트워크 통신하는 것을 따로 만들어서 컴포넌트 안에 의존성 주입을 해주었습니다.
+- 의존성 주입을 통해 객체의 생성과 사용의 관심을 분리하여 가독성과 코드 재사용을 높혔습니다. 
+- 컴포넌트를 한 폴더 안에 View만 집중하는 컴포넌트와 style만 집중하는 컴포넌트로 분리하여 코드량이 분산되었고 원하는 코드를 바로 찾을 수 있어 가독성이 좋아졌고 유지보수에 용이해졌습니다.
+   ## CSS
+   
+   - 모두 styled-components로 작성
+   - 네이밍은 모두 CamelCase로 작성 
+   - 네이밍 컨벤션으로는 독립적인 컴포넌트 스타일이면 S,   
+      - 재사용 될 스타일이면 `assets/css/commons.js`사용, 별칭은 P,    
+      - 받은매칭목록, 보낸초대목록 등 목록 레이아웃은 `assets/css/InvitationMatchingListLayout.js` 사용, 별칭은 L   
+      - 독립적인 컴포넌트 스타일은 엘리먼트 속성을 쉽게 파악할 수 있는 이름으로 통일   
+      - Wrapper는 컴포넌트를 감싸는 영역, WrapperInner는 컴포넌트 영역을 표시할 때, Container는 엘리먼트들을 감싸는 영역을 나타냄   
+      - 모듈을 감쌀땐 Styled[모듈이름]으로 통일   
+   - CSS 속성 기술 순서는 NHN 코딩컨벤션을 따름
 
 <img src="https://user-images.githubusercontent.com/43921054/119236369-fcafa480-bb71-11eb-8230-49201cc3741a.png" width="75%" >
 
