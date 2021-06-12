@@ -2,12 +2,12 @@ import styled from '@emotion/native';
 import {Picker} from '@react-native-community/picker';
 
 export const Container = styled.View`
-  align-items: center;
   flex-direction: row;
+  align-items: center;
   width: 100%;
-  border: ${(props) => (props.bw1 ? '1px' : '0.5px')} solid black;
   height: 40px;
   margin-bottom: 5px;
+  border: ${(props) => (props.bw1 ? '1px' : '0.5px')} solid black;
   border-radius: 4px;
 `;
 
@@ -17,15 +17,15 @@ export const InputTitle = styled.Text`
 `;
 
 export const Input = styled.TextInput`
-  align-items: center;
   flex-direction: row;
+  align-items: center;
   width: 100%;
-  border: 0.5px solid black;
   height: 40px;
   margin-bottom: 5px;
+  padding: 10px;
+  border: 0.5px solid black;
   ${(props) => props.mb15 && 'margin-bottom: 15px'};
   border-radius: 4px;
-  padding: 10px;
 `;
 
 export const InputWithIcon = styled.TextInput`
@@ -35,16 +35,16 @@ export const InputWithIcon = styled.TextInput`
 `;
 
 export const ErrorMessage = styled.Text`
-  color: #f54260;
   align-self: flex-start;
   margin-bottom: 10px;
+  color: #f54260;
 `;
 export const Button = styled.TouchableOpacity`
   width: 100%;
-  background-color: ${(props) => (props.pink ? '#ec5990' : '#5e5e5e')};
-  border-radius: 4px;
   padding: 12px 0;
   margin: 5px 0;
+  border-radius: 4px;
+  background-color: ${(props) => (props.pink ? '#ec5990' : '#5e5e5e')};
 `;
 
 export const ButtonText = styled.Text`
@@ -54,13 +54,13 @@ export const ButtonText = styled.Text`
 
 export const PasswordFindText = styled.Text`
   align-self: flex-end;
-  color: #639fff;
   padding: 10px 0;
+  color: #639fff;
 `;
 
 export const PickerContainer = styled(Picker)`
-  height: 50px;
   width: 100%;
+  height: 50px;
 `;
 
 export const BorderLine = styled.View`

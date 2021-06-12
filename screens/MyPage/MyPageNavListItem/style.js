@@ -2,8 +2,8 @@ import styled from '@emotion/native';
 
 export const Button = styled.TouchableOpacity`
   flex-direction: row;
-  padding: 10px 5px;
   width: 150px;
+  padding: 10px 5px;
 `;
 
 export const ButtonText = styled.Text`

@@ -9,16 +9,16 @@ export const Wrapper = styled.View`
 `;
 
 export const WrapperInner = styled.View`
-  background-color: white;
   width: 100%;
   height: 100%;
   border-radius: 10px;
+  background-color: white;
 `;
 
 export const Header = styled.View`
-  height: 50px;
   justify-content: center;
   align-items: center;
+  height: 50px;
   border: 0.25px solid gray;
 `;
 
@@ -37,9 +37,9 @@ export const ButtonContainer = styled.View`
 `;
 
 export const Button = styled.TouchableOpacity`
-  background-color: #5e5e5e;
-  border-radius: 5px;
   padding: 12px 18px;
+  border-radius: 5px;
+  background-color: #5e5e5e;
 `;
 
 export const ButtonText = styled.Text`

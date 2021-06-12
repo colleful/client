@@ -32,9 +32,9 @@ const TeamListScreen = ({navigation, teamId, userId}) => {
     teamId === null ? null : `${Config.baseUrl}/api/teams/${teamId}`,
     fetcher,
   );
-  if (!error && !teamInfo.hasOwnProperty('id') && isLoading) {
-    return <LoadingScreen />;
-  }
+  // if (!error && !teamInfo.hasOwnProperty('id') && isLoading) {
+  //   return <LoadingScreen />;
+  // }
   if (error) console.log({error});
 
   return (

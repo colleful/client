@@ -75,6 +75,7 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
   };
 
   const {data: teamMember = [], error} = useSWR(
+    // useLayoutEffect를 통해
     teamId === null ? null : `${Config.baseUrl}/api/teams/${teamId}/members`,
     fetcher,
   );
@@ -130,9 +131,9 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
     }
   }, [teamInfo.status]);
 
-  if (!error && !teamMember.length) {
-    return <LoadingScreen />;
-  }
+  // if (!error && !teamMember.length) {
+  //   return <LoadingScreen />;
+  // }
 
   return (
     <>

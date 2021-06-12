@@ -11,10 +11,10 @@ export const ExplainContainer = styled.View`
 `;
 
 export const ExplainText = styled.Text`
+  ${(props) => props.mb5 && 'margin-bottom: 5px'};
   font-size: 19px;
   color: #2e89de;
   line-height: 26px;
-  ${(props) => props.mb5 && 'margin-bottom: 5px'};
 `;
 
 export const Title = styled.Text`
@@ -23,8 +23,8 @@ export const Title = styled.Text`
 `;
 
 export const BorderLine = styled.View`
-  border-bottom-width: 1px;
   margin: 15px 0;
+  border-bottom-width: 1px;
 `;
 
 export const ContentText = styled.Text`

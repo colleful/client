@@ -8,15 +8,15 @@ export const Wrapper = styled.View`
 `;
 
 export const WrapperInner = styled.View`
-  background-color: white;
   width: 250px;
   border-radius: 5px;
+  background-color: white;
 `;
 
 export const Header = styled.View`
-  height: 50px;
   justify-content: center;
   align-items: center;
+  height: 50px;
   border-bottom-width: 0.5px;
   border-color: gray;
 `;
@@ -30,21 +30,21 @@ export const Content = styled.View`
 `;
 
 export const Input = styled.TextInput`
-  border: 1px solid gray;
-  border-radius: 4px;
   width: 100%;
   height: 40px;
+  border: 1px solid gray;
+  border-radius: 4px;
   padding: 10px;
-  margin-bottom: ${props => props.mb10 ? '10px': '5px'};
+  margin-bottom: ${(props) => (props.mb10 ? '10px' : '5px')};
   opacity: 0.5;
 `;
 
 export const Button = styled.TouchableOpacity`
-  background-color: #5e5e5e;
-  border-radius: 5px;
   width: 100%;
-  margin-bottom: 10px;
+  border-radius: 5px;
+  background-color: #5e5e5e;
   padding: 12px;
+  margin-bottom: 10px;
 `;
 
 export const ButtonText = styled.Text`
@@ -53,8 +53,8 @@ export const ButtonText = styled.Text`
 `;
 
 export const ExitButton = styled.TouchableOpacity`
-  align-items: flex-end;
   justify-content: center;
+  align-items: flex-end;
   height: 30px;
   padding: 5px;
 `;

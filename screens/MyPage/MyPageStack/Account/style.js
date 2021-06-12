@@ -10,8 +10,8 @@ export const WrapperInner = styled.View`
 `;
 
 export const Header = styled.Text`
-  font-size: 32px;
   margin-bottom: 30px;
+  font-size: 32px;
 `;
 
 export const Container = styled.View`
@@ -27,8 +27,8 @@ export const InputContainer = styled.View`
 `;
 
 export const Title = styled.Text`
-  font-size: 32px;
   margin-bottom: 20px;
+  font-size: 32px;
 `;
 
 export const ButtonContainer = styled.View`
@@ -38,15 +38,15 @@ export const ButtonContainer = styled.View`
 `;
 
 export const Button = styled.TouchableOpacity`
-  background-color: #5e5e5e;
-  border-radius: 5px;
-  padding: 10px 20px;
-  ${(props) => props.mv20 && 'margin: 20px 0'};
   ${(props) => props.md12 && 'width: 100%'};
+  ${(props) => props.mv20 && 'margin: 20px 0'};
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-color: #5e5e5e;
 `;
 
 export const BorderLine = styled.View`
   width: 100%;
-  border: 0.3px solid gray;
   margin-bottom: 20px;
+  border: 0.3px solid gray;
 `;

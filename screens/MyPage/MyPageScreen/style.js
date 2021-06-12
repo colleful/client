@@ -6,31 +6,30 @@ export const Wrapper = styled.View`
   background-color: #fafafa;
 `;
 export const StyledGravatar = styled(Gravatar)`
-  border-radius: 30px;
   width: 60px;
   height: 60px;
+  border-radius: 30px;
 `;
 
 export const WrapperInner = styled.View`
   flex-direction: row;
-  border-bottom-width: 1px;
-  background-color: #fff;
-  border-bottom-color: #f0f0f0;
   padding: 20px;
+  border: 0.5px solid #f0f0f0;
+  background-color: #fff;
 `;
 export const ContentContainer = styled.View`
   flex: 1;
-  margin-left: 15px;
-  align-items: center;
-  justify-content: space-between;
   flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 15px;
 `;
 export const ButtonContainer = styled.View`
   justify-content: center;
 `;
 
 export const Button = styled.TouchableOpacity`
+  padding: 8px 13px;
   border: 1px solid #f0f0f0;
   border-radius: 5px;
-  padding: 8px 13px;
 `;

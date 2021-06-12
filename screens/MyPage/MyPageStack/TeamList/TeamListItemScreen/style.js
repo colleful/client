@@ -7,10 +7,10 @@ export const ButtonContainer = styled.View`
 `;
 
 export const Button = styled.TouchableOpacity`
-  background-color: #5e5e5e;
-  border-radius: 5px;
-  padding: 15px;
   margin-right: ${(props) => props.mr20 && '20px'};
+  padding: 15px;
+  border-radius: 5px;
+  background-color: #5e5e5e;
 `;
 
 export const ButtonText = styled.Text`
@@ -20,8 +20,8 @@ export const ButtonText = styled.Text`
 `;
 
 export const BorderLine = styled.View`
-  border-bottom-width: 1px;
   margin: 15px 0;
+  border-bottom-width: 1px;
 `;
 
 export const Content = styled.Text`

@@ -12,25 +12,24 @@ export const HeaderTitle = styled.Text`
 `;
 
 export const InputFormContainer = styled.View`
-  width: 100%;
   flex-direction: row;
+  width: 100%;
   margin-bottom: 40px;
 `;
 
 export const Input = styled.TextInput`
   width: 70%;
+  height: 40px;
   margin-right: 15px;
   padding-left: 15px;
-  height: 40px;
-  border-width: 1px;
+  border: 1px solid #5e5e5e;
   border-radius: 5px;
-  border-color: #5e5e5e;
 `;
 
 export const Button = styled.TouchableOpacity`
-  background-color: #5e5e5e;
-  border-radius: 5px;
   padding: 11px 18px;
+  border-radius: 5px;
+  background-color: #5e5e5e;
 `;
 
 export const ButtonText = styled.Text`
@@ -39,11 +38,11 @@ export const ButtonText = styled.Text`
 `;
 
 export const BorderLine = styled.View`
-  border-bottom-width: 0.5px;
   margin-bottom: 20px;
+  border-bottom-width: 0.5px;
 `;
 
 export const ContentTitle = styled.Text`
-  font-size: 20px;
   margin-bottom: 15px;
+  font-size: 20px;
 `;

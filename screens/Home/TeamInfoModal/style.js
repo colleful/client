@@ -14,14 +14,14 @@ export const WrapperInner = styled.View`
 export const TeamInfoContainer = styled.View`
   flex: 0.85;
   flex-flow: row wrap;
-  width: 300px;
   align-items: stretch;
+  width: 300px;
 `;
 
 export const ButtonContainer = styled.View`
   flex: 0.15;
-  align-items: center;
   justify-content: center;
+  align-items: center;
 `;
 
 export const Button = styled.TouchableOpacity`
@@ -31,6 +31,6 @@ export const Button = styled.TouchableOpacity`
 `;
 
 export const ButtonText = styled.Text`
-  text-align: center;
   color: #fff;
+  text-align: center;
 `;

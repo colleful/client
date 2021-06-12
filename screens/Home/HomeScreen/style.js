@@ -11,8 +11,8 @@ export const WrapperInner = styled.View`
 export const Header = styled.View`
   margin: 20px 0;
   padding: 0 20px 20px;
-  background-color: #fff;
   border-radius: 10px;
+  background-color: #fff;
   elevation: 4; //android
   shadow-color: #000; //ios
   shadow-opacity: 0.3;
@@ -20,10 +20,10 @@ export const Header = styled.View`
 `;
 
 export const Result = styled.View`
-  height: 35px;
   flex-direction: row;
-  align-items: center;
   justify-content: flex-start;
+  align-items: center;
+  height: 35px;
 `;
 
 export const Search = styled.View`

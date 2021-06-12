@@ -9,6 +9,6 @@ export const Wrapper = styled.View`
 `;
 
 export const Title = styled.Text`
-  font-size: 25px;
   margin-bottom: 20px;
+  font-size: 25px;
 `;

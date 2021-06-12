@@ -11,8 +11,8 @@ export const HeaderTitle = styled.Text`
 `;
 
 export const BorderLine = styled.View`
-  border-bottom-width: 1px;
   margin: 20px 0;
+  border-bottom-width: 1px;
 `;
 
 export const ButtonContainer = styled.View`
@@ -22,10 +22,10 @@ export const ButtonContainer = styled.View`
 `;
 
 export const Button = styled.TouchableOpacity`
-  background-color: #5e5e5e;
-  border-radius: 5px;
   margin-right: 20px;
   padding: 10px 18px;
+  border-radius: 5px;
+  background-color: #5e5e5e;
 `;
 
 export const ButtonText = styled.Text`

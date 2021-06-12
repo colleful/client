@@ -3,15 +3,14 @@ import styled from '@emotion/native';
 
 export const BorderLine = styled.View`
   width: 100%;
-  border-bottom-width: 1px;
-  border-bottom-color: #cccccc;
+  border: 0.5px solid #cccccc;
 `;
 
 export const Button = styled.TouchableOpacity`
   flex: 1;
-  width: 100%;
   justify-content: center;
   align-items: center;
+  width: 100%;
 `;
 
 export const ButtonText = styled.Text`
@@ -20,11 +19,10 @@ export const ButtonText = styled.Text`
 `;
 
 export const ButtonContainer = styled.View`
-  height: ${(props) => (props.h100 ? '100px' : '50px')};
   justify-content: center;
   align-items: center;
-  border-bottom-width: 0.5px;
-  border-color: gray;
+  height: ${(props) => (props.h100 ? '100px' : '50px')};
+  border: 0.25px solid gray;
   background-color: #fff;
 `;
 

@@ -16,7 +16,7 @@ export const BorderLine = styled.View`
 `;
 
 export const StyledGravatar = styled(Gravatar)`
-border-radius: 10px;
-width: 110px;
-height: 110px;
+  width: 110px;
+  height: 110px;
+  border-radius: 10px;
 `;
