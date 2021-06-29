@@ -35,8 +35,9 @@ const TeamListScreen = ({navigation, teamId, userId}) => {
   // if (!error && !teamInfo.hasOwnProperty('id') && isLoading) {
   //   return <LoadingScreen />;
   // }
-  if (error) console.log({error});
-
+  if (error) {
+    console.log({error});
+  }
   return (
     <S.Wrapper>
       <S.ExplainContainer>

@@ -20,7 +20,7 @@ const InvitationListItemScreen = ({searchUserInfo}) => {
     return () => {
       dispatch({type: INITAILIZE_STATE});
     };
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (inviteTeamDone) {
@@ -42,7 +42,7 @@ const InvitationListItemScreen = ({searchUserInfo}) => {
       ]);
       console.log({currentError});
     }
-  }, [inviteTeamDone, currentError]);
+  }, [inviteTeamDone, currentError, searchUserInfo?.nickname]);
 
   const onInviteTeam = useCallback(() => {
     dispatch({type: INVITE_TEAM_REQUEST, data: {userId: searchUserInfo.id}});

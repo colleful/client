@@ -1,9 +1,8 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
 import {css} from '@emotion/native';
 
-const SplashScreen = ({navigation}) => {
-  const [loading, setLoading] = useState(true);
+const SplashScreen = () => {
   return (
     <View
       style={css`

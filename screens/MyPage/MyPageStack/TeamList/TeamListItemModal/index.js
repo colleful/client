@@ -36,7 +36,7 @@ const TeamListItemModal = ({
     return () => {
       dispatch({type: INITAILIZE_STATE});
     };
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (currentDone) {
@@ -56,7 +56,7 @@ const TeamListItemModal = ({
     }
     if (finishTeamMatchingDone) {
       trigger(`${Config.baseUrl}/api/teams/${teamId}`);
-      Alert.alert('완료', `매칭을 종료했습니다.`, [
+      Alert.alert('완료', '매칭을 종료했습니다.', [
         {
           text: '확인',
         },
@@ -70,7 +70,13 @@ const TeamListItemModal = ({
       ]);
       console.log({currentError});
     }
-  }, [currentDone, finishTeamMatchingDone, currentError, teamId]);
+  }, [
+    changeTeamStatusReadyDone,
+    currentDone,
+    finishTeamMatchingDone,
+    currentError,
+    teamId,
+  ]);
 
   const onChangeTeamStatusToReady = () => {
     // PENDING -> READY

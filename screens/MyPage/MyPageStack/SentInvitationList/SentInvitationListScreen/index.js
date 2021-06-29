@@ -33,8 +33,9 @@ const SentInvitationListScreen = ({teamId}) => {
   if (!error && !sentInvitationList.length && isLoading) {
     return <LoadingScreen />;
   }
-  if (error) console.log({error});
-
+  if (error) {
+    console.log({error});
+  }
   return (
     <L.Wrapper>
       <L.HeaderTitle>보낸 초대목록</L.HeaderTitle>

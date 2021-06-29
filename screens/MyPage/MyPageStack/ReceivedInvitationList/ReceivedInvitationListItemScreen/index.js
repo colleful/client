@@ -35,7 +35,7 @@ const ReceivedInvitationListItemScreen = ({receivedInvitationList}) => {
     return () => {
       dispatch({type: INITAILIZE_STATE});
     };
-  }, [receivedInvitationList.team.leaderId]);
+  }, [dispatch, receivedInvitationList.team.leaderId]);
 
   useEffect(() => {
     if (currentDone) {
@@ -63,7 +63,12 @@ const ReceivedInvitationListItemScreen = ({receivedInvitationList}) => {
       ]);
       console.log({currentError});
     }
-  }, [currentError, currentDone]);
+  }, [
+    acceptInvitationDone,
+    currentError,
+    currentDone,
+    receivedInvitationList.team.teamName,
+  ]);
 
   const onAcceptInvitation = useCallback(() => {
     dispatch({

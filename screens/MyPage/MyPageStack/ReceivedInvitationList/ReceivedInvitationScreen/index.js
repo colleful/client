@@ -35,8 +35,9 @@ const ReceivedInvitationScreen = () => {
   if (!error && !receivedInvitationList.length && isLoading) {
     return <LoadingScreen />;
   }
-  if (error) console.log({error});
-
+  if (error) {
+    console.log({error});
+  }
   return (
     <L.Wrapper>
       <L.HeaderTitle>받은 초대목록</L.HeaderTitle>

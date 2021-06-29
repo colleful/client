@@ -19,11 +19,11 @@ const SentMatchingListItemScreen = ({sentMatchingList}) => {
     return () => {
       dispatch({type: INITAILIZE_STATE});
     };
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (deleteMatchingDone) {
-      Alert.alert('완료', `요청을 취소하였습니다.`, [
+      Alert.alert('완료', '요청을 취소하였습니다.', [
         {
           text: '확인',
           onPress: () => trigger(`${Config.baseUrl}/api/matching/sent`),
@@ -53,7 +53,7 @@ const SentMatchingListItemScreen = ({sentMatchingList}) => {
         {text: '확인', onPress: onDeleteMatching},
       ],
     );
-  }, [sentMatchingList]);
+  }, [sentMatchingList.receivedTeam.teamName, onDeleteMatching]);
 
   return (
     <>

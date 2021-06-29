@@ -36,7 +36,7 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
     return () => {
       dispatch({type: INITAILIZE_STATE});
     };
-  }, [userId, teamInfo.leaderId]);
+  }, [dispatch, userId, teamInfo.leaderId]);
 
   useEffect(() => {
     if (currentDone) {
@@ -63,7 +63,7 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
       ]);
       console.log({currentError});
     }
-  }, [currentDone, currentError]);
+  }, [currentDone, deleteTeamDone, currentError, onToggleModal]);
 
   const fetcher = async (url) => {
     const response = await axios.get(url, {
@@ -75,12 +75,12 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
   };
 
   const {data: teamMember = [], error} = useSWR(
-    // useLayoutEffect를 통해
     teamId === null ? null : `${Config.baseUrl}/api/teams/${teamId}/members`,
     fetcher,
   );
-  if (error) console.log({error});
-
+  if (error) {
+    console.log({error});
+  }
   const onToggleModal = useCallback(() => {
     setModalVisible((prev) => !prev);
   }, []);
@@ -104,20 +104,20 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
       `정말 ${teamInfo.teamName} 팀을 삭제하시겠습니까? ※팀원들도 마찬가지로 삭제됩니다.`,
       [{text: '취소'}, {text: '확인', onPress: onDeleteTeam}],
     );
-  }, [teamInfo.teamName]);
+  }, [teamInfo.teamName, onDeleteTeam]);
 
   const onAskBackExitTeam = useCallback(() => {
     Alert.alert('팀 나가기', `정말 ${teamInfo.teamName} 팀을 나가시겠습니까?`, [
       {text: '취소'},
       {text: '확인', onPress: onExitTeam},
     ]);
-  }, [teamInfo.teamName]);
+  }, [teamInfo.teamName, onExitTeam]);
 
   const goToInvitationScreen = useCallback(() => {
     navigation.navigate('팀초대', {
       teamId: teamInfo.id,
     });
-  }, [teamInfo.id]);
+  }, [teamInfo.id, navigation]);
 
   const teamInfoStatus = useCallback(() => {
     if (teamInfo.status === 'PENDING') {
@@ -131,9 +131,9 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
     }
   }, [teamInfo.status]);
 
-  // if (!error && !teamMember.length) {
-  //   return <LoadingScreen />;
-  // }
+  if (!error && !teamMember.length) {
+    return <LoadingScreen />;
+  }
 
   return (
     <>

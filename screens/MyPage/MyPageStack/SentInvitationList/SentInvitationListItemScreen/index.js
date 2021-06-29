@@ -25,11 +25,11 @@ const SentInvitationListItemScreen = ({sentInvitationList}) => {
     return () => {
       dispatch({type: INITAILIZE_STATE});
     };
-  }, []);
+  }, [dispatch, sentInvitationList.team.leaderId]);
 
   useEffect(() => {
     if (deleteInvitationDone) {
-      Alert.alert('완료', `초대를 취소하였습니다.`, [
+      Alert.alert('완료', '초대를 취소하였습니다.', [
         {
           text: '확인',
           onPress: () => trigger(`${Config.baseUrl}/api/invitations/sent`),
@@ -48,7 +48,7 @@ const SentInvitationListItemScreen = ({sentInvitationList}) => {
 
   const onDeleteInvitation = useCallback(() => {
     dispatch({type: DELETE_INVITATION_REQUEST, data: sentInvitationList.id});
-  }, [dispatch, sentInvitationList]);
+  }, [dispatch, sentInvitationList.id]);
 
   const onPressDeleteInvitation = useCallback(() => {
     Alert.alert(
@@ -59,7 +59,7 @@ const SentInvitationListItemScreen = ({sentInvitationList}) => {
         {text: '확인', onPress: onDeleteInvitation},
       ],
     );
-  }, [sentInvitationList]);
+  }, [sentInvitationList, onDeleteInvitation]);
 
   return (
     <>

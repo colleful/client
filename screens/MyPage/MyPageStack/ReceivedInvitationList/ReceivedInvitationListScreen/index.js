@@ -3,7 +3,10 @@ import ReceivedInvitationListItemScreen from '../ReceivedInvitationListItemScree
 
 const ReceivedInvitationListScreen = ({receivedInvitationList}) => {
   return receivedInvitationList.map((list, index) => (
-    <ReceivedInvitationListItemScreen receivedInvitationList={list} key={index} />
+    <ReceivedInvitationListItemScreen
+      receivedInvitationList={list}
+      key={index}
+    />
   ));
 };
 

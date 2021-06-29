@@ -19,7 +19,7 @@ const AddTeamScreen = ({navigation}) => {
     return () => {
       dispatch({type: INITAILIZE_STATE});
     };
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (createTeamDone) {
@@ -52,7 +52,7 @@ const AddTeamScreen = ({navigation}) => {
       ]);
       console.log({createTeamError});
     }
-  }, [createTeamDone, createTeamError]);
+  }, [createTeamDone, createTeamError, navigation]);
 
   const onCreateTeam = useCallback(() => {
     if (!teamName || !teamName.trim()) {

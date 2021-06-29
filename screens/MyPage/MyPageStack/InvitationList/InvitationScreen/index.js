@@ -24,13 +24,13 @@ const InvitationScreen = () => {
     return () => {
       dispatch({type: INITAILIZE_STATE});
     };
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (searchUserByNicknameDone && !searchUserInfo.length) {
       Alert.alert(
         '검색결과',
-        `해당 키워드를 포함한 사용자를 찾을 수 없습니다.`,
+        '해당 키워드를 포함한 사용자를 찾을 수 없습니다.',
         [
           {
             text: '확인',
@@ -51,7 +51,7 @@ const InvitationScreen = () => {
       );
       console.log({searchUserByNicknameError});
     }
-  }, [searchUserInfo, searchUserByNicknameError]);
+  }, [searchUserInfo, searchUserByNicknameDone, searchUserByNicknameError]);
 
   const onSearchUserByNickname = useCallback(() => {
     dispatch({type: SEARCH_USER_BY_NICKNAME_REQUEST, data: userNickname});

@@ -29,10 +29,10 @@ const TeamInfoModal = ({
   }, [dispatch]);
 
   useEffect(() => {
-    if (sendMatchingDone && matchingData.sentTeam.id === team.id) {
+    if (sendMatchingDone && matchingData?.sentTeam.id === team.id) {
       Alert.alert(
         '완료',
-        `${matchingData.receivedTeam.teamName}팀에게 매칭 요청을 보냈습니다.`,
+        `${matchingData?.receivedTeam.teamName}팀에게 매칭 요청을 보냈습니다.`,
         [
           {
             text: '확인',
@@ -40,7 +40,7 @@ const TeamInfoModal = ({
         ],
       );
     }
-    if (sendMatchingError && matchingData.sentTeam.id === team.id) {
+    if (sendMatchingError) {
       Alert.alert('에러발생', `${sendMatchingError.response.data.message}`, [
         {
           text: '확인',
@@ -52,9 +52,10 @@ const TeamInfoModal = ({
     sendMatchingLoading,
     sendMatchingDone,
     sendMatchingError,
-    matchingData.sentTeam.id,
-    matchingData.receivedTeam.teamName,
     team.id,
+    matchingData,
+    matchingData?.sentTeam.id,
+    matchingData?.receivedTeam.teamName,
   ]);
 
   const onGetSendMatching = useCallback(() => {

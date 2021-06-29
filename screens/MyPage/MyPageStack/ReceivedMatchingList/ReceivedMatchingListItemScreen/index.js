@@ -33,7 +33,7 @@ const ReceivedMatchingListItemScreen = ({receivedMatchingList}) => {
     return () => {
       dispatch({type: INITAILIZE_STATE});
     };
-  }, [receivedMatchingList.sentTeam.leaderId]);
+  }, [dispatch, receivedMatchingList.sentTeam.leaderId]);
 
   useEffect(() => {
     if (currentDone) {
@@ -62,7 +62,12 @@ const ReceivedMatchingListItemScreen = ({receivedMatchingList}) => {
       ]);
       console.log({currentError});
     }
-  }, [currentDone, currentError]);
+  }, [
+    receivedMatchingList.sentTeam.teamName,
+    acceptMatchingDone,
+    currentDone,
+    currentError,
+  ]);
 
   const onAcceptMatching = useCallback(() => {
     dispatch({type: ACCEPT_MATCHING_REQUEST, data: receivedMatchingList.id});

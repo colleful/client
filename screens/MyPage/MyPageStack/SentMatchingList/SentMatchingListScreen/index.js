@@ -31,8 +31,9 @@ const SentMatchingListScreen = ({teamId}) => {
   if (!error && !sentMatchingList.length && isLoading) {
     return <LoadingScreen />;
   }
-  if (error) console.log({error});
-
+  if (error) {
+    console.log({error});
+  }
   return (
     <L.Wrapper>
       <L.HeaderTitle>보낸 매칭요청 목록</L.HeaderTitle>

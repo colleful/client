@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react';
+import React from 'react';
 import {useSelector} from 'react-redux';
 import {
   CardStyleInterpolators,
@@ -7,7 +7,6 @@ import {
 import LoginContainer from '../container/LoginContainer';
 import RegisterContainer from '../container/RegisterContainer';
 import MainNavigator from './MainNavigator';
-import SplashScreen from './SplashScreen';
 
 const SwitchNavigator = () => {
   // if (isLoading) {
@@ -16,7 +15,6 @@ const SwitchNavigator = () => {
   // }
   const SwitchNavStack = createStackNavigator();
   const isLoggedIn = useSelector(({auth}) => auth.isLoggedIn);
-
 
   return (
     <>

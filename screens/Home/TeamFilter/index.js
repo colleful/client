@@ -44,11 +44,11 @@ const ModalFilter = ({
     } else if (selectItem.selectedFilter === 'ALL') {
       setTeam(immutableTeam);
     }
-  }, [selectItem.selectedFilter, immutableTeam]);
+  }, [selectItem.selectedFilter, immutableTeam, setTeam]);
 
   const onToggleModal = useCallback(() => {
     setModalVisible((prev) => !prev);
-  }, []);
+  }, [setModalVisible]);
 
   const onToggleModalAndSetFilter = useCallback(() => {
     onToggleModal();

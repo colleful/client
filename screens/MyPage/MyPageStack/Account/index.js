@@ -44,7 +44,7 @@ const AccountScreen = ({navigation, myInfoData}) => {
     return () => {
       dispatch({type: INITAILIZE_STATE});
     };
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (deleteUserDone) {
@@ -87,9 +87,12 @@ const AccountScreen = ({navigation, myInfoData}) => {
     }
   }, [
     deleteUserDone,
+    passwordForChange,
     changeUserPasswordDone,
     changeUserInfoDone,
     currentError,
+    deleteUserHandler,
+    navigation,
   ]);
 
   const DeleteUser = useCallback(() => {
