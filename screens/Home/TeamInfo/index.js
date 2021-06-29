@@ -30,7 +30,7 @@ const TeamInfo = ({team}) => {
             팀이름 : {team.teamName}
             {'\n'}
             팀인원 : {team.headcount}명{'  '}
-            {team.gender === 'MALE' ? `💪` : `👗`}
+            {team.gender === 'MALE' ? '💪' : '👗'}
             {'\n'}
             <S.UpdatedAtText>{GetTimeFromNow(team.updatedAt)}</S.UpdatedAtText>
           </S.Content>

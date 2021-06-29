@@ -21,11 +21,14 @@ const TeamInfoModalList = ({team}) => {
     fetcher,
   );
 
-  if (!error && !teamMemberInfo) return <LoadingScreen />;
-  if (error) console.log({error});
-
-  return teamMemberInfo?.map((team, index) => (
-    <TeamInfoModalListItem teamMemberInfo={team} key={index} />
+  if (!error && !teamMemberInfo) {
+    return <LoadingScreen />;
+  }
+  if (error) {
+    console.log({error});
+  }
+  return teamMemberInfo?.map((teams, index) => (
+    <TeamInfoModalListItem teamMemberInfo={teams} key={index} />
   ));
 };
 

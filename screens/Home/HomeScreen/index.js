@@ -1,9 +1,8 @@
 import React, {useState, useCallback, useEffect} from 'react';
 import {View, Text, RefreshControl, StyleSheet, Alert} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import ModalFilter from '../ModalFilter/index';
+import TeamFilter from '../TeamFilter/index';
 import TeamInfo from '../TeamInfo/index';
-import LoadingScreen from '../../../components/LoadingScreen';
 import {Config} from '../../../Config';
 import useSWR, {trigger} from 'swr';
 import {useSelector, useDispatch} from 'react-redux';
@@ -11,12 +10,6 @@ import AsyncStorage from '@react-native-community/async-storage';
 import axios from 'axios';
 import * as S from './style';
 import {GET_READY_TEAM_REQUEST} from '../../../reducers/team';
-
-const wait = (timeout) => {
-  return new Promise((resolve) => {
-    setTimeout(resolve, timeout);
-  });
-};
 
 const HomeScreen = ({}) => {
   const [refreshing, setRefreshing] = useState(false);
@@ -26,9 +19,10 @@ const HomeScreen = ({}) => {
   const [keyword, setKeyword] = useState('');
   const [isModalVisible, setModalVisible] = useState(false);
   const [pageIndex, setPageIndex] = useState(0);
+
   const dispatch = useDispatch();
   const {getReadyTeamDone, readyTeamList, getReadyTeamError} = useSelector(
-    ({team}) => team,
+    (state) => state.team,
   );
 
   const fetcher = async (url) => {
@@ -45,17 +39,12 @@ const HomeScreen = ({}) => {
     fetcher,
   );
 
-  // useEffect(() => {
-  //   console.log('team', team);
-  //   setNewTeam(team?.filter((teams) => teams.teamName.indexOf(keyword) > -1));
-  // }, [team, keyword]);
-
   useEffect(() => {
     if (!keyword && !keyword.trim()) {
       return;
     }
     dispatch({type: GET_READY_TEAM_REQUEST, data: keyword});
-  }, [keyword]);
+  }, [dispatch, keyword]);
 
   useEffect(() => {
     if (getReadyTeamDone) {
@@ -69,7 +58,7 @@ const HomeScreen = ({}) => {
       ]);
       console.log({getReadyTeamError});
     }
-  }, [getReadyTeamDone]);
+  }, [getReadyTeamDone, getReadyTeamError, readyTeamList.content]);
 
   useEffect(() => {
     if (!readyTeamData.length) {
@@ -79,19 +68,27 @@ const HomeScreen = ({}) => {
     }
   }, [readyTeamData]);
 
+  const wait = (timeout) => {
+    return new Promise((resolve) => {
+      setTimeout(resolve, timeout);
+    });
+  };
+
   const onRefresh = useCallback(() => {
     setRefreshing((prev) => !prev);
     wait(1000).then(() => {
       setRefreshing((prev) => !prev);
       trigger(`${Config.baseUrl}/api/teams?page=0`);
     });
-  }, [pageIndex]);
+  }, []);
 
   const onToggleModal = useCallback(() => {
     setModalVisible((prev) => !prev);
   }, []);
 
-  if (error) console.log({error});
+  if (error) {
+    console.log({error});
+  }
 
   return (
     <S.Wrapper>
@@ -108,7 +105,7 @@ const HomeScreen = ({}) => {
           <S.Filter>
             <Ionicons name="funnel-outline" size={20} onPress={onToggleModal} />
             {isModalVisible && (
-              <ModalFilter
+              <TeamFilter
                 setTeam={setTeam}
                 isModalVisible={isModalVisible}
                 setModalVisible={setModalVisible}
@@ -118,7 +115,10 @@ const HomeScreen = ({}) => {
           </S.Filter>
         </S.Header>
         <S.Result>
-          <Text>{!keyword && !keyword.trim() ? team?.length : newTeam.length}개의 결과</Text>
+          <Text>
+            {!keyword && !keyword.trim() ? team?.length : newTeam.length}개의
+            결과
+          </Text>
         </S.Result>
       </S.WrapperInner>
 
@@ -129,7 +129,6 @@ const HomeScreen = ({}) => {
           }
         }}
         onEndReachedThreshold={0.1}
-        disableVirtualization={false} //비정상적인 스크롤 동작을 방지
         keyExtractor={(_, index) => index.toString()}
         data={!keyword && !keyword.trim() ? team : newTeam}
         renderItem={({item, index}) => (

@@ -1,8 +1,6 @@
 import React from 'react';
 import {Text, StyleSheet} from 'react-native';
-import {css} from '@emotion/native';
 import FlipCard from 'react-native-flip-card';
-import {Gravatar} from 'react-native-gravatar';
 import * as S from './style';
 
 const TeamInfoModalListItem = ({teamMemberInfo}) => {

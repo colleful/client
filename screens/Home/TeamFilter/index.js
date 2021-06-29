@@ -1,6 +1,6 @@
 import React, {useState, useCallback} from 'react';
 import Modal from 'react-native-modal';
-import ModalFilterPicker from '../ModalFilterPicker/index';
+import TeamFilterPicker from '../TeamFilterPicker/index';
 import * as S from './style';
 
 const ModalFilter = ({
@@ -43,9 +43,8 @@ const ModalFilter = ({
       );
     } else if (selectItem.selectedFilter === 'ALL') {
       setTeam(immutableTeam);
-    } else if (selectItem.selectedFilter === 'MATCHABLE') {
     }
-  }, [selectItem.selectedFilter]);
+  }, [selectItem.selectedFilter, immutableTeam]);
 
   const onToggleModal = useCallback(() => {
     setModalVisible((prev) => !prev);
@@ -64,7 +63,7 @@ const ModalFilter = ({
             <S.HeaderTitle>필터 설정</S.HeaderTitle>
           </S.Header>
           <S.Content>
-            <ModalFilterPicker
+            <TeamFilterPicker
               selectItem={selectItem}
               setSelectItem={setSelectItem}
               filterList={filterList}

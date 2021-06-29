@@ -23,19 +23,22 @@ const TeamInfoModal = ({
   } = useSelector(({matching}) => matching);
 
   useEffect(() => {
-    // console.log(team)
     return () => {
       dispatch({type: INITAILIZE_STATE});
     };
-  }, []);
-  // 같은 자원인 store를 공유하지말고 컴포넌트에서 즉각적으로 해결해야한다
+  }, [dispatch]);
+
   useEffect(() => {
     if (sendMatchingDone && matchingData.sentTeam.id === team.id) {
-      Alert.alert('완료', `${matchingData.receivedTeam.teamName}팀에게 매칭 요청을 보냈습니다.`, [
-        {
-          text: '확인',
-        },
-      ]);
+      Alert.alert(
+        '완료',
+        `${matchingData.receivedTeam.teamName}팀에게 매칭 요청을 보냈습니다.`,
+        [
+          {
+            text: '확인',
+          },
+        ],
+      );
     }
     if (sendMatchingError && matchingData.sentTeam.id === team.id) {
       Alert.alert('에러발생', `${sendMatchingError.response.data.message}`, [
@@ -45,7 +48,14 @@ const TeamInfoModal = ({
       ]);
       console.log({sendMatchingError});
     }
-  }, [sendMatchingLoading, sendMatchingDone, sendMatchingError]);
+  }, [
+    sendMatchingLoading,
+    sendMatchingDone,
+    sendMatchingError,
+    matchingData.sentTeam.id,
+    matchingData.receivedTeam.teamName,
+    team.id,
+  ]);
 
   const onGetSendMatching = useCallback(() => {
     dispatch({type: SEND_MATCHING_REQUEST, data: {teamId: team.id}});

@@ -1,7 +1,15 @@
 import React, {useEffect, useCallback} from 'react';
 import {Alert} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {changeField, initializeForm, login, setLoginState, sendAuthEmailForPasswordChange, changePassword, confirmPasswordAuthEmail} from '../reducers/auth';
+import {
+  changeField,
+  initializeForm,
+  login,
+  setLoginState,
+  sendAuthEmailForPasswordChange,
+  changePassword,
+  confirmPasswordAuthEmail,
+} from '../reducers/auth';
 import LoginScreen from '../screens/auth/LoginScreen';
 import AsyncStorage from '@react-native-community/async-storage';
 // import * as Keychain from 'react-native-keychain'; AsyncStorage은 안전하지않음, keychain 적용해야 안전
@@ -25,81 +33,99 @@ const LoginContainer = ({navigation}) => {
 
   const dispatch = useDispatch();
 
-  const onChangeLoginEmail = useCallback((e) => {
-    const {text} = e.nativeEvent;
-    dispatch(
-      changeField({
-        form: 'login',
-        key: 'email',
-        value: text,
-      }),
-    );
-  },[dispatch]);
+  const onChangeLoginEmail = useCallback(
+    (e) => {
+      const {text} = e.nativeEvent;
+      dispatch(
+        changeField({
+          form: 'login',
+          key: 'email',
+          value: text,
+        }),
+      );
+    },
+    [dispatch],
+  );
 
-  const onChangeLoginPassword = useCallback((e) => {
-    const {text} = e.nativeEvent;
-    dispatch(
-      changeField({
-        form: 'login',
-        key: 'password',
-        value: text,
-      }),
-    );
-  },[dispatch]);
+  const onChangeLoginPassword = useCallback(
+    (e) => {
+      const {text} = e.nativeEvent;
+      dispatch(
+        changeField({
+          form: 'login',
+          key: 'password',
+          value: text,
+        }),
+      );
+    },
+    [dispatch],
+  );
 
-  const onChangeFindEmail = useCallback((e) => {
-    const { text } = e.nativeEvent;
-    dispatch(
-      changeField({
-        form: 'forgetPassword',
-        key: 'email',
-        value: text
-      })
-    );
-  },[dispatch]);
+  const onChangeFindEmail = useCallback(
+    (e) => {
+      const {text} = e.nativeEvent;
+      dispatch(
+        changeField({
+          form: 'forgetPassword',
+          key: 'email',
+          value: text,
+        }),
+      );
+    },
+    [dispatch],
+  );
 
-  const onChangeFindCode = useCallback((e) => {
-    const { text } = e.nativeEvent;
-    dispatch(
-      changeField({
-        form: 'forgetPassword',
-        key: 'code',
-        value: text
-      })
-    );
-  },[dispatch]);
+  const onChangeFindCode = useCallback(
+    (e) => {
+      const {text} = e.nativeEvent;
+      dispatch(
+        changeField({
+          form: 'forgetPassword',
+          key: 'code',
+          value: text,
+        }),
+      );
+    },
+    [dispatch],
+  );
 
-  const onChangeFindPassword = useCallback((e) => {
-    const { text } = e.nativeEvent;
-    dispatch(
-      changeField({
-        form: 'forgetPassword',
-        key: 'password',
-        value: text
-      })
-    );
-  },[dispatch]);
+  const onChangeFindPassword = useCallback(
+    (e) => {
+      const {text} = e.nativeEvent;
+      dispatch(
+        changeField({
+          form: 'forgetPassword',
+          key: 'password',
+          value: text,
+        }),
+      );
+    },
+    [dispatch],
+  );
 
-  const onChangeFindPasswordConfirm = useCallback((e) => {
-    const { text } = e.nativeEvent;
-    dispatch(
-      changeField({
-        form: 'forgetPassword',
-        key: 'passwordConfirm',
-        value: text
-      })
-    );
-  },[dispatch]);
+  const onChangeFindPasswordConfirm = useCallback(
+    (e) => {
+      const {text} = e.nativeEvent;
+      dispatch(
+        changeField({
+          form: 'forgetPassword',
+          key: 'passwordConfirm',
+          value: text,
+        }),
+      );
+    },
+    [dispatch],
+  );
 
   const onSendAuthEmailForPasswordChange = useCallback(() => {
-    const { email } = forgetPassword;
-    dispatch(sendAuthEmailForPasswordChange({ email }));
-  },[dispatch, forgetPassword]);
+    const {email} = forgetPassword;
+    dispatch(sendAuthEmailForPasswordChange({email}));
+  }, [dispatch, forgetPassword]);
 
   const onConfirmAuthEmail = useCallback(() => {
-    const { email, code } = forgetPassword;
-    dispatch(confirmPasswordAuthEmail({ email,code }));
-  },[dispatch, forgetPassword]);
+    const {email, code} = forgetPassword;
+    dispatch(confirmPasswordAuthEmail({email, code}));
+  }, [dispatch, forgetPassword]);
 
   const onSubmitLogin = useCallback(() => {
     const {email, password} = form;
@@ -111,7 +137,7 @@ const LoginContainer = ({navigation}) => {
       ]);
       return;
     }
-    
+
     // 최종 배포할땐 아래 주석 없애기
 
     // if (!email.includes('@jbnu.ac.kr')) {
@@ -120,7 +146,7 @@ const LoginContainer = ({navigation}) => {
     //   ]);
     //   return;
     // }
-    
+
     if (!password || !password.trim()) {
       Alert.alert('로그인 실패', '비밀번호를 입력해주세요', [
         {
@@ -130,11 +156,11 @@ const LoginContainer = ({navigation}) => {
       return;
     }
     dispatch(login({email, password}));
-  },[dispatch, form]);
+  }, [dispatch, form]);
 
   const onSubmitChangePassword = useCallback(() => {
     const {email, password, passwordConfirm} = forgetPassword;
-    if(!password || !password.trim()) {
+    if (!password || !password.trim()) {
       Alert.alert('비밀번호 변경 실패', '비밀번호를 입력해주세요', [
         {
           text: '확인',
@@ -143,19 +169,31 @@ const LoginContainer = ({navigation}) => {
       return;
     }
     if (password !== passwordConfirm) {
-      Alert.alert('비밀번호 변경 실패', '비밀번호가 일치하지 않습니다. 다시 입력해주세요.', [
-        { 
-          text: '확인', 
-        },
-      ])
-      dispatch(changeField({ form: 'forgetPassword', key: 'password', value: '' }));
-      dispatch(changeField({ form: 'forgetPassword', key: 'passwordConfirm', value: '' }));
+      Alert.alert(
+        '비밀번호 변경 실패',
+        '비밀번호가 일치하지 않습니다. 다시 입력해주세요.',
+        [
+          {
+            text: '확인',
+          },
+        ],
+      );
+      dispatch(
+        changeField({form: 'forgetPassword', key: 'password', value: ''}),
+      );
+      dispatch(
+        changeField({
+          form: 'forgetPassword',
+          key: 'passwordConfirm',
+          value: '',
+        }),
+      );
       return;
     }
     dispatch(changePassword({email, password}));
     dispatch(initializeForm('forgetPassword'));
-    dispatch(initializeForm('passwordConfirmEmail'))
-  },[dispatch, forgetPassword]);
+    dispatch(initializeForm('passwordConfirmEmail'));
+  }, [dispatch, forgetPassword]);
 
   const storeToken = async (value) => {
     try {
@@ -184,8 +222,8 @@ const LoginContainer = ({navigation}) => {
       console.log({authError});
       return;
     }
-    if(auth){
-      if (auth.hasOwnProperty('authorization')) { 
+    if (auth) {
+      if (auth.hasOwnProperty('authorization')) {
         storeToken(auth.authorization); // auth === response.data
         storePassword(form.password);
         console.log(form.password);
@@ -195,60 +233,94 @@ const LoginContainer = ({navigation}) => {
         console.log('로그인 성공');
       }
     }
-    if(passwordEmailAuthError) {
-      Alert.alert('이메일 인증 보내기 실패',`${passwordEmailAuthError.message}`, [
-        { 
-          text: '확인',
-        },
-      ]);
+    if (passwordEmailAuthError) {
+      Alert.alert(
+        '이메일 인증 보내기 실패',
+        `${passwordEmailAuthError.message}`,
+        [
+          {
+            text: '확인',
+          },
+        ],
+      );
       console.log({passwordEmailAuthError});
       return;
     }
-    if(passwordEmailAuth === '') {
-      Alert.alert('이메일 인증 보내기 성공', '인증번호를 전송 했습니다. 메일함을 확인하고 인증번호를 입력해주세요', [
-        { 
-          text: '확인',
-        },
-      ])
+    if (passwordEmailAuth === '') {
+      Alert.alert(
+        '이메일 인증 보내기 성공',
+        '인증번호를 전송 했습니다. 메일함을 확인하고 인증번호를 입력해주세요',
+        [
+          {
+            text: '확인',
+          },
+        ],
+      );
       dispatch(initializeForm('passwordEmailAuth'));
       return;
     }
-    if(passwordConfirmEmailError) {
-      Alert.alert('이메일 인증 실패', `${passwordConfirmEmailError.response.data.message}`, [
-        { 
-          text: '확인',
-        },
-      ])
+    if (passwordConfirmEmailError) {
+      Alert.alert(
+        '이메일 인증 실패',
+        `${passwordConfirmEmailError.response.data.message}`,
+        [
+          {
+            text: '확인',
+          },
+        ],
+      );
       console.log({passwordConfirmEmailError});
       return;
     }
-    if(passwordConfirmEmail === '') {
-      Alert.alert('이메일 인증 성공', '이메일 인증에 성공했습니다. 변경할 비밀번호를 입력해주세요', [
-        { 
-          text: '확인',
-        },
-      ])
+    if (passwordConfirmEmail === '') {
+      Alert.alert(
+        '이메일 인증 성공',
+        '이메일 인증에 성공했습니다. 변경할 비밀번호를 입력해주세요',
+        [
+          {
+            text: '확인',
+          },
+        ],
+      );
       return;
     }
-    if(passwordChangeError) {
-      Alert.alert('비밀번호 변경 실패', `${passwordChangeError.response.data.message}`, [
-        { 
-          text: '확인',
-        },
-      ]);
+    if (passwordChangeError) {
+      Alert.alert(
+        '비밀번호 변경 실패',
+        `${passwordChangeError.response.data.message}`,
+        [
+          {
+            text: '확인',
+          },
+        ],
+      );
       console.log({passwordChangeError});
       return;
     }
-    
-    if(passwordChange === '') {
-      Alert.alert('비밀번호 변경 성공', '비밀번호가 정상적으로 변경되었습니다', [
-        { 
-          text: '확인',
-        },
-      ])
-    }
 
-  }, [auth, authError, passwordConfirmEmail, passwordConfirmEmailError, passwordEmailAuth, passwordEmailAuthError, passwordChange, passwordChangeError, dispatch]);
+    if (passwordChange === '') {
+      Alert.alert(
+        '비밀번호 변경 성공',
+        '비밀번호가 정상적으로 변경되었습니다',
+        [
+          {
+            text: '확인',
+          },
+        ],
+      );
+    }
+  }, [
+    auth,
+    authError,
+    form.password,
+    passwordConfirmEmail,
+    passwordConfirmEmailError,
+    passwordEmailAuth,
+    passwordEmailAuthError,
+    passwordChange,
+    passwordChangeError,
+    dispatch,
+  ]);
 
   return (
     <LoginScreen
