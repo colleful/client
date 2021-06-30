@@ -1,7 +1,7 @@
 import React, {useCallback} from 'react';
 import {Text} from 'react-native';
 import Modal from 'react-native-modal';
-import {useSelector, useDispatch} from 'react-redux';
+import {useSelector, useDispatch, shallowEqual} from 'react-redux';
 import {initializeForm} from '../../../reducers/auth';
 import LoadingScreen from '../../../components/LoadingScreen';
 import * as S from './style';
@@ -28,7 +28,7 @@ const FindPasswordModal = ({
 
   const toggleModal = useCallback(() => {
     setModalVisible((prev) => !prev);
-  }, []);
+  }, [setModalVisible]);
 
   const exitChangePasswordHandler = useCallback(() => {
     toggleModal();

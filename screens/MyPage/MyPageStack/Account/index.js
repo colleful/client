@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {Alert} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch, useSelector, shallowEqual} from 'react-redux';
 import {setLoginState} from '../../../../reducers/auth';
 import AsyncStorage from '@react-native-community/async-storage';
 import {trigger} from 'swr';
@@ -36,7 +36,21 @@ const AccountScreen = ({navigation, myInfoData}) => {
     changeUserPasswordLoading,
     changeUserPasswordDone,
     changeUserPasswordError,
-  } = useSelector(({user}) => user);
+  } = useSelector(
+    (state) => ({
+      changeUserInfoLoading: state.user.changeUserInfoLoading,
+      changeUserInfoDone: state.user.changeUserInfoDone,
+      changeUserInfoError: state.user.changeUserInfoError,
+      deleteUserLoading: state.user.deleteUserLoading,
+      deleteUserDone: state.user.deleteUserDone,
+      deleteUserError: state.user.deleteUserError,
+      changeUserPasswordLoading: state.user.changeUserPasswordLoading,
+      changeUserPasswordDone: state.user.changeUserPasswordDone,
+      changeUserPasswordError: state.user.changeUserPasswordError,
+    }),
+    shallowEqual,
+  );
+
   const currentError =
     changeUserInfoError || deleteUserError || changeUserPasswordError;
 

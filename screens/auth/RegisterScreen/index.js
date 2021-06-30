@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useCallback, useMemo, useRef} from 'react';
 import {Alert} from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
+import {useSelector, useDispatch, shallowEqual} from 'react-redux';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Picker} from '@react-native-community/picker';
 import {useForm, Controller} from 'react-hook-form';
@@ -36,10 +36,13 @@ const RegisterScreen = ({
     authLoading,
     emailAuthLoading,
     confirmEmailLoading,
-  } = useSelector(({auth}) => ({
-    form: auth.register,
-    ...auth,
-  }));
+  } = useSelector(
+    ({auth}) => ({
+      form: auth.register,
+      ...auth,
+    }),
+    shallowEqual,
+  );
 
   const {
     departmentData,

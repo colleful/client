@@ -32,7 +32,7 @@ const LoginScreen = ({
       dispatch(initializeForm('passwordChange'));
       toggleModal();
     }
-  }, [passwordChange]);
+  }, [dispatch, passwordChange, toggleModal]);
 
   const visibleText = useCallback(() => {
     setPasswordVisible((prev) => !prev);
@@ -49,7 +49,7 @@ const LoginScreen = ({
 
   const goToRegisterScreenHandler = useCallback(() => {
     navigation.navigate('RegisterContainer');
-  }, []);
+  }, [navigation]);
 
   const {control, handleSubmit, trigger, watch, errors} = useForm({
     mode: 'onChange',

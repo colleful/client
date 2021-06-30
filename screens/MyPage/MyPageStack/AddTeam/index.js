@@ -2,7 +2,7 @@ import React, {useState, useEffect, useCallback} from 'react';
 import {Alert} from 'react-native';
 import {trigger} from 'swr';
 import {Config} from '../../../../Config';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch, useSelector, shallowEqual} from 'react-redux';
 import {CREATE_TEAM_REQUEST, INITAILIZE_STATE} from '../../../../reducers/team';
 import LoadingScreen from '../../../../components/LoadingScreen';
 import * as P from '../../../../assets/css/common';
@@ -12,7 +12,12 @@ const AddTeamScreen = ({navigation}) => {
   const dispatch = useDispatch();
   const [teamName, setTeamName] = useState('');
   const {createTeamLoading, createTeamDone, createTeamError} = useSelector(
-    ({team}) => team,
+    (state) => ({
+      createTeamLoading: state.team.createTeamLoading,
+      createTeamDone: state.team.createTeamDone,
+      createTeamError: state.team.createTeamError,
+    }),
+    shallowEqual,
   );
 
   useEffect(() => {

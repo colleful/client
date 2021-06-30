@@ -1,6 +1,6 @@
 import React, {useEffect, useCallback} from 'react';
 import {Alert} from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
+import {useSelector, useDispatch, shallowEqual} from 'react-redux';
 import {
   changeField,
   initializeForm,
@@ -20,10 +20,13 @@ const RegisterContainer = ({navigation}) => {
     emailAuthError,
     confirmEmail,
     confirmEmailError,
-  } = useSelector(({auth}) => ({
-    form: auth.register,
-    ...auth,
-  }));
+  } = useSelector(
+    ({auth}) => ({
+      form: auth.register,
+      ...auth,
+    }),
+    shallowEqual,
+  );
 
   const onCreateAddress = useCallback(
     (text) => {
