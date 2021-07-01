@@ -2,7 +2,7 @@ import React, {useEffect, useCallback} from 'react';
 import {Alert} from 'react-native';
 import {Config} from '../../../../../Config';
 import {trigger} from 'swr';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch, useSelector, shallowEqual} from 'react-redux';
 import {
   DELETE_MATCHING_REQUEST,
   INITAILIZE_STATE,
@@ -12,8 +12,16 @@ import * as L from '../../../../../assets/css/InvitationMatchingListLayout';
 const SentMatchingListItemScreen = ({sentMatchingList}) => {
   const dispatch = useDispatch();
   const {deleteMatchingDone, deleteMatchingError} = useSelector(
-    ({matching}) => matching,
+    ({matching}) => ({
+      deleteMatchingDone: matching.deleteMatchingDone,
+      deleteMatchingError: matching.deleteMatchingError,
+    }),
+    shallowEqual,
   );
+  const {
+    receivedTeam: {teamName: receivedTeamName},
+    sentTeam: {teamName: sendTeamName},
+  } = sentMatchingList;
 
   useEffect(() => {
     return () => {
@@ -47,20 +55,20 @@ const SentMatchingListItemScreen = ({sentMatchingList}) => {
   const onPressDeleteMatching = useCallback(() => {
     Alert.alert(
       '경고',
-      `정말 ${sentMatchingList.receivedTeam.teamName}팀에게 보낸 요청을 취소하시겠습니까?`,
+      `정말 ${receivedTeamName}팀에게 보낸 요청을 취소하시겠습니까?`,
       [
         {text: '취소', onPress: () => console.log('취소')},
         {text: '확인', onPress: onDeleteMatching},
       ],
     );
-  }, [sentMatchingList.receivedTeam.teamName, onDeleteMatching]);
+  }, [receivedTeamName, onDeleteMatching]);
 
   return (
     <>
       <L.Content>
-        보낸 팀 : {sentMatchingList.sentTeam.teamName}
+        보낸 팀 : {sendTeamName}
         {'\n'}
-        받는 팀 : {sentMatchingList.receivedTeam.teamName}
+        받는 팀 : {receivedTeamName}
       </L.Content>
       <L.ButtonContainer>
         <L.Button onPress={onPressDeleteMatching}>

@@ -7,6 +7,7 @@ import TeamInfoModalListItem from '../TeamInfoModalListItem/index';
 import LoadingScreen from '../../../components/LoadingScreen';
 
 const TeamInfoModalList = ({team}) => {
+  const {id} = team;
   const fetcher = async (url) => {
     const response = await axios.get(url, {
       headers: {
@@ -17,7 +18,7 @@ const TeamInfoModalList = ({team}) => {
   };
 
   const {data: teamMemberInfo, error} = useSWR(
-    `${Config.baseUrl}/api/teams/${team.id}/members`,
+    `${Config.baseUrl}/api/teams/${id}/members`,
     fetcher,
   );
 

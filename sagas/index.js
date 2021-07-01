@@ -1,5 +1,5 @@
 import {all, fork} from 'redux-saga/effects';
-import authSaga from './auth';
+import authSaga from './authentication';
 import userSaga from './user';
 import inviteSaga from './invite';
 import teamSaga from './team';

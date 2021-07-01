@@ -1,6 +1,6 @@
 import React, {useEffect, useCallback} from 'react';
 import {Alert} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch, useSelector, shallowEqual} from 'react-redux';
 import {
   INITAILIZE_STATE,
   INVITE_TEAM_REQUEST,
@@ -13,7 +13,15 @@ const InvitationListItemScreen = ({searchUserInfo}) => {
     searchUserByNicknameError,
     inviteTeamDone,
     inviteTeamError,
-  } = useSelector(({invite}) => invite);
+  } = useSelector(
+    (state) => ({
+      searchUserByNicknameError: state.invite.searchUserByNicknameError,
+      inviteTeamDone: state.invite.inviteTeamDone,
+      inviteTeamError: state.invite.inviteTeamError,
+    }),
+    shallowEqual,
+  );
+  const {nickname, id, age, gender} = searchUserInfo;
   const currentError = searchUserByNicknameError || inviteTeamError;
 
   useEffect(() => {
@@ -24,15 +32,11 @@ const InvitationListItemScreen = ({searchUserInfo}) => {
 
   useEffect(() => {
     if (inviteTeamDone) {
-      Alert.alert(
-        '완료',
-        `${searchUserInfo?.nickname}님께 팀 초대 메세지를 보냈습니다`,
-        [
-          {
-            text: '확인',
-          },
-        ],
-      );
+      Alert.alert('완료', `${nickname}님께 팀 초대 메세지를 보냈습니다`, [
+        {
+          text: '확인',
+        },
+      ]);
     }
     if (currentError) {
       Alert.alert('에러', `${currentError.response.data.message}`, [
@@ -42,18 +46,18 @@ const InvitationListItemScreen = ({searchUserInfo}) => {
       ]);
       console.log({currentError});
     }
-  }, [inviteTeamDone, currentError, searchUserInfo?.nickname]);
+  }, [inviteTeamDone, currentError, nickname]);
 
   const onInviteTeam = useCallback(() => {
-    dispatch({type: INVITE_TEAM_REQUEST, data: {userId: searchUserInfo.id}});
-  }, [dispatch, searchUserInfo.id]);
+    dispatch({type: INVITE_TEAM_REQUEST, data: {userId: id}});
+  }, [dispatch, id]);
 
   return (
     <S.Wrapper>
       <S.Content>
-        {searchUserInfo?.nickname} {searchUserInfo?.age}
+        {nickname} {age}
         {' / '}
-        {searchUserInfo?.gender === 'MALE' ? '남' : '여'}
+        {gender === 'MALE' ? '남' : '여'}
       </S.Content>
       <S.Button onPress={onInviteTeam}>
         <S.ButtonText>초대</S.ButtonText>

@@ -2,7 +2,7 @@ import React, {useEffect, useCallback} from 'react';
 import {Alert} from 'react-native';
 import {trigger} from 'swr';
 import {Config} from '../../../../../Config';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch, useSelector, shallowEqual} from 'react-redux';
 import {
   ACCEPT_INVITATION_REQUEST,
   REFUSE_INVITATION_REQUEST,
@@ -15,33 +15,55 @@ import * as L from '../../../../../assets/css/InvitationMatchingListLayout';
 
 const ReceivedInvitationListItemScreen = ({receivedInvitationList}) => {
   const dispatch = useDispatch();
-  const {userInfo} = useSelector(({user}) => user);
+
+  const {userInfo, leaderName, age, department} = useSelector(
+    ({user}) => ({
+      userInfo: user.userInfo,
+      leaderName: user.userInfo.nickname,
+      age: user.userInfo.age,
+      department: user.userInfo.department,
+    }),
+    shallowEqual,
+  );
   const {
     acceptInvitationDone,
     refuseInvitationDone,
     acceptInvitationError,
     refuseInvitationError,
     loadUserError,
-  } = useSelector(({invite}) => invite);
+  } = useSelector(
+    ({invite}) => ({
+      acceptInvitationDone: invite.acceptInvitationDone,
+      refuseInvitationDone: invite.refuseInvitationDone,
+      acceptInvitationError: invite.acceptInvitationError,
+      refuseInvitationError: invite.refuseInvitationError,
+      loadUserError: invite.loadUserError,
+    }),
+    shallowEqual,
+  );
   const currentError =
     loadUserError || acceptInvitationError || refuseInvitationError;
   const currentDone = acceptInvitationDone || refuseInvitationDone;
+  const {
+    team: {leaderId, teamName},
+    id: receivedInvitationId,
+  } = receivedInvitationList;
 
   useEffect(() => {
     dispatch({
       type: LOAD_USER_REQUEST,
-      data: receivedInvitationList.team.leaderId,
+      data: leaderId,
     });
     return () => {
       dispatch({type: INITAILIZE_STATE});
     };
-  }, [dispatch, receivedInvitationList.team.leaderId]);
+  }, [dispatch, leaderId]);
 
   useEffect(() => {
     if (currentDone) {
       Alert.alert(
         '완료',
-        `${receivedInvitationList.team.teamName}팀 초대를 ${
+        `${teamName}팀 초대를 ${
           acceptInvitationDone ? '수락' : '거절'
         }했습니다.`,
         [
@@ -63,36 +85,30 @@ const ReceivedInvitationListItemScreen = ({receivedInvitationList}) => {
       ]);
       console.log({currentError});
     }
-  }, [
-    acceptInvitationDone,
-    currentError,
-    currentDone,
-    receivedInvitationList.team.teamName,
-  ]);
+  }, [acceptInvitationDone, currentError, currentDone, teamName]);
 
   const onAcceptInvitation = useCallback(() => {
     dispatch({
       type: ACCEPT_INVITATION_REQUEST,
-      data: receivedInvitationList.id,
+      data: receivedInvitationId,
     });
-  }, [dispatch, receivedInvitationList.id]);
+  }, [dispatch, receivedInvitationId]);
 
   const onRefuseInvitation = useCallback(() => {
     dispatch({
       type: REFUSE_INVITATION_REQUEST,
-      data: receivedInvitationList.id,
+      data: receivedInvitationId,
     });
-  }, [dispatch, receivedInvitationList.id]);
+  }, [dispatch, receivedInvitationId]);
 
   return (
     <>
       {userInfo && (
         <L.Content>
-          팀명 : {receivedInvitationList.team.teamName} {'\n'}리더 :{' '}
-          {userInfo.nickname} {'( '}
-          {userInfo.age}
+          팀명 : {teamName} {'\n'}리더 : {leaderName} {'( '}
+          {age}
           {', '}
-          {userInfo.department}
+          {department}
           {' )'}
         </L.Content>
       )}

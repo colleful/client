@@ -37,9 +37,9 @@ const RegisterScreen = ({
     emailAuthLoading,
     confirmEmailLoading,
   } = useSelector(
-    ({auth}) => ({
-      form: auth.register,
-      ...auth,
+    ({authentication}) => ({
+      form: authentication.register,
+      ...authentication,
     }),
     shallowEqual,
   );
@@ -51,9 +51,18 @@ const RegisterScreen = ({
     getDepartmentError,
   } = useSelector(({department}) => department);
 
+  const {
+    email,
+    code,
+    password,
+    passwordConfirm,
+    nickname,
+    selfIntroduction,
+  } = form;
+
   useEffect(() => {
     dispatch({type: GET_DEPARTMENT_REQUEST});
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (getDepartmentError) {
@@ -100,8 +109,8 @@ const RegisterScreen = ({
   });
   const onSubmit = (data) => console.log(data);
 
-  const password = useRef();
-  password.current = watch('password');
+  const passwordRef = useRef();
+  passwordRef.current = watch('password');
 
   /**
    * 리렌더링이 발생하는 곳은 picker, 이유는 onValueChange에서 함수를 계속 재생성해서 리렌더링이 발생함
@@ -121,7 +130,7 @@ const RegisterScreen = ({
               name="email"
               onBlur={onBlur}
               onChangeText={(value) => onChange(value)}
-              value={(form.email, value)}
+              value={(email, value)}
               onChange={onChangeEmail}
               onEndEditing={addToBehindText}
             />
@@ -151,7 +160,7 @@ const RegisterScreen = ({
               name="emailAuth"
               onBlur={onBlur}
               onChangeText={(value) => onChange(value)}
-              value={(form.code, value)}
+              value={(code, value)}
               onChange={onChangeCode}
             />
           )}
@@ -181,7 +190,7 @@ const RegisterScreen = ({
                 name="password"
                 onBlur={onBlur}
                 onChangeText={(value) => onChange(value)}
-                value={(form.password, value)}
+                value={(password, value)}
                 secureTextEntry={visible}
                 onChange={onChangePassword}
               />
@@ -213,7 +222,7 @@ const RegisterScreen = ({
                 name="passwordConfirm"
                 onBlur={onBlur}
                 onChangeText={(value) => onChange(value)}
-                value={(form.passwordConfirm, value)}
+                value={(passwordConfirm, value)}
                 secureTextEntry={visible}
                 onChange={onChangePasswordConfirm}
               />
@@ -242,7 +251,7 @@ const RegisterScreen = ({
             <P.Input
               onBlur={onBlur}
               onChangeText={(value) => onChange(value)}
-              value={(form.nickname, value)}
+              value={(nickname, value)}
               onChange={onChangeNickname}
             />
           )}
@@ -351,7 +360,7 @@ const RegisterScreen = ({
               name="selfIntroduction"
               onBlur={onBlur}
               onChangeText={(value) => onChange(value)}
-              value={(form.selfIntroduction, value)}
+              value={(selfIntroduction, value)}
               onChange={onChangeSelfIntroduction}
               textAlignVertical={'top'}
               multiline

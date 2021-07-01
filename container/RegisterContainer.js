@@ -7,7 +7,7 @@ import {
   register,
   sendAuthEmail,
   confirmAuthEmail,
-} from '../reducers/auth';
+} from '../reducers/authentication';
 import RegisterScreen from '../screens/auth/RegisterScreen/index';
 
 const RegisterContainer = ({navigation}) => {
@@ -21,9 +21,9 @@ const RegisterContainer = ({navigation}) => {
     confirmEmail,
     confirmEmailError,
   } = useSelector(
-    ({auth}) => ({
-      form: auth.register,
-      ...auth,
+    ({authentication}) => ({
+      form: authentication.register,
+      ...authentication,
     }),
     shallowEqual,
   );

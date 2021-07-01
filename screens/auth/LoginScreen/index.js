@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {useSelector, useDispatch} from 'react-redux';
-import {initializeForm} from '../../../reducers/auth';
+import {useSelector, useDispatch, shallowEqual} from 'react-redux';
+import {initializeForm} from '../../../reducers/authentication';
 import {useForm, Controller} from 'react-hook-form';
 import LoadingScreen from '../../../components/LoadingScreen';
 import FindPasswordModal from '../FindPasswordModal/index';
@@ -23,8 +23,15 @@ const LoginScreen = ({
 }) => {
   const [isPasswordVisible, setPasswordVisible] = useState(true);
   const [isModalVisible, setModalVisible] = useState(false);
-  const {email, password} = useSelector((state) => state.auth.login);
-  const {authLoading, passwordChange} = useSelector((state) => state.auth);
+  const {email, password, authLoading, passwordChange} = useSelector(
+    ({authentication}) => ({
+      email: authentication.login.email,
+      password: authentication.login.password,
+      authLoading: authentication.authLoading,
+      passwordChange: authentication.passwordChange,
+    }),
+    shallowEqual,
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {

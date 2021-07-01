@@ -2,7 +2,7 @@ import React, {useEffect, useCallback} from 'react';
 import {Alert} from 'react-native';
 import {Config} from '../../../../../Config';
 import {trigger} from 'swr';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch, useSelector, shallowEqual} from 'react-redux';
 import {
   ACCEPT_MATCHING_REQUEST,
   REFUSE_MATCHING_REQUEST,
@@ -15,31 +15,51 @@ import * as L from '../../../../../assets/css/InvitationMatchingListLayout';
 
 const ReceivedMatchingListItemScreen = ({receivedMatchingList}) => {
   const dispatch = useDispatch();
-  const {userInfo} = useSelector(({user}) => user);
+  const {userInfo, nickname, age, department} = useSelector(
+    ({user}) => ({
+      userInfo: user.userInfo,
+      nickname: user.userInfo.nickname,
+      age: user.userInfo.age,
+      department: user.userInfo.department,
+    }),
+    shallowEqual,
+  );
   const {
     acceptMatchingDone,
     acceptMatchingError,
     refuseMatchingDone,
     refuseMatchingError,
-  } = useSelector(({matching}) => matching);
+  } = useSelector(
+    ({matching}) => ({
+      acceptMatchingDone: matching.acceptMatchingDone,
+      acceptMatchingError: matching.acceptMatchingError,
+      refuseMatchingDone: matching.refuseMatchingDone,
+      refuseMatchingError: matching.refuseMatchingError,
+    }),
+    shallowEqual,
+  );
+  const {
+    sentTeam: {leaderId, teamName},
+    id: receivedMatchingId,
+  } = receivedMatchingList;
   const currentError = acceptMatchingError || refuseMatchingError;
   const currentDone = acceptMatchingDone || refuseMatchingDone;
 
   useEffect(() => {
     dispatch({
       type: LOAD_USER_REQUEST,
-      data: receivedMatchingList.sentTeam.leaderId,
+      data: leaderId,
     });
     return () => {
       dispatch({type: INITAILIZE_STATE});
     };
-  }, [dispatch, receivedMatchingList.sentTeam.leaderId]);
+  }, [dispatch, leaderId]);
 
   useEffect(() => {
     if (currentDone) {
       Alert.alert(
         '완료',
-        `${receivedMatchingList.sentTeam.teamName}팀 매칭 요청을 ${
+        `${teamName}팀 매칭 요청을 ${
           acceptMatchingDone ? '수락' : '거절'
         }했습니다.`,
         [
@@ -62,30 +82,24 @@ const ReceivedMatchingListItemScreen = ({receivedMatchingList}) => {
       ]);
       console.log({currentError});
     }
-  }, [
-    receivedMatchingList.sentTeam.teamName,
-    acceptMatchingDone,
-    currentDone,
-    currentError,
-  ]);
+  }, [teamName, acceptMatchingDone, currentDone, currentError]);
 
   const onAcceptMatching = useCallback(() => {
-    dispatch({type: ACCEPT_MATCHING_REQUEST, data: receivedMatchingList.id});
-  }, [dispatch, receivedMatchingList]);
+    dispatch({type: ACCEPT_MATCHING_REQUEST, data: receivedMatchingId});
+  }, [dispatch, receivedMatchingId]);
 
   const onRefuseMatching = useCallback(() => {
-    dispatch({type: REFUSE_MATCHING_REQUEST, data: receivedMatchingList.id});
-  }, [dispatch, receivedMatchingList]);
+    dispatch({type: REFUSE_MATCHING_REQUEST, data: receivedMatchingId});
+  }, [dispatch, receivedMatchingId]);
 
   return (
     <>
       {userInfo && (
         <L.Content>
-          팀명 : {receivedMatchingList.sentTeam.teamName} {'\n'}리더 :{' '}
-          {userInfo.nickname} {'( '}
-          {userInfo.age}
+          팀명 : {teamName} {'\n'}리더 : {nickname} {'( '}
+          {age}
           {', '}
-          {userInfo.department}
+          {department}
           {' )'}
         </L.Content>
       )}

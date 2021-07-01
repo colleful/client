@@ -9,7 +9,7 @@ import {
   sendAuthEmailForPasswordChange,
   changePassword,
   confirmPasswordAuthEmail,
-} from '../reducers/auth';
+} from '../reducers/authentication';
 import LoginScreen from '../screens/auth/LoginScreen';
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -26,9 +26,9 @@ const LoginContainer = ({navigation}) => {
     passwordChange,
     passwordChangeError,
   } = useSelector(
-    ({auth}) => ({
-      form: auth.login,
-      ...auth,
+    ({authentication}) => ({
+      form: authentication.login,
+      ...authentication,
     }),
     shallowEqual, // 객체 안의 가장 겉에 있는 값들을 모두 비교한다. 이전 값과 다음 값을 비교하여 true가 나오면 리렌더링을 하지 않고 false가 나오면 리렌더링
   );
@@ -213,6 +213,7 @@ const LoginContainer = ({navigation}) => {
   };
 
   useEffect(() => {
+    const {password} = form;
     if (authError) {
       Alert.alert('로그인 오류', `${authError.response.data.message}`, [
         {
@@ -226,8 +227,7 @@ const LoginContainer = ({navigation}) => {
     if (auth) {
       if (auth.hasOwnProperty('authorization')) {
         storeToken(auth.authorization); // auth === response.data
-        storePassword(form.password);
-        console.log(form.password);
+        storePassword(password);
         dispatch(setLoginState(true));
         dispatch(initializeForm('auth'));
         dispatch(initializeForm('login'));
@@ -313,7 +313,7 @@ const LoginContainer = ({navigation}) => {
   }, [
     auth,
     authError,
-    form.password,
+    form,
     passwordConfirmEmail,
     passwordConfirmEmailError,
     passwordEmailAuth,

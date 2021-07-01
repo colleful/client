@@ -14,7 +14,9 @@ const SwitchNavigator = () => {
   //   return <SplashScreen />;
   // }
   const SwitchNavStack = createStackNavigator();
-  const isLoggedIn = useSelector(({auth}) => auth.isLoggedIn);
+  const isLoggedIn = useSelector(
+    ({authentication}) => authentication.isLoggedIn,
+  );
 
   return (
     <>

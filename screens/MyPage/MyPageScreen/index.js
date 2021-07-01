@@ -5,12 +5,13 @@ import MyPageInfo from '../MyPageInfo/index';
 import * as S from './style';
 
 const MyPageScreen = ({navigation, myInfoData}) => {
+  const {email} = myInfoData;
   return (
     <S.Wrapper>
       <S.WrapperInner>
         <S.StyledGravatar
           options={{
-            email: myInfoData.email,
+            email: email,
             parameters: {s: '50', d: 'retro'},
             secure: true,
           }}

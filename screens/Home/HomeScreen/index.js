@@ -5,7 +5,7 @@ import TeamFilter from '../TeamFilter/index';
 import TeamInfo from '../TeamInfo/index';
 import {Config} from '../../../Config';
 import useSWR, {trigger} from 'swr';
-import {useSelector, useDispatch} from 'react-redux';
+import {useSelector, useDispatch, shallowEqual} from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
 import axios from 'axios';
 import * as S from './style';
@@ -22,7 +22,12 @@ const HomeScreen = ({}) => {
 
   const dispatch = useDispatch();
   const {getReadyTeamDone, readyTeamList, getReadyTeamError} = useSelector(
-    (state) => state.team,
+    ({team}) => ({
+      getReadyTeamDone: team.getReadyTeamDone,
+      readyTeamList: team.readyTeamList,
+      getReadyTeamError: team.getReadyTeamError,
+    }),
+    shallowEqual,
   );
 
   const fetcher = async (url) => {

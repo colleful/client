@@ -23,7 +23,7 @@ import {
   CHANGE_PASSWORD_REQUEST,
   CHANGE_PASSWORD_SUCCESS,
   CHANGE_PASSWORD_FAILURE,
-} from '../reducers/auth';
+} from '../reducers/authentication';
 
 function* register(action) {
   try {
@@ -43,7 +43,7 @@ function* register(action) {
 function* login(action) {
   try {
     const result = yield call(authAPI.login, action.data);
-    console.log("result",result)
+    console.log('result', result);
     yield put({
       type: LOGIN_SUCCESS,
       data: result.headers,
@@ -103,7 +103,10 @@ function* confirmPasswordAuthEmail(action) {
 
 function* sendAuthEmailForPasswordChange(action) {
   try {
-    const result = yield call(authAPI.sendAuthEmailForPasswordChange, action.data);
+    const result = yield call(
+      authAPI.sendAuthEmailForPasswordChange,
+      action.data,
+    );
     yield put({
       type: SEND_AUTH_EMAIL_FOR_PASSWORD_CHANGE_SUCCESS,
       data: result.data,

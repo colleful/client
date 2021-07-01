@@ -2,7 +2,7 @@ import React, {useEffect, useCallback} from 'react';
 import {Alert} from 'react-native';
 import Modal from 'react-native-modal';
 import TeamInfoModalList from '../TeamInfoModalList/index';
-import {useSelector, useDispatch} from 'react-redux';
+import {useSelector, useDispatch, shallowEqual} from 'react-redux';
 import {
   INITAILIZE_STATE,
   SEND_MATCHING_REQUEST,
@@ -20,7 +20,16 @@ const TeamInfoModal = ({
     sendMatchingDone,
     matchingData,
     sendMatchingError,
-  } = useSelector(({matching}) => matching);
+  } = useSelector(
+    ({matching}) => ({
+      sendMatchingLoading: matching.sendMatchingLoading,
+      sendMatchingDone: matching.sendMatchingDone,
+      matchingData: matching.matchingData,
+      sendMatchingError: matching.sendMatchingError,
+    }),
+    shallowEqual,
+  );
+  const {id: teamId} = team;
 
   useEffect(() => {
     return () => {
@@ -29,7 +38,7 @@ const TeamInfoModal = ({
   }, [dispatch]);
 
   useEffect(() => {
-    if (sendMatchingDone && matchingData?.sentTeam.id === team.id) {
+    if (sendMatchingDone && matchingData?.sentTeam.id === teamId) {
       Alert.alert(
         '완료',
         `${matchingData?.receivedTeam.teamName}팀에게 매칭 요청을 보냈습니다.`,
@@ -52,15 +61,15 @@ const TeamInfoModal = ({
     sendMatchingLoading,
     sendMatchingDone,
     sendMatchingError,
-    team.id,
+    teamId,
     matchingData,
     matchingData?.sentTeam.id,
     matchingData?.receivedTeam.teamName,
   ]);
 
   const onGetSendMatching = useCallback(() => {
-    dispatch({type: SEND_MATCHING_REQUEST, data: {teamId: team.id}});
-  }, [dispatch, team.id]);
+    dispatch({type: SEND_MATCHING_REQUEST, data: {teamId: teamId}});
+  }, [dispatch, teamId]);
 
   return (
     <Modal

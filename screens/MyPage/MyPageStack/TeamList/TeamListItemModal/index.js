@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {Alert} from 'react-native';
 import {trigger} from 'swr';
 import {Config} from '../../../../../Config';
-import {useSelector, useDispatch} from 'react-redux';
+import {useSelector, useDispatch, shallowEqual} from 'react-redux';
 import {
   CHANGE_TEAM_STATUS_READY_REQUEST,
   CHANGE_TEAM_STATUS_WATCHING_REQUEST,
@@ -25,7 +25,17 @@ const TeamListItemModal = ({
     changeTeamStatusWatchingError,
     finishTeamMatchingDone,
     finishTeamMatchingError,
-  } = useSelector(({team}) => team);
+  } = useSelector(
+    ({team}) => ({
+      changeTeamStatusReadyDone: team.changeTeamStatusReadyDone,
+      changeTeamStatusReadyError: team.changeTeamStatusReadyError,
+      changeTeamStatusWatchingDone: team.changeTeamStatusWatchingDone,
+      changeTeamStatusWatchingError: team.changeTeamStatusWatchingError,
+      finishTeamMatchingDone: team.finishTeamMatchingDone,
+      finishTeamMatchingError: team.finishTeamMatchingError,
+    }),
+    shallowEqual,
+  );
   const currentError =
     changeTeamStatusReadyError ||
     changeTeamStatusWatchingError ||

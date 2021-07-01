@@ -2,7 +2,7 @@ import React, {useEffect, useCallback} from 'react';
 import {Alert} from 'react-native';
 import {trigger} from 'swr';
 import {Config} from '../../../../../Config';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch, useSelector, shallowEqual} from 'react-redux';
 import {DELETE_INVITATION_REQUEST} from '../../../../../reducers/invite';
 import {
   LOAD_USER_REQUEST,
@@ -12,20 +12,35 @@ import * as L from '../../../../../assets/css/InvitationMatchingListLayout';
 
 const SentInvitationListItemScreen = ({sentInvitationList}) => {
   const dispatch = useDispatch();
-  const {userInfo} = useSelector(({user}) => user);
+  const {userInfo, senderNickname} = useSelector(({user}) => ({
+    userInfo: user.userInfo,
+    senderNickname: user.userInfo.nickname,
+  }));
   const {
     loadUserError,
     deleteInvitationDone,
     deleteInvitationError,
-  } = useSelector(({invite}) => invite);
+  } = useSelector(
+    ({invite}) => ({
+      loadUserError: invite.loadUserError,
+      deleteInvitationDone: invite.deleteInvitationDone,
+      deleteInvitationError: invite.deleteInvitationError,
+    }),
+    shallowEqual,
+  );
   const currentError = loadUserError || deleteInvitationError;
+  const {
+    team: {leaderId},
+    user: {receiverNickname},
+    id: sentInvitationId,
+  } = sentInvitationList;
 
   useEffect(() => {
-    dispatch({type: LOAD_USER_REQUEST, data: sentInvitationList.team.leaderId});
+    dispatch({type: LOAD_USER_REQUEST, data: leaderId});
     return () => {
       dispatch({type: INITAILIZE_STATE});
     };
-  }, [dispatch, sentInvitationList.team.leaderId]);
+  }, [dispatch, leaderId]);
 
   useEffect(() => {
     if (deleteInvitationDone) {
@@ -47,27 +62,27 @@ const SentInvitationListItemScreen = ({sentInvitationList}) => {
   }, [deleteInvitationDone, currentError]);
 
   const onDeleteInvitation = useCallback(() => {
-    dispatch({type: DELETE_INVITATION_REQUEST, data: sentInvitationList.id});
-  }, [dispatch, sentInvitationList.id]);
+    dispatch({type: DELETE_INVITATION_REQUEST, data: sentInvitationId});
+  }, [dispatch, sentInvitationId]);
 
   const onPressDeleteInvitation = useCallback(() => {
     Alert.alert(
       '경고',
-      `정말 ${sentInvitationList.user.nickname} 님에게 보낸 초대를 취소하시겠습니까?`,
+      `정말 ${receiverNickname} 님에게 보낸 초대를 취소하시겠습니까?`,
       [
         {text: '취소', onPress: () => console.log('취소')},
         {text: '확인', onPress: onDeleteInvitation},
       ],
     );
-  }, [sentInvitationList, onDeleteInvitation]);
+  }, [receiverNickname, onDeleteInvitation]);
 
   return (
     <>
       {userInfo && (
         <L.Content>
-          보낸사람 : {userInfo.nickname}
+          보낸사람 : {senderNickname}
           {' \n'}
-          받는사람 : {sentInvitationList.user.nickname}{' '}
+          받는사람 : {receiverNickname}{' '}
         </L.Content>
       )}
       <L.ButtonContainer>

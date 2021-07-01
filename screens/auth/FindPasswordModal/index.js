@@ -2,7 +2,7 @@ import React, {useCallback} from 'react';
 import {Text} from 'react-native';
 import Modal from 'react-native-modal';
 import {useSelector, useDispatch, shallowEqual} from 'react-redux';
-import {initializeForm} from '../../../reducers/auth';
+import {initializeForm} from '../../../reducers/authentication';
 import LoadingScreen from '../../../components/LoadingScreen';
 import * as S from './style';
 
@@ -23,8 +23,18 @@ const FindPasswordModal = ({
     passwordConfirmEmailLoading,
     passwordChangeLoading,
     forgetPassword,
-  } = useSelector((state) => state.auth);
+  } = useSelector(
+    ({authentication}) => ({
+      passwordConfirmEmail: authentication.passwordConfirmEmail,
+      passwordEmailAuthLoading: authentication.passwordEmailAuthLoading,
+      passwordConfirmEmailLoading: authentication.passwordConfirmEmailLoading,
+      passwordChangeLoading: authentication.passwordChangeLoading,
+      forgetPassword: authentication.forgetPassword,
+    }),
+    shallowEqual,
+  );
   const dispatch = useDispatch();
+  const {password, passwordConfirm, email, code} = forgetPassword;
 
   const toggleModal = useCallback(() => {
     setModalVisible((prev) => !prev);
@@ -60,14 +70,14 @@ const FindPasswordModal = ({
                 <S.Input
                   placeholder="새로운 비밀번호"
                   placeholderTextColor="black"
-                  value={forgetPassword.password}
+                  value={password}
                   onChange={onChangeFindPassword}
                   secureTextEntry
                 />
                 <S.Input
                   placeholder="새로운 비밀번호 확인"
                   placeholderTextColor="black"
-                  value={forgetPassword.passwordConfirm}
+                  value={passwordConfirm}
                   onChange={onChangeFindPasswordConfirm}
                   secureTextEntry
                   mb10
@@ -81,7 +91,7 @@ const FindPasswordModal = ({
                 <S.Input
                   placeholder="학교이메일"
                   placeholderTextColor="black"
-                  value={forgetPassword.email}
+                  value={email}
                   onChange={onChangeFindEmail}
                 />
                 <S.Button onPress={onSendAuthEmailForPasswordChange}>
@@ -91,7 +101,7 @@ const FindPasswordModal = ({
                 <S.Input
                   placeholder="인증번호"
                   placeholderTextColor="black"
-                  value={forgetPassword.code}
+                  value={code}
                   onChange={onChangeFindCode}
                 />
                 <S.Button onPress={onConfirmAuthEmail}>

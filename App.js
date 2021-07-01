@@ -9,7 +9,7 @@ import rootSaga from './sagas';
 import createSagaMiddleware from 'redux-saga';
 import {composeWithDevTools} from 'redux-devtools-extension';
 import {NavigationContainer} from '@react-navigation/native';
-import {setLoginState} from './reducers/auth';
+import {setLoginState} from './reducers/authentication';
 import {setCustomText} from 'react-native-global-props';
 
 export default App = () => {

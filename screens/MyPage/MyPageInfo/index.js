@@ -3,12 +3,12 @@ import {View} from 'react-native';
 import * as S from './style';
 
 const MyPageInfo = ({myInfoData}) => {
+  const {nickname, gender, age, department} = myInfoData;
   return (
     <View>
-      <S.Nickname>{myInfoData.nickname}</S.Nickname>
+      <S.Nickname>{nickname}</S.Nickname>
       <S.Information>
-        {myInfoData.gender === 'MALE' ? '남' : '여'} {'/'} {myInfoData.age}{' '}
-        {myInfoData.department}
+        {gender === 'MALE' ? '남' : '여'} {'/'} {age} {department}
       </S.Information>
     </View>
   );

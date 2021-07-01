@@ -5,13 +5,19 @@ import AsyncStorage from '@react-native-community/async-storage';
 import {Config} from '../../../../../Config';
 import useSWR from 'swr';
 import axios from 'axios';
-import {useSelector} from 'react-redux';
+import {useSelector, shallowEqual} from 'react-redux';
 import LoadingScreen from '../../../../../components/LoadingScreen';
 import * as S from './style';
 
 const TeamListScreen = ({navigation, teamId, userId}) => {
   const [isLoading, setLoading] = useState(false);
-  const {deleteTeamLoading, exitTeamLoading} = useSelector(({team}) => team);
+  const {deleteTeamLoading, exitTeamLoading} = useSelector(
+    ({team}) => ({
+      deleteTeamLoading: team.deleteTeamLoading,
+      exitTeamLoading: team.exitTeamLoading,
+    }),
+    shallowEqual,
+  );
 
   useEffect(() => {
     console.log('teamInfo', teamInfo);
@@ -32,9 +38,9 @@ const TeamListScreen = ({navigation, teamId, userId}) => {
     teamId === null ? null : `${Config.baseUrl}/api/teams/${teamId}`,
     fetcher,
   );
-  // if (!error && !teamInfo.hasOwnProperty('id') && isLoading) {
-  //   return <LoadingScreen />;
-  // }
+  if (!error && !teamInfo.hasOwnProperty('id') && isLoading) {
+    return <LoadingScreen />;
+  }
   if (error) {
     console.log({error});
   }

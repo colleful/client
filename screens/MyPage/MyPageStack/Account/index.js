@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {Alert} from 'react-native';
 import {useDispatch, useSelector, shallowEqual} from 'react-redux';
-import {setLoginState} from '../../../../reducers/auth';
+import {setLoginState} from '../../../../reducers/authentication';
 import AsyncStorage from '@react-native-community/async-storage';
 import {trigger} from 'swr';
 import {Config} from '../../../../Config';
@@ -50,7 +50,7 @@ const AccountScreen = ({navigation, myInfoData}) => {
     }),
     shallowEqual,
   );
-
+  const {nickname, selfIntroduction} = myInfoData;
   const currentError =
     changeUserInfoError || deleteUserError || changeUserPasswordError;
 
@@ -151,11 +151,11 @@ const AccountScreen = ({navigation, myInfoData}) => {
   }, [passwordForChange, passwordForConfirm, onChangeUserPassword]);
 
   const userData = useCallback(() => {
-    if (nicknameForChange !== myInfoData.nickname && nicknameForChange !== '') {
+    if (nicknameForChange !== nickname && nicknameForChange !== '') {
       return {nickname: nicknameForChange};
     }
     if (
-      selfIntroductionForChange !== myInfoData.selfIntroduction &&
+      selfIntroductionForChange !== selfIntroduction &&
       selfIntroductionForChange !== ''
     ) {
       return {selfIntroduction: selfIntroductionForChange};
@@ -163,8 +163,8 @@ const AccountScreen = ({navigation, myInfoData}) => {
   }, [
     nicknameForChange,
     selfIntroductionForChange,
-    myInfoData.nickname,
-    myInfoData.selfIntroduction,
+    nickname,
+    selfIntroduction,
   ]);
 
   const onChangeUserInfo = useCallback(() => {
@@ -218,14 +218,14 @@ const AccountScreen = ({navigation, myInfoData}) => {
               <P.InputTitle>닉네임</P.InputTitle>
               <P.Input
                 onChangeText={(text) => setNicknameForChange(text)}
-                defaultValue={myInfoData.nickname}
+                defaultValue={nickname}
                 mb15
               />
 
               <P.InputTitle>자기소개</P.InputTitle>
               <P.Input
                 onChangeText={(text) => setSelfIntroductionForChange(text)}
-                defaultValue={myInfoData.selfIntroduction}
+                defaultValue={selfIntroduction}
               />
               <S.Button mv20 md12 onPress={onChangeUserInfo}>
                 <P.ButtonText>수정</P.ButtonText>

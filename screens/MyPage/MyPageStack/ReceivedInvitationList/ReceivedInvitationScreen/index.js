@@ -5,7 +5,7 @@ import ReceivedInvitationListScreen from '../ReceivedInvitationListScreen/index'
 import {Config} from '../../../../../Config';
 import useSWR from 'swr';
 import axios from 'axios';
-import {useSelector} from 'react-redux';
+import {useSelector, shallowEqual} from 'react-redux';
 import LoadingScreen from '../../../../../components/LoadingScreen';
 import * as L from '../../../../../assets/css/InvitationMatchingListLayout';
 
@@ -15,8 +15,14 @@ const ReceivedInvitationScreen = () => {
     acceptInvitationLoading,
     refuseInvitationLoading,
     loadUserLoading,
-  } = useSelector(({invite}) => invite);
-
+  } = useSelector(
+    ({invite}) => ({
+      acceptInvitationLoading: invite.acceptInvitationLoading,
+      refuseInvitationLoading: invite.refuseInvitationLoading,
+      loadUserLoading: invite.loadUserLoading,
+    }),
+    shallowEqual,
+  );
   const fetcher = async (url) => {
     setLoading((prev) => !prev);
     const response = await axios.get(url, {

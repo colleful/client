@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {Alert} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch, useSelector, shallowEqual} from 'react-redux';
 import {
   SEARCH_USER_BY_NICKNAME_REQUEST,
   INITAILIZE_STATE,
@@ -18,7 +18,17 @@ const InvitationScreen = () => {
     searchUserByNicknameDone,
     searchUserByNicknameError,
     inviteTeamLoading,
-  } = useSelector(({invite}) => invite);
+  } = useSelector(
+    (state) => ({
+      searchUserInfo: state.invite.searchUserInfo,
+      searchUserByNicknameLoading: state.invite.searchUserByNicknameLoading,
+      searchUserByNicknameDone: state.invite.searchUserByNicknameDone,
+      searchUserByNicknameError: state.invite.searchUserByNicknameError,
+      inviteTeamLoading: state.invite.inviteTeamLoading,
+    }),
+    shallowEqual,
+  );
+  const searchUserInfoSize = searchUserInfo.length;
 
   useEffect(() => {
     return () => {
@@ -27,7 +37,7 @@ const InvitationScreen = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (searchUserByNicknameDone && !searchUserInfo.length) {
+    if (searchUserByNicknameDone && !searchUserInfoSize) {
       Alert.alert(
         '검색결과',
         '해당 키워드를 포함한 사용자를 찾을 수 없습니다.',
@@ -51,7 +61,12 @@ const InvitationScreen = () => {
       );
       console.log({searchUserByNicknameError});
     }
-  }, [searchUserInfo, searchUserByNicknameDone, searchUserByNicknameError]);
+  }, [
+    searchUserInfo,
+    searchUserByNicknameDone,
+    searchUserByNicknameError,
+    searchUserInfoSize,
+  ]);
 
   const onSearchUserByNickname = useCallback(() => {
     dispatch({type: SEARCH_USER_BY_NICKNAME_REQUEST, data: userNickname});

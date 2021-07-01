@@ -28,15 +28,16 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
   } = useSelector(({team}) => team);
   const currentError = deleteTeamError || exitTeamError;
   const currentDone = deleteTeamDone || exitTeamDone;
+  const {leaderId, teamName, status: teamStatus} = teamInfo;
 
   useEffect(() => {
-    if (userId === teamInfo.leaderId) {
+    if (userId === leaderId) {
       setLeader(true);
     }
     return () => {
       dispatch({type: INITAILIZE_STATE});
     };
-  }, [dispatch, userId, teamInfo.leaderId]);
+  }, [dispatch, userId, leaderId]);
 
   useEffect(() => {
     if (currentDone) {
@@ -94,42 +95,40 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
   const onExitTeam = useCallback(() => {
     dispatch({
       type: EXIT_TEAM_REQUEST,
-      data: teamInfo.teamName,
+      data: teamName,
     });
-  }, [dispatch, teamInfo.teamName]);
+  }, [dispatch, teamName]);
 
   const onAskBackDeleteTeam = useCallback(() => {
     Alert.alert(
       '경고',
-      `정말 ${teamInfo.teamName} 팀을 삭제하시겠습니까? ※팀원들도 마찬가지로 삭제됩니다.`,
+      `정말 ${teamName} 팀을 삭제하시겠습니까? ※팀원들도 마찬가지로 삭제됩니다.`,
       [{text: '취소'}, {text: '확인', onPress: onDeleteTeam}],
     );
-  }, [teamInfo.teamName, onDeleteTeam]);
+  }, [teamName, onDeleteTeam]);
 
   const onAskBackExitTeam = useCallback(() => {
-    Alert.alert('팀 나가기', `정말 ${teamInfo.teamName} 팀을 나가시겠습니까?`, [
+    Alert.alert('팀 나가기', `정말 ${teamName} 팀을 나가시겠습니까?`, [
       {text: '취소'},
       {text: '확인', onPress: onExitTeam},
     ]);
-  }, [teamInfo.teamName, onExitTeam]);
+  }, [teamName, onExitTeam]);
 
   const goToInvitationScreen = useCallback(() => {
-    navigation.navigate('팀초대', {
-      teamId: teamInfo.id,
-    });
-  }, [teamInfo.id, navigation]);
+    navigation.navigate('팀초대');
+  }, [navigation]);
 
   const teamInfoStatus = useCallback(() => {
-    if (teamInfo.status === 'PENDING') {
+    if (teamStatus === 'PENDING') {
       return '멤버 구성중';
-    } else if (teamInfo.status === 'READY') {
+    } else if (teamStatus === 'READY') {
       return '준비 완료';
-    } else if (teamInfo.status === 'WATCHING') {
+    } else if (teamStatus === 'WATCHING') {
       return '탐색중';
-    } else if (teamInfo.status === 'MATCHED') {
+    } else if (teamStatus === 'MATCHED') {
       return '매칭 완료';
     }
-  }, [teamInfo.status]);
+  }, [teamStatus]);
 
   if (!error && !teamMember.length) {
     return <LoadingScreen />;
@@ -140,7 +139,7 @@ const TeamListItemScreen = ({navigation, teamInfo, userId, teamId}) => {
       <S.BorderLine />
       <View>
         <S.Content>
-          팀명 : {teamInfo.teamName}
+          팀명 : {teamName}
           {'\n'}
           멤버 : <MemberList teamMember={teamMember} />
           {'\n'}

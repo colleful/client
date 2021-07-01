@@ -5,7 +5,7 @@ import * as S from './style';
 
 const TeamInfo = ({team}) => {
   const [isTeamListModalVisible, setTeamListModalVisible] = useState(false);
-
+  const {teamName, headcount, gender, updatedAt} = team;
   const onToggleTeamListModal = useCallback(() => {
     setTeamListModalVisible((prev) => !prev);
   }, []);
@@ -15,7 +15,7 @@ const TeamInfo = ({team}) => {
       <S.WrapperInner>
         <S.StyledGravatar
           options={{
-            email: team.teamName,
+            email: teamName,
             parameters: {s: '50', d: 'retro'},
             secure: true,
           }}
@@ -27,12 +27,12 @@ const TeamInfo = ({team}) => {
             onToggleTeamListModal={onToggleTeamListModal}
           />
           <S.Content>
-            팀이름 : {team.teamName}
+            팀이름 : {teamName}
             {'\n'}
-            팀인원 : {team.headcount}명{'  '}
-            {team.gender === 'MALE' ? '💪' : '👗'}
+            팀인원 : {headcount}명{'  '}
+            {gender === 'MALE' ? '💪' : '👗'}
             {'\n'}
-            <S.UpdatedAtText>{GetTimeFromNow(team.updatedAt)}</S.UpdatedAtText>
+            <S.UpdatedAtText>{GetTimeFromNow(updatedAt)}</S.UpdatedAtText>
           </S.Content>
         </S.ContentContainer>
       </S.WrapperInner>

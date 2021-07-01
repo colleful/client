@@ -5,7 +5,7 @@ import {Config} from '../../../../../Config';
 import ReceivedMatchingList from '../ReceivedMatchingList/index';
 import useSWR from 'swr';
 import axios from 'axios';
-import {useSelector} from 'react-redux';
+import {useSelector, shallowEqual} from 'react-redux';
 import LoadingScreen from '../../../../../components/LoadingScreen';
 import * as L from '../../../../../assets/css/InvitationMatchingListLayout';
 
@@ -15,7 +15,14 @@ const ReceivedMatchingListScreen = ({teamId}) => {
     acceptMatchingLoading,
     refuseMatchingLoading,
     deleteMatchingLoading,
-  } = useSelector(({matching}) => matching);
+  } = useSelector(
+    ({matching}) => ({
+      acceptMatchingLoading: matching.acceptMatchingLoading,
+      refuseMatchingLoading: matching.refuseMatchingLoading,
+      deleteMatchingLoading: matching.deleteMatchingLoading,
+    }),
+    shallowEqual,
+  );
 
   const fetcher = async (url) => {
     setLoading((prev) => !prev);
@@ -35,7 +42,9 @@ const ReceivedMatchingListScreen = ({teamId}) => {
   if (!error && !receivedMatchingList.length && isLoading) {
     return <LoadingScreen />;
   }
-  if (error) console.log({error});
+  if (error) {
+    console.log({error});
+  }
 
   return (
     <L.Wrapper>
